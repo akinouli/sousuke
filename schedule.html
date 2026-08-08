@@ -1,30 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOUSUKE -創作スケジュール管理-</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SOUSUKE - 創作スケジュール管理 -</title>
+
+
+<link rel="stylesheet" href="schedule.css">
+
 </head>
+
+
 <body>
 
+
 <main>
-    <h1>創作スケジュール</h1>
-    <form action="/submit" method="post">
-        <label for="title">作品名:</label>
-        <input type="text" id="title" name="title" required>
-        <br><br>
-        <label for="description">ページ数:</label>
-        <textarea id="description" name="description"></textarea>
-        <br><br>
-        <label for="start-date">作業開始日:</label>
-        <input type="date" id="start-date" name="start-date" required>
-        <br><br>
-        <label for="due-date">締切日:</label>
-        <input type="date" id="due-date" name="due-date" required>
-        <br><br>
-        <button type="submit">スケジュール作成</button>
-    </form>
+
+
+<h1>📖 創作スケジュール作成</h1>
+
+
+
+<section>
+
+<h2>基本情報</h2>
+
+
+<label>
+📖 作品名
+
+<input type="text" id="title">
+
+</label>
+
+
+
+<label>
+📄 ページ数
+
+<input type="number" id="pages" min="1">
+
+</label>
+
+
+</section>
+
+
+
+
+
+<section>
+
+
+<h2>📅 作業期間</h2>
+
+
+<h3>作業開始日</h3>
+
+
+<div class="date-select">
+
+<input type="date" id="start-calendar">
+
+
+<select id="start-year"></select>
+
+<select id="start-month"></select>
+
+<select id="start-day"></select>
+
+</div>
+
+
+
+
+<h3>⏰ 締切日</h3>
+
+
+<div class="date-select">
+
+<input type="date" id="deadline-calendar">
+
+
+<select id="deadline-year"></select>
+
+<select id="deadline-month"></select>
+
+<select id="deadline-day"></select>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+
+<h2>🎨 作業工程</h2>
+
+
+<div id="process-list">
+
+
+<div class="process-row">
+
+<input type="text" value="ネーム">
+
+
+<input type="number" placeholder="時間">
+
+
+<select>
+
+<option>ページ毎</option>
+
+<option>全体</option>
+
+</select>
+
+
+<button class="delete-btn">
+削除
+</button>
+
+
+</div>
+
+
+
+<div class="process-row">
+
+<input type="text" value="下描き">
+
+
+<input type="number" placeholder="時間">
+
+
+<select>
+
+<option>ページ毎</option>
+
+<option>全体</option>
+
+</select>
+
+
+<button class="delete-btn">
+削除
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+<button id="add-process">
+＋工程追加
+</button>
+
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+
+<h2>📆 曜日ごとの作業可能時間</h2>
+
+
+<div id="weekday-list"></div>
+
+
+</section>
+
+
+
+
+<button id="create-button">
+
+✨ スケジュール作成
+
+</button>
+
+
+
+
 </main>
 
+
+
+<script src="schedule.js"></script>
+
+
 </body>
+
 </html>
