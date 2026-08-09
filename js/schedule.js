@@ -73,39 +73,41 @@ progressItems
 );
 
 // ----------------------------------------
+// 作業期間
+// ----------------------------------------
+let startDate = null;
+let deadlineDate = null;
+
+// ----------------------------------------
 // セクションごとの入力チェック
 // ----------------------------------------
 
 function validateSection(index) {
     // ① ページ数
     if (index === 0) {
+
         const pageCount = document.getElementById("page-count").value;
 
         if (pageCount === "") {
             alert("ページ数を入力してください。");
             return false;
         }
+    
     }
 
     // ② 作業期間
     if (index === 1) {
-        const startDate = document.getElementById("start-date").value;
-        const deadline = document.getElementById("deadline").value;
 
-        if (startDate === "") {
-            alert("作業開始日を入力してください。");
+        if (!startDate) {
+            alert("作業開始日を選択してください。");
             return false;
         }
 
-        if (deadline === "") {
-            alert("締切日を入力してください。");
+        if (!deadlineDate) {
+            alert("締切日を選択してください。");
             return false;
         }
 
-        if (startDate > deadline) {
-            alert("締切日は作業開始日より後の日付を設定してください。");
-            return false;
-        }
     }
 
     // ③ 作業工程＆時間
@@ -177,8 +179,6 @@ updateNextButton();
 // 期間カレンダー
 // ========================================
 let periodDate = new Date();
-let startDate = null;
-let deadlineDate = null;
 
 function renderPeriodCalendar() {
     const year = periodDate.getFullYear();
