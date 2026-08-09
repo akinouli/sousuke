@@ -73,6 +73,60 @@ progressItems
 );
 
 // ----------------------------------------
+// セクションごとの入力チェック
+// ----------------------------------------
+
+function validateSection(index) {
+    // ① ページ数
+    if (index === 0) {
+        const pageCount = document.getElementById("page-count").value;
+
+        if (pageCount === "") {
+            alert("ページ数を入力してください。");
+            return false;
+        }
+    }
+
+    // ② 作業期間
+    if (index === 1) {
+        const startDate = document.getElementById("start-date").value;
+        const deadline = document.getElementById("deadline").value;
+
+        if (startDate === "") {
+            alert("作業開始日を入力してください。");
+            return false;
+        }
+
+        if (deadline === "") {
+            alert("締切日を入力してください。");
+            return false;
+        }
+
+        if (startDate > deadline) {
+            alert("締切日は作業開始日より後の日付を設定してください。");
+            return false;
+        }
+    }
+
+    // ③ 作業工程＆時間
+    if (index === 2) {
+        // 後でここに工程のチェックを追加
+    }
+
+    // ④ 作業可能時間
+    if (index === 3) {
+        // 後でここに作業時間のチェックを追加
+    }
+
+    // ⑤ 休日
+    if (index === 4) {
+        // ここは必要になったらチェック
+    }
+
+    return true;
+}
+
+// ----------------------------------------
 // 「次へ」ボタンの表示
 // ----------------------------------------
 const nextButton = document.querySelector(".next-button");
@@ -97,8 +151,16 @@ document
     button.addEventListener("click",
         () => {
             if (currentSection < sections.length - 1) {
+                // 現在のセクションをチェック
+                if (!validateSection(currentSection)) {
+                    return;
+                }
                 showSection(currentSection + 1);
             } else {
+                // 最後のセクションをチェック
+                if (!validateSection(currentSection)) {
+                   return;
+                }
                 createSchedule();
             }
         }
