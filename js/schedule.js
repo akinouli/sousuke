@@ -1,296 +1,698 @@
-const currentYear =
-new Date().getFullYear();
+// ========================================
+// セクション切り替え
+// ========================================
+const sections = document.querySelectorAll(".form-section");
+const progressItems = document.querySelectorAll(".progress-indicator span");
+const createStatus = document.querySelector(".create-status");
 
+let currentSection = 0;
 
-// =====================
-// 日付セレクト作成
-// =====================
+// ----------------------------------------
+// セクション表示
+// ----------------------------------------
+function showSection(nextIndex) {
+    if (nextIndex < 0 || nextIndex >= sections.length) {
+        return;
+    }
+    
+    const current = sections[currentSection];
+    const next = sections[nextIndex];
+    
+    if (currentSection === nextIndex) {
+        return;
+    }
 
+    // 現在のセクションを退出
+    current.classList.remove("active-section");
+    current.classList.add("exit-section");
 
-function setupDate(prefix){
+    setTimeout(
+        () => {
+            current.classList.remove("exit-section");
+        }, 500
+    );
 
+    // 次のセクションを表示
+    next.classList.add("active-section");
+    currentSection = nextIndex;
 
-const year =
-document.getElementById(prefix+"-year");
-
-
-const month =
-document.getElementById(prefix+"-month");
-
-
-const day =
-document.getElementById(prefix+"-day");
-
-
-
-for(
-let i=currentYear;
-i<=currentYear+5;
-i++
-){
-
-let option=document.createElement("option");
-
-option.value=i;
-
-option.textContent=i+"年";
-
-year.appendChild(option);
-
+    updateProgress();
 }
 
-
-
-for(
-let i=1;
-i<=12;
-i++
-){
-
-let option=document.createElement("option");
-
-option.value=i;
-
-option.textContent=i+"月";
-
-month.appendChild(option);
-
+// ----------------------------------------
+// 進捗 ▶ / ▷ の切り替え
+// ----------------------------------------
+function updateProgress() {
+    progressItems.forEach(
+        (item, index) => {
+            /* ①～⑤ 現在表示中のセクションだけ ▶ にする */
+            if (index < 5) {
+                item.textContent = index === currentSection ? "▶" : "▷";
+                item.classList.toggle("active",index === currentSection);
+            }
+        }
+    );
 }
 
-
-
-function updateDay(){
-
-
-day.innerHTML="";
-
-
-let max =
-new Date(
-year.value,
-month.value,
-0
-).getDate();
-
-
-
-for(
-let i=1;
-i<=max;
-i++
-){
-
-let option=document.createElement("option");
-
-option.value=i;
-
-option.textContent=i+"日";
-
-day.appendChild(option);
-
-}
-
-
-}
-
-
-
-month.addEventListener(
-"change",
-updateDay
+// ----------------------------------------
+// ヘッダーから各セクションへ移動
+// ----------------------------------------
+progressItems
+.forEach(
+    (item, index) => {
+        item.addEventListener("click",
+            () => {
+                /* ①～⑤だけセクション移動可能 */
+                if (index < 5) {
+                    showSection(index);
+                }
+            }
+        );
+    }
 );
 
+// ----------------------------------------
+// 「次へ」ボタン
+// ----------------------------------------
+document
+.querySelectorAll(".next-button")
+.forEach(button => {
+    button.addEventListener("click",
+        () => {
+            if (currentSection < sections.length - 1) {
+                showSection(currentSection + 1);
+            } else {
+                createSchedule();
+            }
+        }
+    );
+});
 
-updateDay();
 
+// ========================================
+// 期間カレンダー
+// ========================================
+let periodDate = new Date();
+let startDate = null;
+let deadlineDate = null;
+
+function renderPeriodCalendar() {
+    const year = periodDate.getFullYear();
+    const month = periodDate.getMonth();
+
+    document.getElementById("period-month").textContent = `${year}年 ${month + 1}月`;
+
+    const calendar = document.getElementById("period-calendar");
+
+    calendar.innerHTML = "";
+
+    const firstDay = new Date(year,month,1).getDay();
+
+    const daysInMonth = new Date(year,month + 1,0).getDate();
+
+    // 月初までの空白
+    for (let i = 0;i < firstDay;i++) {
+        const empty = document.createElement("div");
+
+        empty.className = "calendar-day empty";
+
+        calendar.appendChild(empty);
+    }
+
+    // 日付
+    for (let day = 1;day <= daysInMonth;day++) {
+        const cell = document.createElement("div");
+
+        cell.className = "calendar-day";
+
+        const date = new Date(year,month,day);
+
+        // 日付表示
+        const dateNumber = document.createElement("div");
+
+        dateNumber.textContent = day;
+
+        cell.appendChild(dateNumber);
+
+        // -----------------------------
+        // 作業開始日
+        // -----------------------------
+        if (startDate && isSameDate(date,startDate)) {
+            cell.classList.add("selected-start");
+
+            const label = document.createElement("span");
+
+            label.className = "period-label start-label";
+
+            label.textContent = "作業開始";
+
+            cell.appendChild(label);
+        }
+
+        // -----------------------------
+        // 締切日
+        // -----------------------------
+        if (deadlineDate && isSameDate(date,deadlineDate)) {
+            cell.classList.add("selected-end");
+
+            const label = document.createElement("span");
+
+            label.className = "period-label end-label";
+
+            label.textContent = "締切日";
+
+            cell.appendChild(label);
+        }
+
+        // -----------------------------
+        // 期間内
+        // -----------------------------
+        if (startDate && deadlineDate && date > startDate && date < deadlineDate) {
+            cell.classList.add("period");
+        }
+
+        // -----------------------------
+        // 日付クリック
+        // -----------------------------
+        cell.addEventListener("click",
+            () => {
+                selectPeriodDate(date);
+            }
+        );
+
+        calendar.appendChild(cell);
+    }
+}
+
+function selectPeriodDate(date) {
+
+    /* まだ開始日がない、または期間選択済みで新しい期間を選び直す */
+    if (!startDate || (startDate && deadlineDate)) {
+        startDate = new Date(date);
+        deadlineDate = null;
+    } else {
+        /* 開始日より前を選択した場合は自動的に日付を入れ替える */
+        if (date < startDate) {
+            deadlineDate = startDate;
+            startDate = new Date(date);
+        } else {
+            deadlineDate = new Date(date);
+        }
+    }
+
+    renderPeriodCalendar();
+}
+
+function isSameDate(a, b) {
+    return (
+        a.getFullYear() === b.getFullYear()
+        &&
+        a.getMonth() === b.getMonth()
+        &&
+        a.getDate() === b.getDate()
+    );
 
 }
 
+// ----------------------------------------
+// 前月
+// ----------------------------------------
+document
+.getElementById("period-prev")
+.addEventListener("click",
+    () => {
+        periodDate.setMonth(periodDate.getMonth() - 1);
+        renderPeriodCalendar();
+    }
+);
+
+// ----------------------------------------
+// 次月
+// ----------------------------------------
+document
+.getElementById("period-next")
+.addEventListener("click",
+    () => {
+        periodDate.setMonth(periodDate.getMonth() + 1);
+        renderPeriodCalendar();
+    }
+);
+
+renderPeriodCalendar();
 
 
-setupDate("start");
-
-setupDate("deadline");
-
-
-
-
-// =====================
+// ========================================
 // 工程追加
-// =====================
+// ========================================
+function createProcessRow(process) {
+    const row = document.createElement("div");
+    row.className = "process-row";
+    row.draggable = true;
 
+    row.innerHTML = `
+        <span class="drag-handle">＝</span>
+
+        <input type="text" class="process-name" value="${process.name}" placeholder="工程名">
+
+        <select class="process-unit">
+            <option value="total" ${process.unit === "total" ? "selected" : ""}>全体</option>
+            <option value="page"${process.unit === "page" ? "selected" : ""}>ページ毎</option>
+        </select>
+
+        <div class="time-input">
+            <input type="number" class="process-hours" min="0" value="${process.hours}" placeholder="">
+            <span>時間</span>
+            <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}" placeholder="">
+            <span>分</span>
+        </div>
+
+        <button type="button" class="auto-adjust-btn ${process.autoAdjust ? "on" : "off"}" data-auto-adjust="${process.autoAdjust}">
+            自動調整<span>${process.autoAdjust ? "ON" : "OFF"}</span>
+        </button>
+
+        <button type="button" class="delete-btn" aria-label="工程を削除">×</button>
+    `;
+    return row;
+}
 
 document
 .getElementById("add-process")
-.addEventListener(
-"click",
-()=>{
+.addEventListener("click",
+    () => {
+        const newProcess = {
+            name: "",
+            unit: "page",
+            hours: 0,
+            minutes: 0,
+            autoAdjust: false
+        };
+
+        processList.appendChild(
+            createProcessRow(newProcess)
+        );
+    }
+);
 
 
-const div =
-document.createElement("div");
+// ========================================
+// 初期工程を表示
+// ========================================
+
+const processList = document.getElementById("process-list");
+
+defaultProcesses.forEach(
+    process => {
+        processList.appendChild(
+            createProcessRow(process)
+        );
+    }
+);
 
 
-div.className="process-row";
+// ========================================
+// 初期工程
+// ========================================
 
+const defaultProcesses = [
+    {
+        name: "プロット",
+        unit: "total",
+        hours: 40,
+        minutes: 0,
+        autoAdjust: false
+    },
 
-div.innerHTML=`
+    {
+        name: "ネーム",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
 
-<input type="text" placeholder="工程名">
+    {
+        name: "下描き",
+        unit: "page",
+        hours: 4,
+        minutes: 0,
+        autoAdjust: false
+    },
 
-<input type="number" placeholder="時間">
+    {
+        name: "ペン入れ",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
 
+    {
+        name: "ベタ・トーン",
+        unit: "page",
+        hours: 3,
+        minutes: 0,
+        autoAdjust: false
+    },
 
-<select>
+    {
+        name: "仕上げ",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
 
-<option>ページ毎</option>
-
-<option>全体</option>
-
-</select>
-
-
-<button class="delete-btn">
-削除
-</button>
-
-`;
-
-
-
-document
-.getElementById("process-list")
-.appendChild(div);
-
-
-});
-
-
-
-
-
-document.addEventListener(
-"click",
-(e)=>{
-
-
-if(
-e.target.classList.contains("delete-btn")
-){
-
-e.target.parentElement.remove();
-
-}
-
-
-});
-
-
-
-
-
-// =====================
-// 曜日時間
-// =====================
-
-
-const weekdays=[
-
-"月曜日",
-"火曜日",
-"水曜日",
-"木曜日",
-"金曜日",
-"土曜日",
-"日曜日"
-
+    {
+        name: "表紙",
+        unit: "total",
+        hours: 20,
+        minutes: 0,
+        autoAdjust: false
+    }
 ];
 
 
+// ========================================
+// 自動調整 ON / OFF
+// ========================================
+document.addEventListener("click",
+    event => {
+        const button = event.target.closest(".auto-adjust-btn");
 
-const weekdayList =
-document.getElementById(
-"weekday-list"
+        if (!button) {
+            return;
+        }
+
+        const isOn = button.dataset.autoAdjust === "true";
+
+        const newState = !isOn;
+
+        button.dataset.autoAdjust = newState;
+
+        button.classList.toggle("on",newState);
+
+        button.classList.toggle("off",!newState);
+
+        button.querySelector("span").textContent = newState ? "ON" : "OFF";
+    }
 );
 
 
-
-weekdays.forEach(day=>{
-
-
-const div =
-document.createElement("div");
-
-
-div.className="day-row";
-
-
-div.innerHTML=`
-
-${day}
-
-<input type="number"
-min="0"
-max="24"
-value="0">
-
-時間
-
-
-<input type="range"
-min="0"
-max="24"
-value="0">
-
-
-`;
-
-
-
-const number =
-div.querySelector(
-"input[type=number]"
+// ========================================
+// 工程削除
+// ========================================
+document
+.addEventListener("click",
+    event => {
+        if (event.target.classList.contains("delete-btn")) {
+            event.target.closest(".process-row").remove();
+        }
+    }
 );
 
 
-const range =
-div.querySelector(
-"input[type=range]"
-);
-
-
-
-number.addEventListener(
-"input",
-()=>range.value=number.value
-);
-
-
-
-range.addEventListener(
-"input",
-()=>number.value=range.value
-);
-
-
-
-weekdayList.appendChild(div);
-
-
-});
-
-
-
-
+// ========================================
+// 工程並び替え
+// ========================================
+let draggingItem = null;
 
 document
-.getElementById("create-button")
-.addEventListener(
-"click",
-()=>{
-
-alert(
-"スケジュール作成準備OK！"
+.addEventListener("dragstart",
+    event => {
+        const row = event.target.closest(".process-row");
+        if (!row) return;
+        draggingItem = row;
+        row.classList.add("dragging");
+    }
 );
 
+document
+.addEventListener("dragend",
+    event => {
+        const row = event.target.closest(".process-row");
+        if (!row) return;
+        row.classList.remove("dragging");
+        draggingItem = null;
+    }
+);
+
+document
+.getElementById("process-list")
+.addEventListener("dragover",
+    event => {
+        event.preventDefault();
+        const target = event.target.closest(".process-row");
+
+        if (!target || target === draggingItem) {
+        return;
+        }
+
+        const rect = target.getBoundingClientRect();
+        const middle = rect.top + rect.height / 2;
+
+        if (event.clientY < middle) {
+            target.parentNode.insertBefore(draggingItem,target);
+        } else {
+            target.parentNode.insertBefore(draggingItem,target.nextSibling);
+        }
+    }
+);
+
+
+// ========================================
+// 曜日ごとの作業時間
+// ========================================
+const weekdays = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
+const weekdayList = document.getElementById("weekday-list");
+
+weekdays
+.forEach(
+    day => {
+        const row = document.createElement("div");
+        row.className = "day-row";
+        row.innerHTML = `
+            <span>${day}</span>
+            <input type="number" class="hour-input" min="0" max="24" value="0">
+            <span>時間</span>
+            <input type="range" class="hour-range" min="0" max="24" value="0">
+        `;
+
+        const number = row.querySelector(".hour-input");
+        const range = row.querySelector(".hour-range");
+
+        number.addEventListener("input",
+            () => {
+                let value = Number(number.value);
+
+                if (value < 0)
+                    value = 0;
+
+                if (value > 24)
+                    value = 24;
+
+                number.value = value;
+                range.value = value;
+            }
+        );
+
+    range.addEventListener("input",
+        () => {
+            number.value = range.value;
+        }
+    );
+
+    weekdayList.appendChild(row);
 });
+
+
+// ========================================
+// 休日カレンダー
+// ========================================
+let holidayDate = new Date();
+
+const holidays = new Set();
+
+function 
+renderHolidayCalendar() {
+    const year = holidayDate.getFullYear();
+    const month = holidayDate.getMonth();
+
+    document.getElementById("holiday-month").textContent = `${year}年 ${month + 1}月`;
+
+    const calendar = document.getElementById("holiday-calendar");
+
+    calendar.innerHTML = "";
+
+    const firstDay = new Date(year,month,1).getDay();
+    const daysInMonth = new Date(year,month + 1,0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        empty.className = "calendar-day empty";
+        calendar.appendChild(empty);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+        cell.textContent = day;
+        const key = `${year}-${month + 1}-${day}`;
+        
+        if (holidays.has(key)) {
+            cell.classList.add("holiday");
+        }
+
+        cell.addEventListener("click",
+            () => {
+                if (holidays.has(key)) {
+                    holidays.delete(key);
+                } else {
+                    holidays.add(key);
+                }
+                renderHolidayCalendar();
+            }
+        );
+
+        calendar.appendChild(cell);
+    }
+}
+
+document
+.getElementById("holiday-prev")
+.addEventListener("click",
+    () => {
+        holidayDate.setMonth(holidayDate.getMonth() - 1);
+        renderHolidayCalendar();
+    }
+);
+
+document
+.getElementById("holiday-next")
+.addEventListener("click",
+    () => {
+        holidayDate.setMonth(holidayDate.getMonth() + 1);
+        renderHolidayCalendar();
+    }
+);
+
+renderHolidayCalendar();
+
+
+// ========================================
+// 入力チェック
+// ========================================
+function validateScheduleInput() {
+    // -----------------------------
+    // ① ページ数
+    // -----------------------------
+    const pageCount = Number(document.getElementById("page-count").value);
+
+    if (!pageCount || pageCount < 1) {
+        alert("ページ数を入力してください。");
+        showSection(0);
+        return false;
+    }
+
+    // -----------------------------
+    // ② 作業期間
+    // -----------------------------
+    if (!startDate || !deadlineDate) {
+        alert("作業期間を選択してください。");
+        showSection(1);
+        return false;
+    }
+
+    if (deadlineDate < startDate) {
+        alert("締切日は作業開始日より後の日付にしてください。");
+        showSection(1);
+        return false;
+    }
+
+    // -----------------------------
+    // ③ 作業工程
+    // -----------------------------
+    const processRows = document.querySelectorAll(".process-row");
+
+    if (processRows.length === 0) {
+        alert("作業工程を1つ以上追加してください。");
+        showSection(2);
+        return false;
+    }
+
+    let hasValidProcess = false;
+
+    processRows.forEach(
+        row => {
+            const hours = Number(row.querySelector(".process-hours").value);
+            const minutes = Number(row.querySelector(".process-minutes").value);
+
+            if (hours > 0 || minutes > 0) {
+                return;
+            }
+
+            hasInvalidProcess = true;
+        }
+    );
+
+    if (!hasValidProcess) {
+        alert("作業時間を入力してください。");
+        showSection(2);
+        return false;
+    }
+
+    // -----------------------------
+    // ④ 作業可能時間
+    // -----------------------------
+    const hourInputs = document.querySelectorAll(".hour-input");
+    const hasWorkingTime = [...hourInputs].some(
+        input =>
+            Number(input.value) >= 1
+    );
+
+    if (!hasWorkingTime) {
+        alert("作業可能時間を1時間以上設定してください。");
+        showSection(3);
+        return false;
+    }
+
+    // -----------------------------
+    // ⑤ 休日
+    // -----------------------------
+    // 任意なのでチェック不要
+
+    return true;
+}
+
+
+// ========================================
+// スケジュール作成
+// ========================================
+function 
+createSchedule() {
+    const pageCount = document.getElementById("page-count").value;
+
+    console.log("ページ数:",pageCount);
+
+    console.log("開始日:",startDate);
+
+    console.log("締切日:",deadlineDate);
+
+    console.log("休日:",[...holidays]);
+
+    // --------------------------------
+    // スケジュール作成完了
+    // --------------------------------
+    progressItems.forEach(
+        (item, index) => {
+            if (index < 5) {
+                item.textContent = "▷";
+                item.classList.remove("active");
+            }
+        }
+    );
+
+    createStatus.textContent = "作成";
+    createStatus.classList.add("active");
+
+    alert("スケジュール作成処理は次の段階で実装します！");
+}

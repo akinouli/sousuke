@@ -2,213 +2,267 @@
 <html lang="ja">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SOUSUKE - 創作スケジュール管理 -</title>
-
-
-<link rel="stylesheet" href="schedule.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUSUKE - スケジュール作成</title>
+    <link rel="stylesheet" href="css/schedule.css">
 </head>
-
 
 <body>
 
+    <!-- ヘッダー ========================= -->
+    <header class="schedule-header">
+        <div class="logo">SOUSUKE<span>スケジュール作成</span></div>
+        <div id="progress-indicator" class="progress-indicator">
+            <span class="active">▶</span>
+            <span>▷</span>
+            <span>▷</span>
+            <span>▷</span>
+            <span>▷</span>
+            <span class="create-status">作成</span>
+        </div>
+    </header>
+
+
+    <main class="schedule-main">
+    
+    <!-- セクション① 作業ページ数 ========================= -->
+    <section class="form-section active-section" data-section="0">
+        <div class="section-content">
+            <h1>ページ数</h1>
+            <p>作業ページ数を入力しよう</p>
+
+            <div class="page-count-area">
+                <input type="number" id="page-count" min="1" inputmode="numeric"><span>ページ</span>
+            </div>
+        </div>
+
+        <button type="button" class="next-button">次へ<span>▼</span></button>
+    </section>
+
+    <!-- セクション② 作業期間 ========================= -->
+    <section class="form-section" data-section="1">
+        <div class="section-content">
+            <h1>作業期間</h1>
+            <p>期間を選択してね</p>
+
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button type="button" id="period-prev">＜</button>
+                    <div id="period-month"></div>
+                    <button type="button" id="period-next">＞</button>
+                </div>
+
+                <div class="week-header">
+                    <span>日</span>
+                    <span>月</span>
+                    <span>火</span>
+                    <span>水</span>
+                    <span>木</span>
+                    <span>金</span>
+                    <span>土</span>
+                </div>
+
+                <div id="period-calendar" class="calendar-grid"></div>
+            </div>
+        </div>
+
+        <button type="button" class="next-button">次へ<span>▼</span></button>
+    </section>
+
+    <!-- セクション③ 作業工程 ========================= -->
+    <section class="form-section"data-section="2">
+        <div class="section-content">
+            <h1>作業工程＆時間</h1>
+            <p>工程と必要な作業時間を入力してね<br>まとめて行う作業はひとつの工程にまとめよう</p>
+
+            <div id="process-list">
+
+                <!-- 初期工程 -->
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
+
+                    <input type="text" class="process-name" value="ネーム">
+                
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
+                
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
+
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
+                
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
+
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
+                
+                    <input type="text" class="process-name" value="下描き">
+
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
+
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
 
-<main>
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
 
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
 
-<h1>📖 創作スケジュール作成</h1>
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
 
+                    <input type="text" class="process-name" value="ペン入れ">
 
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
 
-<section>
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
 
-<h2>基本情報</h2>
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
 
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
 
-<label>
-📖 作品名
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
 
-<input type="text" id="title">
+                    <input type="text" class="process-name" value="ベタ">
 
-</label>
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
 
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
 
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
 
-<label>
-📄 ページ数
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
 
-<input type="number" id="pages" min="1">
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
 
-</label>
+                    <input type="text" class="process-name" value="トーン">
 
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
 
-</section>
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
 
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
 
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
 
+                <div class="process-row" draggable="true">
+                    <span class="drag-handle">＝</span>
 
+                    <input type="text" class="process-name" value="仕上げ">
 
-<section>
+                    <select class="process-unit">
+                        <option value="total">全体</option>
+                        <option value="page">ページ毎</option>
+                    </select>
 
+                    <div class="time-input">
+                        <input type="number" class="process-hours" min="0" placeholder="">
+                        <span>時間</span>
+                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
+                        <span>分</span>
+                    </div>
 
-<h2>📅 作業期間</h2>
+                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
 
+                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
+                </div>
+            </div>
 
-<h3>作業開始日</h3>
+            <button type="button" id="add-process"> ＋ 工程追加</button>
+        </div>
 
+        <button type="button" class="next-button">次へ<span>▼</span></button>
+    </section>
 
-<div class="date-select">
+    <!-- セクション④ 作業可能時間 ========================= -->
+    <section class="form-section" data-section="3">
+        <div class="section-content">
+            <h1>作業可能時間</h1>
+            <p>曜日ごとに作業できる時間を設定してね</p>
 
-<input type="date" id="start-calendar">
+            <div id="weekday-list"></div>
+        </div>
 
+        <button type="button" class="next-button">次へ<span>▼</span></button>
+    </section>
 
-<select id="start-year"></select>
+    <!-- セクション⑤ 休日 ========================= -->
+    <section class="form-section" data-section="4">
+        <div class="section-content">
+            <h1>休日</h1>
+            <p>作業できない日を選択してね</p>
 
-<select id="start-month"></select>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button type="button" id="holiday-prev">＜</button>
+                    <div id="holiday-month"></div>
+                    <button type="button" id="holiday-next">＞</button>
+                </div>
 
-<select id="start-day"></select>
+                <div class="week-header">
+                    <span>日</span>
+                    <span>月</span>
+                    <span>火</span>
+                    <span>水</span>
+                    <span>木</span>
+                    <span>金</span>
+                    <span>土</span>
+                </div>
 
-</div>
+                <div id="holiday-calendar" class="calendar-grid"></div>
+            </div>
+        </div>
 
+        <button type="button" class="next-button final-next">スケジュール作成<span>▼</span></button>
+    </section>
 
+    </main>
 
-
-<h3>⏰ 締切日</h3>
-
-
-<div class="date-select">
-
-<input type="date" id="deadline-calendar">
-
-
-<select id="deadline-year"></select>
-
-<select id="deadline-month"></select>
-
-<select id="deadline-day"></select>
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-
-<h2>🎨 作業工程</h2>
-
-
-<div id="process-list">
-
-
-<div class="process-row">
-
-<input type="text" value="ネーム">
-
-
-<input type="number" placeholder="時間">
-
-
-<select>
-
-<option>ページ毎</option>
-
-<option>全体</option>
-
-</select>
-
-
-<button class="delete-btn">
-削除
-</button>
-
-
-</div>
-
-
-
-<div class="process-row">
-
-<input type="text" value="下描き">
-
-
-<input type="number" placeholder="時間">
-
-
-<select>
-
-<option>ページ毎</option>
-
-<option>全体</option>
-
-</select>
-
-
-<button class="delete-btn">
-削除
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-<button id="add-process">
-＋工程追加
-</button>
-
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-
-<h2>📆 曜日ごとの作業可能時間</h2>
-
-
-<div id="weekday-list"></div>
-
-
-</section>
-
-
-
-
-<button id="create-button">
-
-✨ スケジュール作成
-
-</button>
-
-
-
-
-</main>
-
-
-
-<script src="schedule.js"></script>
-
+    <script src="js/schedule.js"></script>
 
 </body>
 

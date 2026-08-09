@@ -1,95 +1,458 @@
+/* =========================
+   基本
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-
-font-family:
-"Yu Gothic",
-sans-serif;
-
-background:#f8f3e8;
-
-padding:20px;
-
+    margin: 0;
+    padding: 0;
 }
 
-
-
-main {
-
-max-width:700px;
-
-margin:auto;
-
+body {
+    font-family:"Yu Gothic",sans-serif;
+    background: #f8f3e8;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-
-
-section {
-
-background:white;
-
-padding:20px;
-
-margin-bottom:25px;
-
-border-radius:15px;
-
+/* =========================
+   ヘッダー
+========================= */
+.schedule-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #fff;
+    padding: 12px 20px;
+    text-align: center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
 }
 
-
-
-label {
-
-display:block;
-
-margin:15px 0;
-
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.1;
 }
 
-
-
-input,
-select,
-button {
-
-padding:8px;
-
-border-radius:8px;
-
-border:1px solid #ccc;
-
+.logo span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
 }
 
+.progress-indicator {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    font-size: 16px;
+}
 
+.progress-indicator span {
+    cursor: pointer;
+    user-select: none;
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.progress-indicator span:hover {
+    transform: scale(1.15);
+}
+
+.progress-indicator span.active {
+    font-weight: bold;
+    cursor: default;
+}
+
+.progress-indicator span.locked {
+    cursor: default;
+    opacity: 0.6;
+}
+
+/* =========================
+   メイン
+========================= */
+.schedule-main {
+    position: relative;
+    min-height: 100vh;
+    padding-top: 105px;
+}
+
+/* =========================
+   セクション
+========================= */
+.form-section {
+    position: absolute;
+    top: 105px;
+    left: 0;
+    width: 100%;
+    min-height:calc(100vh - 105px);
+    padding:20px 20px 110px;
+    opacity: 0;
+    transform:translateY(100px);
+    pointer-events: none;
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+}
+
+.form-section.active-section {
+    position: relative;
+    top: auto;
+    opacity: 1;
+    transform:translateY(0);
+    pointer-events: auto;
+}
+
+.form-section.exit-section {
+    opacity: 0;
+    transform:translateY(-100px);
+}
+
+/* =========================
+   セクション内容
+========================= */
+.section-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.section-content h1 {
+    margin-top: 20px;
+}
+
+.section-content p {
+    line-height: 1.8;
+    color: #666;
+}
+
+/* =========================
+   ページ数
+========================= */
+.page-count-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 60px;
+}
+
+#page-count {
+    width: 150px;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* =========================
+   次へボタン
+========================= */
+.next-button {
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+
+    min-width: 150px;
+    padding: 12px 25px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+
+    font-size: 16px;
+    cursor: pointer;
+
+    z-index: 900;
+}
+
+.next-button span {
+    display: block;
+    margin-top: 5px;
+}
+
+/* =========================
+   カレンダー
+========================= */
+.calendar {
+    width: 100%;
+    max-width: 700px;
+    margin:30px auto 0;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns:50px 1fr 50px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header button {
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#period-month,
+#holiday-month {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.week-header,
+.calendar-grid {
+    display: grid;
+    grid-template-columns:repeat(7, 1fr);
+}
+
+.week-header span {
+    padding: 8px;
+    font-size: 13px;
+}
+
+.calendar-day {
+    position: relative;
+    min-height: 65px;
+    border: 1px solid #eee;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 8px;
+}
+
+.calendar-day:hover {
+    background: #f3f3f3;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.calendar-day.period {
+    background: #e8f0ff;
+}
+
+.calendar-day.selected-start,
+.calendar-day.selected-end {
+    background: #d5e3ff;
+    font-weight: bold;
+}
+
+.calendar-day.holiday {
+    background: #d5d5d5;
+    color: #777;
+}
+
+/* =========================
+   作業期間ラベル
+========================= */
+.calendar-day {
+    position: relative;
+}
+
+.period-label {
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.start-label {
+    font-weight: bold;
+}
+
+.end-label {
+    font-weight: bold;
+}
+
+/* =========================
+   工程
+========================= */
+#process-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 25px;
+}
 
 .process-row {
+    display: grid;
+    grid-template-columns:30px minmax(100px, 1fr) 100px auto auto 40px;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: white;
+    border-radius: 12px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
 
-display:flex;
+.process-row.dragging {
+    opacity: 0.45;
+}
 
-gap:10px;
+.drag-handle {
+    font-size: 22px;
+    cursor: grab;
+    user-select: none;
+}
 
-margin-bottom:10px;
+.process-name {
+    width: 100%;
+}
 
+.process-unit {
+    width: 100%;
+}
+
+.time-input {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.process-hours,
+.process-minutes {
+    width: 55px;
+}
+
+.delete-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#add-process {
+    margin-top: 15px;
+    padding: 10px 20px;
+}
+
+/* =========================
+   工程削除ボタン
+========================= */
+.delete-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #eeeeee;
+    color: #666666;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.delete-btn:hover {
+    background: #dddddd;
+    color: #333333;
+}
+
+.delete-btn:active {
+    transform: scale(0.9);
+}
+
+/* =========================
+   自動調整ボタン
+========================= */
+.auto-adjust-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 7px 8px;
+    font-size: 11px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.auto-adjust-btn span {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* OFF */
+.auto-adjust-btn.off {
+    background: #eeeeee;
+    color: #666666;
+}
+
+/* ON */
+.auto-adjust-btn.on {
+    background: #5d8fd8;
+    color: white;
 }
 
 
-
-button {
-
-cursor:pointer;
-
-}
-
-
-
+/* =========================
+   曜日
+========================= */
 .day-row {
-
-margin-bottom:15px;
-
+    display: grid;
+    grid-template-columns:80px 70px 30px 1fr;
+    align-items: center;
+    gap: 8px;
+    margin:18px auto;
+    max-width: 600px;
 }
 
+.hour-input {
+    width: 65px;
+}
 
+.hour-range {
+    width: 100%;
+}
 
-input[type="range"] {
+/* =========================
+   スマホ
+========================= */
+@media (max-width: 600px) {
+    .process-row {
+        grid-template-columns:25px 1fr 40px;
+    }
 
-width:250px;
+    .process-unit {
+        grid-column: 2 / 3;
+    }
 
+    .time-input {
+        grid-column: 2 / 3;
+    }
+
+    .auto-adjust-btn {
+        grid-column: 2 / 3;
+        justify-self: start;
+    }
+
+    .delete-btn {
+        grid-column: 3 / 4;
+        grid-row: 1 / 4;
+    }
+
+    .calendar-day {
+        min-height: 48px;
+    }
 }
