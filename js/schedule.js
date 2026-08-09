@@ -14,10 +14,10 @@ function showSection(nextIndex) {
     if (nextIndex < 0 || nextIndex >= sections.length) {
         return;
     }
-    
+
     const current = sections[currentSection];
     const next = sections[nextIndex];
-    
+
     if (currentSection === nextIndex) {
         return;
     }
@@ -37,6 +37,7 @@ function showSection(nextIndex) {
     currentSection = nextIndex;
 
     updateProgress();
+    updateNextButton();
 }
 
 // ----------------------------------------
@@ -97,8 +98,6 @@ document
         () => {
             if (currentSection < sections.length - 1) {
                 showSection(currentSection + 1);
-                updateProgress();
-                updateNextButton();
             } else {
                 createSchedule();
             }
