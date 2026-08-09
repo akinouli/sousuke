@@ -242,6 +242,69 @@ renderPeriodCalendar();
 
 
 // ========================================
+// 初期工程
+// ========================================
+
+const defaultProcesses = [
+    {
+        name: "プロット",
+        unit: "total",
+        hours: 40,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "ネーム",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "下描き",
+        unit: "page",
+        hours: 4,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "ペン入れ",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "ベタ・トーン",
+        unit: "page",
+        hours: 3,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "仕上げ",
+        unit: "page",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "表紙",
+        unit: "total",
+        hours: 20,
+        minutes: 0,
+        autoAdjust: false
+    }
+];
+
+
+// ========================================
 // 工程追加
 // ========================================
 function createProcessRow(process) {
@@ -307,69 +370,6 @@ defaultProcesses.forEach(
         );
     }
 );
-
-
-// ========================================
-// 初期工程
-// ========================================
-
-const defaultProcesses = [
-    {
-        name: "プロット",
-        unit: "total",
-        hours: 40,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "ネーム",
-        unit: "page",
-        hours: 2,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "下描き",
-        unit: "page",
-        hours: 4,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "ペン入れ",
-        unit: "page",
-        hours: 2,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "ベタ・トーン",
-        unit: "page",
-        hours: 3,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "仕上げ",
-        unit: "page",
-        hours: 2,
-        minutes: 0,
-        autoAdjust: false
-    },
-
-    {
-        name: "表紙",
-        unit: "total",
-        hours: 20,
-        minutes: 0,
-        autoAdjust: false
-    }
-];
 
 
 // ========================================

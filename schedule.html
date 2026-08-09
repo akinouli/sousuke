@@ -36,8 +36,6 @@
                 <input type="number" id="page-count" min="1" inputmode="numeric"><span>ページ</span>
             </div>
         </div>
-
-        <button type="button" class="next-button">次へ<span>▼</span></button>
     </section>
 
     <!-- セクション② 作業期間 ========================= -->
@@ -66,8 +64,6 @@
                 <div id="period-calendar" class="calendar-grid"></div>
             </div>
         </div>
-
-        <button type="button" class="next-button">次へ<span>▼</span></button>
     </section>
 
     <!-- セクション③ 作業工程 ========================= -->
@@ -76,146 +72,10 @@
             <h1>作業工程＆時間</h1>
             <p>工程と必要な作業時間を入力してね<br>まとめて行う作業はひとつの工程にまとめよう</p>
 
-            <div id="process-list">
-
-                <!-- 初期工程 -->
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-
-                    <input type="text" class="process-name" value="ネーム">
-                
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-                
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-                
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-                
-                    <input type="text" class="process-name" value="下描き">
-
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-
-                    <input type="text" class="process-name" value="ペン入れ">
-
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-
-                    <input type="text" class="process-name" value="ベタ">
-
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-
-                    <input type="text" class="process-name" value="トーン">
-
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-
-                <div class="process-row" draggable="true">
-                    <span class="drag-handle">＝</span>
-
-                    <input type="text" class="process-name" value="仕上げ">
-
-                    <select class="process-unit">
-                        <option value="total">全体</option>
-                        <option value="page">ページ毎</option>
-                    </select>
-
-                    <div class="time-input">
-                        <input type="number" class="process-hours" min="0" placeholder="">
-                        <span>時間</span>
-                        <input type="number" class="process-minutes" min="0" max="59" placeholder="">
-                        <span>分</span>
-                    </div>
-
-                    <button type="button" class="auto-adjust-btn" data-auto-adjust="false">自動調整<span>OFF</span></button>
-
-                    <button type="button" class="delete-btn" aria-label="工程を削除">✖</button>
-                </div>
-            </div>
+            <div id="process-list"></div>
 
             <button type="button" id="add-process"> ＋ 工程追加</button>
         </div>
-
-        <button type="button" class="next-button">次へ<span>▼</span></button>
     </section>
 
     <!-- セクション④ 作業可能時間 ========================= -->
@@ -226,8 +86,6 @@
 
             <div id="weekday-list"></div>
         </div>
-
-        <button type="button" class="next-button">次へ<span>▼</span></button>
     </section>
 
     <!-- セクション⑤ 休日 ========================= -->
@@ -256,9 +114,9 @@
                 <div id="holiday-calendar" class="calendar-grid"></div>
             </div>
         </div>
-
-        <button type="button" class="next-button final-next">スケジュール作成<span>▼</span></button>
     </section>
+
+    <button type="button" class="next-button">次へ<span>▼</span></button>
 
     </main>
 
