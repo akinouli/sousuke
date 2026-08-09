@@ -10,9 +10,13 @@
 
 <body>
 
-    <!-- ヘッダー ========================= -->
+    <!-- 上部固定メニュー ========================= -->
     <header class="schedule-header">
+
+        <!-- タイトル -->
         <div class="logo">SOUSUKE<span>スケジュール作成</span></div>
+
+        <!-- 進捗ナビ -->
         <div id="progress-indicator" class="progress-indicator">
             <span class="active">▶</span>
             <span>▷</span>
@@ -21,104 +25,111 @@
             <span>▷</span>
             <span class="create-status">作成</span>
         </div>
+
     </header>
 
-
+    <!-- スケジュール作成セクション ========================= -->
     <main class="schedule-main">
-    
-    <!-- セクション① 作業ページ数 ========================= -->
-    <section class="form-section active-section" data-section="0">
-        <div class="section-content">
-            <h1>ページ数</h1>
-            <p>作業ページ数を入力しよう</p>
 
-            <div class="page-count-area">
-                <input type="number" id="page-count" min="1" inputmode="numeric"><span>ページ</span>
+        <!-- セクション① 作業ページ数 -->
+        <section class="form-section active-section" data-section="0">
+            <div class="section-content">
+                <h1>作業ページ数</h1>
+                <p>制作する本文のページ数を入力しよう</p>
+
+                <div class="page-count-area">
+                    <input type="number" id="page-count" min="1" inputmode="numeric"><span>ページ</span>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- セクション② 作業期間 ========================= -->
-    <section class="form-section" data-section="1">
-        <div class="section-content">
-            <h1>作業期間</h1>
-            <p>期間を選択してね</p>
+        <!-- セクション② 作業期間 -->
+        <section class="form-section" data-section="1">
+            <div class="section-content">
+                <h1>作業期間</h1>
+                <p>期間を選択してね</p>
+                
+                <!-- カレンダー -->
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button type="button" id="period-prev">＜</button>
+                        <div id="period-month"></div>
+                        <button type="button" id="period-next">＞</button>
+                    </div>
 
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button type="button" id="period-prev">＜</button>
-                    <div id="period-month"></div>
-                    <button type="button" id="period-next">＞</button>
+                    <div class="week-header">
+                        <span>日</span>
+                        <span>月</span>
+                        <span>火</span>
+                        <span>水</span>
+                        <span>木</span>
+                        <span>金</span>
+                        <span>土</span>
+                    </div>
+
+                    <div id="period-calendar" class="calendar-grid"></div>
                 </div>
-
-                <div class="week-header">
-                    <span>日</span>
-                    <span>月</span>
-                    <span>火</span>
-                    <span>水</span>
-                    <span>木</span>
-                    <span>金</span>
-                    <span>土</span>
-                </div>
-
-                <div id="period-calendar" class="calendar-grid"></div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- セクション③ 作業工程 ========================= -->
-    <section class="form-section"data-section="2">
-        <div class="section-content">
-            <h1>作業工程＆時間</h1>
-            <p>工程と必要な作業時間を入力してね<br>まとめて行う作業はひとつの工程にまとめよう</p>
+        <!-- セクション③ 作業工程 ========================= -->
+        <section class="form-section"data-section="2">
+            <div class="section-content">
+                <h1>作業工程＆時間</h1>
+                <p>工程と必要な作業時間を入力してね<br>まとめて行う作業はひとつの工程にまとめよう</p>
 
-            <div id="process-list"></div>
+                <div id="process-list"></div>
 
-            <button type="button" id="add-process"> ＋ 工程追加</button>
-        </div>
-    </section>
-
-    <!-- セクション④ 作業可能時間 ========================= -->
-    <section class="form-section" data-section="3">
-        <div class="section-content">
-            <h1>作業可能時間</h1>
-            <p>曜日ごとに作業できる時間を設定してね</p>
-
-            <div id="weekday-list"></div>
-        </div>
-    </section>
-
-    <!-- セクション⑤ 休日 ========================= -->
-    <section class="form-section" data-section="4">
-        <div class="section-content">
-            <h1>休日</h1>
-            <p>作業できない日を選択してね</p>
-
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button type="button" id="holiday-prev">＜</button>
-                    <div id="holiday-month"></div>
-                    <button type="button" id="holiday-next">＞</button>
-                </div>
-
-                <div class="week-header">
-                    <span>日</span>
-                    <span>月</span>
-                    <span>火</span>
-                    <span>水</span>
-                    <span>木</span>
-                    <span>金</span>
-                    <span>土</span>
-                </div>
-
-                <div id="holiday-calendar" class="calendar-grid"></div>
+                <button type="button" id="add-process"> ＋ 工程追加</button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <button type="button" class="next-button">次へ<span>▼</span></button>
+        <!-- セクション④ 作業可能時間 ========================= -->
+        <section class="form-section" data-section="3">
+            <div class="section-content">
+                <h1>作業可能時間</h1>
+                <p>曜日ごとに作業できる時間を設定してね</p>
+
+                <div id="weekday-list"></div>
+            </div>
+        </section>
+
+        <!-- セクション⑤ 休日 ========================= -->
+        <section class="form-section" data-section="4">
+            <div class="section-content">
+                <h1>休日</h1>
+                <p>作業できない日を選択してね</p>
+
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button type="button" id="holiday-prev">＜</button>
+                        <div id="holiday-month"></div>
+                        <button type="button" id="holiday-next">＞</button>
+                    </div>
+
+                    <div class="week-header">
+                        <span>日</span>
+                        <span>月</span>
+                        <span>火</span>
+                        <span>水</span>
+                        <span>木</span>
+                        <span>金</span>
+                        <span>土</span>
+                    </div>
+
+                    <div id="holiday-calendar" class="calendar-grid"></div>
+                </div>
+            </div>
+        </section>
 
     </main>
+
+    <footer>
+        <button type="button" class="next-button">
+            <span class="next-button-text">次へ</span>
+            <span>▼</span>
+        </button>
+    </footer>
 
     <script src="js/schedule.js"></script>
 

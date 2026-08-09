@@ -72,6 +72,22 @@ progressItems
 );
 
 // ----------------------------------------
+// 「次へ」ボタンの表示
+// ----------------------------------------
+const nextButton = document.querySelector(".next-button");
+const nextButtonText = nextButton.querySelector(".next-button-text");
+
+function updateNextButton() {
+
+    if (currentSection === sections.length - 1) {
+        nextButtonText.textContent = "スケジュール作成";
+    } else {
+        nextButtonText.textContent = "次へ";
+    }
+
+}
+
+// ----------------------------------------
 // 「次へ」ボタン
 // ----------------------------------------
 document
@@ -81,12 +97,19 @@ document
         () => {
             if (currentSection < sections.length - 1) {
                 showSection(currentSection + 1);
+                updateProgress();
+                updateNextButton();
             } else {
                 createSchedule();
             }
         }
     );
 });
+
+// ----------------------------------------
+// 「次へ」ボタン初期表示
+// ----------------------------------------
+updateNextButton();
 
 
 // ========================================
