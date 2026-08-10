@@ -45,9 +45,7 @@ function showSection(nextIndex) {
     updateNextButton();
 
     // セクション表示時にスクロールリセット
-    document
-    .querySelector("main")
-    .scrollTo({top: 0,behavior: "instant"});
+    window.scrollTo({top: 0,behavior: "instant"});
 
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
@@ -254,6 +252,14 @@ function renderPeriodCalendar() {
         const dateNumber = document.createElement("div");
 
         dateNumber.textContent = day;
+
+        if (date.getDay() === 0) {
+            cell.classList.add("sunday");
+        }
+
+        if (date.getDay() === 6) {
+            cell.classList.add("saturday");
+        }
 
         cell.appendChild(dateNumber);
 

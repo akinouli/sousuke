@@ -274,6 +274,22 @@ body {
     color: #777;
 }
 
+.calendar-day.sunday > div {
+    color: #d98f8f;
+}
+
+.calendar-day.saturday > div {
+    color: #7f9fc7;
+}
+
+.calendar-weekdays span:first-child {
+    color: #d98f8f;
+}
+
+.calendar-weekdays span:last-child {
+    color: #7f9fc7;
+}
+
 /* =========================
    作業期間ラベル
 ========================= */
