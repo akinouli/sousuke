@@ -549,6 +549,13 @@ body {
     }
 
     .calendar-day {
-        min-height: 48px;
+        min-height: 60px;
+        padding-top: 7px;
+    }
+
+    .period-label {
+        margin-top: 5px;
+        font-size: 11px;
+        line-height: 1.3;
     }
 }
