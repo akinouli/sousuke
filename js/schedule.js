@@ -557,10 +557,18 @@ document
 
 
 // ========================================
-// 曜日ごとの作業時間
+// 作業可能時間
 // ========================================
 const weekdays = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
 const weekdayList = document.getElementById("weekday-list");
+
+// 選択バーの色替え
+function updateHourRangeColor(number, range) {
+    const value = Number(range.value);
+
+    range.classList.toggle("normal", value <= 12);
+    range.classList.toggle("overwork", value > 12);
+}
 
 weekdays
 .forEach(
@@ -589,17 +597,22 @@ weekdays
 
                 number.value = value;
                 range.value = value;
+
+                updateHourRangeColor(number, range);
             }
         );
 
-    range.addEventListener("input",
-        () => {
-            number.value = range.value;
-        }
-    );
+        range.addEventListener("input",
+            () => {
+                number.value = range.value;
 
-    weekdayList.appendChild(row);
-});
+                updateHourRangeColor(number, range);
+            }
+        );
+
+        weekdayList.appendChild(row);
+    }
+);
 
 
 // ========================================

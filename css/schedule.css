@@ -92,7 +92,6 @@ body {
     top: 105px;
     left: 0;
     width: 100%;
-    min-height:calc(100vh - 105px);
     padding:20px 20px 110px;
     opacity: 0;
     transform:translateY(100px);
@@ -227,8 +226,9 @@ body {
     background: white;
     cursor: pointer;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     padding-top: 8px;
 }
 
@@ -266,8 +266,8 @@ body {
 
 .period-label {
     display: block;
-    margin-top: 5px;
-    font-size: 10px;
+    margin-top: 6px;
+    font-size: 12px;
     line-height: 1.2;
     white-space: nowrap;
 }
@@ -328,7 +328,8 @@ body {
 
 .process-hours,
 .process-minutes {
-    width: 55px;
+    width: 50px;
+    text-align: right;
 }
 
 .delete-btn {
@@ -416,7 +417,7 @@ body {
 ========================= */
 .day-row {
     display: grid;
-    grid-template-columns:80px 70px 30px 1fr;
+    grid-template-columns:80px 70px 50px 1fr;
     align-items: center;
     gap: 8px;
     margin:18px auto;
@@ -425,10 +426,19 @@ body {
 
 .hour-input {
     width: 65px;
+    text-align: right;
 }
 
 .hour-range {
     width: 100%;
+}
+
+.hour-range.normal {
+    accent-color: #5d8fd8;
+}
+
+.hour-range.overwork {
+    accent-color: #e69a4a;
 }
 
 /* =========================
