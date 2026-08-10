@@ -101,10 +101,11 @@ body {
 }
 
 .form-section.active-section {
-    position: relative;
-    top: auto;
+    position: absolute;
+    top: 105px;
+    left: 0;
     opacity: 1;
-    transform:translateY(0);
+    transform: translateY(0);
     pointer-events: auto;
 }
 
