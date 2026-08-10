@@ -431,14 +431,51 @@ body {
 
 .hour-range {
     width: 100%;
+    height: 8px;
+    appearance: none;
+    background: #ddd;
+    border-radius: 999px;
 }
 
-.hour-range.normal {
-    accent-color: #5d8fd8;
+/* 通常：青 */
+.hour-range.normal::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: #5d8fd8;
+    cursor: pointer;
 }
 
-.hour-range.overwork {
-    accent-color: #e69a4a;
+/* 13時間以上：オレンジ */
+.hour-range.overwork::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: #e69a4a;
+    cursor: pointer;
+}
+
+/* Firefox */
+.hour-range.normal::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: #5d8fd8;
+    cursor: pointer;
+}
+
+.hour-range.overwork::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: #e69a4a;
+    cursor: pointer;
 }
 
 /* =========================

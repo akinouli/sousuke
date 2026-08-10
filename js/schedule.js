@@ -610,6 +610,9 @@ weekdays
             }
         );
 
+        // 初期状態の色を設定
+        updateHourRangeColor(number, range);
+
         weekdayList.appendChild(row);
     }
 );
