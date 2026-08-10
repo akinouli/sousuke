@@ -34,7 +34,6 @@ function showSection(nextIndex) {
 
     // 次のセクションを表示できる状態にする
     next.classList.remove("hidden-section");
-    next.classList.add("active-section");
 
     // 現在のセクションを退出
     current.classList.remove("active-section");
@@ -44,6 +43,14 @@ function showSection(nextIndex) {
 
     updateProgress();
     updateNextButton();
+
+    // ブラウザに一度「opacity: 0」の状態を描画させてから
+    // active-sectionを追加してフェードインさせる
+    requestAnimationFrame(
+        () => {
+            next.classList.add("active-section");
+        }
+    );
 
     // アニメーション終了後、前のセクションを完全に非表示
     setTimeout(
