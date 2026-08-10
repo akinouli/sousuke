@@ -44,6 +44,11 @@ function showSection(nextIndex) {
     updateProgress();
     updateNextButton();
 
+    // セクション表示時にスクロールリセット
+    document
+    .querySelector("main")
+    .scrollTo({top: 0,behavior: "instant"});
+
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
     requestAnimationFrame(
