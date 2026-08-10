@@ -318,12 +318,22 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
+/* 並び替え用ドラッグハンドル */
 .drag-handle {
     align-self: center;
     font-size: 22px;
     cursor: grab;
     user-select: none;
     touch-action: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* 並び替え中のカードが半透明化 */
+.process-row.dragging {
+    opacity: 0.6;
 }
 
 .process-main {

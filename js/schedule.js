@@ -547,36 +547,46 @@ document
 // 工程並び替え
 // ========================================
 let draggingItem = null;
+let placeholder = null;
 
-document
-.addEventListener("dragstart",
+// ＝を押したとき
+document.addEventListener("pointerdown",
     event => {
-        const row = event.target.closest(".process-row");
-        if (!row) return;
-        draggingItem = row;
-        row.classList.add("dragging");
+
+        const handle = event.target.closest(".drag-handle");
+
+        if (!handle) {
+            return;
+        }
+
+        draggingItem = handle.closest(".process-row");
+
+        if (!draggingItem) {
+            return;
+        }
+
+        // タッチ操作をブラウザに奪われないようにする
+        handle.setPointerCapture(event.pointerId);
+
+        draggingItem.classList.add("dragging");
     }
 );
 
-document
-.addEventListener("dragend",
+// ＝を押したまま動かしているとき
+document.addEventListener("pointermove",
     event => {
-        const row = event.target.closest(".process-row");
-        if (!row) return;
-        row.classList.remove("dragging");
-        draggingItem = null;
-    }
-);
 
-document
-.getElementById("process-list")
-.addEventListener("dragover",
-    event => {
-        event.preventDefault();
-        const target = event.target.closest(".process-row");
+        if (!draggingItem) {
+            return;
+        }
 
-        if (!target || target === draggingItem) {
-        return;
+        const target = document.elementFromPoint(event.clientX,event.clientY)?.closest(".process-row");
+
+        if (
+            !target ||
+            target === draggingItem
+        ) {
+            return;
         }
 
         const rect = target.getBoundingClientRect();
@@ -587,6 +597,21 @@ document
         } else {
             target.parentNode.insertBefore(draggingItem,target.nextSibling);
         }
+
+    }
+);
+
+// ＝を離したとき
+document.addEventListener("pointerup",
+    () => {
+
+        if (!draggingItem) {
+            return;
+        }
+
+        draggingItem.classList.remove("dragging");
+        
+        draggingItem = null;
     }
 );
 
