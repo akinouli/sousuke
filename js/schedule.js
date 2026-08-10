@@ -120,7 +120,7 @@ function validateSection(index) {
     }
 
 
-    // ② 作業工程＆時間
+    // ② 工程リスト
     if (index === 1) {
 
         // 後でここに工程のチェックを追加
@@ -128,7 +128,7 @@ function validateSection(index) {
     }
 
 
-    // ③ 作業可能時間
+    // ③ 活動時間
     if (index === 2) {
 
         // 後でここに作業時間のチェックを追加

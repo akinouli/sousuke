@@ -31,11 +31,11 @@
     <!-- スケジュール作成セクション ========================= -->
     <main class="schedule-main">
 
-        <!-- セクション① 作業ページ数 -->
+        <!-- セクション① ページ数 -->
         <section class="form-section active-section" data-section="0">
             <div class="section-content">
-                <h1>作業ページ数</h1>
-                <p>制作する本文のページ数を入力しよう</p>
+                <h1>ページ数</h1>
+                <p>本文の制作予定ページ数を入力しよう</p>
 
                 <div class="page-count-area">
                     <input type="number" id="page-count" min="1" inputmode="numeric"><span>ページ</span>
@@ -43,14 +43,13 @@
             </div>
         </section>
 
-        <!-- セクション② 作業工程＆予想時間 ========================= -->
+        <!-- セクション② 工程リスト ========================= -->
         <section class="form-section" data-section="1">
             <div class="section-content">
-                <h1>工程＆予想時間</h1>
+                <h1>工程リスト</h1>
                 <p>
-                    工程と作業にかかりそうな時間を入力しよう<br>
-                    同時に行う作業はひとつの工程にまとめよう<br>
-                    「＝」をつまんで並び替えできるよ
+                    作業工程と確保したい時間をそれぞれ入力していこう<br>
+                    「＝」をつまんで優先順に並び替えできるよ
                 </p>
 
                 <div id="process-list"></div>
@@ -77,7 +76,10 @@
         <section class="form-section" data-section="3">
             <div class="section-content">
                 <h1>休日</h1>
-                <p>作業できない日があれば選択しよう</p>
+                <p>
+                    作業できない日があれば選択しよう<br>
+                    作業期間内にある休日をスケジュール計算から除外するよ
+                </p>
 
                 <div class="calendar">
                     <div class="calendar-header">
