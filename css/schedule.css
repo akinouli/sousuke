@@ -91,7 +91,7 @@ body {
     top: 105px;
     left: 0;
     width: 100%;
-    padding: 20px;
+    padding: 20px 20px 150px;
     opacity: 0;
     transform: translateY(100px);
     pointer-events: none;
