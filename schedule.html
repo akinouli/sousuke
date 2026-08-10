@@ -43,62 +43,41 @@
             </div>
         </section>
 
-        <!-- セクション② 作業期間 -->
+        <!-- セクション② 作業工程＆予想時間 ========================= -->
         <section class="form-section" data-section="1">
             <div class="section-content">
-                <h1>作業期間</h1>
-                <p>期間を選択してね</p>
-                
-                <!-- カレンダー -->
-                <div class="calendar">
-                    <div class="calendar-header">
-                        <button type="button" id="period-prev">＜</button>
-                        <div id="period-month"></div>
-                        <button type="button" id="period-next">＞</button>
-                    </div>
-
-                    <div class="week-header">
-                        <span>日</span>
-                        <span>月</span>
-                        <span>火</span>
-                        <span>水</span>
-                        <span>木</span>
-                        <span>金</span>
-                        <span>土</span>
-                    </div>
-
-                    <div id="period-calendar" class="calendar-grid"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- セクション③ 作業工程 ========================= -->
-        <section class="form-section"data-section="2">
-            <div class="section-content">
-                <h1>作業工程＆時間</h1>
-                <p>工程と必要な作業時間を入力してね<br>まとめて行う作業はひとつの工程にまとめよう</p>
+                <h1>工程＆予想時間</h1>
+                <p>
+                    工程と作業にかかりそうな時間を入力しよう<br>
+                    同時に行う作業はひとつの工程にまとめよう<br>
+                    「＝」をつまんで並び替えできるよ
+                </p>
 
                 <div id="process-list"></div>
 
-                <button type="button" id="add-process"> ＋ 工程追加</button>
+                <button type="button" id="add-process">
+                    ＋ 工程追加
+                </button>
             </div>
         </section>
 
-        <!-- セクション④ 作業可能時間 ========================= -->
-        <section class="form-section" data-section="3">
+
+        <!-- セクション③ 活動時間 ========================= -->
+        <section class="form-section" data-section="2">
             <div class="section-content">
-                <h1>作業可能時間</h1>
-                <p>曜日ごとに作業できる時間を設定してね</p>
+                <h1>活動時間</h1>
+                <p>曜日ごとに作業できる時間を設定しよう</p>
 
                 <div id="weekday-list"></div>
             </div>
         </section>
 
-        <!-- セクション⑤ 休日 ========================= -->
-        <section class="form-section" data-section="4">
+
+        <!-- セクション④ 休日 ========================= -->
+        <section class="form-section" data-section="3">
             <div class="section-content">
                 <h1>休日</h1>
-                <p>作業できない日を選択してね</p>
+                <p>作業できない日があれば選択しよう</p>
 
                 <div class="calendar">
                     <div class="calendar-header">
@@ -118,6 +97,35 @@
                     </div>
 
                     <div id="holiday-calendar" class="calendar-grid"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- セクション⑤ 作業期間 -->
+        <section class="form-section" data-section="4">
+            <div class="section-content">
+                <h1>作業期間</h1>
+                <p>作業開始日と締切日を選択しよう</p>
+
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button type="button" id="period-prev">＜</button>
+                        <div id="period-month"></div>
+                        <button type="button" id="period-next">＞</button>
+                    </div>
+
+                    <div class="week-header">
+                        <span>日</span>
+                        <span>月</span>
+                        <span>火</span>
+                        <span>水</span>
+                        <span>木</span>
+                        <span>金</span>
+                        <span>土</span>
+                    </div>
+
+                    <div id="period-calendar" class="calendar-grid"></div>
                 </div>
             </div>
         </section>

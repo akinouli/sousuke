@@ -83,20 +83,47 @@ let deadlineDate = null;
 // ----------------------------------------
 
 function validateSection(index) {
+
     // ① ページ数
     if (index === 0) {
 
-        const pageCount = document.getElementById("page-count").value;
+        const pageCount =
+            document.getElementById("page-count").value;
 
         if (pageCount === "") {
             alert("ページ数を入力してください。");
             return false;
         }
-    
+
     }
 
-    // ② 作業期間
+
+    // ② 作業工程＆時間
     if (index === 1) {
+
+        // 後でここに工程のチェックを追加
+
+    }
+
+
+    // ③ 作業可能時間
+    if (index === 2) {
+
+        // 後でここに作業時間のチェックを追加
+
+    }
+
+
+    // ④ 休日
+    if (index === 3) {
+
+        // ここは必要になったらチェック
+
+    }
+
+
+    // ⑤ 作業期間
+    if (index === 4) {
 
         if (!startDate) {
             alert("作業開始日を選択してください。");
@@ -110,20 +137,6 @@ function validateSection(index) {
 
     }
 
-    // ③ 作業工程＆時間
-    if (index === 2) {
-        // 後でここに工程のチェックを追加
-    }
-
-    // ④ 作業可能時間
-    if (index === 3) {
-        // 後でここに作業時間のチェックを追加
-    }
-
-    // ⑤ 休日
-    if (index === 4) {
-        // ここは必要になったらチェック
-    }
 
     return true;
 }
