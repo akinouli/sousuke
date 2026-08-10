@@ -114,6 +114,10 @@ body {
     transform:translateY(-100px);
 }
 
+.form-section.hidden-section {
+    display: none;
+}
+
 /* =========================
    セクション内容
 ========================= */

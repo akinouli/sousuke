@@ -7,10 +7,20 @@ const createStatus = document.querySelector(".create-status");
 
 let currentSection = 0;
 
+// 初期状態では現在のセクション以外を非表示
+sections.forEach(
+    (section, index) => {
+        if (index !== currentSection) {
+            section.classList.add("hidden-section");
+        }
+    }
+);
+
 // ----------------------------------------
 // セクション表示
 // ----------------------------------------
 function showSection(nextIndex) {
+
     if (nextIndex < 0 || nextIndex >= sections.length) {
         return;
     }
@@ -22,22 +32,27 @@ function showSection(nextIndex) {
         return;
     }
 
+    // 次のセクションを表示できる状態にする
+    next.classList.remove("hidden-section");
+    next.classList.add("active-section");
+
     // 現在のセクションを退出
     current.classList.remove("active-section");
     current.classList.add("exit-section");
 
-    setTimeout(
-        () => {
-            current.classList.remove("exit-section");
-        }, 500
-    );
-
-    // 次のセクションを表示
-    next.classList.add("active-section");
     currentSection = nextIndex;
 
     updateProgress();
     updateNextButton();
+
+    // アニメーション終了後、前のセクションを完全に非表示
+    setTimeout(
+        () => {
+            current.classList.remove("exit-section");
+            current.classList.add("hidden-section");
+        },
+        500
+    );
 }
 
 // ----------------------------------------
