@@ -826,14 +826,27 @@ renderHolidayCalendar() {
 
     for (let i = 0; i < firstDay; i++) {
         const empty = document.createElement("div");
+        
         empty.className = "calendar-day empty";
         calendar.appendChild(empty);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement("div");
+
         cell.className = "calendar-day";
         cell.textContent = day;
+
+        const date = new Date(year, month, day);
+
+        if (date.getDay() === 0) {
+            cell.classList.add("sunday");
+        }
+
+        if (date.getDay() === 6) {
+            cell.classList.add("saturday");
+        }
+
         const key = `${year}-${month + 1}-${day}`;
         
         if (holidays.has(key)) {
