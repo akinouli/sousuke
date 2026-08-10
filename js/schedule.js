@@ -70,7 +70,6 @@ function updateProgress() {
         (item, index) => {
             /* ①～⑤ 現在表示中のセクションだけ ▶ にする */
             if (index < 5) {
-                item.textContent = index === currentSection ? "▶" : "▷";
                 item.classList.toggle("active",index === currentSection);
             }
         }
@@ -434,26 +433,40 @@ function createProcessRow(process) {
     row.innerHTML = `
         <span class="drag-handle">＝</span>
 
-        <input type="text" class="process-name" value="${process.name}" placeholder="工程名">
+        <div class="process-main">
+            <input type="text" class="process-name" value="${process.name}" placeholder="工程名">
 
-        <select class="process-unit">
-            <option value="total" ${process.unit === "total" ? "selected" : ""}>全体</option>
-            <option value="page"${process.unit === "page" ? "selected" : ""}>ページ毎</option>
-        </select>
+            <div class="process-settings">
 
-        <div class="time-input">
-            <input type="number" class="process-hours" min="0" value="${process.hours}" placeholder="">
-            <span>時間</span>
-            <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}" placeholder="">
-            <span>分</span>
+                <select class="process-unit">
+                    <option value="total" ${process.unit === "total" ? "selected" : ""}>全体</option>
+                    <option value="page" ${process.unit === "page" ? "selected" : ""}>ページ毎</option>
+                </select>
+
+                <div class="time-input">
+                    <input type="number" class="process-hours" min="0" value="${process.hours}">
+                    <span>時間</span>
+
+                    <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}">
+                    <span>分</span>
+                </div>
+
+                <button
+                    type="button"
+                    class="auto-adjust-btn ${process.autoAdjust ? "on" : "off"}"
+                    data-auto-adjust="${process.autoAdjust}"
+                >
+                    自動調整
+                    <span>${process.autoAdjust ? "ON" : "OFF"}</span>
+                </button>
+
+            </div>
+
         </div>
-
-        <button type="button" class="auto-adjust-btn ${process.autoAdjust ? "on" : "off"}" data-auto-adjust="${process.autoAdjust}">
-            自動調整<span>${process.autoAdjust ? "ON" : "OFF"}</span>
-        </button>
 
         <button type="button" class="delete-btn" aria-label="工程を削除">×</button>
     `;
+
     return row;
 }
 

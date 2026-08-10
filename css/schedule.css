@@ -65,6 +65,19 @@ body {
     transform: scale(1.15);
 }
 
+.progress-indicator span:not(.create-status)::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 10px solid #999;
+}
+
+.progress-indicator span.active::before {
+    border-left-color: #5d8fd8;
+}
 .progress-indicator span.active {
     font-weight: bold;
     cursor: default;
@@ -296,31 +309,40 @@ body {
 
 .process-row {
     display: grid;
-    grid-template-columns:30px minmax(100px, 1fr) 100px auto auto 40px;
+    grid-template-columns: 30px minmax(0, 1fr) 40px;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 12px;
     background: white;
     border-radius: 12px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.06);
-}
-
-.process-row.dragging {
-    opacity: 0.45;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .drag-handle {
+    align-self: center;
     font-size: 22px;
     cursor: grab;
     user-select: none;
+    touch-action: none;
+}
+
+.process-main {
+    min-width: 0;
 }
 
 .process-name {
     width: 100%;
 }
 
+.process-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
 .process-unit {
-    width: 100%;
+    width: 85px;
 }
 
 .time-input {
@@ -332,14 +354,16 @@ body {
 
 .process-hours,
 .process-minutes {
-    width: 50px;
+    width: 45px;
     text-align: right;
 }
 
+.auto-adjust-btn {
+    flex-shrink: 0;
+}
+
 .delete-btn {
-    border: none;
-    background: none;
-    cursor: pointer;
+    align-self: center;
 }
 
 #add-process {
@@ -487,25 +511,41 @@ body {
 ========================= */
 @media (max-width: 600px) {
     .process-row {
-        grid-template-columns:25px 1fr 40px;
+        grid-template-columns: 25px minmax(0, 1fr) 32px;
+        padding: 10px 8px;
+        gap: 6px;
+    }
+
+    .process-settings {
+        gap: 5px;
+        margin-top: 6px;
     }
 
     .process-unit {
-        grid-column: 2 / 3;
+        width: 70px;
     }
 
     .time-input {
-        grid-column: 2 / 3;
+        gap: 2px;
+    }
+
+    .process-hours,
+    .process-minutes {
+        width: 38px;
     }
 
     .auto-adjust-btn {
-        grid-column: 2 / 3;
-        justify-self: start;
+        padding: 6px 5px;
+        font-size: 10px;
+    }
+
+    .auto-adjust-btn span {
+        font-size: 11px;
     }
 
     .delete-btn {
-        grid-column: 3 / 4;
-        grid-row: 1 / 4;
+        width: 30px;
+        height: 30px;
     }
 
     .calendar-day {
