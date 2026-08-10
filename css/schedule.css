@@ -80,7 +80,6 @@ body {
 ========================= */
 .schedule-main {
     position: relative;
-    min-height: 100vh;
     padding-top: 105px;
 }
 
@@ -92,9 +91,9 @@ body {
     top: 105px;
     left: 0;
     width: 100%;
-    padding:20px 20px 110px;
+    padding: 20px;
     opacity: 0;
-    transform:translateY(100px);
+    transform: translateY(100px);
     pointer-events: none;
     transition:
         opacity 0.45s ease,
