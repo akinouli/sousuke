@@ -428,7 +428,6 @@ const defaultProcesses = [
 function createProcessRow(process) {
     const row = document.createElement("div");
     row.className = "process-row";
-    row.draggable = true;
 
     row.innerHTML = `
         <span class="drag-handle">＝</span>
@@ -548,70 +547,185 @@ document
 // ========================================
 let draggingItem = null;
 let placeholder = null;
+let dragPointerId = null;
 
 // ＝を押したとき
-document.addEventListener("pointerdown",
+document.addEventListener(
+    "pointerdown",
     event => {
 
-        const handle = event.target.closest(".drag-handle");
+        const handle =
+            event.target.closest(".drag-handle");
 
         if (!handle) {
             return;
         }
 
-        draggingItem = handle.closest(".process-row");
+        draggingItem =
+            handle.closest(".process-row");
 
         if (!draggingItem) {
             return;
         }
 
-        // タッチ操作をブラウザに奪われないようにする
-        handle.setPointerCapture(event.pointerId);
+        dragPointerId = event.pointerId;
 
+        // ドラッグ中の目印
         draggingItem.classList.add("dragging");
+
+        // 元の位置にプレースホルダーを作る
+        placeholder =
+            document.createElement("div");
+
+        placeholder.className =
+            "process-placeholder";
+
+        placeholder.style.height =
+            `${draggingItem.offsetHeight}px`;
+
+        draggingItem.parentNode.insertBefore(
+            placeholder,
+            draggingItem
+        );
+
+        // ドラッグ対象を少し浮かせる
+        draggingItem.style.position = "fixed";
+        draggingItem.style.width =
+            `${draggingItem.offsetWidth}px`;
+        draggingItem.style.zIndex = "1000";
+        draggingItem.style.pointerEvents = "none";
+
+        // タッチ操作をブラウザに奪われないようにする
+        handle.setPointerCapture(
+            event.pointerId
+        );
     }
 );
 
+
 // ＝を押したまま動かしているとき
-document.addEventListener("pointermove",
+document.addEventListener(
+    "pointermove",
     event => {
 
-        if (!draggingItem) {
-            return;
-        }
-
-        const target = document.elementFromPoint(event.clientX,event.clientY)?.closest(".process-row");
-
         if (
-            !target ||
-            target === draggingItem
+            !draggingItem ||
+            event.pointerId !== dragPointerId
         ) {
             return;
         }
 
-        const rect = target.getBoundingClientRect();
-        const middle = rect.top + rect.height / 2;
+        // ドラッグ中のカードを指・マウスに追従させる
+        draggingItem.style.top =
+            `${event.clientY - draggingItem.offsetHeight / 2}px`;
 
-        if (event.clientY < middle) {
-            target.parentNode.insertBefore(draggingItem,target);
-        } else {
-            target.parentNode.insertBefore(draggingItem,target.nextSibling);
+        draggingItem.style.left =
+            `${event.clientX - draggingItem.offsetWidth / 2}px`;
+
+        const rows =
+            [...document.querySelectorAll(".process-row")]
+            .filter(row => row !== draggingItem);
+
+        let target = null;
+
+        for (const row of rows) {
+
+            const rect =
+                row.getBoundingClientRect();
+
+            const middle =
+                rect.top + rect.height / 2;
+
+            if (event.clientY < middle) {
+                target = row;
+                break;
+            }
         }
 
+        if (target) {
+
+            target.parentNode.insertBefore(
+                placeholder,
+                target
+            );
+
+        } else {
+
+            processList.appendChild(
+                placeholder
+            );
+        }
     }
 );
 
-// ＝を離したとき
-document.addEventListener("pointerup",
+
+// 指・マウスを離したとき
+document.addEventListener(
+    "pointerup",
+    event => {
+
+        if (
+            !draggingItem ||
+            event.pointerId !== dragPointerId
+        ) {
+            return;
+        }
+
+        // プレースホルダーの位置に戻す
+        placeholder.parentNode.insertBefore(
+            draggingItem,
+            placeholder
+        );
+
+        // ドラッグ用スタイルを解除
+        draggingItem.style.position = "";
+        draggingItem.style.width = "";
+        draggingItem.style.zIndex = "";
+        draggingItem.style.pointerEvents = "";
+
+        draggingItem.classList.remove(
+            "dragging"
+        );
+
+        placeholder.remove();
+
+        draggingItem = null;
+        placeholder = null;
+        dragPointerId = null;
+    }
+);
+
+
+// 念のため、操作がキャンセルされた場合も解除
+document.addEventListener(
+    "pointercancel",
     () => {
 
         if (!draggingItem) {
             return;
         }
 
-        draggingItem.classList.remove("dragging");
-        
+        if (placeholder) {
+            placeholder.parentNode.insertBefore(
+                draggingItem,
+                placeholder
+            );
+
+            placeholder.remove();
+        }
+
+        draggingItem.style.position = "";
+        draggingItem.style.width = "";
+        draggingItem.style.zIndex = "";
+        draggingItem.style.pointerEvents = "";
+
+        draggingItem.classList.remove(
+            "dragging"
+        );
+
         draggingItem = null;
+        placeholder = null;
+        dragPointerId = null;
     }
 );
 
