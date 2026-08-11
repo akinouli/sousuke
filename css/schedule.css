@@ -261,12 +261,12 @@ body {
 }
 
 .calendar-day.period {
-    background: #e8f0ff;
+    background: #e4f2e5;
 }
 
 .calendar-day.selected-start,
 .calendar-day.selected-end {
-    background: #d5e3ff;
+    background: #cfe6d1;
     font-weight: bold;
 }
 
