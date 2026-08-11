@@ -275,10 +275,12 @@ body {
     color: #777;
 }
 
+/* 日曜日カラー */
 .calendar-day.sunday .day-number {
     color: #d98f8f;
 }
 
+/* 土曜日カラー */
 .calendar-day.saturday .day-number {
     color: #7f9fc7;
 }
@@ -295,6 +297,7 @@ body {
     line-height: 1.2;
 }
 
+/* カレンダーアイコン-エリア設定 */
 .day-icon {
     display: flex;
     justify-content: center;
@@ -303,6 +306,7 @@ body {
     height: 60px;
 }
 
+/* カレンダーアイコン */
 .day-icon img {
     height: 60px;
     width: auto;
@@ -601,16 +605,16 @@ body {
     }
 
     .calendar-day {
-        min-height: 60px;
+        min-height: 70px;
         padding-top: 7px;
     }
 
     .day-icon {
-        height: 22px;
+        height: 35px;
     }
 
     .day-icon img {
-        height: 22px;
+        height: 35px;
     }
 
     .period-label {
