@@ -238,7 +238,8 @@ body {
 
 .calendar-day {
     position: relative;
-    min-height: 65px;
+    min-height: 80px;
+    box-sizing: border-box;
     border: 1px solid #eee;
     background: white;
     cursor: pointer;
@@ -290,16 +291,20 @@ body {
     color: #7f9fc7;
 }
 
+.day-number {
+    line-height: 1.2;
+}
+
 .day-icon {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 4px;
-    height: 24px;
+    height: 60px;
 }
 
 .day-icon img {
-    height: 24px;
+    height: 60px;
     width: auto;
     object-fit: contain;
 }
@@ -598,6 +603,14 @@ body {
     .calendar-day {
         min-height: 60px;
         padding-top: 7px;
+    }
+
+    .day-icon {
+        height: 22px;
+    }
+
+    .day-icon img {
+        height: 22px;
     }
 
     .period-label {
