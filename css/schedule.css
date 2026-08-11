@@ -274,11 +274,19 @@ body {
     color: #777;
 }
 
-.calendar-day.sunday {
+.calendar-day.sunday > div {
     color: #d98f8f;
 }
 
-.calendar-day.saturday {
+.calendar-day.saturday > div {
+    color: #7f9fc7;
+}
+
+#holiday-calendar .calendar-day.sunday {
+    color: #d98f8f;
+}
+
+#holiday-calendar .calendar-day.saturday {
     color: #7f9fc7;
 }
 
