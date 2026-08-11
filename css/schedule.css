@@ -274,19 +274,11 @@ body {
     color: #777;
 }
 
-.calendar-day.sunday > div {
+.calendar-day.sunday .day-number {
     color: #d98f8f;
 }
 
-.calendar-day.saturday > div {
-    color: #7f9fc7;
-}
-
-#holiday-calendar .calendar-day.sunday {
-    color: #d98f8f;
-}
-
-#holiday-calendar .calendar-day.saturday {
+.calendar-day.saturday .day-number {
     color: #7f9fc7;
 }
 
@@ -296,6 +288,20 @@ body {
 
 .week-header span:last-child {
     color: #7f9fc7;
+}
+
+.day-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+    height: 24px;
+}
+
+.day-icon img {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* =========================

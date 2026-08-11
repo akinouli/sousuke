@@ -213,7 +213,7 @@ updateNextButton();
 
 
 // ========================================
-// 期間カレンダー
+// 作業期間カレンダー
 // ========================================
 let periodDate = new Date();
 
@@ -250,7 +250,7 @@ function renderPeriodCalendar() {
 
         // 日付表示
         const dateNumber = document.createElement("div");
-
+        dateNumber.className = "day-number";
         dateNumber.textContent = day;
 
         if (date.getDay() === 0) {
@@ -263,46 +263,42 @@ function renderPeriodCalendar() {
 
         cell.appendChild(dateNumber);
 
-        // -----------------------------
+        // アイコン表示エリア
+        const dayIcon = document.createElement("div");
+        dayIcon.className = "day-icon";
+
+        cell.appendChild(dayIcon);
+
         // 作業開始日
-        // -----------------------------
         if (startDate && isSameDate(date,startDate)) {
             cell.classList.add("selected-start");
 
-            const label = document.createElement("span");
+            const icon = document.createElement("img");
 
-            label.className = "period-label start-label";
+            icon.src = "icon/cal1_start.png";
+            icon.alt = "作業開始日";
 
-            label.textContent = "作業開始";
-
-            cell.appendChild(label);
+            dayIcon.appendChild(icon);
         }
 
-        // -----------------------------
         // 締切日
-        // -----------------------------
         if (deadlineDate && isSameDate(date,deadlineDate)) {
             cell.classList.add("selected-end");
 
-            const label = document.createElement("span");
+            const icon = document.createElement("img");
 
-            label.className = "period-label end-label";
+            icon.src = "icon/cal3_deadline.png";
+            icon.alt = "締切日";
 
-            label.textContent = "締切日";
-
-            cell.appendChild(label);
+            dayIcon.appendChild(icon);
         }
 
-        // -----------------------------
         // 期間内
-        // -----------------------------
         if (startDate && deadlineDate && date > startDate && date < deadlineDate) {
             cell.classList.add("period");
         }
 
-        // -----------------------------
         // 日付クリック
-        // -----------------------------
         cell.addEventListener("click",
             () => {
                 selectPeriodDate(date);
@@ -824,20 +820,25 @@ renderHolidayCalendar() {
     const firstDay = new Date(year,month,1).getDay();
     const daysInMonth = new Date(year,month + 1,0).getDate();
 
+    // 月初までの空白
     for (let i = 0; i < firstDay; i++) {
         const empty = document.createElement("div");
-        
+
         empty.className = "calendar-day empty";
         calendar.appendChild(empty);
     }
 
+    // 日付
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement("div");
-
         cell.className = "calendar-day";
-        cell.textContent = day;
 
         const date = new Date(year, month, day);
+
+        // 日付表示
+        const dateNumber = document.createElement("div");
+        dateNumber.className = "day-number";
+        dateNumber.textContent = day;
 
         if (date.getDay() === 0) {
             cell.classList.add("sunday");
@@ -847,12 +848,29 @@ renderHolidayCalendar() {
             cell.classList.add("saturday");
         }
 
+        cell.appendChild(dateNumber);
+
+        // アイコン表示エリア
+        const dayIcon = document.createElement("div");
+        dayIcon.className = "day-icon";
+
+        cell.appendChild(dayIcon);
+
         const key = `${year}-${month + 1}-${day}`;
         
+        // 休日判定
         if (holidays.has(key)) {
             cell.classList.add("holiday");
-        }
 
+            const icon = document.createElement("img");
+
+            icon.src = "icon/cal4_holiday.png";
+            icon.alt = "休日";
+
+            dayIcon.appendChild(icon);
+        }
+        
+        // 日付クリック
         cell.addEventListener("click",
             () => {
                 if (holidays.has(key)) {
