@@ -1,6 +1,4 @@
-/* =========================
-   基本
-========================= */
+/* ========================= 基本 ========================= */
 * {
     box-sizing: border-box;
 }
@@ -18,9 +16,7 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================
-   ヘッダー
-========================= */
+/* ========================= ヘッダー ========================= */
 .schedule-header {
     position: fixed;
     top: 0;
@@ -89,17 +85,13 @@ body {
     opacity: 0.6;
 }
 
-/* =========================
-   メイン
-========================= */
+/* ========================= メイン ========================= */
 .schedule-main {
     position: relative;
     padding-top: 105px;
 }
 
-/* =========================
-   セクション
-========================= */
+/* ========================= セクション ========================= */
 .form-section {
     position: absolute;
     top: 105px;
@@ -132,9 +124,7 @@ body {
     display: none;
 }
 
-/* =========================
-   セクション内容
-========================= */
+/* ========================= セクション内容 ========================= */
 .section-content {
     width: 100%;
     max-width: 900px;
@@ -151,26 +141,7 @@ body {
     color: #666;
 }
 
-/* =========================
-   ページ数
-========================= */
-.page-count-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 60px;
-}
-
-#page-count {
-    width: 150px;
-    font-size: 28px;
-    text-align: center;
-}
-
-/* =========================
-   次へボタン
-========================= */
+/* ========================= ボタン【次へ】 ========================= */
 .next-button {
     position: fixed;
     left: 50%;
@@ -197,9 +168,22 @@ body {
     margin-top: 5px;
 }
 
-/* =========================
-   カレンダー
-========================= */
+/* ========================= ページ数 ========================= */
+.page-count-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 60px;
+}
+
+#page-count {
+    width: 150px;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* ========================= カレンダー ========================= */
 .calendar {
     width: 100%;
     max-width: 700px;
@@ -315,9 +299,7 @@ body {
     object-fit: contain;
 }
 
-/* =========================
-   作業期間ラベル
-========================= */
+/* ========================= 作業期間ラベル ========================= */
 .calendar-day {
     position: relative;
 }
@@ -338,9 +320,7 @@ body {
     font-weight: bold;
 }
 
-/* =========================
-   行程リスト
-========================= */
+/* ========================= 行程リスト ========================= */
 #process-list {
     display: flex;
     flex-direction: column;
@@ -349,6 +329,7 @@ body {
 }
 
 .process-row {
+    position: relative;
     display: grid;
     grid-template-columns: 30px minmax(0, 1fr) 40px;
     align-items: center;
@@ -424,20 +405,118 @@ body {
     align-self: center;
 }
 
-#add-process {
-    margin-top: 15px;
-    padding: 10px 20px;
+/* ========================= 工程フロー ========================= */
+#process-list,
+#post-process-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-/* 作品完成後の作業 ================================================== */
+/* 工程カード同士の間に▼ */
+#process-list .process-row + .process-row,
+#post-process-list .process-row + .process-row {
+    margin-top: 32px;
+}
+
+#process-list .process-row + .process-row::before,
+#post-process-list .process-row + .process-row::before {
+    content: "";
+
+    position: absolute;
+    top: -22px;
+    left: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #aaa;
+
+    transform: translateX(-50%);
+}
+
+/* ========================= 工程追加 → 作品完成後 ========================= */
+
+.flow-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 35px;
+}
+
+.flow-arrow::before {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #aaa;
+}
+
+/* ========================= 工程追加ボタン ========================= */
+#add-process,
+#add-post-process {
+    display: block;
+    width: fit-content;
+    min-width: 0;
+    margin-top: 15px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+
+    background: #78a9a0;
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+/* 行程カードの左端に揃える */
+#add-process,
+#add-post-process {
+    margin-left: 0;
+}
+
+/* 押したときにぷにゅっ */
+#add-process:active,
+#add-post-process:active {
+    transform: scale(0.94);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* ========================= 作品完成後の作業（案内カード） ========================= */
 .post-work-option {
-    margin-top: 35px;
-    padding-top: 25px;
-    border-top: 1px solid #eee;
+    width: fit-content;
+    max-width: 100%;
+
+    margin: 0 auto;
+    padding: 14px 18px;
+
+    background: #fff;
+    border-radius: 16px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .post-work-option p {
-    margin-bottom: 15px;
+    margin: 0 0 12px;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .post-work-buttons {
@@ -489,9 +568,7 @@ body {
     padding: 10px 20px;
 }
 
-/* =========================
-   工程削除ボタン
-========================= */
+/* ========================= 工程削除ボタン ========================= */
 .delete-btn {
     width: 32px;
     height: 32px;
@@ -518,9 +595,7 @@ body {
     transform: scale(0.9);
 }
 
-/* =========================
-   自動調整ボタン
-========================= */
+/* ========================= 自動調整ボタン ========================= */
 .auto-adjust-btn {
     border: none;
     border-radius: 8px;
@@ -558,9 +633,7 @@ body {
 }
 
 
-/* =========================
-   曜日
-========================= */
+/* ========================= 曜日 ========================= */
 .day-row {
     display: grid;
     grid-template-columns:80px 70px 50px 1fr;
@@ -624,9 +697,7 @@ body {
     cursor: pointer;
 }
 
-/* =========================
-   スマホ
-========================= */
+/* ========================= スマホ用 ========================= */
 @media (max-width: 600px) {
     .process-row {
         grid-template-columns: 25px minmax(0, 1fr) 32px;
