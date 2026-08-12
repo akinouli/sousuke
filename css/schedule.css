@@ -78,6 +78,7 @@ body {
 .progress-indicator span.active::before {
     border-left-color: #5d8fd8;
 }
+
 .progress-indicator span.active {
     font-weight: bold;
     cursor: default;
@@ -236,6 +237,7 @@ body {
     font-size: 13px;
 }
 
+/* 日付エリア */
 .calendar-day {
     position: relative;
     min-height: 80px;
@@ -337,7 +339,7 @@ body {
 }
 
 /* =========================
-   工程
+   行程リスト
 ========================= */
 #process-list {
     display: flex;
@@ -423,6 +425,66 @@ body {
 }
 
 #add-process {
+    margin-top: 15px;
+    padding: 10px 20px;
+}
+
+/* 作品完成後の作業 ================================================== */
+.post-work-option {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+.post-work-option p {
+    margin-bottom: 15px;
+}
+
+.post-work-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.post-work-btn {
+    min-width: 90px;
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #eeeeee;
+    color: #666666;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.post-work-btn.selected {
+    background: #5d8fd8;
+    color: white;
+}
+
+.post-work-btn:active {
+    transform: scale(0.95);
+}
+
+#post-work-area {
+    margin-top: 25px;
+}
+
+#post-process-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#add-post-process {
     margin-top: 15px;
     padding: 10px 20px;
 }

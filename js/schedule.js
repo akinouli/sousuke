@@ -100,6 +100,7 @@ progressItems
 // 作業期間
 // ----------------------------------------
 let startDate = null;
+let completionDate = null;
 let deadlineDate = null;
 
 // ----------------------------------------
@@ -287,7 +288,7 @@ function renderPeriodCalendar() {
 
             const icon = document.createElement("img");
 
-            icon.src = "icon/cal3_deadline.png";
+            icon.src = "icon/cal2_deadline.png";
             icon.alt = "締切日";
 
             dayIcon.appendChild(icon);
@@ -369,7 +370,6 @@ renderPeriodCalendar();
 // ========================================
 // 初期工程
 // ========================================
-
 const defaultProcesses = [
     {
         name: "プロット",
@@ -427,6 +427,55 @@ const defaultProcesses = [
         autoAdjust: false
     }
 ];
+
+// ========================================
+// 初期工程 - 完成後作業
+// ========================================
+const defaultPostProcesses = [
+    {
+        name: "入稿チェック",
+        unit: "total",
+        hours: 2,
+        minutes: 0,
+        autoAdjust: false
+    },
+
+    {
+        name: "入稿手続き",
+        unit: "total",
+        hours: 1,
+        minutes: 0,
+        autoAdjust: false
+    }
+];
+
+
+// ========================================
+// 作品完成後の作業 する or しない
+// ========================================
+const postWorkYes = document.getElementById("post-work-yes");
+const postWorkNo = document.getElementById("post-work-no");
+const postWorkArea = document.getElementById("post-work-area");
+
+function updatePostWorkDisplay(shouldSchedule) {
+    postWorkYes.classList.toggle("selected",shouldSchedule);
+    postWorkNo.classList.toggle("selected",!shouldSchedule);
+    postWorkArea.hidden = !shouldSchedule;
+}
+
+postWorkYes.addEventListener("click",
+    () => {
+        updatePostWorkDisplay(true);
+    }
+);
+
+postWorkNo.addEventListener("click",
+    () => {
+        updatePostWorkDisplay(false);
+    }
+);
+
+updatePostWorkDisplay(true);
 
 
 // ========================================
@@ -489,6 +538,30 @@ document
         };
 
         processList.appendChild(
+            createProcessRow(newProcess)
+        );
+    }
+);
+
+
+// ========================================
+// 工程追加 - 完成後作業
+// ========================================
+document
+.getElementById("add-post-process")
+.addEventListener(
+    "click",
+    () => {
+
+        const newProcess = {
+            name: "",
+            unit: "page",
+            hours: 0,
+            minutes: 0,
+            autoAdjust: false
+        };
+
+        postProcessList.appendChild(
             createProcessRow(newProcess)
         );
     }
