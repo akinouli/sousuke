@@ -288,7 +288,7 @@ function renderPeriodCalendar() {
 
             const icon = document.createElement("img");
 
-            icon.src = "icon/cal2_deadline.png";
+            icon.src = "icon/cal3_deadline.png";
             icon.alt = "締切日";
 
             dayIcon.appendChild(icon);
@@ -537,9 +537,7 @@ document
             autoAdjust: false
         };
 
-        processList.appendChild(
-            createProcessRow(newProcess)
-        );
+        processList.appendChild(createProcessRow(newProcess));
     }
 );
 
@@ -549,10 +547,8 @@ document
 // ========================================
 document
 .getElementById("add-post-process")
-.addEventListener(
-    "click",
+.addEventListener("click",
     () => {
-
         const newProcess = {
             name: "",
             unit: "page",
@@ -561,9 +557,7 @@ document
             autoAdjust: false
         };
 
-        postProcessList.appendChild(
-            createProcessRow(newProcess)
-        );
+        postProcessList.appendChild(createProcessRow(newProcess));
     }
 );
 
@@ -573,12 +567,19 @@ document
 // ========================================
 
 const processList = document.getElementById("process-list");
+const postProcessList = document.getElementById("post-process-list");
 
+// 本編工程
 defaultProcesses.forEach(
     process => {
-        processList.appendChild(
-            createProcessRow(process)
-        );
+        processList.appendChild(createProcessRow(process));
+    }
+);
+
+// 作品完成後の工程
+defaultPostProcesses.forEach(
+    process => {
+        postProcessList.appendChild(createProcessRow(process));
     }
 );
 
