@@ -671,6 +671,7 @@ document
 let draggingItem = null;
 let dragPointerId = null;
 let draggingList = null;
+let lastPointerY = 0;
 
 
 // ----------------------------------------
@@ -701,6 +702,9 @@ document.addEventListener(
         dragPointerId =
             event.pointerId;
 
+        lastPointerY =
+            event.clientY;
+
         draggingItem
             .querySelector(".process-row")
             .classList.add("dragging");
@@ -727,52 +731,36 @@ document.addEventListener(
             return;
         }
 
-        const items = [
-            ...draggingList
-                .querySelectorAll(".process-item")
-        ].filter(
-            item =>
-                item !== draggingItem
-        );
-
-
-        // ----------------------------------------
-        // 掴んでいるカードの中心
-        // ----------------------------------------
-
-        const draggingRect =
-            draggingItem.getBoundingClientRect();
-
-        const draggingCenter =
-            draggingRect.top +
-            draggingRect.height / 2;
+        const currentY =
+            event.clientY;
 
 
         // ----------------------------------------
         // 上方向へ移動
         // ----------------------------------------
 
-        for (const item of items) {
+        if (currentY < lastPointerY) {
 
-            const rect =
-                item.getBoundingClientRect();
+            const previousItem =
+                draggingItem.previousElementSibling;
 
-            const itemCenter =
-                rect.top +
-                rect.height / 2;
+            if (previousItem) {
+
+                const rect =
+                    previousItem.getBoundingClientRect();
+
+                const middle =
+                    rect.top +
+                    rect.height / 2;
 
 
-            if (
-                draggingCenter < itemCenter &&
-                draggingItem.nextElementSibling === item
-            ) {
+                if (currentY < middle) {
 
-                draggingList.insertBefore(
-                    draggingItem,
-                    item
-                );
-
-                return;
+                    draggingList.insertBefore(
+                        draggingItem,
+                        previousItem
+                    );
+                }
             }
         }
 
@@ -781,29 +769,35 @@ document.addEventListener(
         // 下方向へ移動
         // ----------------------------------------
 
-        for (const item of items) {
+        if (currentY > lastPointerY) {
 
-            const rect =
-                item.getBoundingClientRect();
+            const nextItem =
+                draggingItem.nextElementSibling;
 
-            const itemCenter =
-                rect.top +
-                rect.height / 2;
+            if (nextItem) {
+
+                const rect =
+                    nextItem.getBoundingClientRect();
+
+                const middle =
+                    rect.top +
+                    rect.height / 2;
 
 
-            if (
-                draggingCenter > itemCenter &&
-                draggingItem.previousElementSibling === item
-            ) {
+                if (currentY > middle) {
 
-                draggingList.insertBefore(
-                    item,
-                    draggingItem
-                );
-
-                return;
+                    draggingList.insertBefore(
+                        nextItem,
+                        draggingItem
+                    );
+                }
             }
         }
+
+
+        // 今回の位置を記録
+        lastPointerY =
+            currentY;
     }
 );
 
@@ -830,6 +824,7 @@ document.addEventListener(
         draggingItem = null;
         dragPointerId = null;
         draggingList = null;
+        lastPointerY = 0;
     }
 );
 
@@ -856,6 +851,7 @@ document.addEventListener(
         draggingItem = null;
         dragPointerId = null;
         draggingList = null;
+        lastPointerY = 0;
     }
 );
 
