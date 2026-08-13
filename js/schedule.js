@@ -668,55 +668,50 @@ document
 // 工程カードの移動アニメーション
 // ========================================
 
-function animateProcessMove(list, movedItem) {
+function recordProcessPositions(list) {
 
-    const items = [
-        ...list.querySelectorAll(".process-item")
-    ];
+    const positions = new Map();
 
-    // 移動後の位置を取得
-    const newPositions = new Map();
+    list.querySelectorAll(".process-item").forEach(item => {
 
-    items.forEach(item => {
-        newPositions.set(
+        positions.set(
             item,
-            item.getBoundingClientRect()
+            item.getBoundingClientRect().top
         );
     });
 
-    // 少しだけ時間を置いて、
-    // ブラウザに新しい位置を反映させる
-    requestAnimationFrame(() => {
+    return positions;
+}
 
-        items.forEach(item => {
 
-            const oldRect =
-                item.dataset.oldTop
-                    ? Number(item.dataset.oldTop)
-                    : null;
+function animateProcessMove(list, positions) {
 
-            const newRect =
-                newPositions.get(item);
+    list.querySelectorAll(".process-item").forEach(item => {
 
-            if (oldRect === null) {
-                return;
-            }
+        const oldTop =
+            positions.get(item);
 
-            const difference =
-                oldRect - newRect.top;
+        if (oldTop === undefined) {
+            return;
+        }
 
-            if (difference === 0) {
-                return;
-            }
+        const newTop =
+            item.getBoundingClientRect().top;
+
+        const difference =
+            oldTop - newTop;
+
+        if (difference === 0) {
+            return;
+        }
+
+        item.style.transform =
+            `translateY(${difference}px)`;
+
+        requestAnimationFrame(() => {
 
             item.style.transform =
-                `translateY(${difference}px)`;
-
-            requestAnimationFrame(() => {
-
-                item.style.transform =
-                    "translateY(0)";
-            });
+                "translateY(0)";
         });
     });
 }
@@ -731,17 +726,17 @@ let dragPointerId = null;
 let draggingList = null;
 let lastPointerY = 0;
 
-// 自動スクロール用
+
+// ========================================
+// 自動スクロール
+// ========================================
+
 const topScrollZone = 160;
 const bottomScrollZone = 180;
 const maxScrollSpeed = 10;
 
-
-// ----------------------------------------
-// 自動スクロール開始
-// ----------------------------------------
-
 let autoScrollFrame = null;
+
 
 function startAutoScroll() {
 
@@ -756,15 +751,8 @@ function startAutoScroll() {
             return;
         }
 
-        const topScrollZone = 160;
-        const bottomScrollZone = 180;
-        const maxScrollSpeed = 10;
-
-        const viewportHeight = window.innerHeight;
-
-        // ----------------------------------------
-        // 上端
-        // ----------------------------------------
+        const viewportHeight =
+            window.innerHeight;
 
         if (lastPointerY < topScrollZone) {
 
@@ -786,13 +774,8 @@ function startAutoScroll() {
                 0,
                 -scrollSpeed
             );
-        }
 
-        // ----------------------------------------
-        // 下端
-        // ----------------------------------------
-
-        else if (
+        } else if (
             lastPointerY >
             viewportHeight - bottomScrollZone
         ) {
@@ -818,7 +801,6 @@ function startAutoScroll() {
             );
         }
 
-        // 次のフレーム
         autoScrollFrame =
             requestAnimationFrame(
                 scrollLoop
@@ -832,10 +814,6 @@ function startAutoScroll() {
 }
 
 
-// ----------------------------------------
-// 自動スクロール停止
-// ----------------------------------------
-
 function stopAutoScroll() {
 
     if (autoScrollFrame) {
@@ -846,14 +824,12 @@ function stopAutoScroll() {
 
         autoScrollFrame = null;
     }
-
-    autoScrollDirection = 0;
 }
 
 
-// ----------------------------------------
+// ========================================
 // ドラッグ開始
-// ----------------------------------------
+// ========================================
 
 document.addEventListener(
     "pointerdown",
@@ -890,15 +866,14 @@ document.addEventListener(
             event.pointerId
         );
 
-        // 自動スクロール開始
         startAutoScroll();
     }
 );
 
 
-// ----------------------------------------
+// ========================================
 // ドラッグ中
-// ----------------------------------------
+// ========================================
 
 document.addEventListener(
     "pointermove",
@@ -915,9 +890,9 @@ document.addEventListener(
             event.clientY;
 
 
-        // ----------------------------------------
-        // 上方向へ移動
-        // ----------------------------------------
+        // -------------------------------
+        // 上方向
+        // -------------------------------
 
         if (currentY < lastPointerY) {
 
@@ -935,18 +910,28 @@ document.addEventListener(
 
                 if (currentY < middle) {
 
+                    const positions =
+                        recordProcessPositions(
+                            draggingList
+                        );
+
                     draggingList.insertBefore(
                         draggingItem,
                         previousItem
+                    );
+
+                    animateProcessMove(
+                        draggingList,
+                        positions
                     );
                 }
             }
         }
 
 
-        // ----------------------------------------
-        // 下方向へ移動
-        // ----------------------------------------
+        // -------------------------------
+        // 下方向
+        // -------------------------------
 
         if (currentY > lastPointerY) {
 
@@ -964,25 +949,33 @@ document.addEventListener(
 
                 if (currentY > middle) {
 
+                    const positions =
+                        recordProcessPositions(
+                            draggingList
+                        );
+
                     draggingList.insertBefore(
                         nextItem,
                         draggingItem
+                    );
+
+                    animateProcessMove(
+                        draggingList,
+                        positions
                     );
                 }
             }
         }
 
-
-        // 現在の指・マウス位置を記録
         lastPointerY =
             currentY;
     }
 );
 
 
-// ----------------------------------------
+// ========================================
 // ドラッグ終了
-// ----------------------------------------
+// ========================================
 
 document.addEventListener(
     "pointerup",
@@ -1009,9 +1002,9 @@ document.addEventListener(
 );
 
 
-// ----------------------------------------
+// ========================================
 // 操作キャンセル
-// ----------------------------------------
+// ========================================
 
 document.addEventListener(
     "pointercancel",
