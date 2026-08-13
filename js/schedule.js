@@ -612,14 +612,14 @@ document
 const processList = document.getElementById("process-list");
 const postProcessList = document.getElementById("post-process-list");
 
-// 本編工程
+// 作品制作
 defaultProcesses.forEach(
     process => {
         processList.appendChild(createProcessItem(process));
     }
 );
 
-// 作品完成後の工程
+// 作品完成後
 defaultPostProcesses.forEach(
     process => {
         postProcessList.appendChild(createProcessItem(process));
@@ -676,6 +676,8 @@ let draggingList = null;
 // ドラッグ開始位置のズレ
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let dragStartScrollY = 0;
+let dragStartScrollX = 0;
 
 
 // ----------------------------------------
@@ -709,6 +711,9 @@ document.addEventListener(
         // ----------------------------------------
 
         const rect = draggingItem.getBoundingClientRect();
+
+        dragStartScrollY = window.scrollY;
+        dragStartScrollX = window.scrollX;
 
         dragOffsetX = event.clientX - rect.left;
         dragOffsetY = event.clientY - rect.top;
@@ -758,15 +763,27 @@ document.addEventListener(
 
 
         // 最初の位置を維持
-        draggingItem.style.left =
-            `${event.clientX - dragOffsetX}px`;
+        const scrollDiffY =
+            window.scrollY - dragStartScrollY;
+
+        const scrollDiffX =
+            window.scrollX - dragStartScrollX;
 
         draggingItem.style.top =
-            `${event.clientY - dragOffsetY}px`;
+            `${event.clientY - dragOffsetY + scrollDiffY}px`;
+
+        draggingItem.style.left =
+            `${event.clientX - dragOffsetX + scrollDiffX}px`;
 
 
         // タッチ操作をブラウザに奪われない
         handle.setPointerCapture(event.pointerId);
+
+        // ----------------------------------------
+        // リセット
+        // ----------------------------------------
+        dragStartScrollY = 0;
+        dragStartScrollX = 0;
     }
 );
 
@@ -938,6 +955,9 @@ document.addEventListener(
 
         dragOffsetX = 0;
         dragOffsetY = 0;
+
+        dragStartScrollY = 0;
+        dragStartScrollX = 0;
     }
 );
 
