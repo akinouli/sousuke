@@ -673,6 +673,96 @@ let dragPointerId = null;
 let draggingList = null;
 let lastPointerY = 0;
 
+// 自動スクロール用
+let autoScrollFrame = null;
+let autoScrollDirection = 0;
+
+
+// ----------------------------------------
+// 自動スクロール開始
+// ----------------------------------------
+
+function startAutoScroll() {
+
+    if (autoScrollFrame) {
+        return;
+    }
+
+    function scrollLoop() {
+
+        if (!draggingItem) {
+            autoScrollFrame = null;
+            return;
+        }
+
+        const scrollZone = 80;
+        const scrollSpeed = 8;
+
+        const viewportHeight =
+            window.innerHeight;
+
+        // 画面上端付近
+        if (lastPointerY < scrollZone) {
+
+            autoScrollDirection = -1;
+
+        }
+
+        // 画面下端付近
+        else if (
+            lastPointerY >
+            viewportHeight - scrollZone
+        ) {
+
+            autoScrollDirection = 1;
+
+        }
+
+        // 画面端から離れた
+        else {
+
+            autoScrollDirection = 0;
+
+        }
+
+
+        // スクロール実行
+        if (autoScrollDirection !== 0) {
+
+            window.scrollBy(
+                0,
+                scrollSpeed * autoScrollDirection
+            );
+
+        }
+
+        autoScrollFrame =
+            requestAnimationFrame(scrollLoop);
+    }
+
+    autoScrollFrame =
+        requestAnimationFrame(scrollLoop);
+}
+
+
+// ----------------------------------------
+// 自動スクロール停止
+// ----------------------------------------
+
+function stopAutoScroll() {
+
+    if (autoScrollFrame) {
+
+        cancelAnimationFrame(
+            autoScrollFrame
+        );
+
+        autoScrollFrame = null;
+    }
+
+    autoScrollDirection = 0;
+}
+
 
 // ----------------------------------------
 // ドラッグ開始
@@ -712,6 +802,9 @@ document.addEventListener(
         handle.setPointerCapture(
             event.pointerId
         );
+
+        // 自動スクロール開始
+        startAutoScroll();
     }
 );
 
@@ -753,7 +846,6 @@ document.addEventListener(
                     rect.top +
                     rect.height / 2;
 
-
                 if (currentY < middle) {
 
                     draggingList.insertBefore(
@@ -783,7 +875,6 @@ document.addEventListener(
                     rect.top +
                     rect.height / 2;
 
-
                 if (currentY > middle) {
 
                     draggingList.insertBefore(
@@ -795,7 +886,7 @@ document.addEventListener(
         }
 
 
-        // 今回の位置を記録
+        // 現在の指・マウス位置を記録
         lastPointerY =
             currentY;
     }
@@ -816,6 +907,8 @@ document.addEventListener(
         ) {
             return;
         }
+
+        stopAutoScroll();
 
         draggingItem
             .querySelector(".process-row")
@@ -843,6 +936,8 @@ document.addEventListener(
         ) {
             return;
         }
+
+        stopAutoScroll();
 
         draggingItem
             .querySelector(".process-row")
