@@ -665,6 +665,64 @@ document
 
 
 // ========================================
+// 工程カードの移動アニメーション
+// ========================================
+
+function animateProcessMove(list, movedItem) {
+
+    const items = [
+        ...list.querySelectorAll(".process-item")
+    ];
+
+    // 移動後の位置を取得
+    const newPositions = new Map();
+
+    items.forEach(item => {
+        newPositions.set(
+            item,
+            item.getBoundingClientRect()
+        );
+    });
+
+    // 少しだけ時間を置いて、
+    // ブラウザに新しい位置を反映させる
+    requestAnimationFrame(() => {
+
+        items.forEach(item => {
+
+            const oldRect =
+                item.dataset.oldTop
+                    ? Number(item.dataset.oldTop)
+                    : null;
+
+            const newRect =
+                newPositions.get(item);
+
+            if (oldRect === null) {
+                return;
+            }
+
+            const difference =
+                oldRect - newRect.top;
+
+            if (difference === 0) {
+                return;
+            }
+
+            item.style.transform =
+                `translateY(${difference}px)`;
+
+            requestAnimationFrame(() => {
+
+                item.style.transform =
+                    "translateY(0)";
+            });
+        });
+    });
+}
+
+
+// ========================================
 // 工程並び替え
 // ========================================
 
