@@ -93,9 +93,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     メイン
-========================= */
+-------------------------------------------------- */
 
 .schedule-main {
     position: relative;
@@ -103,9 +103,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     セクション
-========================= */
+-------------------------------------------------- */
 
 .form-section {
     position: absolute;
@@ -140,9 +140,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     セクション内容
-========================= */
+-------------------------------------------------- */
 
 .section-content {
     width: 100%;
@@ -161,9 +161,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     【次へ】ボタン
-========================= */
+-------------------------------------------------- */
 
 .next-button {
     position: fixed;
@@ -192,9 +192,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     ページ数
-========================= */
+-------------------------------------------------- */
 
 .page-count-area {
     display: flex;
@@ -211,9 +211,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
     カレンダー
-========================= */
+-------------------------------------------------- */
 
 .calendar {
     width: 100%;
@@ -331,9 +331,9 @@ body {
 }
 
 
-/* =========================
+/* --------------------------------------------------
 作業期間ラベル
-========================= */
+-------------------------------------------------- */
 
 .calendar-day {
     position: relative;
@@ -356,35 +356,62 @@ body {
 }
 
 
-/* =========================
-行程リスト
-========================= */
+/* --------------------------------------------------
+    行程リスト
+-------------------------------------------------- */
 
-#process-list {
+.process-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0;
     margin-top: 25px;
 }
 
+
+/* --------------------------------------------------
+    工程セット
+-------------------------------------------------- */
+
+.process-item {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+
+/* --------------------------------------------------
+    工程カード
+-------------------------------------------------- */
+
 .process-row {
     position: relative;
+
     display: grid;
     grid-template-columns: 30px minmax(0, 1fr) 40px;
+
     align-items: center;
     gap: 10px;
+
     padding: 12px;
+
     background: white;
     border-radius: 12px;
+
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-/* 並び替え用ドラッグハンドル */
+
+/* --------------------------------------------------
+    並び替え
+-------------------------------------------------- */
+
 .drag-handle {
     align-self: center;
+
     font-size: 22px;
     cursor: grab;
     user-select: none;
+
     touch-action: none;
 }
 
@@ -392,16 +419,56 @@ body {
     cursor: grabbing;
 }
 
-/* 並び替え中のカードが半透明化 */
+
+/* 並び替え中 */
+
 .process-row.dragging {
     opacity: 0.6;
 }
 
+
+/* --------------------------------------------------
+    工程間の▼
+-------------------------------------------------- */
+
+.process-arrow {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 32px;
+}
+
+.process-arrow::before {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #aaa;
+}
+
+
+/* --------------------------------------------------
+    並び替え用プレースホルダー
+-------------------------------------------------- */
+
 .process-placeholder {
+    height: 80px;
+
     border: 2px dashed #aaa;
     border-radius: 12px;
+
     box-sizing: border-box;
 }
+
+
+/* --------------------------------------------------
+    工程内容
+-------------------------------------------------- */
 
 .process-main {
     min-width: 0;
@@ -415,6 +482,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+
     margin-top: 8px;
 }
 
@@ -425,7 +493,9 @@ body {
 .time-input {
     display: flex;
     align-items: center;
+
     gap: 3px;
+
     white-space: nowrap;
 }
 
@@ -435,96 +505,107 @@ body {
     text-align: right;
 }
 
-.auto-adjust-btn {
-    flex-shrink: 0;
-}
+
+/* --------------------------------------------------
+    削除ボタン
+-------------------------------------------------- */
 
 .delete-btn {
     align-self: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #eeeeee;
+    color: #666666;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.delete-btn:hover {
+    background: #dddddd;
+    color: #333333;
+}
+
+.delete-btn:active {
+    transform: scale(0.9);
 }
 
 
-/* =========================
-工程フロー
-========================= */
+/* --------------------------------------------------
+    自動調整ボタン
+-------------------------------------------------- */
 
-#process-list,
-#post-process-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+.auto-adjust-btn {
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 7px 8px;
+
+    font-size: 11px;
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
 }
 
-/* 工程カード同士の間に▼ */
-#process-list .process-row + .process-row,
-#post-process-list .process-row + .process-row {
-    margin-top: 32px;
+.auto-adjust-btn:active {
+    transform: scale(0.9);
 }
 
-#process-list .process-row + .process-row::before,
-#process-list .process-placeholder + .process-row::before,
-#post-process-list .process-row + .process-row::before,
-#post-process-list .process-placeholder + .process-row::before {
-    content: "";
+.auto-adjust-btn span {
+    display: block;
 
-    position: absolute;
-    top: -22px;
-    left: 50%;
+    margin-top: 2px;
 
-    width: 0;
-    height: 0;
-
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 10px solid #aaa;
-
-    transform: translateX(-50%);
-}
-
-#post-work-area > .flow-arrow {
-    height: 50px;
-}
-
-.flow-arrow-before-post {
-    height: 60px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 
-/* =========================
-工程追加 → 作品完成後
-========================= */
+/* --------------------------------------------------
+    工程リスト最終行
+-------------------------------------------------- */
 
-.flow-arrow {
-    display: flex;
-    justify-content: center;
+.process-footer {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
     align-items: center;
 
-    height: 35px;
-}
-
-.flow-arrow::before {
-    content: "";
-
-    width: 0;
-    height: 0;
-
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 10px solid #aaa;
-}
-
-
-/* ==================================================
-    工程追加ボタン
-================================================== */
-
-#add-process,
-#add-post-process {
-    display: block;
-    width: fit-content;
-    min-width: 0;
     margin-top: 15px;
+}
+
+
+/* ＋行程追加 */
+
+.add-process-button {
+    justify-self: start;
+
+    width: fit-content;
+
     padding: 12px 18px;
+
     border: none;
     border-radius: 12px;
 
@@ -544,52 +625,98 @@ body {
         box-shadow 0.1s ease;
 }
 
-/* 行程カードの左端に揃える */
-#add-process,
-#add-post-process {
-    margin-left: 0;
-}
-
-/* 押したときにぷにゅっ */
-#add-process:active,
-#add-post-process:active {
+.add-process-button:active {
     transform: scale(0.94);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.05);
 }
 
 
-/* =========================
-作品完成後の作業（案内カード）
-========================= */
+/* --------------------------------------------------
+    作品完成 / 作業完了カード
+-------------------------------------------------- */
+
+.completion-card {
+    justify-self: center;
+
+    padding: 10px 18px;
+
+    background: #fff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06);
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: #666;
+}
+
+
+/* --------------------------------------------------
+    作品完成後の案内カード
+-------------------------------------------------- */
+
+.post-work-flow-arrow {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 32px;
+}
+
+.post-work-flow-arrow::before {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #aaa;
+}
+
 
 .post-work-option {
     width: fit-content;
     max-width: 100%;
 
     margin: 0 auto;
+
     padding: 14px 18px;
 
     background: #fff;
+
     border-radius: 16px;
 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.06);
 }
 
 .post-work-option p {
     margin: 0 0 12px;
+
     color: #666;
+
     font-size: 13px;
     line-height: 1.5;
 }
 
 .post-work-buttons {
     display: flex;
+
     justify-content: center;
+
     gap: 10px;
 }
 
 .post-work-btn {
     min-width: 90px;
+
     padding: 10px 20px;
 
     border: none;
@@ -599,6 +726,7 @@ body {
     color: #666666;
 
     font-size: 14px;
+
     cursor: pointer;
 
     transition:
@@ -616,97 +744,21 @@ body {
     transform: scale(0.95);
 }
 
+
+/* 完成後工程エリア */
+
 #post-work-area {
-    margin-top: 25px;
+    margin-top: 0;
 }
 
-#post-process-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#add-post-process {
-    margin-top: 15px;
-    padding: 10px 20px;
+#post-work-area[hidden] {
+    display: none;
 }
 
 
-/* =========================
-工程削除ボタン
-========================= */
-
-.delete-btn {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: #eeeeee;
-    color: #666666;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.1s ease;
-}
-
-.delete-btn:hover {
-    background: #dddddd;
-    color: #333333;
-}
-
-.delete-btn:active {
-    transform: scale(0.9);
-}
-
-
-/* =========================
-自動調整ボタン
-========================= */
-
-.auto-adjust-btn {
-    border: none;
-    border-radius: 8px;
-    padding: 7px 8px;
-    font-size: 11px;
-    line-height: 1.2;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.1s ease;
-}
-
-.auto-adjust-btn:active {
-    transform: scale(0.9);
-}
-
-.auto-adjust-btn span {
-    display: block;
-    margin-top: 2px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-/* OFF */
-.auto-adjust-btn.off {
-    background: #eeeeee;
-    color: #666666;
-}
-
-/* ON */
-.auto-adjust-btn.on {
-    background: #5d8fd8;
-    color: white;
-}
-
-
-/* =========================
-曜日
-========================= */
+/* --------------------------------------------------
+    曜日
+-------------------------------------------------- */
 
 .day-row {
     display: grid;
@@ -773,9 +825,9 @@ body {
 }
 
 
-/* =========================
-スマホ用
-========================= */
+/* --------------------------------------------------
+    スマホ用
+-------------------------------------------------- */
 
 @media (max-width: 600px) {
     .process-row {

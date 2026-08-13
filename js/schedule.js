@@ -479,16 +479,28 @@ updatePostWorkDisplay(true);
 
 
 // ========================================
-// 工程追加
+// 工程追加 カード生成
 // ========================================
-function createProcessRow(process) {
+
+function createProcessItem(process) {
+
+    // 工程カード＋▼をまとめる親
+    const item = document.createElement("div");
+
+    item.className = "process-item";
+
+    // ----------------------------------------
+    // 工程カード
+    // ----------------------------------------
     const row = document.createElement("div");
+
     row.className = "process-row";
 
     row.innerHTML = `
         <span class="drag-handle">＝</span>
 
         <div class="process-main">
+
             <input type="text" class="process-name" value="${process.name}" placeholder="工程名">
 
             <div class="process-settings">
@@ -501,7 +513,6 @@ function createProcessRow(process) {
                 <div class="time-input">
                     <input type="number" class="process-hours" min="0" value="${process.hours}">
                     <span>時間</span>
-
                     <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}">
                     <span>分</span>
                 </div>
@@ -522,8 +533,26 @@ function createProcessRow(process) {
         <button type="button" class="delete-btn" aria-label="工程を削除">×</button>
     `;
 
-    return row;
+    // ----------------------------------------
+    // ▼
+    // ----------------------------------------
+    const arrow = document.createElement("div");
+
+    arrow.className = "process-arrow";
+
+    // ----------------------------------------
+    // 工程カード＋▼をセットにする
+    // ----------------------------------------
+    item.appendChild(row);
+    item.appendChild(arrow);
+
+    return item;
 }
+
+
+// ========================================
+// 工程追加 - 作品制作
+// ========================================
 
 document
 .getElementById("add-process")
@@ -537,14 +566,15 @@ document
             autoAdjust: false
         };
 
-        processList.appendChild(createProcessRow(newProcess));
+        processList.appendChild(createProcessItem(newProcess));
     }
 );
 
 
 // ========================================
-// 工程追加 - 完成後作業
+// 工程追加 - 作品完成後
 // ========================================
+
 document
 .getElementById("add-post-process")
 .addEventListener("click",
@@ -557,7 +587,7 @@ document
             autoAdjust: false
         };
 
-        postProcessList.appendChild(createProcessRow(newProcess));
+        postProcessList.appendChild(createProcessItem(newProcess));
     }
 );
 
@@ -572,14 +602,14 @@ const postProcessList = document.getElementById("post-process-list");
 // 本編工程
 defaultProcesses.forEach(
     process => {
-        processList.appendChild(createProcessRow(process));
+        processList.appendChild(createProcessItem(process));
     }
 );
 
 // 作品完成後の工程
 defaultPostProcesses.forEach(
     process => {
-        postProcessList.appendChild(createProcessRow(process));
+        postProcessList.appendChild(createProcessItem(process));
     }
 );
 
@@ -587,6 +617,7 @@ defaultPostProcesses.forEach(
 // ========================================
 // 自動調整 ON / OFF
 // ========================================
+
 document.addEventListener("click",
     event => {
         const button = event.target.closest(".auto-adjust-btn");
@@ -596,15 +627,11 @@ document.addEventListener("click",
         }
 
         const isOn = button.dataset.autoAdjust === "true";
-
         const newState = !isOn;
 
         button.dataset.autoAdjust = newState;
-
         button.classList.toggle("on",newState);
-
         button.classList.toggle("off",!newState);
-
         button.querySelector("span").textContent = newState ? "ON" : "OFF";
     }
 );
@@ -613,11 +640,12 @@ document.addEventListener("click",
 // ========================================
 // 工程削除
 // ========================================
+
 document
 .addEventListener("click",
     event => {
         if (event.target.classList.contains("delete-btn")) {
-            event.target.closest(".process-row").remove();
+            event.target.closest(".process-item").remove();
         }
     }
 );
@@ -626,12 +654,15 @@ document
 // ========================================
 // 工程並び替え
 // ========================================
+
 let draggingItem = null;
 let placeholder = null;
 let dragPointerId = null;
 let draggingList = null;
 
+// ----------------------------------------
 // ＝を押したとき
+// ----------------------------------------
 document.addEventListener("pointerdown",
     event => {
         const handle = event.target.closest(".drag-handle");
@@ -640,42 +671,51 @@ document.addEventListener("pointerdown",
             return;
         }
 
-        draggingItem = handle.closest(".process-row");
+        // 工程カードではなく「工程カード＋▼」を取得
+        draggingItem = handle.closest(".process-item");
 
         if (!draggingItem) {
             return;
         }
 
+        // 今いるリストだけを対象にする
         draggingList = draggingItem.parentNode;
         dragPointerId = event.pointerId;
 
-        // ドラッグ中の目印
-        draggingItem.classList.add("dragging");
+        // 半透明
+        draggingItem
+        .querySelector(".process-row")
+        .classList.add("dragging");
 
-        // 元の位置にプレースホルダーを作る
+        // プレースホルダー ----------------------------------------
         placeholder = document.createElement("div");
-
         placeholder.className = "process-placeholder";
 
-        placeholder.style.height = `${draggingItem.offsetHeight}px`;
+        // 工程カードと同じ高さ
+        const row = draggingItem.querySelector(".process-row");
+        placeholder.style.height = `${row.offsetHeight}px`;
 
-        draggingItem.parentNode.insertBefore(placeholder,draggingItem);
+        // 元の場所へ
+        draggingList.insertBefore(placeholder,draggingItem);
 
-        // ドラッグ対象を少し浮かせる
+        // ドラッグ対象を浮かせる ----------------------------------------
         draggingItem.style.position = "fixed";
         draggingItem.style.width = `${draggingItem.offsetWidth}px`;
         draggingItem.style.zIndex = "1000";
         draggingItem.style.pointerEvents = "none";
 
-        // タッチ操作をブラウザに奪われないようにする
+        // タッチ操作をブラウザに奪われない
         handle.setPointerCapture(event.pointerId);
     }
 );
 
-
+// ----------------------------------------
 // ＝を押したまま動かしているとき
-document.addEventListener("pointermove",
+// ----------------------------------------
+document.addEventListener(
+    "pointermove",
     event => {
+
         if (
             !draggingItem ||
             event.pointerId !== dragPointerId
@@ -683,58 +723,68 @@ document.addEventListener("pointermove",
             return;
         }
 
-        // ドラッグ中のカードを指・マウスに追従させる
+        // カードを指・マウスに追従 ----------------------------------------
         draggingItem.style.top = `${event.clientY - draggingItem.offsetHeight / 2}px`;
-
         draggingItem.style.left = `${event.clientX - draggingItem.offsetWidth / 2}px`;
 
-        const rows =
-            [...draggingList.querySelectorAll(".process-row")]
-            .filter(row => row !== draggingItem);
+        // 同じリスト内の工程だけ取得 ----------------------------------------
+        const items =
+            [...draggingList.querySelectorAll(".process-item")]
+            .filter(
+                item => item !== draggingItem
+            );
 
         let target = null;
 
-        for (const row of rows) {
+        // 挿入位置を探す ----------------------------------------
+        for (const item of items) {
 
-            const rect = row.getBoundingClientRect();
-
+            const rect = item.getBoundingClientRect();
             const middle = rect.top + rect.height / 2;
 
             if (event.clientY < middle) {
-                target = row;break;
+                target = item;
+                break;
             }
         }
 
+        // プレースホルダーを移動 ----------------------------------------
         if (target) {
-            target.parentNode.insertBefore(placeholder,target);
+            draggingList.insertBefore(placeholder,target);
         } else {
             draggingList.appendChild(placeholder);
         }
     }
 );
 
-
+// ----------------------------------------
 // 指・マウスを離したとき
+// ----------------------------------------
 document.addEventListener("pointerup",
     event => {
-        if (!draggingItem || event.pointerId !== dragPointerId
+
+        if (
+            !draggingItem || event.pointerId !== dragPointerId
         ) {
             return;
         }
 
-        // プレースホルダーの位置に戻す
+        // プレースホルダー位置へ戻す ----------------------------------------
         placeholder.parentNode.insertBefore(draggingItem,placeholder);
 
-        // ドラッグ用スタイルを解除
+        // スタイル解除 ----------------------------------------
         draggingItem.style.position = "";
         draggingItem.style.width = "";
         draggingItem.style.zIndex = "";
         draggingItem.style.pointerEvents = "";
 
-        draggingItem.classList.remove("dragging");
+        draggingItem
+        .querySelector(".process-row")
+        .classList.remove("dragging");
 
         placeholder.remove();
 
+        // リセット ----------------------------------------
         draggingItem = null;
         placeholder = null;
         dragPointerId = null;
@@ -743,26 +793,40 @@ document.addEventListener("pointerup",
 );
 
 
+// ----------------------------------------
+// 操作キャンセル
+// ----------------------------------------
 
-
-// 念のため、操作がキャンセルされた場合も解除
-document.addEventListener("pointercancel",
+document.addEventListener(
+    "pointercancel",
     () => {
+
         if (!draggingItem) {
             return;
         }
 
+
         if (placeholder) {
-            placeholder.parentNode.insertBefore(draggingItem,placeholder);
+
+            placeholder.parentNode.insertBefore(
+                draggingItem,
+                placeholder
+            );
+
             placeholder.remove();
         }
+
 
         draggingItem.style.position = "";
         draggingItem.style.width = "";
         draggingItem.style.zIndex = "";
         draggingItem.style.pointerEvents = "";
 
-        draggingItem.classList.remove("dragging");
+
+        draggingItem
+            .querySelector(".process-row")
+            .classList.remove("dragging");
+
 
         draggingItem = null;
         placeholder = null;

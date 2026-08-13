@@ -43,6 +43,7 @@
             </div>
         </section>
 
+
         <!-- セクション② 工程リスト ========================= -->
         <section class="form-section" data-section="1">
             <div class="section-content">
@@ -52,33 +53,71 @@
                     「＝」をつまんで優先順に並び替えできるよ
                 </p>
 
-                <div id="process-list"></div>
+                <!-- 1. 作品制作 行程リスト ======================================== -->
+                <div id="process-list" class="process-list"></div>
 
-                <button type="button" id="add-process">
-                    ＋ 工程追加
-                </button>
+                <!-- 作品制作：最終行 -->
+                <div class="process-footer">
 
-                <div class="flow-arrow flow-arrow-before-post"></div>
+                    <!-- 左 -->
+                    <button type="button" id="add-process" class="add-process-button">
+                        ＋ 行程追加
+                    </button>
 
-                <!-- 作品完成後の作業 ========================= -->
+                    <!-- 中央 -->
+                    <div class="completion-card">
+                        作品完成
+                    </div>
+
+                    <!-- 右：空白 -->
+                    <div></div>
+
+                </div>
+
+                <!-- 作品完成後の作業案内 ======================================== -->
+                <div class="post-work-flow-arrow"></div>
+
                 <div class="post-work-option">
-                    <p>作品完成後の作業もスケジューリングする？</p>
+                    <p>
+                        作品完成後の作業も<br>
+                        スケジューリングする？
+                    </p>
 
                     <div class="post-work-buttons">
-                        <button type="button" id="post-work-yes" class="post-work-btn selected">する</button>
-                        <button type="button" id="post-work-no" class="post-work-btn">しない</button>
+                        <button type="button" id="post-work-yes" class="post-work-btn selected">
+                            する
+                        </button>
+
+                        <button type="button" id="post-work-no" class="post-work-btn">
+                            しない
+                        </button>
                     </div>
                 </div>
 
+                <div id="post-work-bottom-arrow" class="post-work-flow-arrow"></div>
+
+                <!-- 2. 作品完成後 行程リスト ======================================== -->
                 <div id="post-work-area">
 
-                    <div class="flow-arrow"></div>
+                    <div id="post-process-list" class="process-list"></div>
 
-                    <div id="post-process-list"></div>
+                    <!-- 作品完成後：最終行 -->
+                    <div class="process-footer">
 
-                    <button type="button" id="add-post-process">
-                        ＋ 工程追加
-                    </button>
+                        <!-- 左 -->
+                        <button type="button" id="add-post-process" class="add-process-button">
+                            ＋ 行程追加
+                        </button>
+
+                        <!-- 中央 -->
+                        <div class="completion-card">
+                            作業完了
+                        </div>
+
+                        <!-- 右：空白 -->
+                        <div></div>
+
+                    </div>
 
                 </div>
             </div>
