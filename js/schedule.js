@@ -668,30 +668,10 @@ document
 // 工程カードの移動アニメーション
 // ========================================
 
-function recordProcessPositions(list) {
-
-    const positions = new Map();
-
-    list.querySelectorAll(".process-item").forEach(item => {
-
-        positions.set(
-            item,
-            item.getBoundingClientRect().top
-        );
-    });
-
-    return positions;
-}
-
-
 function animateProcessMove(list, positions) {
 
     const items =
         list.querySelectorAll(".process-item");
-
-    // ----------------------------------------
-    // ① 移動後の位置を確認
-    // ----------------------------------------
 
     items.forEach(item => {
 
@@ -713,44 +693,23 @@ function animateProcessMove(list, positions) {
         }
 
         // ----------------------------------------
-        // ② transitionを一旦無効化
+        // 前回のアニメーションをリセット
         // ----------------------------------------
 
         item.style.transition = "none";
 
-        // 移動前の位置に戻す
         item.style.transform =
             `translateY(${difference}px)`;
-    });
 
+        // ----------------------------------------
+        // 次のフレームで本来の位置へ戻す
+        // ----------------------------------------
 
-    // ----------------------------------------
-    // ③ 次の描画フレームでアニメーション開始
-    // ----------------------------------------
+        requestAnimationFrame(() => {
 
-    requestAnimationFrame(() => {
-
-        items.forEach(item => {
-
-            const oldTop =
-                positions.get(item);
-
-            if (oldTop === undefined) {
-                return;
-            }
-
-            const newTop =
-                item.getBoundingClientRect().top;
-
-            if (oldTop === newTop) {
-                return;
-            }
-
-            // CSSのtransitionへ戻す
             item.style.transition =
                 "transform 0.18s ease";
 
-            // 本来の位置へスィーッ
             item.style.transform =
                 "translateY(0)";
         });
@@ -952,9 +911,7 @@ document.addEventListener(
                 if (currentY < middle) {
 
                     const positions =
-                        recordProcessPositions(
-                            draggingList
-                        );
+                        recordProcessPositions(draggingList);
 
                     draggingList.insertBefore(
                         draggingItem,
@@ -991,9 +948,7 @@ document.addEventListener(
                 if (currentY > middle) {
 
                     const positions =
-                        recordProcessPositions(
-                            draggingList
-                        );
+                        recordProcessPositions(draggingList);
 
                     draggingList.insertBefore(
                         nextItem,
