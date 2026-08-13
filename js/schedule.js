@@ -673,11 +673,13 @@ let placeholder = null;
 let dragPointerId = null;
 let draggingList = null;
 
-// ドラッグ開始位置のズレ
+// 掴んだ場所
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let dragStartScrollY = 0;
-let dragStartScrollX = 0;
+
+// ドラッグ中のページ上の位置
+let dragPageX = 0;
+let dragPageY = 0;
 
 
 // ----------------------------------------
@@ -687,40 +689,54 @@ document.addEventListener(
     "pointerdown",
     event => {
 
-        const handle = event.target.closest(".drag-handle");
+        const handle =
+            event.target.closest(".drag-handle");
 
         if (!handle) {
             return;
         }
 
-        // 工程カード＋▼をまとめた process-item
-        draggingItem = handle.closest(".process-item");
+        draggingItem =
+            handle.closest(".process-item");
 
         if (!draggingItem) {
             return;
         }
 
-        // この工程が入っているリストだけを対象にする
-        draggingList = draggingItem.parentNode;
+        draggingList =
+            draggingItem.parentNode;
 
-        dragPointerId = event.pointerId;
-
-
-        // ----------------------------------------
-        // ドラッグ開始位置を記録
-        // ----------------------------------------
-
-        const rect = draggingItem.getBoundingClientRect();
-
-        dragStartScrollY = window.scrollY;
-        dragStartScrollX = window.scrollX;
-
-        dragOffsetX = event.clientX - rect.left;
-        dragOffsetY = event.clientY - rect.top;
+        dragPointerId =
+            event.pointerId;
 
 
         // ----------------------------------------
-        // 半透明にする
+        // 掴んだ場所を記録
+        // ----------------------------------------
+
+        const rect =
+            draggingItem.getBoundingClientRect();
+
+        dragOffsetX =
+            event.clientX - rect.left;
+
+        dragOffsetY =
+            event.clientY - rect.top;
+
+
+        // ----------------------------------------
+        // ページ上の位置を記録
+        // ----------------------------------------
+
+        dragPageX =
+            rect.left + window.scrollX;
+
+        dragPageY =
+            rect.top + window.scrollY;
+
+
+        // ----------------------------------------
+        // 半透明
         // ----------------------------------------
 
         draggingItem
@@ -732,16 +748,15 @@ document.addEventListener(
         // プレースホルダー
         // ----------------------------------------
 
-        placeholder = document.createElement("div");
+        placeholder =
+            document.createElement("div");
 
-        placeholder.className = "process-placeholder";
+        placeholder.className =
+            "process-placeholder";
 
-        // 工程カード＋▼と同じ高さ
         placeholder.style.height =
             `${draggingItem.offsetHeight}px`;
 
-
-        // 元の位置に置く
         draggingList.insertBefore(
             placeholder,
             draggingItem
@@ -752,38 +767,31 @@ document.addEventListener(
         // ドラッグ対象を固定
         // ----------------------------------------
 
-        draggingItem.style.position = "fixed";
+        draggingItem.style.position =
+            "fixed";
 
         draggingItem.style.width =
             `${rect.width}px`;
 
-        draggingItem.style.zIndex = "1000";
+        draggingItem.style.zIndex =
+            "1000";
 
-        draggingItem.style.pointerEvents = "none";
+        draggingItem.style.pointerEvents =
+            "none";
 
 
-        // 最初の位置を維持
-        const scrollDiffY =
-            window.scrollY - dragStartScrollY;
-
-        const scrollDiffX =
-            window.scrollX - dragStartScrollX;
+        // 最初の表示位置
+        draggingItem.style.left =
+            `${rect.left}px`;
 
         draggingItem.style.top =
-            `${event.clientY - dragOffsetY + scrollDiffY}px`;
-
-        draggingItem.style.left =
-            `${event.clientX - dragOffsetX + scrollDiffX}px`;
+            `${rect.top}px`;
 
 
         // タッチ操作をブラウザに奪われない
-        handle.setPointerCapture(event.pointerId);
-
-        // ----------------------------------------
-        // リセット
-        // ----------------------------------------
-        dragStartScrollY = 0;
-        dragStartScrollX = 0;
+        handle.setPointerCapture(
+            event.pointerId
+        );
     }
 );
 
@@ -804,14 +812,29 @@ document.addEventListener(
 
 
         // ----------------------------------------
-        // ドラッグ中のカードを追従
+        // ページ上の座標を更新
+        // ----------------------------------------
+
+        dragPageX =
+            event.clientX +
+            window.scrollX -
+            dragOffsetX;
+
+        dragPageY =
+            event.clientY +
+            window.scrollY -
+            dragOffsetY;
+
+
+        // ----------------------------------------
+        // 固定カードを画面上に表示
         // ----------------------------------------
 
         draggingItem.style.left =
-            `${event.clientX - dragOffsetX}px`;
+            `${dragPageX - window.scrollX}px`;
 
         draggingItem.style.top =
-            `${event.clientY - dragOffsetY}px`;
+            `${dragPageY - window.scrollY}px`;
 
 
         // ----------------------------------------
@@ -821,36 +844,42 @@ document.addEventListener(
         const edgeSize = 70;
         const scrollSpeed = 12;
 
-        if (event.clientY < edgeSize) {
 
-            window.scrollBy({
-                top: -scrollSpeed,
-                behavior: "auto"
-            });
+        if (
+            event.clientY < edgeSize
+        ) {
+
+            window.scrollBy(
+                0,
+                -scrollSpeed
+            );
 
         } else if (
             event.clientY >
             window.innerHeight - edgeSize
         ) {
 
-            window.scrollBy({
-                top: scrollSpeed,
-                behavior: "auto"
-            });
+            window.scrollBy(
+                0,
+                scrollSpeed
+            );
         }
 
 
         // ----------------------------------------
-        // 同じリスト内の工程だけ取得
+        // 同じリスト内だけ取得
         // ----------------------------------------
 
         const items =
             [
-                ...draggingList.querySelectorAll(
-                    ".process-item"
-                )
-            ].filter(
-                item => item !== draggingItem
+                ...draggingList
+                    .querySelectorAll(
+                        ".process-item"
+                    )
+            ]
+            .filter(
+                item =>
+                    item !== draggingItem
             );
 
 
@@ -867,9 +896,13 @@ document.addEventListener(
                 item.getBoundingClientRect();
 
             const middle =
-                rect.top + rect.height / 2;
+                rect.top +
+                rect.height / 2;
 
-            if (event.clientY < middle) {
+
+            if (
+                event.clientY < middle
+            ) {
 
                 target = item;
 
@@ -879,7 +912,7 @@ document.addEventListener(
 
 
         // ----------------------------------------
-        // プレースホルダーを移動
+        // プレースホルダー移動
         // ----------------------------------------
 
         if (target) {
@@ -956,8 +989,8 @@ document.addEventListener(
         dragOffsetX = 0;
         dragOffsetY = 0;
 
-        dragStartScrollY = 0;
-        dragStartScrollX = 0;
+        dragPageX = 0;
+        dragPageY = 0;
     }
 );
 
@@ -1005,6 +1038,9 @@ document.addEventListener(
 
         dragOffsetX = 0;
         dragOffsetY = 0;
+
+        dragPageX = 0;
+        dragPageY = 0;
     }
 );
 
