@@ -629,66 +629,53 @@ document
 let draggingItem = null;
 let placeholder = null;
 let dragPointerId = null;
+let draggingList = null;
 
 // ＝を押したとき
-document.addEventListener(
-    "pointerdown",
+document.addEventListener("pointerdown",
     event => {
-
-        const handle =
-            event.target.closest(".drag-handle");
+        const handle = event.target.closest(".drag-handle");
 
         if (!handle) {
             return;
         }
 
-        draggingItem =
-            handle.closest(".process-row");
+        draggingItem = handle.closest(".process-row");
 
         if (!draggingItem) {
             return;
         }
 
+        draggingList = draggingItem.parentNode;
         dragPointerId = event.pointerId;
 
         // ドラッグ中の目印
         draggingItem.classList.add("dragging");
 
         // 元の位置にプレースホルダーを作る
-        placeholder =
-            document.createElement("div");
+        placeholder = document.createElement("div");
 
-        placeholder.className =
-            "process-placeholder";
+        placeholder.className = "process-placeholder";
 
-        placeholder.style.height =
-            `${draggingItem.offsetHeight}px`;
+        placeholder.style.height = `${draggingItem.offsetHeight}px`;
 
-        draggingItem.parentNode.insertBefore(
-            placeholder,
-            draggingItem
-        );
+        draggingItem.parentNode.insertBefore(placeholder,draggingItem);
 
         // ドラッグ対象を少し浮かせる
         draggingItem.style.position = "fixed";
-        draggingItem.style.width =
-            `${draggingItem.offsetWidth}px`;
+        draggingItem.style.width = `${draggingItem.offsetWidth}px`;
         draggingItem.style.zIndex = "1000";
         draggingItem.style.pointerEvents = "none";
 
         // タッチ操作をブラウザに奪われないようにする
-        handle.setPointerCapture(
-            event.pointerId
-        );
+        handle.setPointerCapture(event.pointerId);
     }
 );
 
 
 // ＝を押したまま動かしているとき
-document.addEventListener(
-    "pointermove",
+document.addEventListener("pointermove",
     event => {
-
         if (
             !draggingItem ||
             event.pointerId !== dragPointerId
@@ -697,66 +684,46 @@ document.addEventListener(
         }
 
         // ドラッグ中のカードを指・マウスに追従させる
-        draggingItem.style.top =
-            `${event.clientY - draggingItem.offsetHeight / 2}px`;
+        draggingItem.style.top = `${event.clientY - draggingItem.offsetHeight / 2}px`;
 
-        draggingItem.style.left =
-            `${event.clientX - draggingItem.offsetWidth / 2}px`;
+        draggingItem.style.left = `${event.clientX - draggingItem.offsetWidth / 2}px`;
 
         const rows =
-            [...document.querySelectorAll(".process-row")]
+            [...draggingList.querySelectorAll(".process-row")]
             .filter(row => row !== draggingItem);
 
         let target = null;
 
         for (const row of rows) {
 
-            const rect =
-                row.getBoundingClientRect();
+            const rect = row.getBoundingClientRect();
 
-            const middle =
-                rect.top + rect.height / 2;
+            const middle = rect.top + rect.height / 2;
 
             if (event.clientY < middle) {
-                target = row;
-                break;
+                target = row;break;
             }
         }
 
         if (target) {
-
-            target.parentNode.insertBefore(
-                placeholder,
-                target
-            );
-
+            target.parentNode.insertBefore(placeholder,target);
         } else {
-
-            processList.appendChild(
-                placeholder
-            );
+            draggingList.appendChild(placeholder);
         }
     }
 );
 
 
 // 指・マウスを離したとき
-document.addEventListener(
-    "pointerup",
+document.addEventListener("pointerup",
     event => {
-
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
+        if (!draggingItem || event.pointerId !== dragPointerId
         ) {
             return;
         }
 
         // プレースホルダーの位置に戻す
-        placeholder.parentNode.insertBefore(
-            draggingItem,
-            placeholder
-        );
+        placeholder.parentNode.insertBefore(draggingItem,placeholder);
 
         // ドラッグ用スタイルを解除
         draggingItem.style.position = "";
@@ -764,34 +731,29 @@ document.addEventListener(
         draggingItem.style.zIndex = "";
         draggingItem.style.pointerEvents = "";
 
-        draggingItem.classList.remove(
-            "dragging"
-        );
+        draggingItem.classList.remove("dragging");
 
         placeholder.remove();
 
         draggingItem = null;
         placeholder = null;
         dragPointerId = null;
+        draggingList = null;
     }
 );
 
 
-// 念のため、操作がキャンセルされた場合も解除
-document.addEventListener(
-    "pointercancel",
-    () => {
 
+
+// 念のため、操作がキャンセルされた場合も解除
+document.addEventListener("pointercancel",
+    () => {
         if (!draggingItem) {
             return;
         }
 
         if (placeholder) {
-            placeholder.parentNode.insertBefore(
-                draggingItem,
-                placeholder
-            );
-
+            placeholder.parentNode.insertBefore(draggingItem,placeholder);
             placeholder.remove();
         }
 
@@ -800,13 +762,12 @@ document.addEventListener(
         draggingItem.style.zIndex = "";
         draggingItem.style.pointerEvents = "";
 
-        draggingItem.classList.remove(
-            "dragging"
-        );
+        draggingItem.classList.remove("dragging");
 
         draggingItem = null;
         placeholder = null;
         dragPointerId = null;
+        draggingList = null;
     }
 );
 
@@ -842,20 +803,43 @@ weekdays
 
         number.addEventListener("input",
             () => {
+                // 空欄の途中は何もしない
+                if (number.value === "") {
+                    return;
+                }
+
+                const value = Number(number.value);
+
+                // 0～24の範囲ならバーと同期
+                if (value >= 0 && value <= 24) {
+                    range.value = value;
+                    updateHourRangeColor(number, range);
+                }
+            }
+        );
+
+        number.addEventListener("blur",
+            () => {
                 let value = Number(number.value);
 
-                if (value < 0)
+                if (number.value === "" || Number.isNaN(value)) {
                     value = 0;
+                }
 
-                if (value > 24)
+                if (value < 0) {
+                    value = 0;
+                }
+
+                if (value > 24) {
                     value = 24;
+                }
 
                 number.value = value;
                 range.value = value;
 
                 updateHourRangeColor(number, range);
             }
-        );
+        );        
 
         range.addEventListener("input",
             () => {
