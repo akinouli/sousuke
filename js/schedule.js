@@ -798,15 +798,15 @@ function startAutoScroll() {
         if (lastPointerY < topScrollZone) {
 
             const distance =
-                topScrollZone - lastPointerY;
+                scrollZone - lastPointerY;
 
             const ratio =
                 Math.min(
-                    distance / topScrollZone,
+                    distance / scrollZone,
                     1
                 );
 
-            const scrollSpeed =
+            scrollSpeed =
                 maxScrollSpeed *
                 ratio *
                 ratio;
@@ -818,20 +818,20 @@ function startAutoScroll() {
 
         } else if (
             lastPointerY >
-            viewportHeight - bottomScrollZone
+            viewportHeight - scrollZone
         ) {
 
             const distance =
                 lastPointerY -
-                (viewportHeight - bottomScrollZone);
+                (viewportHeight - scrollZone);
 
             const ratio =
                 Math.min(
-                    distance / bottomScrollZone,
+                    distance / scrollZone,
                     1
                 );
 
-            const scrollSpeed =
+            scrollSpeed =
                 maxScrollSpeed *
                 ratio *
                 ratio;
