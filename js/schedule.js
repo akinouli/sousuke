@@ -671,7 +671,6 @@ document
 let draggingItem = null;
 let dragPointerId = null;
 let draggingList = null;
-let lastPointerY = 0;
 
 
 // ----------------------------------------
@@ -702,9 +701,6 @@ document.addEventListener(
         dragPointerId =
             event.pointerId;
 
-        lastPointerY =
-            event.clientY;
-
         draggingItem
             .querySelector(".process-row")
             .classList.add("dragging");
@@ -731,12 +727,17 @@ document.addEventListener(
             return;
         }
 
-        lastPointerY =
-            event.clientY;
+        const items = [
+            ...draggingList
+                .querySelectorAll(".process-item")
+        ].filter(
+            item =>
+                item !== draggingItem
+        );
 
 
         // ----------------------------------------
-        // 現在のカード位置
+        // 掴んでいるカードの中心
         // ----------------------------------------
 
         const draggingRect =
@@ -748,52 +749,30 @@ document.addEventListener(
 
 
         // ----------------------------------------
-        // 同じリスト内の工程を取得
-        // ----------------------------------------
-
-        const items = [
-            ...draggingList
-                .querySelectorAll(".process-item")
-        ].filter(
-            item =>
-                item !== draggingItem
-        );
-
-
-        // ----------------------------------------
         // 上方向へ移動
         // ----------------------------------------
 
-        if (
-            event.clientY <
-            draggingCenter
-        ) {
+        for (const item of items) {
 
-            for (let i = items.length - 1; i >= 0; i--) {
+            const rect =
+                item.getBoundingClientRect();
 
-                const item =
-                    items[i];
-
-                const rect =
-                    item.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
+            const itemCenter =
+                rect.top +
+                rect.height / 2;
 
 
-                if (
-                    event.clientY <
-                    middle
-                ) {
+            if (
+                draggingCenter < itemCenter &&
+                draggingItem.nextElementSibling === item
+            ) {
 
-                    draggingList.insertBefore(
-                        draggingItem,
-                        item
-                    );
+                draggingList.insertBefore(
+                    draggingItem,
+                    item
+                );
 
-                    break;
-                }
+                return;
             }
         }
 
@@ -802,28 +781,27 @@ document.addEventListener(
         // 下方向へ移動
         // ----------------------------------------
 
-        else {
+        for (const item of items) {
 
-            for (const item of items) {
+            const rect =
+                item.getBoundingClientRect();
 
-                const rect =
-                    item.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
+            const itemCenter =
+                rect.top +
+                rect.height / 2;
 
 
-                if (
-                    event.clientY >
-                    middle
-                ) {
+            if (
+                draggingCenter > itemCenter &&
+                draggingItem.previousElementSibling === item
+            ) {
 
-                    draggingList.insertBefore(
-                        draggingItem,
-                        item.nextElementSibling
-                    );
-                }
+                draggingList.insertBefore(
+                    item,
+                    draggingItem
+                );
+
+                return;
             }
         }
     }
@@ -852,7 +830,6 @@ document.addEventListener(
         draggingItem = null;
         dragPointerId = null;
         draggingList = null;
-        lastPointerY = 0;
     }
 );
 
@@ -879,7 +856,6 @@ document.addEventListener(
         draggingItem = null;
         dragPointerId = null;
         draggingList = null;
-        lastPointerY = 0;
     }
 );
 
