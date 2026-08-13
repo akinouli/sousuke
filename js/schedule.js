@@ -668,273 +668,14 @@ document
 // 工程並び替え
 // ========================================
 
-// ドラッグ中の工程
 let draggingItem = null;
-
-// 元の場所に残すプレースホルダー
-let placeholder = null;
-
-// ドラッグしているポインター
 let dragPointerId = null;
-
-// ドラッグ対象が入っているリスト
 let draggingList = null;
-
-// 掴んだ位置
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-
-// ドラッグ中のページ上の位置
-let dragPageX = 0;
-let dragPageY = 0;
-
-// 自動スクロール用
-let autoScrollFrame = null;
 let lastPointerY = 0;
 
 
 // ----------------------------------------
-// ドラッグ終了処理
-// ----------------------------------------
-
-function finishDrag() {
-
-    if (!draggingItem) {
-        return;
-    }
-
-
-    // ----------------------------------------
-    // プレースホルダーの位置に戻す
-    // ----------------------------------------
-
-    if (placeholder) {
-
-        placeholder.parentNode.insertBefore(
-            draggingItem,
-            placeholder
-        );
-
-        placeholder.remove();
-    }
-
-
-    // ----------------------------------------
-    // ドラッグ用スタイルを解除
-    // ----------------------------------------
-
-    draggingItem.style.position = "";
-    draggingItem.style.left = "";
-    draggingItem.style.top = "";
-    draggingItem.style.width = "";
-    draggingItem.style.zIndex = "";
-    draggingItem.style.pointerEvents = "";
-
-
-    draggingItem
-        .querySelector(".process-row")
-        .classList.remove("dragging");
-
-
-    // ----------------------------------------
-    // 自動スクロール停止
-    // ----------------------------------------
-
-    if (autoScrollFrame) {
-
-        cancelAnimationFrame(
-            autoScrollFrame
-        );
-
-        autoScrollFrame = null;
-    }
-
-
-    // ----------------------------------------
-    // 変数リセット
-    // ----------------------------------------
-
-    draggingItem = null;
-    placeholder = null;
-    dragPointerId = null;
-    draggingList = null;
-
-    dragOffsetX = 0;
-    dragOffsetY = 0;
-
-    dragPageX = 0;
-    dragPageY = 0;
-
-    lastPointerY = 0;
-}
-
-
-// ----------------------------------------
-// 自動スクロール
-// ----------------------------------------
-
-function autoScroll() {
-
-    if (!draggingItem) {
-        autoScrollFrame = null;
-        return;
-    }
-
-
-    const edgeSize = 70;
-    const maxSpeed = 12;
-
-    let scrollSpeed = 0;
-
-
-    // 上端に近い
-    if (lastPointerY < edgeSize) {
-
-        const distance =
-            edgeSize - lastPointerY;
-
-        scrollSpeed =
-            -Math.min(
-                maxSpeed,
-                distance / edgeSize * maxSpeed
-            );
-    }
-
-
-    // 下端に近い
-    else if (
-        lastPointerY >
-        window.innerHeight - edgeSize
-    ) {
-
-        const distance =
-            lastPointerY -
-            (window.innerHeight - edgeSize);
-
-        scrollSpeed =
-            Math.min(
-                maxSpeed,
-                distance / edgeSize * maxSpeed
-            );
-    }
-
-
-    // スクロール
-    if (scrollSpeed !== 0) {
-
-        window.scrollBy(
-            0,
-            scrollSpeed
-        );
-
-
-        // スクロール後もカードを指に追従
-        updateDraggingPosition();
-    }
-
-
-    autoScrollFrame =
-        requestAnimationFrame(
-            autoScroll
-        );
-}
-
-
-// ----------------------------------------
-// ドラッグ中のカード位置を更新
-// ----------------------------------------
-
-function updateDraggingPosition() {
-
-    if (!draggingItem) {
-        return;
-    }
-
-
-    // ページ座標 → 現在の画面座標
-    const screenX =
-        dragPageX -
-        window.scrollX;
-
-    const screenY =
-        dragPageY -
-        window.scrollY;
-
-
-    draggingItem.style.left =
-        `${screenX}px`;
-
-    draggingItem.style.top =
-        `${screenY}px`;
-}
-
-
-// ----------------------------------------
-// プレースホルダーの位置を更新
-// ----------------------------------------
-
-function updatePlaceholder() {
-
-    if (
-        !draggingItem ||
-        !placeholder ||
-        !draggingList
-    ) {
-        return;
-    }
-
-
-    const items = [
-        ...draggingList
-            .querySelectorAll(".process-item")
-    ].filter(
-        item =>
-            item !== draggingItem
-    );
-
-
-    let target = null;
-
-
-    for (const item of items) {
-
-        const rect =
-            item.getBoundingClientRect();
-
-        const middle =
-            rect.top +
-            rect.height / 2;
-
-
-        if (
-            lastPointerY < middle
-        ) {
-
-            target = item;
-
-            break;
-        }
-    }
-
-
-    if (target) {
-
-        draggingList.insertBefore(
-            placeholder,
-            target
-        );
-
-    } else {
-
-        draggingList.appendChild(
-            placeholder
-        );
-    }
-}
-
-
-// ----------------------------------------
-// ＝を押したとき
+// ドラッグ開始
 // ----------------------------------------
 
 document.addEventListener(
@@ -942,150 +683,41 @@ document.addEventListener(
     event => {
 
         const handle =
-            event.target.closest(
-                ".drag-handle"
-            );
-
+            event.target.closest(".drag-handle");
 
         if (!handle) {
             return;
         }
 
-
         draggingItem =
-            handle.closest(
-                ".process-item"
-            );
-
+            handle.closest(".process-item");
 
         if (!draggingItem) {
             return;
         }
 
-
-        // ----------------------------------------
-        // リストを記録
-        // ----------------------------------------
-
         draggingList =
             draggingItem.parentNode;
-
 
         dragPointerId =
             event.pointerId;
 
-
-        // ----------------------------------------
-        // 掴んだ位置を記録
-        // ----------------------------------------
-
-        const rect =
-            draggingItem.getBoundingClientRect();
-
-
-        dragOffsetX =
-            event.clientX -
-            rect.left;
-
-        dragOffsetY =
-            event.clientY -
-            rect.top;
-
-
-        // ----------------------------------------
-        // ページ上の位置を記録
-        // ----------------------------------------
-
-        dragPageX =
-            rect.left +
-            window.scrollX;
-
-        dragPageY =
-            rect.top +
-            window.scrollY;
-
-
         lastPointerY =
             event.clientY;
 
-
-        // ----------------------------------------
-        // プレースホルダー作成
-        // ----------------------------------------
-
-        placeholder =
-            document.createElement(
-                "div"
-            );
-
-
-        placeholder.className =
-            "process-placeholder";
-
-
-        placeholder.style.height =
-            `${draggingItem.offsetHeight}px`;
-
-
-        draggingList.insertBefore(
-            placeholder,
-            draggingItem
-        );
-
-
-        // ----------------------------------------
-        // ドラッグ中のカード
-        // ----------------------------------------
-
-        draggingItem.style.position =
-            "fixed";
-
-        draggingItem.style.width =
-            `${rect.width}px`;
-
-        draggingItem.style.zIndex =
-            "1000";
-
-        draggingItem.style.pointerEvents =
-            "none";
-
-
-        // 現在位置
-        updateDraggingPosition();
-
-
-        // 半透明
         draggingItem
             .querySelector(".process-row")
             .classList.add("dragging");
 
-
-        // ----------------------------------------
-        // タッチ操作をブラウザに奪われない
-        // ----------------------------------------
-
         handle.setPointerCapture(
             event.pointerId
         );
-
-
-        // ----------------------------------------
-        // 自動スクロール開始
-        // ----------------------------------------
-
-        if (!autoScrollFrame) {
-
-            autoScrollFrame =
-                requestAnimationFrame(
-                    autoScroll
-                );
-        }
     }
 );
 
 
 // ----------------------------------------
-// ＝を押したまま動かす
+// ドラッグ中
 // ----------------------------------------
 
 document.addEventListener(
@@ -1099,48 +731,107 @@ document.addEventListener(
             return;
         }
 
-
-        // ----------------------------------------
-        // ポインター位置を更新
-        // ----------------------------------------
-
         lastPointerY =
             event.clientY;
 
 
         // ----------------------------------------
-        // ページ上の位置を更新
+        // 現在のカード位置
         // ----------------------------------------
 
-        dragPageX =
-            event.clientX +
-            window.scrollX -
-            dragOffsetX;
+        const draggingRect =
+            draggingItem.getBoundingClientRect();
 
-        dragPageY =
-            event.clientY +
-            window.scrollY -
-            dragOffsetY;
+        const draggingCenter =
+            draggingRect.top +
+            draggingRect.height / 2;
 
 
         // ----------------------------------------
-        // カードを移動
+        // 同じリスト内の工程を取得
         // ----------------------------------------
 
-        updateDraggingPosition();
+        const items = [
+            ...draggingList
+                .querySelectorAll(".process-item")
+        ].filter(
+            item =>
+                item !== draggingItem
+        );
 
 
         // ----------------------------------------
-        // プレースホルダー移動
+        // 上方向へ移動
         // ----------------------------------------
 
-        updatePlaceholder();
+        if (
+            event.clientY <
+            draggingCenter
+        ) {
+
+            for (let i = items.length - 1; i >= 0; i--) {
+
+                const item =
+                    items[i];
+
+                const rect =
+                    item.getBoundingClientRect();
+
+                const middle =
+                    rect.top +
+                    rect.height / 2;
+
+
+                if (
+                    event.clientY <
+                    middle
+                ) {
+
+                    draggingList.insertBefore(
+                        draggingItem,
+                        item
+                    );
+
+                    break;
+                }
+            }
+        }
+
+
+        // ----------------------------------------
+        // 下方向へ移動
+        // ----------------------------------------
+
+        else {
+
+            for (const item of items) {
+
+                const rect =
+                    item.getBoundingClientRect();
+
+                const middle =
+                    rect.top +
+                    rect.height / 2;
+
+
+                if (
+                    event.clientY >
+                    middle
+                ) {
+
+                    draggingList.insertBefore(
+                        draggingItem,
+                        item.nextElementSibling
+                    );
+                }
+            }
+        }
     }
 );
 
 
 // ----------------------------------------
-// 指・マウスを離した
+// ドラッグ終了
 // ----------------------------------------
 
 document.addEventListener(
@@ -1154,8 +845,14 @@ document.addEventListener(
             return;
         }
 
+        draggingItem
+            .querySelector(".process-row")
+            .classList.remove("dragging");
 
-        finishDrag();
+        draggingItem = null;
+        dragPointerId = null;
+        draggingList = null;
+        lastPointerY = 0;
     }
 );
 
@@ -1175,8 +872,14 @@ document.addEventListener(
             return;
         }
 
+        draggingItem
+            .querySelector(".process-row")
+            .classList.remove("dragging");
 
-        finishDrag();
+        draggingItem = null;
+        dragPointerId = null;
+        draggingList = null;
+        lastPointerY = 0;
     }
 );
 
