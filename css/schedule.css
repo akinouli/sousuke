@@ -401,7 +401,6 @@ body {
     border: 2px dashed #aaa;
     border-radius: 12px;
     box-sizing: border-box;
-    margin-bottom: 10px;
 }
 
 .process-main {
@@ -463,7 +462,9 @@ body {
 }
 
 #process-list .process-row + .process-row::before,
-#post-process-list .process-row + .process-row::before {
+#process-list .process-placeholder + .process-row::before,
+#post-process-list .process-row + .process-row::before,
+#post-process-list .process-placeholder + .process-row::before {
     content: "";
 
     position: absolute;
@@ -482,6 +483,10 @@ body {
 
 #post-work-area > .flow-arrow {
     height: 50px;
+}
+
+.flow-arrow-before-post {
+    height: 60px;
 }
 
 
