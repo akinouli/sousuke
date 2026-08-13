@@ -457,8 +457,6 @@ body {
 -------------------------------------------------- */
 
 .process-placeholder {
-    height: 80px;
-
     border: 2px dashed #aaa;
     border-radius: 12px;
 
@@ -662,11 +660,9 @@ body {
 
 .post-work-flow-arrow {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
-    height: 32px;
+    height: 70px;
 }
 
 .post-work-flow-arrow::before {
@@ -680,6 +676,9 @@ body {
     border-top: 10px solid #aaa;
 }
 
+.post-work-flow-arrow[hidden] {
+    display: none;
+}
 
 .post-work-option {
     width: fit-content;
