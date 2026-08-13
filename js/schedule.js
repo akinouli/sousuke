@@ -695,53 +695,83 @@ function startAutoScroll() {
             return;
         }
 
-        const scrollZone = 80;
-        const scrollSpeed = 8;
+        const scrollZone = 100;
+        const maxScrollSpeed = 10;
 
         const viewportHeight =
             window.innerHeight;
 
-        // 画面上端付近
+
+        // ----------------------------------------
+        // 上下端からの距離を計算
+        // ----------------------------------------
+
+        let scrollSpeed = 0;
+
+
+        // 上端
         if (lastPointerY < scrollZone) {
 
-            autoScrollDirection = -1;
+            const distance =
+                scrollZone - lastPointerY;
 
+            const ratio =
+                Math.min(
+                    distance / scrollZone,
+                    1
+                );
+
+            scrollSpeed =
+                maxScrollSpeed *
+                ratio *
+                ratio;
+
+            window.scrollBy(
+                0,
+                -scrollSpeed
+            );
         }
 
-        // 画面下端付近
+
+        // 下端
         else if (
             lastPointerY >
             viewportHeight - scrollZone
         ) {
 
-            autoScrollDirection = 1;
+            const distance =
+                lastPointerY -
+                (viewportHeight - scrollZone);
 
-        }
+            const ratio =
+                Math.min(
+                    distance / scrollZone,
+                    1
+                );
 
-        // 画面端から離れた
-        else {
-
-            autoScrollDirection = 0;
-
-        }
-
-
-        // スクロール実行
-        if (autoScrollDirection !== 0) {
+            scrollSpeed =
+                maxScrollSpeed *
+                ratio *
+                ratio;
 
             window.scrollBy(
                 0,
-                scrollSpeed * autoScrollDirection
+                scrollSpeed
             );
-
         }
 
+
+        // 次のフレーム
         autoScrollFrame =
-            requestAnimationFrame(scrollLoop);
+            requestAnimationFrame(
+                scrollLoop
+            );
     }
 
     autoScrollFrame =
-        requestAnimationFrame(scrollLoop);
+        requestAnimationFrame(
+            scrollLoop
+        );
 }
 
 
