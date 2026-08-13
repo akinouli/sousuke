@@ -674,13 +674,16 @@ let draggingList = null;
 let lastPointerY = 0;
 
 // 自動スクロール用
-let autoScrollFrame = null;
-let autoScrollDirection = 0;
+const topScrollZone = 160;
+const bottomScrollZone = 180;
+const maxScrollSpeed = 10;
 
 
 // ----------------------------------------
 // 自動スクロール開始
 // ----------------------------------------
+
+let autoScrollFrame = null;
 
 function startAutoScroll() {
 
@@ -695,33 +698,28 @@ function startAutoScroll() {
             return;
         }
 
-        const scrollZone = 100;
+        const topScrollZone = 160;
+        const bottomScrollZone = 180;
         const maxScrollSpeed = 10;
 
-        const viewportHeight =
-            window.innerHeight;
-
+        const viewportHeight = window.innerHeight;
 
         // ----------------------------------------
-        // 上下端からの距離を計算
-        // ----------------------------------------
-
-        let scrollSpeed = 0;
-
-
         // 上端
-        if (lastPointerY < scrollZone) {
+        // ----------------------------------------
+
+        if (lastPointerY < topScrollZone) {
 
             const distance =
-                scrollZone - lastPointerY;
+                topScrollZone - lastPointerY;
 
             const ratio =
                 Math.min(
-                    distance / scrollZone,
+                    distance / topScrollZone,
                     1
                 );
 
-            scrollSpeed =
+            const scrollSpeed =
                 maxScrollSpeed *
                 ratio *
                 ratio;
@@ -732,24 +730,26 @@ function startAutoScroll() {
             );
         }
 
-
+        // ----------------------------------------
         // 下端
+        // ----------------------------------------
+
         else if (
             lastPointerY >
-            viewportHeight - scrollZone
+            viewportHeight - bottomScrollZone
         ) {
 
             const distance =
                 lastPointerY -
-                (viewportHeight - scrollZone);
+                (viewportHeight - bottomScrollZone);
 
             const ratio =
                 Math.min(
-                    distance / scrollZone,
+                    distance / bottomScrollZone,
                     1
                 );
 
-            scrollSpeed =
+            const scrollSpeed =
                 maxScrollSpeed *
                 ratio *
                 ratio;
@@ -759,7 +759,6 @@ function startAutoScroll() {
                 scrollSpeed
             );
         }
-
 
         // 次のフレーム
         autoScrollFrame =
