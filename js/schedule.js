@@ -686,7 +686,14 @@ function recordProcessPositions(list) {
 
 function animateProcessMove(list, positions) {
 
-    list.querySelectorAll(".process-item").forEach(item => {
+    const items =
+        list.querySelectorAll(".process-item");
+
+    // ----------------------------------------
+    // ① 移動後の位置を確認
+    // ----------------------------------------
+
+    items.forEach(item => {
 
         const oldTop =
             positions.get(item);
@@ -705,11 +712,45 @@ function animateProcessMove(list, positions) {
             return;
         }
 
+        // ----------------------------------------
+        // ② transitionを一旦無効化
+        // ----------------------------------------
+
+        item.style.transition = "none";
+
+        // 移動前の位置に戻す
         item.style.transform =
             `translateY(${difference}px)`;
+    });
 
-        requestAnimationFrame(() => {
 
+    // ----------------------------------------
+    // ③ 次の描画フレームでアニメーション開始
+    // ----------------------------------------
+
+    requestAnimationFrame(() => {
+
+        items.forEach(item => {
+
+            const oldTop =
+                positions.get(item);
+
+            if (oldTop === undefined) {
+                return;
+            }
+
+            const newTop =
+                item.getBoundingClientRect().top;
+
+            if (oldTop === newTop) {
+                return;
+            }
+
+            // CSSのtransitionへ戻す
+            item.style.transition =
+                "transform 0.18s ease";
+
+            // 本来の位置へスィーッ
             item.style.transform =
                 "translateY(0)";
         });
