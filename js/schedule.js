@@ -679,6 +679,67 @@ const bottomScrollZone = 180;
 const maxScrollSpeed = 10;
 
 
+// ========================================
+// 工程カード移動アニメーション
+// ※並び替えロジックとは分離
+// ========================================
+
+function recordProcessPositions(list) {
+
+    const positions = new Map();
+
+    list.querySelectorAll(".process-item")
+        .forEach(item => {
+
+            positions.set(
+                item,
+                item.getBoundingClientRect()
+            );
+        });
+
+    return positions;
+}
+
+
+function animateProcessItems(
+    list,
+    oldPositions
+) {
+
+    list.querySelectorAll(".process-item")
+        .forEach(item => {
+
+            const oldRect =
+                oldPositions.get(item);
+
+            if (!oldRect) {
+                return;
+            }
+
+            const newRect =
+                item.getBoundingClientRect();
+
+            const difference =
+                oldRect.top - newRect.top;
+
+            if (difference === 0) {
+                return;
+            }
+
+            item.style.transform =
+                `translateY(${difference}px)`;
+
+            requestAnimationFrame(
+                () => {
+
+                    item.style.transform =
+                        "translateY(0)";
+                }
+            );
+        });
+}
+
+
 // ----------------------------------------
 // 自動スクロール開始
 // ----------------------------------------
@@ -697,10 +758,6 @@ function startAutoScroll() {
             autoScrollFrame = null;
             return;
         }
-
-        const topScrollZone = 160;
-        const bottomScrollZone = 180;
-        const maxScrollSpeed = 10;
 
         const viewportHeight = window.innerHeight;
 
@@ -789,7 +846,6 @@ function stopAutoScroll() {
         autoScrollFrame = null;
     }
 
-    autoScrollDirection = 0;
 }
 
 
@@ -874,6 +930,9 @@ document.addEventListener(
                 const middle =
                     rect.top +
                     rect.height / 2;
+                
+                // 並び替え用の追加コード ※不具合出たら削除※
+                const oldPositions = recordProcessPositions(draggingList);
 
                 if (currentY < middle) {
 
@@ -881,7 +940,12 @@ document.addEventListener(
                         draggingItem,
                         previousItem
                     );
+                
                 }
+                
+                // 並び替え用の追加コード ※不具合出たら削除※
+                animateProcessItems(draggingList,oldPositions);
+
             }
         }
 
