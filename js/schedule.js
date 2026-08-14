@@ -679,67 +679,6 @@ const bottomScrollZone = 180;
 const maxScrollSpeed = 10;
 
 
-// ========================================
-// 工程カード移動アニメーション
-// ※並び替えロジックとは分離
-// ========================================
-
-function recordProcessPositions(list) {
-
-    const positions = new Map();
-
-    list.querySelectorAll(".process-item")
-        .forEach(item => {
-
-            positions.set(
-                item,
-                item.getBoundingClientRect()
-            );
-        });
-
-    return positions;
-}
-
-
-function animateProcessItems(
-    list,
-    oldPositions
-) {
-
-    list.querySelectorAll(".process-item")
-        .forEach(item => {
-
-            const oldRect =
-                oldPositions.get(item);
-
-            if (!oldRect) {
-                return;
-            }
-
-            const newRect =
-                item.getBoundingClientRect();
-
-            const difference =
-                oldRect.top - newRect.top;
-
-            if (difference === 0) {
-                return;
-            }
-
-            item.style.transform =
-                `translateY(${difference}px)`;
-
-            requestAnimationFrame(
-                () => {
-
-                    item.style.transform =
-                        "translateY(0)";
-                }
-            );
-        });
-}
-
-
 // ----------------------------------------
 // 自動スクロール開始
 // ----------------------------------------
@@ -930,9 +869,6 @@ document.addEventListener(
                 const middle =
                     rect.top +
                     rect.height / 2;
-                
-                // 並び替え用の追加コード ※不具合出たら削除※
-                const oldPositions = recordProcessPositions(draggingList);
 
                 if (currentY < middle) {
 
@@ -940,12 +876,8 @@ document.addEventListener(
                         draggingItem,
                         previousItem
                     );
-                
+                    
                 }
-                
-                // 並び替え用の追加コード ※不具合出たら削除※
-                animateProcessItems(draggingList,oldPositions);
-
             }
         }
 
@@ -1278,23 +1210,20 @@ function validateScheduleInput() {
         return false;
     }
 
-    let hasValidProcess = false;
-
-    processRows.forEach(
+    const hasInvalidProcess = [...processRows].some(
         row => {
-            const hours = Number(row.querySelector(".process-hours").value);
-            const minutes = Number(row.querySelector(".process-minutes").value);
+            const hours =
+                Number(row.querySelector(".process-hours").value);
 
-            if (hours > 0 || minutes > 0) {
-                return;
-            }
+            const minutes =
+                Number(row.querySelector(".process-minutes").value);
 
-            hasInvalidProcess = true;
+            return hours === 0 && minutes === 0;
         }
     );
 
-    if (!hasValidProcess) {
-        alert("作業時間を入力してください。");
+    if (hasInvalidProcess) {
+        alert("すべての作業工程に作業時間を入力してください。");
         showSection(2);
         return false;
     }
