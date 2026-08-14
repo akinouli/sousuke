@@ -769,307 +769,116 @@ let lastPointerY = 0;
 
 
 // ========================================
-// 自動スクロール
+// ドラッグ中の自動スクロール
 // ========================================
 
 const topScrollZone = 160;
 const bottomScrollZone = 180;
 const maxScrollSpeed = 10;
 
-let autoScrollFrame = null;
+let autoScrollAnimation = null;
+let lastPointerY = null;
 
+
+// ----------------------------------------
+// 自動スクロール開始
+// ----------------------------------------
 
 function startAutoScroll() {
 
-    if (autoScrollFrame) {
+    if (autoScrollAnimation) {
         return;
     }
 
-    function scrollLoop() {
+    function scroll() {
 
-        if (!draggingItem) {
-            autoScrollFrame = null;
+        if (lastPointerY === null) {
+            autoScrollAnimation = null;
             return;
         }
 
-        const viewportHeight =
-            window.innerHeight;
+        const viewportHeight = window.innerHeight;
+
+        let scrollSpeed = 0;
+
+
+        // ----------------------------------------
+        // 上側
+        // ----------------------------------------
 
         if (lastPointerY < topScrollZone) {
 
             const distance =
-                scrollZone - lastPointerY;
+                topScrollZone - lastPointerY;
 
             const ratio =
-                Math.min(
-                    distance / scrollZone,
-                    1
-                );
+                Math.min(distance / topScrollZone, 1);
 
             scrollSpeed =
-                maxScrollSpeed *
-                ratio *
-                ratio;
+                -maxScrollSpeed * ratio;
+        }
 
-            window.scrollBy(
-                0,
-                -scrollSpeed
-            );
 
-        } else if (
+        // ----------------------------------------
+        // 下側
+        // ----------------------------------------
+
+        else if (
             lastPointerY >
-            viewportHeight - scrollZone
+            viewportHeight - bottomScrollZone
         ) {
 
             const distance =
                 lastPointerY -
-                (viewportHeight - scrollZone);
+                (viewportHeight - bottomScrollZone);
 
             const ratio =
                 Math.min(
-                    distance / scrollZone,
+                    distance / bottomScrollZone,
                     1
                 );
 
             scrollSpeed =
-                maxScrollSpeed *
-                ratio *
-                ratio;
-
-            window.scrollBy(
-                0,
-                scrollSpeed
-            );
+                maxScrollSpeed * ratio;
         }
 
-        autoScrollFrame =
-            requestAnimationFrame(
-                scrollLoop
-            );
+
+        // ----------------------------------------
+        // スクロール
+        // ----------------------------------------
+
+        if (scrollSpeed !== 0) {
+            window.scrollBy(0, scrollSpeed);
+        }
+
+
+        autoScrollAnimation =
+            requestAnimationFrame(scroll);
     }
 
-    autoScrollFrame =
-        requestAnimationFrame(
-            scrollLoop
-        );
+
+    autoScrollAnimation =
+        requestAnimationFrame(scroll);
 }
 
+
+// ----------------------------------------
+// 自動スクロール停止
+// ----------------------------------------
 
 function stopAutoScroll() {
 
-    if (autoScrollFrame) {
+    if (autoScrollAnimation) {
 
         cancelAnimationFrame(
-            autoScrollFrame
+            autoScrollAnimation
         );
 
-        autoScrollFrame = null;
+        autoScrollAnimation = null;
     }
+
+    lastPointerY = null;
 }
-
-
-// ========================================
-// ドラッグ開始
-// ========================================
-
-document.addEventListener(
-    "pointerdown",
-    event => {
-
-        const handle =
-            event.target.closest(".drag-handle");
-
-        if (!handle) {
-            return;
-        }
-
-        draggingItem =
-            handle.closest(".process-item");
-
-        if (!draggingItem) {
-            return;
-        }
-
-        draggingList =
-            draggingItem.parentNode;
-
-        dragPointerId =
-            event.pointerId;
-
-        lastPointerY =
-            event.clientY;
-
-        draggingItem
-            .querySelector(".process-row")
-            .classList.add("dragging");
-
-        handle.setPointerCapture(
-            event.pointerId
-        );
-
-        startAutoScroll();
-    }
-);
-
-
-// ========================================
-// ドラッグ中
-// ========================================
-
-document.addEventListener(
-    "pointermove",
-    event => {
-
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
-            return;
-        }
-
-        const currentY =
-            event.clientY;
-
-
-        // -------------------------------
-        // 上方向
-        // -------------------------------
-
-        if (currentY < lastPointerY) {
-
-            const previousItem =
-                draggingItem.previousElementSibling;
-
-            if (previousItem) {
-
-                const rect =
-                    previousItem.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
-
-                if (currentY < middle) {
-
-                    const positions =
-                        recordProcessPositions(
-                            draggingList
-                        );
-
-                    draggingList.insertBefore(
-                        draggingItem,
-                        previousItem
-                    );
-
-                    animateProcessMove(
-                        draggingList,
-                        positions
-                    );
-                }
-            }
-        }
-
-
-        // -------------------------------
-        // 下方向
-        // -------------------------------
-
-        if (currentY > lastPointerY) {
-
-            const nextItem =
-                draggingItem.nextElementSibling;
-
-            if (nextItem) {
-
-                const rect =
-                    nextItem.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
-
-                if (currentY > middle) {
-
-                    const positions =
-                        recordProcessPositions(
-                            draggingList
-                        );
-
-                    draggingList.insertBefore(
-                        nextItem,
-                        draggingItem
-                    );
-
-                    animateProcessMove(
-                        draggingList,
-                        positions
-                    );
-                }
-            }
-        }
-
-        lastPointerY =
-            currentY;
-    }
-);
-
-
-// ========================================
-// ドラッグ終了
-// ========================================
-
-document.addEventListener(
-    "pointerup",
-    event => {
-
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
-            return;
-        }
-
-        stopAutoScroll();
-
-        draggingItem
-            .querySelector(".process-row")
-            .classList.remove("dragging");
-
-        draggingItem = null;
-        dragPointerId = null;
-        draggingList = null;
-        lastPointerY = 0;
-    }
-);
-
-
-// ========================================
-// 操作キャンセル
-// ========================================
-
-document.addEventListener(
-    "pointercancel",
-    event => {
-
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
-            return;
-        }
-
-        stopAutoScroll();
-
-        draggingItem
-            .querySelector(".process-row")
-            .classList.remove("dragging");
-
-        draggingItem = null;
-        dragPointerId = null;
-        draggingList = null;
-        lastPointerY = 0;
-    }
-);
 
 
 // ========================================
