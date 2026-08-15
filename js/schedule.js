@@ -664,6 +664,29 @@ document
 );
 
 
+// ----------------------------------------
+// 工程カード移動後アニメーション
+// ----------------------------------------
+
+function animateMovedProcess(item) {
+
+    item.classList.remove("process-shake");
+
+    // アニメーションを再スタートさせる
+    void item.offsetWidth;
+
+    item.classList.add("process-shake");
+
+    item.addEventListener(
+        "animationend",
+        () => {
+            item.classList.remove("process-shake");
+        },
+        {once: true}
+    );
+}
+
+
 // ========================================
 // 工程並び替え
 // ========================================
@@ -672,6 +695,9 @@ let draggingItem = null;
 let dragPointerId = null;
 let draggingList = null;
 let lastPointerY = 0;
+
+// ドラッグ開始時の位置
+let originalIndex = null;
 
 // 自動スクロール用
 const topScrollZone = 160;
@@ -813,6 +839,12 @@ document.addEventListener(
         draggingList =
             draggingItem.parentNode;
 
+        // ドラッグ開始時の位置を記録
+        originalIndex =
+            Array.from(
+                draggingList.children
+            ).indexOf(draggingItem);
+
         dragPointerId =
             event.pointerId;
 
@@ -935,14 +967,31 @@ document.addEventListener(
 
         stopAutoScroll();
 
+        // ドラッグ開始時と現在の位置を比較
+        const currentIndex =
+            Array.from(
+                draggingList.children
+            ).indexOf(draggingItem);
+
+        const hasMoved =
+            currentIndex !== originalIndex;
+
         draggingItem
             .querySelector(".process-row")
             .classList.remove("dragging");
+
+        // 実際に位置が変わっていたら掴んでいたカードだけアニメーション
+        if (hasMoved) {
+            animateMovedProcess(
+                draggingItem.querySelector(".process-row")
+            );
+        }
 
         draggingItem = null;
         dragPointerId = null;
         draggingList = null;
         lastPointerY = 0;
+        originalIndex = null;
     }
 );
 
@@ -972,6 +1021,7 @@ document.addEventListener(
         dragPointerId = null;
         draggingList = null;
         lastPointerY = 0;
+        originalIndex = null;
     }
 );
 

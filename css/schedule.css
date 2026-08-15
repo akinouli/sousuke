@@ -402,12 +402,36 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-/* --------------------------------------------------
-    工程カード移動アニメーション
--------------------------------------------------- */
+/* ========================================
+   工程カード移動後アニメーション
+   ======================================== */
 
-.process-item {
-    transition: transform 0.18s ease;
+@keyframes processShake {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-6px);
+    }
+
+    60% {
+        transform: translateY(4px);
+    }
+
+    80% {
+        transform: translateY(-2px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+.process-shake {
+    animation: processShake 0.18s ease-out;
 }
 
 
