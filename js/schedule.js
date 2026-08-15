@@ -1059,9 +1059,9 @@ weekdays.forEach(
         row.className = "day-row";
         row.innerHTML = `
             <span>${day}</span>
-            <input type="number" class="hour-input" min="0" max="24" value="0">
+            <input type="number" class="hour-input" min="0" max="24" value="1">
             <span>時間</span>
-            <input type="range" class="hour-range" min="0" max="24" value="0">
+            <input type="range" class="hour-range" min="0" max="24" value="1">
         `;
 
         const number = row.querySelector(".hour-input");
