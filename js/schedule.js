@@ -1,6 +1,6 @@
-// ========================================
+// ----------------------------------------
 // セクション切り替え
-// ========================================
+// ----------------------------------------
 const sections = document.querySelectorAll(".form-section");
 const progressItems = document.querySelectorAll(".progress-indicator span");
 const createStatus = document.querySelector(".create-status");
@@ -82,8 +82,7 @@ function updateProgress() {
 // ----------------------------------------
 // ヘッダーから各セクションへ移動
 // ----------------------------------------
-progressItems
-.forEach(
+progressItems.forEach(
     (item, index) => {
         item.addEventListener("click",
             () => {
@@ -107,61 +106,104 @@ let deadlineDate = null;
 // セクションごとの入力チェック
 // ----------------------------------------
 
-function validateSection(index) {
+function validateScheduleInput() {
 
+    // -----------------------------
     // ① ページ数
-    if (index === 0) {
+    // -----------------------------
+    const pageCount =
+        Number(
+            document.getElementById("page-count").value
+        );
 
-        const pageCount =
-            document.getElementById("page-count").value;
+    if (!pageCount || pageCount < 1) {
+        alert("ページ数を入力してください");
+        showSection(0);
+        return false;
+    }
 
-        if (pageCount === "") {
-            alert("ページ数を入力してください。");
+
+    // -----------------------------
+    // ② 行程リスト
+    // -----------------------------
+    const processRows =
+        document.querySelectorAll(".process-row");
+
+    if (processRows.length === 0) {
+        alert("行程を追加してください");
+        showSection(1);
+        return false;
+    }
+
+    for (const row of processRows) {
+
+        const processName =
+            row.querySelector(".process-name").value.trim();
+
+        const hours =
+            Number(
+                row.querySelector(".process-hours").value
+            );
+
+        const minutes =
+            Number(
+                row.querySelector(".process-minutes").value
+            );
+
+        if (!processName) {
+            alert("行程名を入力してください");
+            showSection(1);
             return false;
         }
 
+        if (hours === 0 && minutes === 0) {
+            alert("作業時間を入力してください");
+            showSection(1);
+            return false;
+        }
     }
 
 
-    // ② 工程リスト
-    if (index === 1) {
-
-        // 後でここに工程のチェックを追加
-
-    }
-
-
+    // -----------------------------
     // ③ 活動時間
-    if (index === 2) {
+    // -----------------------------
+    const hourInputs =
+        document.querySelectorAll(".hour-input");
 
-        // 後でここに作業時間のチェックを追加
+    const hasWorkingTime =
+        [...hourInputs].some(
+            input =>
+                Number(input.value) >= 1
+        );
 
+    if (!hasWorkingTime) {
+        alert("活動時間を設定してください");
+        showSection(2);
+        return false;
     }
 
 
+    // -----------------------------
     // ④ 休日
-    if (index === 3) {
+    // -----------------------------
 
-        // ここは必要になったらチェック
-
-    }
+    // 任意なのでチェック不要
 
 
+    // -----------------------------
     // ⑤ 作業期間
-    if (index === 4) {
-
-        if (!startDate) {
-            alert("作業開始日を選択してください。");
-            return false;
-        }
-
-        if (!deadlineDate) {
-            alert("締切日を選択してください。");
-            return false;
-        }
-
+    // -----------------------------
+    if (!startDate && !deadlineDate) {
+        alert("作業開始日・締切日を選択してください");
+        showSection(4);
+        return false;
     }
 
+    if (startDate && !deadlineDate) {
+        alert("締切日を選択してください");
+        showSection(4);
+        return false;
+    }
 
     return true;
 }
@@ -188,8 +230,10 @@ function updateNextButton() {
 document
 .querySelectorAll(".next-button")
 .forEach(button => {
+
     button.addEventListener("click",
         () => {
+
             if (currentSection < sections.length - 1) {
                 // 現在のセクションをチェック
                 if (!validateSection(currentSection)) {
@@ -213,9 +257,9 @@ document
 updateNextButton();
 
 
-// ========================================
+// ----------------------------------------
 // 作業期間カレンダー
-// ========================================
+// ----------------------------------------
 let periodDate = new Date();
 
 function renderPeriodCalendar() {
@@ -229,11 +273,11 @@ function renderPeriodCalendar() {
     calendar.innerHTML = "";
 
     const firstDay = new Date(year,month,1).getDay();
-
     const daysInMonth = new Date(year,month + 1,0).getDate();
 
     // 月初までの空白
     for (let i = 0;i < firstDay;i++) {
+
         const empty = document.createElement("div");
 
         empty.className = "calendar-day empty";
@@ -243,6 +287,7 @@ function renderPeriodCalendar() {
 
     // 日付
     for (let day = 1;day <= daysInMonth;day++) {
+
         const cell = document.createElement("div");
 
         cell.className = "calendar-day";
@@ -251,6 +296,7 @@ function renderPeriodCalendar() {
 
         // 日付表示
         const dateNumber = document.createElement("div");
+
         dateNumber.className = "day-number";
         dateNumber.textContent = day;
 
@@ -266,6 +312,7 @@ function renderPeriodCalendar() {
 
         // アイコン表示エリア
         const dayIcon = document.createElement("div");
+
         dayIcon.className = "day-icon";
 
         cell.appendChild(dayIcon);
@@ -367,9 +414,9 @@ document
 renderPeriodCalendar();
 
 
-// ========================================
-// 初期工程
-// ========================================
+// ----------------------------------------
+// 初期工程 - 作品制作
+// ----------------------------------------
 const defaultProcesses = [
     {
         name: "プロット",
@@ -428,9 +475,9 @@ const defaultProcesses = [
     }
 ];
 
-// ========================================
+// ----------------------------------------
 // 初期工程 - 完成後作業
-// ========================================
+// ----------------------------------------
 const defaultPostProcesses = [
     {
         name: "入稿チェック",
@@ -450,38 +497,33 @@ const defaultPostProcesses = [
 ];
 
 
-// ========================================
+// ----------------------------------------
 // 作品完成後の作業 する or しない
-// ========================================
+// ----------------------------------------
 const postWorkYes = document.getElementById("post-work-yes");
 const postWorkNo = document.getElementById("post-work-no");
 const postWorkArea = document.getElementById("post-work-area");
 const postWorkBottomArrow = document.getElementById("post-work-bottom-arrow");
 
 function updatePostWorkDisplay(shouldSchedule) {
-
-    postWorkYes.classList.toggle(
-        "selected",
-        shouldSchedule
-    );
-
-    postWorkNo.classList.toggle(
-        "selected",
-        !shouldSchedule
-    );
-
+    // する
+    postWorkYes.classList.toggle("selected", shouldSchedule);
+    // しない
+    postWorkNo.classList.toggle("selected", !shouldSchedule);
+    // しない - 行程リスト非表示エリア
     postWorkArea.hidden = !shouldSchedule;
-
-    postWorkBottomArrow.hidden =
-        !shouldSchedule;
+    // しない - ▼非表示エリア
+    postWorkBottomArrow.hidden = !shouldSchedule;
 }
 
+// する
 postWorkYes.addEventListener("click",
     () => {
         updatePostWorkDisplay(true);
     }
 );
 
+// しない
 postWorkNo.addEventListener("click",
     () => {
         updatePostWorkDisplay(false);
@@ -491,9 +533,9 @@ postWorkNo.addEventListener("click",
 updatePostWorkDisplay(true);
 
 
-// ========================================
+// ----------------------------------------
 // 工程追加 カード生成
-// ========================================
+// ----------------------------------------
 
 function createProcessItem(process) {
 
@@ -502,13 +544,10 @@ function createProcessItem(process) {
 
     item.className = "process-item";
 
-    // ----------------------------------------
-    // 工程カード
-    // ----------------------------------------
+    // 工程カード ----------------------------------------
     const row = document.createElement("div");
 
     row.className = "process-row";
-
     row.innerHTML = `
         <span class="drag-handle">＝</span>
 
@@ -546,16 +585,12 @@ function createProcessItem(process) {
         <button type="button" class="delete-btn" aria-label="工程を削除">×</button>
     `;
 
-    // ----------------------------------------
-    // ▼
-    // ----------------------------------------
+    // ▼ ----------------------------------------
     const arrow = document.createElement("div");
 
     arrow.className = "process-arrow";
 
-    // ----------------------------------------
-    // 工程カード＋▼をセットにする
-    // ----------------------------------------
+    // 工程カード＋▼をセットにする ----------------------------------------
     item.appendChild(row);
     item.appendChild(arrow);
 
@@ -563,9 +598,9 @@ function createProcessItem(process) {
 }
 
 
-// ========================================
+// ----------------------------------------
 // 工程追加 - 作品制作
-// ========================================
+// ----------------------------------------
 
 document
 .getElementById("add-process")
@@ -584,9 +619,9 @@ document
 );
 
 
-// ========================================
+// ----------------------------------------
 // 工程追加 - 作品完成後
-// ========================================
+// ----------------------------------------
 
 document
 .getElementById("add-post-process")
@@ -605,9 +640,9 @@ document
 );
 
 
-// ========================================
+// ----------------------------------------
 // 初期工程を表示
-// ========================================
+// ----------------------------------------
 
 const processList = document.getElementById("process-list");
 const postProcessList = document.getElementById("post-process-list");
@@ -627,9 +662,9 @@ defaultPostProcesses.forEach(
 );
 
 
-// ========================================
+// ----------------------------------------
 // 自動調整 ON / OFF
-// ========================================
+// ----------------------------------------
 
 document.addEventListener("click",
     event => {
@@ -650,12 +685,11 @@ document.addEventListener("click",
 );
 
 
-// ========================================
+// ----------------------------------------
 // 工程削除
-// ========================================
+// ----------------------------------------
 
-document
-.addEventListener("click",
+document.addEventListener("click",
     event => {
         if (event.target.classList.contains("delete-btn")) {
             event.target.closest(".process-item").remove();
@@ -676,9 +710,7 @@ function animateMovedProcess(item) {
     void item.offsetWidth;
 
     item.classList.add("process-shake");
-
-    item.addEventListener(
-        "animationend",
+    item.addEventListener("animationend",
         () => {
             item.classList.remove("process-shake");
         },
@@ -687,9 +719,9 @@ function animateMovedProcess(item) {
 }
 
 
-// ========================================
-// 工程並び替え
-// ========================================
+// ----------------------------------------
+// 工程リスト並び替え
+// ----------------------------------------
 
 let draggingItem = null;
 let dragPointerId = null;
@@ -706,7 +738,7 @@ const maxScrollSpeed = 10;
 
 
 // ----------------------------------------
-// 自動スクロール開始
+// 工程リスト並び替え - 自動スクロール開始
 // ----------------------------------------
 
 let autoScrollFrame = null;
@@ -726,88 +758,42 @@ function startAutoScroll() {
 
         const viewportHeight = window.innerHeight;
 
-        // ----------------------------------------
-        // 上端
-        // ----------------------------------------
-
+        // 上端 ----------------------------------------
         if (lastPointerY < topScrollZone) {
 
-            const distance =
-                topScrollZone - lastPointerY;
+            const distance = topScrollZone - lastPointerY;
+            const ratio = Math.min(distance / topScrollZone, 1);
+            const scrollSpeed = maxScrollSpeed * ratio * ratio;
 
-            const ratio =
-                Math.min(
-                    distance / topScrollZone,
-                    1
-                );
-
-            const scrollSpeed =
-                maxScrollSpeed *
-                ratio *
-                ratio;
-
-            window.scrollBy(
-                0,
-                -scrollSpeed
-            );
+            window.scrollBy(0, -scrollSpeed);
         }
 
-        // ----------------------------------------
-        // 下端
-        // ----------------------------------------
+        // 下端 ----------------------------------------
+        else if (lastPointerY > viewportHeight - bottomScrollZone) {
 
-        else if (
-            lastPointerY >
-            viewportHeight - bottomScrollZone
-        ) {
+            const distance = lastPointerY - (viewportHeight - bottomScrollZone);
+            const ratio = Math.min(distance / bottomScrollZone, 1);
+            const scrollSpeed = maxScrollSpeed * ratio * ratio;
 
-            const distance =
-                lastPointerY -
-                (viewportHeight - bottomScrollZone);
-
-            const ratio =
-                Math.min(
-                    distance / bottomScrollZone,
-                    1
-                );
-
-            const scrollSpeed =
-                maxScrollSpeed *
-                ratio *
-                ratio;
-
-            window.scrollBy(
-                0,
-                scrollSpeed
-            );
+            window.scrollBy(0, scrollSpeed);
         }
 
         // 次のフレーム
-        autoScrollFrame =
-            requestAnimationFrame(
-                scrollLoop
-            );
+        autoScrollFrame = requestAnimationFrame(scrollLoop);
     }
 
-    autoScrollFrame =
-        requestAnimationFrame(
-            scrollLoop
-        );
+    autoScrollFrame = requestAnimationFrame(scrollLoop);
 }
 
 
 // ----------------------------------------
-// 自動スクロール停止
+// 工程リスト並び替え - 自動スクロール停止
 // ----------------------------------------
 
 function stopAutoScroll() {
 
     if (autoScrollFrame) {
-
-        cancelAnimationFrame(
-            autoScrollFrame
-        );
-
+        cancelAnimationFrame(autoScrollFrame);
         autoScrollFrame = null;
     }
 
@@ -815,49 +801,38 @@ function stopAutoScroll() {
 
 
 // ----------------------------------------
-// ドラッグ開始
+// 行程リスト並び替え - ドラッグ開始
 // ----------------------------------------
 
-document.addEventListener(
-    "pointerdown",
+document.addEventListener("pointerdown",
     event => {
 
-        const handle =
-            event.target.closest(".drag-handle");
+        const handle = event.target.closest(".drag-handle");
 
         if (!handle) {
             return;
         }
 
-        draggingItem =
-            handle.closest(".process-item");
+        draggingItem = handle.closest(".process-item");
 
         if (!draggingItem) {
             return;
         }
 
-        draggingList =
-            draggingItem.parentNode;
+        draggingList = draggingItem.parentNode;
 
         // ドラッグ開始時の位置を記録
-        originalIndex =
-            Array.from(
-                draggingList.children
-            ).indexOf(draggingItem);
+        originalIndex = Array.from(draggingList.children).indexOf(draggingItem);
 
-        dragPointerId =
-            event.pointerId;
+        dragPointerId = event.pointerId;
 
-        lastPointerY =
-            event.clientY;
+        lastPointerY = event.clientY;
 
         draggingItem
-            .querySelector(".process-row")
-            .classList.add("dragging");
+        .querySelector(".process-row")
+        .classList.add("dragging");
 
-        handle.setPointerCapture(
-            event.pointerId
-        );
+        handle.setPointerCapture(event.pointerId);
 
         // 自動スクロール開始
         startAutoScroll();
@@ -866,125 +841,78 @@ document.addEventListener(
 
 
 // ----------------------------------------
-// ドラッグ中
+// 行程リスト並び替え - ドラッグ中
 // ----------------------------------------
 
-document.addEventListener(
-    "pointermove",
+document.addEventListener("pointermove",
     event => {
 
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
+        if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
 
-        const currentY =
-            event.clientY;
+        const currentY = event.clientY;
 
-
-        // ----------------------------------------
-        // 上方向へ移動
-        // ----------------------------------------
-
+        // 上方向へ移動 ----------------------------------------
         if (currentY < lastPointerY) {
-
-            const previousItem =
-                draggingItem.previousElementSibling;
+            const previousItem = draggingItem.previousElementSibling;
 
             if (previousItem) {
-
-                const rect =
-                    previousItem.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
+                const rect = previousItem.getBoundingClientRect();
+                const middle = rect.top + rect.height / 2;
 
                 if (currentY < middle) {
-
-                    draggingList.insertBefore(
-                        draggingItem,
-                        previousItem
-                    );
-                    
+                    draggingList.insertBefore(draggingItem,previousItem);
                 }
             }
         }
 
 
-        // ----------------------------------------
-        // 下方向へ移動
-        // ----------------------------------------
-
+        // 下方向へ移動 ----------------------------------------
         if (currentY > lastPointerY) {
-
-            const nextItem =
-                draggingItem.nextElementSibling;
+            const nextItem = draggingItem.nextElementSibling;
 
             if (nextItem) {
-
-                const rect =
-                    nextItem.getBoundingClientRect();
-
-                const middle =
-                    rect.top +
-                    rect.height / 2;
+                const rect = nextItem.getBoundingClientRect();
+                const middle = rect.top + rect.height / 2;
 
                 if (currentY > middle) {
-
-                    draggingList.insertBefore(
-                        nextItem,
-                        draggingItem
-                    );
+                    draggingList.insertBefore(nextItem,draggingItem);
                 }
             }
         }
 
 
         // 現在の指・マウス位置を記録
-        lastPointerY =
-            currentY;
+        lastPointerY = currentY;
     }
 );
 
 
 // ----------------------------------------
-// ドラッグ終了
+// 行程リスト並び替え - ドラッグ終了
 // ----------------------------------------
 
-document.addEventListener(
-    "pointerup",
+document.addEventListener("pointerup",
     event => {
 
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
+        if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
 
         stopAutoScroll();
 
         // ドラッグ開始時と現在の位置を比較
-        const currentIndex =
-            Array.from(
-                draggingList.children
-            ).indexOf(draggingItem);
-
-        const hasMoved =
-            currentIndex !== originalIndex;
+        const currentIndex = Array.from(draggingList.children).indexOf(draggingItem);
+        const hasMoved = currentIndex !== originalIndex;
 
         draggingItem
-            .querySelector(".process-row")
-            .classList.remove("dragging");
+        .querySelector(".process-row")
+        .classList.remove("dragging");
 
         // 実際に位置が変わっていたら掴んでいたカードだけアニメーション
         if (hasMoved) {
-            animateMovedProcess(
-                draggingItem.querySelector(".process-row")
-            );
+            animateMovedProcess(draggingItem.querySelector(".process-row"));
         }
 
         draggingItem = null;
@@ -997,25 +925,21 @@ document.addEventListener(
 
 
 // ----------------------------------------
-// 操作キャンセル
+// 行程リスト並び替え - 操作キャンセル
 // ----------------------------------------
 
-document.addEventListener(
-    "pointercancel",
+document.addEventListener("pointercancel",
     event => {
 
-        if (
-            !draggingItem ||
-            event.pointerId !== dragPointerId
-        ) {
+        if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
 
         stopAutoScroll();
 
         draggingItem
-            .querySelector(".process-row")
-            .classList.remove("dragging");
+        .querySelector(".process-row")
+        .classList.remove("dragging");
 
         draggingItem = null;
         dragPointerId = null;
@@ -1026,9 +950,9 @@ document.addEventListener(
 );
 
 
-// ========================================
-// 作業可能時間
-// ========================================
+// ----------------------------------------
+// 活動時間
+// ----------------------------------------
 const weekdays = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
 const weekdayList = document.getElementById("weekday-list");
 
@@ -1040,8 +964,7 @@ function updateHourRangeColor(number, range) {
     range.classList.toggle("overwork", value > 12);
 }
 
-weekdays
-.forEach(
+weekdays.forEach(
     day => {
         const row = document.createElement("div");
         row.className = "day-row";
@@ -1111,15 +1034,14 @@ weekdays
 );
 
 
-// ========================================
+// ----------------------------------------
 // 休日カレンダー
-// ========================================
+// ----------------------------------------
 let holidayDate = new Date();
 
 const holidays = new Set();
 
-function 
-renderHolidayCalendar() {
+function renderHolidayCalendar() {
     const year = holidayDate.getFullYear();
     const month = holidayDate.getMonth();
 
@@ -1219,13 +1141,12 @@ document
 renderHolidayCalendar();
 
 
-// ========================================
+// ----------------------------------------
 // 入力チェック
-// ========================================
+// ----------------------------------------
 function validateScheduleInput() {
-    // -----------------------------
-    // ① ページ数
-    // -----------------------------
+
+    // 1.ページ数 -----------------------------
     const pageCount = Number(document.getElementById("page-count").value);
 
     if (!pageCount || pageCount < 1) {
@@ -1234,24 +1155,7 @@ function validateScheduleInput() {
         return false;
     }
 
-    // -----------------------------
-    // ② 作業期間
-    // -----------------------------
-    if (!startDate || !deadlineDate) {
-        alert("作業期間を選択してください。");
-        showSection(1);
-        return false;
-    }
-
-    if (deadlineDate < startDate) {
-        alert("締切日は作業開始日より後の日付にしてください。");
-        showSection(1);
-        return false;
-    }
-
-    // -----------------------------
-    // ③ 作業工程
-    // -----------------------------
+    // 2.工程リスト -----------------------------
     const processRows = document.querySelectorAll(".process-row");
 
     if (processRows.length === 0) {
@@ -1278,9 +1182,7 @@ function validateScheduleInput() {
         return false;
     }
 
-    // -----------------------------
-    // ④ 作業可能時間
-    // -----------------------------
+    // 3.活動時間 -----------------------------
     const hourInputs = document.querySelectorAll(".hour-input");
     const hasWorkingTime = [...hourInputs].some(
         input =>
@@ -1293,33 +1195,38 @@ function validateScheduleInput() {
         return false;
     }
 
-    // -----------------------------
-    // ⑤ 休日
-    // -----------------------------
+    // 4.休日 -----------------------------
     // 任意なのでチェック不要
+
+    // 5.作業期間 -----------------------------
+    if (!startDate || !deadlineDate) {
+        alert("作業期間を選択してください。");
+        showSection(1);
+        return false;
+    }
+
+    if (deadlineDate < startDate) {
+        alert("締切日は作業開始日より後の日付にしてください。");
+        showSection(1);
+        return false;
+    }
 
     return true;
 }
 
 
-// ========================================
+// ----------------------------------------
 // スケジュール作成
-// ========================================
-function 
-createSchedule() {
+// ----------------------------------------
+function createSchedule() {
     const pageCount = document.getElementById("page-count").value;
 
     console.log("ページ数:",pageCount);
-
     console.log("開始日:",startDate);
-
     console.log("締切日:",deadlineDate);
-
     console.log("休日:",[...holidays]);
 
-    // --------------------------------
-    // スケジュール作成完了
-    // --------------------------------
+    // スケジュール作成完了 --------------------------------
     progressItems.forEach(
         (item, index) => {
             if (index < 5) {
