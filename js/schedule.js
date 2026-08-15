@@ -86,9 +86,23 @@ progressItems.forEach(
     (item, index) => {
         item.addEventListener("click",
             () => {
+
                 /* ①～⑤だけセクション移動可能 */
                 if (index < 5) {
+
+                    /* 現在のセクションをクリックした場合は何もしない */
+                    if (index === currentSection) {
+                        return;
+                    }
+
+                    /* 現在のセクションをチェック */
+                    if (!validateSection(currentSection)) {
+                        return;
+                    }
+
+                    /* エラーがなければ移動 */
                     showSection(index);
+
                 }
             }
         );
