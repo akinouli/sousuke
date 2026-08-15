@@ -235,16 +235,21 @@ document
         () => {
 
             if (currentSection < sections.length - 1) {
-                // 現在のセクションをチェック
-                if (!validateSection(currentSection)) {
+
+                // 現在の入力内容をチェック
+                if (!validateScheduleInput()) {
                     return;
                 }
+
                 showSection(currentSection + 1);
+
             } else {
-                // 最後のセクションをチェック
-                if (!validateSection(currentSection)) {
-                   return;
+
+                // 最後のセクションでは入力チェック後に作成
+                if (!validateScheduleInput()) {
+                    return;
                 }
+
                 createSchedule();
             }
         }
