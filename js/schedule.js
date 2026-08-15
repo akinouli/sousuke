@@ -106,104 +106,155 @@ let deadlineDate = null;
 // セクションごとの入力チェック
 // ----------------------------------------
 
-function validateScheduleInput() {
+function validateSection(index) {
 
-    // -----------------------------
+    // ========================================
     // ① ページ数
-    // -----------------------------
-    const pageCount =
-        Number(
-            document.getElementById("page-count").value
-        );
+    // ========================================
+    if (index === 0) {
 
-    if (!pageCount || pageCount < 1) {
-        alert("ページ数を入力してください");
-        showSection(0);
-        return false;
-    }
-
-
-    // -----------------------------
-    // ② 行程リスト
-    // -----------------------------
-    const processRows =
-        document.querySelectorAll(".process-row");
-
-    if (processRows.length === 0) {
-        alert("行程を追加してください");
-        showSection(1);
-        return false;
-    }
-
-    for (const row of processRows) {
-
-        const processName =
-            row.querySelector(".process-name").value.trim();
-
-        const hours =
+        const pageCount =
             Number(
-                row.querySelector(".process-hours").value
+                document.getElementById("page-count").value
             );
 
-        const minutes =
-            Number(
-                row.querySelector(".process-minutes").value
-            );
-
-        if (!processName) {
-            alert("行程名を入力してください");
-            showSection(1);
+        if (!pageCount || pageCount < 1) {
+            alert("ページ数を入力してください");
             return false;
         }
 
-        if (hours === 0 && minutes === 0) {
-            alert("作業時間を入力してください");
-            showSection(1);
-            return false;
-        }
     }
 
 
-    // -----------------------------
+    // ========================================
+    // ② 作業工程
+    // ========================================
+    if (index === 1) {
+
+        const processRows =
+            document.querySelectorAll(".process-row");
+
+
+        // ----------------------------------------
+        // 工程が1つもない
+        // ----------------------------------------
+        if (processRows.length === 0) {
+            alert("不要な行程を削除してください");
+            return false;
+        }
+
+
+        // ----------------------------------------
+        // 工程ごとのチェック
+        // ----------------------------------------
+        for (const row of processRows) {
+
+            const nameInput =
+                row.querySelector(".process-name");
+
+            const hoursInput =
+                row.querySelector(".process-hours");
+
+            const minutesInput =
+                row.querySelector(".process-minutes");
+
+
+            const name =
+                nameInput.value.trim();
+
+            const hours =
+                Number(hoursInput.value);
+
+            const minutes =
+                Number(minutesInput.value);
+
+
+            // ----------------------------------------
+            // 行程名・作業時間の両方が未入力
+            // ----------------------------------------
+            if (
+                name === "" &&
+                hours === 0 &&
+                minutes === 0
+            ) {
+                continue;
+            }
+
+
+            // ----------------------------------------
+            // 行程名のみエラー
+            // ----------------------------------------
+            if (name === "") {
+                alert("行程名を入力してください");
+                return false;
+            }
+
+
+            // ----------------------------------------
+            // 作業時間のみエラー
+            // ----------------------------------------
+            if (
+                hours === 0 &&
+                minutes === 0
+            ) {
+                alert("作業時間を入力してください");
+                return false;
+            }
+
+        }
+
+    }
+
+
+    // ========================================
     // ③ 活動時間
-    // -----------------------------
-    const hourInputs =
-        document.querySelectorAll(".hour-input");
+    // ========================================
+    if (index === 2) {
 
-    const hasWorkingTime =
-        [...hourInputs].some(
-            input =>
-                Number(input.value) >= 1
-        );
+        const hourInputs =
+            document.querySelectorAll(".hour-input");
 
-    if (!hasWorkingTime) {
-        alert("活動時間を設定してください");
-        showSection(2);
-        return false;
+        const hasWorkingTime =
+            [...hourInputs].some(
+                input =>
+                    Number(input.value) >= 1
+            );
+
+        if (!hasWorkingTime) {
+            alert("活動時間を設定してください");
+            return false;
+        }
+
     }
 
 
-    // -----------------------------
+    // ========================================
     // ④ 休日
-    // -----------------------------
+    // ========================================
+    if (index === 3) {
 
-    // 任意なのでチェック不要
+        // 休日は任意なのでチェックなし
+
+    }
 
 
-    // -----------------------------
+    // ========================================
     // ⑤ 作業期間
-    // -----------------------------
-    if (!startDate && !deadlineDate) {
-        alert("作業開始日・締切日を選択してください");
-        showSection(4);
-        return false;
+    // ========================================
+    if (index === 4) {
+
+        if (!startDate && !deadlineDate) {
+            alert("作業開始日・締切日を選択してください");
+            return false;
+        }
+
+        if (!deadlineDate) {
+            alert("締切日を選択してください");
+            return false;
+        }
+
     }
 
-    if (startDate && !deadlineDate) {
-        alert("締切日を選択してください");
-        showSection(4);
-        return false;
-    }
 
     return true;
 }
@@ -230,28 +281,26 @@ function updateNextButton() {
 document
 .querySelectorAll(".next-button")
 .forEach(button => {
-
     button.addEventListener("click",
         () => {
 
-            if (currentSection < sections.length - 1) {
+            // 現在のセクションをチェック
+            if (!validateSection(currentSection)) {
+                return;
+            }
 
-                // 現在の入力内容をチェック
-                if (!validateScheduleInput()) {
-                    return;
-                }
+
+            // 最後のセクションではスケジュール作成
+            if (currentSection < sections.length - 1) {
 
                 showSection(currentSection + 1);
 
             } else {
 
-                // 最後のセクションでは入力チェック後に作成
-                if (!validateScheduleInput()) {
-                    return;
-                }
-
                 createSchedule();
+
             }
+
         }
     );
 });
