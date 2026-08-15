@@ -131,76 +131,97 @@ function validateSection(index) {
     // ========================================
     if (index === 1) {
 
+        // 作品制作 ----------------------------------------
         const processRows =
-            document.querySelectorAll(".process-row");
+            processList.querySelectorAll(".process-row");
 
-
-        // ----------------------------------------
-        // 工程が1つもない
-        // ----------------------------------------
+        // 行程が1個もない
         if (processRows.length === 0) {
-            alert("不要な行程を削除してください");
+            alert("行程を1個以上作成してください");
             return false;
         }
 
-
-        // ----------------------------------------
-        // 工程ごとのチェック
-        // ----------------------------------------
+        // 作品制作の各行程をチェック
         for (const row of processRows) {
 
-            const nameInput =
-                row.querySelector(".process-name");
-
-            const hoursInput =
-                row.querySelector(".process-hours");
-
-            const minutesInput =
-                row.querySelector(".process-minutes");
-
-
             const name =
-                nameInput.value.trim();
+                row.querySelector(".process-name").value.trim();
 
             const hours =
-                Number(hoursInput.value);
+                Number(row.querySelector(".process-hours").value);
 
             const minutes =
-                Number(minutesInput.value);
+                Number(row.querySelector(".process-minutes").value);
 
+            const hasTime =
+                hours > 0 || minutes > 0;
 
-            // ----------------------------------------
-            // 行程名・作業時間の両方が未入力
-            // ----------------------------------------
-            if (
-                name === "" &&
-                hours === 0 &&
-                minutes === 0
-            ) {
-                continue;
+            // 行程名・作業時間ともに未入力
+            if (!name && !hasTime) {
+                alert("行程名・作業時間を入力してください");
+                return false;
             }
 
-
-            // ----------------------------------------
-            // 行程名のみエラー
-            // ----------------------------------------
-            if (name === "") {
+            // 行程名のみ未入力
+            if (!name) {
                 alert("行程名を入力してください");
                 return false;
             }
 
-
-            // ----------------------------------------
-            // 作業時間のみエラー
-            // ----------------------------------------
-            if (
-                hours === 0 &&
-                minutes === 0
-            ) {
+            // 作業時間のみ未入力
+            if (!hasTime) {
                 alert("作業時間を入力してください");
                 return false;
             }
+        }
 
+
+        // 作品完成後 ----------------------------------------
+        // 【しない】ならチェックしない
+        if (postWorkYes.classList.contains("selected")) {
+
+            const postProcessRows =
+                postProcessList.querySelectorAll(".process-row");
+
+            // 行程が1個もない
+            if (postProcessRows.length === 0) {
+                alert("行程を1個以上作成してください");
+                return false;
+            }
+
+            // 完成後の各行程をチェック
+            for (const row of postProcessRows) {
+
+                const name =
+                    row.querySelector(".process-name").value.trim();
+
+                const hours =
+                    Number(row.querySelector(".process-hours").value);
+
+                const minutes =
+                    Number(row.querySelector(".process-minutes").value);
+
+                const hasTime =
+                    hours > 0 || minutes > 0;
+
+                // 行程名・作業時間ともに未入力
+                if (!name && !hasTime) {
+                    alert("行程名・作業時間を入力してください");
+                    return false;
+                }
+
+                // 行程名のみ未入力
+                if (!name) {
+                    alert("行程名を入力してください");
+                    return false;
+                }
+
+                // 作業時間のみ未入力
+                if (!hasTime) {
+                    alert("作業時間を入力してください");
+                    return false;
+                }
+            }
         }
 
     }
