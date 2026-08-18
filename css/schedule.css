@@ -669,12 +669,13 @@ body {
 
 
 /* --------------------------------------------------
-    作品完成 / 作業完了カード
+    制作開始 / 作品完成 / 作業完了カード
 -------------------------------------------------- */
 
+.flow-card,
 .completion-card {
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
 
     display: flex;
     flex-direction: column;
@@ -683,9 +684,7 @@ body {
 
     border-radius: 50%;
 
-    justify-self: center;
-
-    padding: 10px 18px;
+    margin: 0 auto;
 
     background: #fff;
 
@@ -696,6 +695,15 @@ body {
     font-weight: bold;
 
     color: #666;
+}
+
+.flow-card img,
+.completion-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+
+    margin-top: 4px;
 }
 
 
