@@ -63,7 +63,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
+
     cursor: pointer;
     user-select: none;
     transition:
@@ -77,12 +77,20 @@ body {
 
 .progress-indicator span:not(.start-status):not(.create-status)::before {
     content: "";
+
     display: inline-block;
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 12px solid #999;
+    width: 14px;
+    height: 16px;
+
+    background: #999;
+
+    clip-path: polygon(
+    0 0,
+    100% 50%,
+    0 100%
+    );
+
+    border-radius: 2px;
 }
 
 .progress-indicator span.active::before {
