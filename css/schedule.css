@@ -52,11 +52,18 @@ body {
     margin-top: 8px;
     display: flex;
     justify-content: center;
-    gap: 6px;
+    gap: 14px;
     font-size: 16px;
 }
 
 .progress-indicator span {
+    min-width: 28px;
+    min-height: 28px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
     cursor: pointer;
     user-select: none;
     transition:
@@ -73,9 +80,9 @@ body {
     display: inline-block;
     width: 0;
     height: 0;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-left: 10px solid #999;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid #999;
 }
 
 .progress-indicator span.active::before {
