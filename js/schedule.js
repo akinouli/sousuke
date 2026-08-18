@@ -2,7 +2,7 @@
 // セクション切り替え
 // ----------------------------------------
 const sections = document.querySelectorAll(".form-section");
-const progressItems = document.querySelectorAll(".progress-indicator span");
+const progressItems = document.querySelectorAll(".progress-indicator span:not(.start-status):not(.create-status)");
 const createStatus = document.querySelector(".create-status");
 
 let currentSection = 0;

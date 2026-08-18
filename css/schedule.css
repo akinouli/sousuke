@@ -68,7 +68,7 @@ body {
     transform: scale(1.15);
 }
 
-.progress-indicator span:not(.create-status)::before {
+.progress-indicator span:not(.start-status):not(.create-status)::before {
     content: "";
     display: inline-block;
     width: 0;
