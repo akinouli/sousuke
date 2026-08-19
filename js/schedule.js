@@ -71,11 +71,17 @@ function showSection(nextIndex) {
 function updateProgress() {
     progressItems.forEach(
         (item, index) => {
-            /* ①～⑤ 現在表示中のセクションだけ ▶ にする */
+            /* ①～⑤ 現在表示中のセクションだけ見た目変化 */
             if (index < 5) {
-                item.classList.toggle("active",index === currentSection);
+                item.classList.toggle("active",
+                    index === currentSection);
             }
         }
+    );
+
+    /* 結果画面表示中だけ見た目変化 */
+    createStatus.classList.toggle("active",
+        currentSection === sections.length - 1
     );
 }
 

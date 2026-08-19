@@ -61,6 +61,49 @@ body {
     font-size: 16px;
 }
 
+.progress-indicator .start-status {
+    min-width: auto;
+    min-height: 28px;
+
+    padding: 0 10px;
+
+    border: 2px solid #5d8fd8;
+    border-radius: 999px;
+
+    background: white;
+    color: #5d8fd8;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: default;
+
+    transition: none;
+}
+
+.progress-indicator .create-status {
+    min-width: auto;
+    min-height: 28px;
+
+    padding: 0 10px;
+
+    border: 2px solid #5d8fd8;
+    border-radius: 999px;
+
+    background: white;
+    color: #5d8fd8;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: default;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
 .progress-indicator span {
     min-width: 28px;
     min-height: 28px;
@@ -82,6 +125,14 @@ body {
     transform: scale(1.15);
 }
 
+.progress-indicator .start-status:hover {
+    transform: none;
+}
+
+.progress-indicator .create-status:hover {
+    transform: none;
+}
+
 .progress-indicator span:not(.start-status):not(.create-status)::before {
     content: attr(data-number);
 
@@ -101,6 +152,24 @@ body {
     font-weight: bold;
 
     position: relative;
+}
+
+.progress-indicator .start-status::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    right: -6px;
+
+    transform: translateY(-50%);
+
+    width: 0;
+    height: 0;
+
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #5d8fd8;
 }
 
 .progress-indicator span:not(.start-status):not(.create-status)::after {
@@ -137,6 +206,11 @@ body {
 .progress-indicator span.locked {
     cursor: default;
     opacity: 0.6;
+}
+
+.progress-indicator .create-status.active {
+    background: #5d8fd8;
+    color: white;
 }
 
 
@@ -266,7 +340,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 
@@ -484,7 +558,9 @@ body {
 .process-footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
+
+    align-items: start;
+
     margin-top: 5px;
 }
 
@@ -496,6 +572,7 @@ body {
 
     width: fit-content;
 
+    margin: 0;
     padding: 12px 18px;
 
     border: none;
