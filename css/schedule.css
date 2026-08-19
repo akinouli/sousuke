@@ -94,7 +94,7 @@ body {
 }
 
 .progress-indicator span.active::before {
-    border-left-color: #5d8fd8;
+    background: #5d8fd8;
 }
 
 .progress-indicator span.active {
@@ -699,11 +699,29 @@ body {
 
 .flow-card img,
 .completion-card img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
 
-    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+.flow-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+}
+
+.flow-arrow::before {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #aaa;
 }
 
 
@@ -715,7 +733,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70px;
+    height: 45px;
 }
 
 .post-work-flow-arrow::before {

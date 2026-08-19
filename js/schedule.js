@@ -948,7 +948,7 @@ document.addEventListener("pointermove",
 
             if (previousItem) {
                 const rect = previousItem.getBoundingClientRect();
-                const middle = rect.top + rect.height / 2;
+                const middle = rect.top + rect.height * 0.6;
 
                 if (currentY < middle) {
                     draggingList.insertBefore(draggingItem,previousItem);
@@ -963,7 +963,7 @@ document.addEventListener("pointermove",
 
             if (nextItem) {
                 const rect = nextItem.getBoundingClientRect();
-                const middle = rect.top + rect.height / 2;
+                const middle = rect.top + rect.height * 0.2;
 
                 if (currentY > middle) {
                     draggingList.insertBefore(nextItem,draggingItem);
