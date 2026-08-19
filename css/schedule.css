@@ -64,6 +64,8 @@ body {
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
     cursor: pointer;
     user-select: none;
     transition:
@@ -78,8 +80,8 @@ body {
 .progress-indicator span:not(.start-status):not(.create-status)::before {
     content: attr(data-number);
 
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
 
     display: flex;
     align-items: center;
@@ -88,21 +90,38 @@ body {
     background: #999;
     color: white;
 
-    clip-path: polygon(
-        0% 0%,
-        75% 0%,
-        100% 50%,
-        75% 100%,
-        0% 100%,
-        15% 50%
-    );
+    border-radius: 50%;
 
     font-size: 14px;
     font-weight: bold;
+
+    position: relative;
+}
+
+.progress-indicator span:not(.start-status):not(.create-status)::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    right: -5px;
+
+    transform: translateY(-50%);
+
+    width: 0;
+    height: 0;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid #999;
 }
 
 .progress-indicator span.active:not(.start-status):not(.create-status)::before {
     background: #5d8fd8;
+}
+
+.progress-indicator span.active:not(.start-status):not(.create-status)::after {
+    border-left-color: #5d8fd8;
 }
 
 .progress-indicator span.active {
