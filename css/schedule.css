@@ -93,7 +93,7 @@ body {
     border-radius: 2px;
 }
 
-.progress-indicator span.active::before {
+.progress-indicator span.active:not(.start-status):not(.create-status)::before {
     background: #5d8fd8;
 }
 
