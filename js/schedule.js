@@ -1,14 +1,30 @@
 // ----------------------------------------
 // セクション切り替え
 // ----------------------------------------
-const sections = document.querySelectorAll(".form-section");
-const progressItems = document.querySelectorAll(".progress-indicator span:not(.start-status):not(.create-status)");
-const createStatus = document.querySelector(".create-status");
+const inputSections =
+    document.querySelectorAll(".form-section");
+
+const resultSection =
+    document.querySelector(".result-section");
+
+const progressItems =
+    document.querySelectorAll(
+        ".progress-indicator span:not(.start-status):not(.create-status)"
+    );
+
+const createStatus =
+    document.querySelector(".create-status");
 
 let currentSection = 0;
 
+// 入力セクションと結果セクションの分離
+const allSections = [
+    ...inputSections,
+    resultSection
+];
+
 // 初期状態では現在のセクション以外を非表示
-sections.forEach(
+allSections.forEach(
     (section, index) => {
         if (index !== currentSection) {
             section.classList.add("hidden-section");
@@ -21,12 +37,12 @@ sections.forEach(
 // ----------------------------------------
 function showSection(nextIndex) {
 
-    if (nextIndex < 0 || nextIndex >= sections.length) {
+    if (nextIndex < 0 || nextIndex >= allSections.length) {
         return;
     }
 
-    const current = sections[currentSection];
-    const next = sections[nextIndex];
+    const current = allSections[currentSection];
+    const next = allSections[nextIndex];
 
     if (currentSection === nextIndex) {
         return;
@@ -72,21 +88,27 @@ function updateProgress() {
     progressItems.forEach(
         (item, index) => {
             /* ①～⑤ 現在表示中のセクションだけ見た目変化 */
-            if (index < 5) {
-                item.classList.toggle("active",
-                    index === currentSection);
+            if (index < inputSections.length) {
+
+                if (index === currentSection) {
+                    item.classList.add("active");
+                } else {
+                    item.classList.remove("active");
+                }
+
             }
         }
     );
 
     /* 結果画面表示中だけ見た目変化 */
-    createStatus.classList.toggle("active",
-        currentSection === sections.length - 1
+    createStatus.classList.toggle(
+        "active",
+        currentSection === inputSections.length
     );
 }
 
 // ----------------------------------------
-// ヘッダーから各セクションへ移動
+// 進捗ナビ - 入力セクションへ移動
 // ----------------------------------------
 progressItems.forEach(
     (item, index) => {
@@ -115,6 +137,26 @@ progressItems.forEach(
     }
 );
 
+
+// ----------------------------------------
+// 進捗ナビ - 結果セクションへ移動
+// ----------------------------------------
+createStatus.addEventListener(
+    "click",
+    () => {
+
+        // 全セクションをチェック
+        if (!validateAllSections()) {
+            return;
+        }
+
+        // エラーがなければスケジュール作成
+        createSchedule();
+
+    }
+);
+
+
 // ----------------------------------------
 // 作業期間
 // ----------------------------------------
@@ -122,15 +164,14 @@ let startDate = null;
 let completionDate = null;
 let deadlineDate = null;
 
+
 // ----------------------------------------
-// セクションごとの入力チェック
+// エラーチェック - セクション毎
 // ----------------------------------------
 
 function validateSection(index) {
 
-    // ========================================
-    // ① ページ数
-    // ========================================
+    // ① ページ数 ----------------------------------------
     if (index === 0) {
 
         const pageCount =
@@ -145,13 +186,10 @@ function validateSection(index) {
 
     }
 
-
-    // ========================================
-    // ② 作業工程
-    // ========================================
+    // ② 作業工程 ----------------------------------------
     if (index === 1) {
 
-        // 作品制作 ----------------------------------------
+        // 作品制作行程 ----------------------------------------
         const processRows =
             processList.querySelectorAll(".process-row");
 
@@ -195,8 +233,7 @@ function validateSection(index) {
             }
         }
 
-
-        // 作品完成後 ----------------------------------------
+        // 仕立て行程 ----------------------------------------
         // 【しない】ならチェックしない
         if (postWorkYes.classList.contains("selected")) {
 
@@ -243,13 +280,9 @@ function validateSection(index) {
                 }
             }
         }
-
     }
 
-
-    // ========================================
-    // ③ 活動時間
-    // ========================================
+    // ③ 活動時間 ----------------------------------------
     if (index === 2) {
 
         const hourInputs =
@@ -268,20 +301,12 @@ function validateSection(index) {
 
     }
 
-
-    // ========================================
-    // ④ 休日
-    // ========================================
+    // ④ 休日 ----------------------------------------
     if (index === 3) {
-
         // 休日は任意なのでチェックなし
-
     }
 
-
-    // ========================================
-    // ⑤ 作業期間
-    // ========================================
+    // ⑤ 作業期間 ----------------------------------------
     if (index === 4) {
 
         if (!startDate && !deadlineDate) {
@@ -296,19 +321,43 @@ function validateSection(index) {
 
     }
 
+    return true;
+}
+
+
+// ----------------------------------------
+// エラーチェック - 全セクション
+// ----------------------------------------
+function validateAllSections() {
+
+    for (
+        let index = 0;
+        index < inputSections.length;
+        index++
+    ) {
+
+        if (!validateSection(index)) {
+
+            showSection(index);
+
+            return false;
+        }
+
+    }
 
     return true;
 }
 
+
 // ----------------------------------------
-// 「次へ」ボタンの表示
+// 「次へ」/「スケジュール作成」の表示
 // ----------------------------------------
 const nextButton = document.querySelector(".next-button");
 const nextButtonText = nextButton.querySelector(".next-button-text");
 
 function updateNextButton() {
 
-    if (currentSection === sections.length - 1) {
+    if (currentSection === inputSections.length - 1) {
         nextButtonText.textContent = "スケジュール作成";
     } else {
         nextButtonText.textContent = "次へ";
@@ -330,16 +379,18 @@ document
                 return;
             }
 
+            showSection(currentSection + 1);
 
-            // 最後のセクションではスケジュール作成
-            if (currentSection < sections.length - 1) {
+            // ⑤からのスケジュール作成
+            if (currentSection === inputSections.length - 1) {
 
-                showSection(currentSection + 1);
-
-            } else {
+                if (!validateAllSections()) {
+                    return;
+                }
 
                 createSchedule();
 
+                return;
             }
 
         }
@@ -1326,7 +1377,7 @@ function createSchedule() {
     progressItems.forEach(
         (item, index) => {
             if (index < 5) {
-                item.textContent = "▷";
+                item.textContent = "";
                 item.classList.remove("active");
             }
         }

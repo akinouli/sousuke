@@ -114,6 +114,9 @@ body {
 
     position: relative;
 
+    background: #eef8fa;
+    color: #5d8fd8;
+
     cursor: pointer;
     user-select: none;
     transition:
@@ -121,16 +124,13 @@ body {
         opacity 0.15s ease;
 }
 
-.progress-indicator span:hover {
-    transform: scale(1.15);
+.progress-indicator span:not(.start-status):hover {
+    background: #5d8fd8;
+    color: white;
 }
 
-.progress-indicator .start-status:hover {
-    transform: none;
-}
-
-.progress-indicator .create-status:hover {
-    transform: none;
+.progress-indicator span:not(.start-status):active {
+    transform: scale(0.94);
 }
 
 .progress-indicator span:not(.start-status):not(.create-status)::before {
@@ -225,7 +225,7 @@ body {
 
 
 /* --------------------------------------------------
-    セクション
+    入力セクション
 -------------------------------------------------- */
 
 .form-section {
@@ -997,6 +997,49 @@ body {
 
 .end-label {
     font-weight: bold;
+}
+
+
+/* --------------------------------------------------
+    結果セクション
+-------------------------------------------------- */
+
+.result-section {
+    position: absolute;
+    top: 105px;
+    left: 0;
+    width: 100%;
+
+    padding: 20px 20px 150px;
+
+    opacity: 0;
+    transform: translateY(100px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+}
+
+.result-section.active-section {
+    position: absolute;
+    top: 105px;
+    left: 0;
+
+    opacity: 1;
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+.result-section.exit-section {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+.result-section.hidden-section {
+    display: none;
 }
 
 
