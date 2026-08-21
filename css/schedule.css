@@ -134,12 +134,12 @@ body {
 -------------------------------------------------- */
 
 .progress-indicator .start-status {
-
     min-width: auto;
-
     padding: 0 10px;
-
     border-radius: 999px;
+
+    background: #eef8fa;
+    color: #5d8fd8;
 
     cursor: default;
 }
@@ -250,12 +250,14 @@ body {
 -------------------------------------------------- */
 
 .progress-indicator .result-status {
-
     min-width: auto;
-
     padding: 0 10px;
-
     border-radius: 999px;
+
+    background: #eef8fa;
+    color: #5d8fd8;
+
+    cursor: default;
 }
 
 
