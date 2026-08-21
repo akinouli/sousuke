@@ -116,7 +116,7 @@ progressItems.forEach(
             () => {
 
                 /* ①～⑤だけセクション移動可能 */
-                if (index < 5) {
+                if (index < inputSections.length) {
 
                     /* 現在のセクションをクリックした場合は何もしない */
                     if (index === currentSection) {
@@ -374,15 +374,16 @@ document
     button.addEventListener("click",
         () => {
 
+            // 現在のセクションを保存
+            const sectionBeforeMove = currentSection;
+
             // 現在のセクションをチェック
-            if (!validateSection(currentSection)) {
+            if (!validateSection(sectionBeforeMove)) {
                 return;
             }
 
-            showSection(currentSection + 1);
-
-            // ⑤からのスケジュール作成
-            if (currentSection === inputSections.length - 1) {
+            // ⑤なら全セクションをチェックしてスケジュール作成
+            if (sectionBeforeMove === inputSections.length - 1) {
 
                 if (!validateAllSections()) {
                     return;
@@ -392,6 +393,9 @@ document
 
                 return;
             }
+
+            // ①～④なら次のセクションへ移動
+            showSection(sectionBeforeMove + 1);
 
         }
     );
@@ -1366,25 +1370,16 @@ function validateScheduleInput() {
 // スケジュール作成
 // ----------------------------------------
 function createSchedule() {
-    const pageCount = document.getElementById("page-count").value;
+
+    const pageCount =
+        document.getElementById("page-count").value;
 
     console.log("ページ数:",pageCount);
     console.log("開始日:",startDate);
     console.log("締切日:",deadlineDate);
     console.log("休日:",[...holidays]);
 
-    // スケジュール作成完了 --------------------------------
-    progressItems.forEach(
-        (item, index) => {
-            if (index < 5) {
-                item.textContent = "";
-                item.classList.remove("active");
-            }
-        }
-    );
+    // 結果画面へ移動
+    showSection(inputSections.length);
 
-    createStatus.textContent = "作成";
-    createStatus.classList.add("active");
-
-    alert("スケジュール作成処理は次の段階で実装します！");
 }
