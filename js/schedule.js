@@ -12,8 +12,8 @@ const progressItems =
         ".progress-indicator span:not(.start-status):not(.create-status)"
     );
 
-const createStatus =
-    document.querySelector(".create-status");
+const resultStatus =
+    document.querySelector(".result-status");
 
 let currentSection = 0;
 
@@ -101,7 +101,7 @@ function updateProgress() {
     );
 
     /* 結果画面表示中だけ見た目変化 */
-    createStatus.classList.toggle(
+    resultStatus.classList.toggle(
         "active",
         currentSection === inputSections.length
     );
@@ -141,7 +141,7 @@ progressItems.forEach(
 // ----------------------------------------
 // 進捗ナビ - 結果セクションへ移動
 // ----------------------------------------
-createStatus.addEventListener(
+resultStatus.addEventListener(
     "click",
     () => {
 

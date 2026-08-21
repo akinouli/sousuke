@@ -55,57 +55,20 @@ body {
 
 .progress-indicator {
     margin-top: 8px;
+
     display: flex;
     justify-content: center;
     gap: 14px;
+
     font-size: 16px;
 }
 
-.progress-indicator .start-status {
-    min-width: auto;
-    min-height: 28px;
 
-    padding: 0 10px;
-
-    border: 2px solid #5d8fd8;
-    border-radius: 999px;
-
-    background: white;
-    color: #5d8fd8;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    cursor: default;
-
-    transition: none;
-}
-
-.progress-indicator .create-status {
-    min-width: auto;
-    min-height: 28px;
-
-    padding: 0 10px;
-
-    border: 2px solid #5d8fd8;
-    border-radius: 999px;
-
-    background: white;
-    color: #5d8fd8;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    cursor: default;
-
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        color 0.15s ease;
-}
+/* --------------------------------------------------
+    進捗ナビ - 共通スタイル
+-------------------------------------------------- */
 
 .progress-indicator span {
-    min-width: 28px;
     min-height: 28px;
 
     display: inline-flex;
@@ -114,47 +77,78 @@ body {
 
     position: relative;
 
-    background: #eef8fa;
+    background: transparent;
     color: #5d8fd8;
-
-    cursor: pointer;
-    user-select: none;
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-.progress-indicator span:not(.start-status):hover {
-    background: #5d8fd8;
-    color: white;
-}
-
-.progress-indicator span:not(.start-status):active {
-    transform: scale(0.94);
-}
-
-.progress-indicator span:not(.start-status):not(.create-status)::before {
-    content: attr(data-number);
-
-    width: 28px;
-    height: 28px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #999;
-    color: white;
-
-    border-radius: 50%;
 
     font-size: 14px;
     font-weight: bold;
 
-    position: relative;
+    user-select: none;
 }
 
+
+/* --------------------------------------------------
+    進捗ナビ - 操作可能な項目
+-------------------------------------------------- */
+
+.progress-indicator .result-status,
+.progress-indicator span[data-number] {
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+/* --------------------------------------------------
+    進捗ナビ - ホバー
+-------------------------------------------------- */
+
+.progress-indicator .result-status:hover,
+.progress-indicator span[data-number]:hover {
+
+    background: #5d8fd8;
+    color: white;
+}
+
+
+/* --------------------------------------------------
+    進捗ナビ - クリック / タップ
+-------------------------------------------------- */
+
+.progress-indicator .result-status:active,
+.progress-indicator span[data-number]:active {
+
+    transform: scale(0.94);
+
+    background: #5d8fd8;
+    color: white;
+}
+
+
+/* --------------------------------------------------
+    進捗ナビ - Start
+-------------------------------------------------- */
+
+.progress-indicator .start-status {
+
+    min-width: auto;
+
+    padding: 0 10px;
+
+    border-radius: 999px;
+
+    cursor: default;
+}
+
+
+/* Startの右側の三角 */
+
 .progress-indicator .start-status::after {
+
     content: "";
 
     position: absolute;
@@ -169,10 +163,53 @@ body {
 
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-left: 8px solid #5d8fd8;
+    border-left: 8px solid #eef8fa;
 }
 
-.progress-indicator span:not(.start-status):not(.create-status)::after {
+
+/* --------------------------------------------------
+    進捗ナビ - ①～⑤ 水滴
+-------------------------------------------------- */
+
+.progress-indicator span[data-number] {
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 50%;
+}
+
+
+/* 水滴の数字 */
+
+.progress-indicator span[data-number]::before {
+
+    content: attr(data-number);
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef8fa;
+    color: #5d8fd8;
+
+    position: relative;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* 水滴の尻尾 */
+
+.progress-indicator span[data-number]::after {
+
     content: "";
 
     position: absolute;
@@ -187,30 +224,70 @@ body {
 
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-left: 8px solid #999;
+    border-left: 8px solid #eef8fa;
+
+    transition:
+        border-left-color 0.15s ease;
 }
 
-.progress-indicator span.active:not(.start-status):not(.create-status)::before {
+
+/* 水滴 - ホバー */
+
+.progress-indicator span[data-number]:hover::before {
+
     background: #5d8fd8;
+    color: white;
 }
 
-.progress-indicator span.active:not(.start-status):not(.create-status)::after {
+.progress-indicator span[data-number]:hover::after {
+
     border-left-color: #5d8fd8;
 }
 
-.progress-indicator span.active {
-    font-weight: bold;
-    cursor: default;
+
+/* --------------------------------------------------
+    進捗ナビ - Result
+-------------------------------------------------- */
+
+.progress-indicator .result-status {
+
+    min-width: auto;
+
+    padding: 0 10px;
+
+    border-radius: 999px;
 }
 
-.progress-indicator span.locked {
-    cursor: default;
-    opacity: 0.6;
-}
 
-.progress-indicator .create-status.active {
+/* --------------------------------------------------
+    進捗ナビ - 現在地
+-------------------------------------------------- */
+
+.progress-indicator span[data-number].active::before {
+
     background: #5d8fd8;
     color: white;
+}
+
+.progress-indicator span[data-number].active::after {
+
+    border-left-color: #5d8fd8;
+}
+
+.progress-indicator .result-status.active {
+
+    background: #5d8fd8;
+    color: white;
+}
+
+
+/* --------------------------------------------------
+    進捗ナビ - Startは操作なし
+-------------------------------------------------- */
+
+.progress-indicator .start-status {
+
+    transition: none;
 }
 
 
