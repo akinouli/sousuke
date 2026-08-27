@@ -285,17 +285,22 @@ function validateSection(index) {
     // ③ 活動時間 ----------------------------------------
     if (index === 2) {
 
-        const hourInputs =
-            document.querySelectorAll(".hour-input");
+        let totalMinutes = 0;
 
-        const hasWorkingTime =
-            [...hourInputs].some(
-                input =>
-                    Number(input.value) >= 1
-            );
+        document.querySelectorAll(".day-row").forEach(row => {
 
-        if (!hasWorkingTime) {
-            alert("活動時間を1時間以上になるよう設定してください");
+            const hours =
+                Number(row.querySelector(".hour-input").value);
+
+            const minutes =
+                Number(row.querySelector(".minute-input").value);
+
+            totalMinutes += hours * 60 + minutes;
+
+        });
+
+        if (totalMinutes < 60) {
+            alert("全体で1時間以上になるよう活動時間を設定してください");
             return false;
         }
 
@@ -720,6 +725,7 @@ function createProcessItem(process) {
                         min="0"
                         step="1"
                         value="${process.hours}"
+                        inputmode="numeric"
                     >
                     <span>時間</span>
 
@@ -730,6 +736,7 @@ function createProcessItem(process) {
                         max="59"
                         step="1"
                         value="${process.minutes}"
+                        inputmode="numeric"
                     >
                     <span>分</span>
                 </div>
@@ -755,46 +762,57 @@ function createProcessItem(process) {
 
     arrow.className = "process-arrow";
 
+    // 小数点以下を切り捨てる
+    const hourInput =
+        row.querySelector(".process-hours");
+
+    const minuteInput =
+        row.querySelector(".process-minutes");
+
+    hourInput.addEventListener("blur",
+        () => {
+
+            let value =
+                Math.floor(Number(hourInput.value));
+
+            if (
+                hourInput.value === ""
+                ||
+                Number.isNaN(value)
+            ) {
+                value = 0;
+            }
+
+            value = Math.max(0, value);
+
+            hourInput.value = value;
+        }
+    );
+
+    minuteInput.addEventListener("blur",
+        () => {
+
+            let value =
+                Math.floor(Number(minuteInput.value));
+
+            if (
+                minuteInput.value === ""
+                ||
+                Number.isNaN(value)
+            ) {
+                value = 0;
+            }
+
+            value = Math.max(0, Math.min(value, 59));
+
+            minuteInput.value = value;
+        }
+    );
+
+
     // 工程カード＋▼をセットにする ----------------------------------------
     item.appendChild(row);
     item.appendChild(arrow);
-
-    // 時間入力 - 小数点以下を切り捨て
-    const processHours =
-        row.querySelector(".process-hours");
-
-    const processMinutes =
-        row.querySelector(".process-minutes");
-
-    [processHours, processMinutes].forEach(
-        input => {
-
-            input.addEventListener("blur",
-                () => {
-
-                    if (input.value === "") {
-                        return;
-                    }
-
-                    let value = Number(input.value);
-
-                    if (Number.isNaN(value)) {
-                        value = 0;
-                    }
-
-                    value = Math.floor(value);
-
-                    if (input === processMinutes) {
-                        value = Math.min(59, Math.max(0, value));
-                    } else {
-                        value = Math.max(0, value);
-                    }
-
-                    input.value = value;
-                }
-            );
-        }
-    );
 
     return item;
 }
@@ -1155,86 +1173,43 @@ document.addEventListener("pointercancel",
 // ----------------------------------------
 // 活動時間
 // ----------------------------------------
-const weekdays = [
-    "日曜日",
-    "月曜日",
-    "火曜日",
-    "水曜日",
-    "木曜日",
-    "金曜日",
-    "土曜日"
-];
+const weekdays = ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"];
+const weekdayList = document.getElementById("weekday-list");
 
-const weekdayList =
-    document.getElementById("weekday-list");
+// 活動時間の最大値（分）
+const maxWorkingMinutes = 20 * 60;
 
 // 選択バーの色替え
 function updateHourRangeColor(range) {
-
     const value = Number(range.value);
 
-    // 12時間以下
-    range.classList.toggle(
-        "normal",
-        value <= 720
-    );
-
-    // 12時間超
-    range.classList.toggle(
-        "overwork",
-        value > 720
-    );
+    range.classList.toggle("normal", value <= 12 * 60);
+    range.classList.toggle("overwork", value > 12 * 60);
 }
 
-
-// 時間を「時間＋分」で表示
-function updateHourDisplay(
-    hoursInput,
-    minutesInput
-) {
-
-    const totalMinutes =
-        Number(hoursInput.value || 0) * 60
-        +
-        Number(minutesInput.value || 0);
+// 活動時間を入力欄・バーへ反映
+function updateWorkingTime(row, totalMinutes) {
 
     const hours =
-        Math.floor(totalMinutes / 60);
+        row.querySelector(".hour-input");
 
     const minutes =
-        totalMinutes % 60;
+        row.querySelector(".minute-input");
 
-    hoursInput.value = hours;
-    minutesInput.value = minutes;
+    const range =
+        row.querySelector(".hour-range");
+
+    hours.value = Math.floor(totalMinutes / 60);
+    minutes.value = totalMinutes % 60;
+    range.value = totalMinutes;
+
+    updateHourRangeColor(range);
 }
-
-
-// 0～59分に収める
-function normalizeMinutes(input) {
-
-    if (input.value === "") {
-        return;
-    }
-
-    let value = Number(input.value);
-
-    if (Number.isNaN(value)) {
-        value = 0;
-    }
-
-    value = Math.floor(value);
-
-    value = Math.max(0, Math.min(59, value));
-
-    input.value = value;
-}
-
 
 weekdays.forEach(
     day => {
 
-        const row =
-            document.createElement("div");
+        const row = document.createElement("div");
 
         row.className = "day-row";
 
@@ -1248,8 +1223,8 @@ weekdays.forEach(
                 max="20"
                 step="1"
                 value="1"
+                inputmode="numeric"
             >
-
             <span>時間</span>
 
             <input
@@ -1259,15 +1234,15 @@ weekdays.forEach(
                 max="59"
                 step="1"
                 value="0"
+                inputmode="numeric"
             >
-
             <span>分</span>
 
             <input
                 type="range"
                 class="hour-range"
                 min="0"
-                max="1200"
+                max="${maxWorkingMinutes}"
                 step="30"
                 value="60"
             >
@@ -1286,41 +1261,38 @@ weekdays.forEach(
         // ----------------------------------------
         // 時間入力
         // ----------------------------------------
+
         hourInput.addEventListener("input",
             () => {
 
+                // 空欄の途中は何もしない
                 if (hourInput.value === "") {
                     return;
                 }
 
-                let value =
-                    Math.floor(
-                        Number(hourInput.value)
-                    );
+                const hours =
+                    Number(hourInput.value);
 
-                if (Number.isNaN(value)) {
-                    return;
-                }
+                const minutes =
+                    Number(minuteInput.value) || 0;
 
-                value =
-                    Math.max(
-                        0,
-                        Math.min(20, value)
-                    );
+                if (
+                    Number.isInteger(hours)
+                    &&
+                    hours >= 0
+                    &&
+                    hours <= 20
+                ) {
 
-                hourInput.value = value;
+                    let totalMinutes =
+                        hours * 60 + minutes;
 
-                const totalMinutes =
-                    value * 60
-                    +
-                    Number(minuteInput.value || 0);
+                    // 20時間を超えないようにする
+                    if (totalMinutes > maxWorkingMinutes) {
+                        totalMinutes = maxWorkingMinutes;
+                    }
 
-                if (totalMinutes <= 1200) {
-                    range.value =
-                        Math.round(
-                            totalMinutes / 30
-                        ) * 30;
-
+                    range.value = totalMinutes;
                     updateHourRangeColor(range);
                 }
             }
@@ -1330,26 +1302,38 @@ weekdays.forEach(
         // ----------------------------------------
         // 分入力
         // ----------------------------------------
+
         minuteInput.addEventListener("input",
             () => {
 
+                // 空欄の途中は何もしない
                 if (minuteInput.value === "") {
                     return;
                 }
 
-                normalizeMinutes(minuteInput);
+                const minutes =
+                    Number(minuteInput.value);
 
-                const totalMinutes =
-                    Number(hourInput.value || 0) * 60
-                    +
-                    Number(minuteInput.value || 0);
+                const hours =
+                    Number(hourInput.value) || 0;
 
-                if (totalMinutes <= 1200) {
-                    range.value =
-                        Math.round(
-                            totalMinutes / 30
-                        ) * 30;
+                if (
+                    Number.isInteger(minutes)
+                    &&
+                    minutes >= 0
+                    &&
+                    minutes <= 59
+                ) {
 
+                    let totalMinutes =
+                        hours * 60 + minutes;
+
+                    // 20時間を超えないようにする
+                    if (totalMinutes > maxWorkingMinutes) {
+                        totalMinutes = maxWorkingMinutes;
+                    }
+
+                    range.value = totalMinutes;
                     updateHourRangeColor(range);
                 }
             }
@@ -1357,69 +1341,93 @@ weekdays.forEach(
 
 
         // ----------------------------------------
-        // 時間入力確定
+        // 時間入力 - 確定時
         // ----------------------------------------
+
         hourInput.addEventListener("blur",
             () => {
 
-                if (hourInput.value === "") {
-                    hourInput.value = 0;
+                let hours =
+                    Math.floor(Number(hourInput.value));
+
+                let minutes =
+                    Math.floor(Number(minuteInput.value));
+
+                if (
+                    hourInput.value === ""
+                    ||
+                    Number.isNaN(hours)
+                ) {
+                    hours = 0;
                 }
 
-                let value =
-                    Math.floor(
-                        Number(hourInput.value)
-                    );
-
-                if (Number.isNaN(value)) {
-                    value = 0;
+                if (
+                    minuteInput.value === ""
+                    ||
+                    Number.isNaN(minutes)
+                ) {
+                    minutes = 0;
                 }
 
-                value =
-                    Math.max(
-                        0,
-                        Math.min(20, value)
-                    );
+                // 範囲調整
+                hours = Math.max(0, Math.min(hours, 20));
+                minutes = Math.max(0, Math.min(minutes, 59));
 
-                hourInput.value = value;
+                let totalMinutes =
+                    hours * 60 + minutes;
 
-                updateHourDisplay(
-                    hourInput,
-                    minuteInput
-                );
+                // 20時間を超えた場合は20:00
+                if (totalMinutes > maxWorkingMinutes) {
+                    totalMinutes = maxWorkingMinutes;
+                }
+
+                updateWorkingTime(row, totalMinutes);
             }
         );
 
 
         // ----------------------------------------
-        // 分入力確定
+        // 分入力 - 確定時
         // ----------------------------------------
+
         minuteInput.addEventListener("blur",
             () => {
 
-                if (minuteInput.value === "") {
-                    minuteInput.value = 0;
+                let hours =
+                    Math.floor(Number(hourInput.value));
+
+                let minutes =
+                    Math.floor(Number(minuteInput.value));
+
+                if (
+                    hourInput.value === ""
+                    ||
+                    Number.isNaN(hours)
+                ) {
+                    hours = 0;
                 }
 
-                normalizeMinutes(minuteInput);
-
-                const totalMinutes =
-                    Number(hourInput.value || 0) * 60
-                    +
-                    Number(minuteInput.value || 0);
-
-                // 20時間を超えた場合
-                if (totalMinutes > 1200) {
-
-                    hourInput.value = 20;
-                    minuteInput.value = 0;
-
+                if (
+                    minuteInput.value === ""
+                    ||
+                    Number.isNaN(minutes)
+                ) {
+                    minutes = 0;
                 }
 
-                updateHourDisplay(
-                    hourInput,
-                    minuteInput
-                );
+                // 範囲調整
+                hours = Math.max(0, Math.min(hours, 20));
+                minutes = Math.max(0, Math.min(minutes, 59));
+
+                let totalMinutes =
+                    hours * 60 + minutes;
+
+                // 20時間を超えた場合は20:00
+                if (totalMinutes > maxWorkingMinutes) {
+                    totalMinutes = maxWorkingMinutes;
+                }
+
+                updateWorkingTime(row, totalMinutes);
             }
         );
 
@@ -1427,29 +1435,19 @@ weekdays.forEach(
         // ----------------------------------------
         // 調整バー
         // ----------------------------------------
+
         range.addEventListener("input",
             () => {
 
-                const totalMinutes =
-                    Number(range.value);
-
-                const hours =
-                    Math.floor(
-                        totalMinutes / 60
-                    );
-
-                const minutes =
-                    totalMinutes % 60;
-
-                hourInput.value = hours;
-                minuteInput.value = minutes;
-
-                updateHourRangeColor(range);
+                updateWorkingTime(
+                    row,
+                    Number(range.value)
+                );
             }
         );
 
 
-        // 初期状態
+        // 初期状態の色を設定
         updateHourRangeColor(range);
 
         weekdayList.appendChild(row);

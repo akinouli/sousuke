@@ -871,24 +871,41 @@ body {
 
 .day-row {
     display: grid;
-    grid-template-columns:80px 70px 50px 1fr;
+    grid-template-columns:
+        80px
+        55px
+        40px
+        55px
+        30px
+        1fr;
+
     align-items: center;
-    gap: 8px;
-    margin:18px auto;
-    max-width: 600px;
+
+    gap: 6px;
+
+    margin: 18px auto;
+
+    max-width: 700px;
 }
 
-.hour-input {
-    width: 65px;
+.hour-input,
+.minute-input {
+    width: 55px;
+
     text-align: right;
+
     font-size: 16px;
 }
-
+    
 .hour-range {
     width: 100%;
+
     height: 8px;
+
     appearance: none;
+
     background: #ddd;
+
     border-radius: 999px;
 }
 
@@ -1200,5 +1217,34 @@ body {
     .completion-card img {
         width: 50px;
         height: 50px;
+    }
+
+    /* --------------------------------------------------
+        活動時間
+    -------------------------------------------------- */
+
+    .day-row {
+        grid-template-columns:
+            65px
+            42px
+            34px
+            42px
+            25px
+            1fr;
+
+        gap: 4px;
+
+        margin: 16px auto;
+    }
+
+    .hour-input,
+    .minute-input {
+        width: 42px;
+
+        font-size: 14px;
+    }
+
+    .hour-range {
+        min-width: 0;
     }
 }
