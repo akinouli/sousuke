@@ -1243,7 +1243,7 @@ weekdays.forEach(
                 class="hour-range"
                 min="0"
                 max="${maxWorkingMinutes}"
-                step="30"
+                step="15"
                 value="60"
             >
         `;
