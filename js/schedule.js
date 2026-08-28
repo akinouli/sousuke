@@ -684,8 +684,8 @@ function createProcessItem(process) {
                         <span>時間</span>
                     </div>
 
-                    <span class="time-colon">：</span>
-                    
+                    <span class="time-colon">:</span>
+
                     <div class="time-input-group">
                         <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}">
                         <span>分</span>

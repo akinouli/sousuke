@@ -513,6 +513,18 @@ body {
         transform 0.1s ease;
 }
 
+/* 自動調整 OFF */
+.auto-adjust-btn.off {
+    background: #eeeeee;
+    color: #666666;
+}
+
+/* 自動調整 ON */
+.auto-adjust-btn.on {
+    background: #5d8fd8;
+    color: white;
+}
+
 .auto-adjust-btn:active {
     transform: scale(0.9);
 }
