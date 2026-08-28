@@ -455,17 +455,41 @@ body {
     width: 85px;
 }
 
-.time-input {
+/* --------------------------------------------------
+    工程カード - 時間入力
+-------------------------------------------------- */
+
+.process-time-input {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 5px;
+
     white-space: nowrap;
 }
 
+/* 工程時間入力グループ */
+.process-time-input .time-input-group {
+    width: 55px;
+}
+
+/* 工程時間入力欄 */
 .process-hours,
 .process-minutes {
-    width: 45px;
-    text-align: right;
+    width: 100%;
+    padding: 3px 0px;
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    text-align: center;
+    font-size: 16px;
+}
+
+/* 入力欄フォーカス時も枠を出さない */
+.process-hours:focus,
+.process-minutes:focus {
+    outline: none;
 }
 
 
@@ -1145,13 +1169,12 @@ body {
         width: 70px;
     }
 
-    .time-input {
-        gap: 2px;
+    .process-time-input {
+        gap: 3px;
     }
 
-    .process-hours,
-    .process-minutes {
-        width: 38px;
+    .process-time-input .time-input-group {
+        width: 50px;
         font-size: 16px;
     }
 

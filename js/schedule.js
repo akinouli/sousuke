@@ -27,7 +27,7 @@ allSections.forEach(
 // ----------------------------------------
 
 function showSection(nextIndex) {
-    
+
     if (nextIndex < 0 || nextIndex >= allSections.length) {
         return;
     }
@@ -678,12 +678,18 @@ function createProcessItem(process) {
                     <option value="page" ${process.unit === "page" ? "selected" : ""}>ページ毎</option>
                 </select>
 
-                <div class="time-input">
-                    <input type="number" class="process-hours" min="0" step="1" value="${process.hours}" inputmode="numeric">              
-                    <span>時間</span>
+                <div class="process-time-input">
+                    <div class="time-input-group">
+                        <input type="number" class="process-hours" min="0" value="${process.hours}">
+                        <span>時間</span>
+                    </div>
 
-                    <input type="number" class="process-minutes" min="0" max="59" step="1" value="${process.minutes}" inputmode="numeric">
-                    <span>分</span>
+                    <span class="time-colon">：</span>
+                    
+                    <div class="time-input-group">
+                        <input type="number" class="process-minutes" min="0" max="59" value="${process.minutes}">
+                        <span>分</span>
+                    </div>
                 </div>
 
                 <button
