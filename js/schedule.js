@@ -1,27 +1,16 @@
 // ----------------------------------------
 // セクション切り替え
 // ----------------------------------------
-const inputSections =
-    document.querySelectorAll(".form-section");
 
-const resultSection =
-    document.querySelector(".result-section");
-
-const progressItems =
-    document.querySelectorAll(
-        ".progress-indicator span:not(.start-status)"
-    );
-
-const resultStatus =
-    document.querySelector(".result-status");
+const inputSections = document.querySelectorAll(".form-section");
+const resultSection = document.querySelector(".result-section");
+const progressItems = document.querySelectorAll(".progress-indicator span:not(.start-status)");
+const resultStatus = document.querySelector(".result-status");
 
 let currentSection = 0;
 
 // 入力セクションと結果セクションの分離
-const allSections = [
-    ...inputSections,
-    resultSection
-];
+const allSections = [...inputSections, resultSection];
 
 // 初期状態では現在のセクション以外を非表示
 allSections.forEach(
@@ -32,11 +21,13 @@ allSections.forEach(
     }
 );
 
+
 // ----------------------------------------
 // セクション表示
 // ----------------------------------------
-function showSection(nextIndex) {
 
+function showSection(nextIndex) {
+    
     if (nextIndex < 0 || nextIndex >= allSections.length) {
         return;
     }
@@ -81,10 +72,13 @@ function showSection(nextIndex) {
     );
 }
 
+
 // ----------------------------------------
-// 進捗 ▶ / ▷ の切り替え
+// 進捗ナビ - 表示切り替え
 // ----------------------------------------
+
 function updateProgress() {
+
     progressItems.forEach(
         (item, index) => {
             /* ①～⑤ 現在表示中のセクションだけ見た目変化 */
@@ -107,15 +101,16 @@ function updateProgress() {
     );
 }
 
+
 // ----------------------------------------
 // 進捗ナビ - 入力セクションへ移動
 // ----------------------------------------
+
 progressItems.forEach(
     (item, index) => {
         item.addEventListener("click",
             () => {
-
-                /* ①～⑤だけセクション移動可能 */
+                /* 1～5だけセクション移動可能 */
                 if (index < inputSections.length) {
 
                     /* 現在のセクションをクリックした場合は何もしない */
@@ -130,7 +125,6 @@ progressItems.forEach(
 
                     /* エラーがなければ移動 */
                     showSection(index);
-
                 }
             }
         );
@@ -141,10 +135,9 @@ progressItems.forEach(
 // ----------------------------------------
 // 進捗ナビ - 結果セクションへ移動
 // ----------------------------------------
-resultStatus.addEventListener(
-    "click",
-    () => {
 
+resultStatus.addEventListener("click",
+    () => {
         // 全セクションをチェック
         if (!validateAllSections()) {
             return;
@@ -152,7 +145,6 @@ resultStatus.addEventListener(
 
         // エラーがなければスケジュール作成
         createSchedule();
-
     }
 );
 
@@ -160,6 +152,7 @@ resultStatus.addEventListener(
 // ----------------------------------------
 // 作業期間
 // ----------------------------------------
+
 let startDate = null;
 let completionDate = null;
 let deadlineDate = null;
@@ -171,13 +164,10 @@ let deadlineDate = null;
 
 function validateSection(index) {
 
-    // ① ページ数 ----------------------------------------
+    // 1.ページ数 ----------------------------------------
     if (index === 0) {
 
-        const pageCount =
-            Number(
-                document.getElementById("page-count").value
-            );
+        const pageCount = Number(document.getElementById("page-count").value);
 
         if (!pageCount || pageCount < 1) {
             alert("ページ数を入力してください");
@@ -186,12 +176,11 @@ function validateSection(index) {
 
     }
 
-    // ② 作業工程 ----------------------------------------
+    // 2.工程リスト ----------------------------------------
     if (index === 1) {
 
-        // 作品制作行程 ----------------------------------------
-        const processRows =
-            processList.querySelectorAll(".process-row");
+        // 作品制作 ----------------------------------------
+        const processRows = processList.querySelectorAll(".process-row");
 
         // 行程が1個もない
         if (processRows.length === 0) {
@@ -202,17 +191,10 @@ function validateSection(index) {
         // 作品制作の各行程をチェック
         for (const row of processRows) {
 
-            const name =
-                row.querySelector(".process-name").value.trim();
-
-            const hours =
-                Number(row.querySelector(".process-hours").value);
-
-            const minutes =
-                Number(row.querySelector(".process-minutes").value);
-
-            const hasTime =
-                hours > 0 || minutes > 0;
+            const name = row.querySelector(".process-name").value.trim();
+            const hours = Number(row.querySelector(".process-hours").value);
+            const minutes = Number(row.querySelector(".process-minutes").value);
+            const hasTime = hours > 0 || minutes > 0;
 
             // 行程名・作業時間ともに未入力
             if (!name && !hasTime) {
@@ -233,12 +215,11 @@ function validateSection(index) {
             }
         }
 
-        // 仕立て行程 ----------------------------------------
+        // 仕立て ----------------------------------------
         // 【しない】ならチェックしない
         if (postWorkYes.classList.contains("selected")) {
 
-            const postProcessRows =
-                postProcessList.querySelectorAll(".process-row");
+            const postProcessRows = postProcessList.querySelectorAll(".process-row");
 
             // 行程が1個もない
             if (postProcessRows.length === 0) {
@@ -249,17 +230,10 @@ function validateSection(index) {
             // 完成後の各行程をチェック
             for (const row of postProcessRows) {
 
-                const name =
-                    row.querySelector(".process-name").value.trim();
-
-                const hours =
-                    Number(row.querySelector(".process-hours").value);
-
-                const minutes =
-                    Number(row.querySelector(".process-minutes").value);
-
-                const hasTime =
-                    hours > 0 || minutes > 0;
+                const name = row.querySelector(".process-name").value.trim();
+                const hours = Number(row.querySelector(".process-hours").value);
+                const minutes = Number(row.querySelector(".process-minutes").value);
+                const hasTime = hours > 0 || minutes > 0;
 
                 // 行程名・作業時間ともに未入力
                 if (!name && !hasTime) {
@@ -282,21 +256,17 @@ function validateSection(index) {
         }
     }
 
-    // ③ 活動時間 ----------------------------------------
+    // 3.活動時間 ----------------------------------------
     if (index === 2) {
 
         let totalMinutes = 0;
 
         document.querySelectorAll(".day-row").forEach(row => {
 
-            const hours =
-                Number(row.querySelector(".hour-input").value);
-
-            const minutes =
-                Number(row.querySelector(".minute-input").value);
+            const hours = Number(row.querySelector(".hour-input").value);
+            const minutes = Number(row.querySelector(".minute-input").value);
 
             totalMinutes += hours * 60 + minutes;
-
         });
 
         if (totalMinutes < 60) {
@@ -306,12 +276,12 @@ function validateSection(index) {
 
     }
 
-    // ④ 休日 ----------------------------------------
+    // 4.休日 ----------------------------------------
     if (index === 3) {
         // 休日は任意なのでチェックなし
     }
 
-    // ⑤ 作業期間 ----------------------------------------
+    // 5.作業期間 ----------------------------------------
     if (index === 4) {
 
         if (!startDate && !deadlineDate) {
@@ -323,7 +293,6 @@ function validateSection(index) {
             alert("締切日を選択してください");
             return false;
         }
-
     }
 
     return true;
@@ -333,21 +302,16 @@ function validateSection(index) {
 // ----------------------------------------
 // エラーチェック - 全セクション
 // ----------------------------------------
+
 function validateAllSections() {
 
-    for (
-        let index = 0;
-        index < inputSections.length;
-        index++
-    ) {
+    for (let index = 0; index < inputSections.length; index++) {
 
         if (!validateSection(index)) {
-
             showSection(index);
 
             return false;
         }
-
     }
 
     return true;
@@ -357,6 +321,7 @@ function validateAllSections() {
 // ----------------------------------------
 // 「次へ」/「スケジュール作成」の表示
 // ----------------------------------------
+
 const nextButton = document.querySelector(".next-button");
 const nextButtonText = nextButton.querySelector(".next-button-text");
 
@@ -370,9 +335,7 @@ function updateNextButton() {
 
 }
 
-// ----------------------------------------
-// 「次へ」ボタン
-// ----------------------------------------
+// 「次へ」ボタン ----------------------------------------
 document
 .querySelectorAll(".next-button")
 .forEach(button => {
@@ -387,7 +350,7 @@ document
                 return;
             }
 
-            // ⑤なら全セクションをチェックしてスケジュール作成
+            // 最後の入力セクションでオールチェック → スケジュール作成
             if (sectionBeforeMove === inputSections.length - 1) {
 
                 if (!validateAllSections()) {
@@ -401,14 +364,11 @@ document
 
             // ①～④なら次のセクションへ移動
             showSection(sectionBeforeMove + 1);
-
         }
     );
 });
 
-// ----------------------------------------
-// 「次へ」ボタン初期表示
-// ----------------------------------------
+// 「次へ」ボタン初期表示 ----------------------------------------
 updateProgress();
 updateNextButton();
 
@@ -416,9 +376,11 @@ updateNextButton();
 // ----------------------------------------
 // 作業期間カレンダー
 // ----------------------------------------
+
 let periodDate = new Date();
 
 function renderPeriodCalendar() {
+
     const year = periodDate.getFullYear();
     const month = periodDate.getMonth();
 
@@ -533,6 +495,7 @@ function selectPeriodDate(date) {
 }
 
 function isSameDate(a, b) {
+
     return (
         a.getFullYear() === b.getFullYear()
         &&
@@ -540,12 +503,9 @@ function isSameDate(a, b) {
         &&
         a.getDate() === b.getDate()
     );
-
 }
 
-// ----------------------------------------
-// 前月
-// ----------------------------------------
+// 前月 ----------------------------------------
 document
 .getElementById("period-prev")
 .addEventListener("click",
@@ -555,9 +515,7 @@ document
     }
 );
 
-// ----------------------------------------
-// 次月
-// ----------------------------------------
+// 次月 ----------------------------------------
 document
 .getElementById("period-next")
 .addEventListener("click",
@@ -571,8 +529,10 @@ renderPeriodCalendar();
 
 
 // ----------------------------------------
-// 初期工程 - 作品制作
+// 初期工程
 // ----------------------------------------
+
+// 作品制作 ----------------------------------------
 const defaultProcesses = [
     {
         name: "プロット",
@@ -631,9 +591,7 @@ const defaultProcesses = [
     }
 ];
 
-// ----------------------------------------
-// 初期工程 - 完成後作業
-// ----------------------------------------
+// 仕立て ----------------------------------------
 const defaultPostProcesses = [
     {
         name: "入稿チェック",
@@ -654,8 +612,9 @@ const defaultPostProcesses = [
 
 
 // ----------------------------------------
-// 作品完成後の作業 する or しない
+// 本の仕立て作業 する or しない
 // ----------------------------------------
+
 const postWorkYes = document.getElementById("post-work-yes");
 const postWorkNo = document.getElementById("post-work-no");
 const postWorkArea = document.getElementById("post-work-area");
@@ -672,25 +631,26 @@ function updatePostWorkDisplay(shouldSchedule) {
     postWorkBottomArrow.hidden = !shouldSchedule;
 }
 
-// する
+// する → リスト表示
 postWorkYes.addEventListener("click",
     () => {
         updatePostWorkDisplay(true);
     }
 );
 
-// しない
+// しない → リスト非表示
 postWorkNo.addEventListener("click",
     () => {
         updatePostWorkDisplay(false);
     }
 );
 
+// 初期値 → リスト表示
 updatePostWorkDisplay(true);
 
 
 // ----------------------------------------
-// 工程追加 カード生成
+// 工程追加 - 行程セット生成
 // ----------------------------------------
 
 function createProcessItem(process) {
@@ -719,25 +679,10 @@ function createProcessItem(process) {
                 </select>
 
                 <div class="time-input">
-                    <input
-                        type="number"
-                        class="process-hours"
-                        min="0"
-                        step="1"
-                        value="${process.hours}"
-                        inputmode="numeric"
-                    >
+                    <input type="number" class="process-hours" min="0" step="1" value="${process.hours}" inputmode="numeric">              
                     <span>時間</span>
 
-                    <input
-                        type="number"
-                        class="process-minutes"
-                        min="0"
-                        max="59"
-                        step="1"
-                        value="${process.minutes}"
-                        inputmode="numeric"
-                    >
+                    <input type="number" class="process-minutes" min="0" max="59" step="1" value="${process.minutes}" inputmode="numeric">
                     <span>分</span>
                 </div>
 
@@ -763,23 +708,15 @@ function createProcessItem(process) {
     arrow.className = "process-arrow";
 
     // 小数点以下を切り捨てる
-    const hourInput =
-        row.querySelector(".process-hours");
-
-    const minuteInput =
-        row.querySelector(".process-minutes");
+    const hourInput = row.querySelector(".process-hours");
+    const minuteInput = row.querySelector(".process-minutes");
 
     hourInput.addEventListener("blur",
         () => {
 
-            let value =
-                Math.floor(Number(hourInput.value));
-
-            if (
-                hourInput.value === ""
-                ||
-                Number.isNaN(value)
-            ) {
+            let value = Math.floor(Number(hourInput.value));
+                
+            if (hourInput.value === "" || Number.isNaN(value)) {
                 value = 0;
             }
 
@@ -791,15 +728,9 @@ function createProcessItem(process) {
 
     minuteInput.addEventListener("blur",
         () => {
+            let value = Math.floor(Number(minuteInput.value));
 
-            let value =
-                Math.floor(Number(minuteInput.value));
-
-            if (
-                minuteInput.value === ""
-                ||
-                Number.isNaN(value)
-            ) {
+            if (minuteInput.value === "" || Number.isNaN(value)) {
                 value = 0;
             }
 
@@ -819,9 +750,10 @@ function createProcessItem(process) {
 
 
 // ----------------------------------------
-// 工程追加 - 作品制作
+// 工程追加
 // ----------------------------------------
 
+// 作品制作 ----------------------------------------
 document
 .getElementById("add-process")
 .addEventListener("click",
@@ -838,11 +770,7 @@ document
     }
 );
 
-
-// ----------------------------------------
-// 工程追加 - 作品完成後
-// ----------------------------------------
-
+// 仕立て ----------------------------------------
 document
 .getElementById("add-post-process")
 .addEventListener("click",
@@ -867,14 +795,14 @@ document
 const processList = document.getElementById("process-list");
 const postProcessList = document.getElementById("post-process-list");
 
-// 作品制作
+// 作品制作 ----------------------------------------
 defaultProcesses.forEach(
     process => {
         processList.appendChild(createProcessItem(process));
     }
 );
 
-// 作品完成後
+// 仕立て ----------------------------------------
 defaultPostProcesses.forEach(
     process => {
         postProcessList.appendChild(createProcessItem(process));
@@ -883,7 +811,7 @@ defaultPostProcesses.forEach(
 
 
 // ----------------------------------------
-// 自動調整 ON / OFF
+// 行程カード - 自動調整 ON / OFF
 // ----------------------------------------
 
 document.addEventListener("click",
@@ -906,7 +834,7 @@ document.addEventListener("click",
 
 
 // ----------------------------------------
-// 工程削除
+// 行程カード - 削除ボタン
 // ----------------------------------------
 
 document.addEventListener("click",
@@ -919,7 +847,7 @@ document.addEventListener("click",
 
 
 // ----------------------------------------
-// 工程カード移動後アニメーション
+// 工程リスト並び替え - 移動後アニメーション
 // ----------------------------------------
 
 function animateMovedProcess(item) {
@@ -970,7 +898,6 @@ function startAutoScroll() {
     }
 
     function scrollLoop() {
-
         if (!draggingItem) {
             autoScrollFrame = null;
             return;
@@ -1011,12 +938,10 @@ function startAutoScroll() {
 // ----------------------------------------
 
 function stopAutoScroll() {
-
     if (autoScrollFrame) {
         cancelAnimationFrame(autoScrollFrame);
         autoScrollFrame = null;
     }
-
 }
 
 
@@ -1066,14 +991,13 @@ document.addEventListener("pointerdown",
 
 document.addEventListener("pointermove",
     event => {
-
         if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
 
         const currentY = event.clientY;
 
-        // 上方向へ移動 ----------------------------------------
+        // 上方向へ移動 ---------------------------------------- ----------------------------------------
         if (currentY < lastPointerY) {
             const previousItem = draggingItem.previousElementSibling;
 
@@ -1087,8 +1011,7 @@ document.addEventListener("pointermove",
             }
         }
 
-
-        // 下方向へ移動 ----------------------------------------
+        // 下方向へ移動 ---------------------------------------- ----------------------------------------
         if (currentY > lastPointerY) {
             const nextItem = draggingItem.nextElementSibling;
 
@@ -1102,7 +1025,6 @@ document.addEventListener("pointermove",
             }
         }
 
-
         // 現在の指・マウス位置を記録
         lastPointerY = currentY;
     }
@@ -1115,7 +1037,6 @@ document.addEventListener("pointermove",
 
 document.addEventListener("pointerup",
     event => {
-
         if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
@@ -1150,7 +1071,6 @@ document.addEventListener("pointerup",
 
 document.addEventListener("pointercancel",
     event => {
-
         if (!draggingItem || event.pointerId !== dragPointerId) {
             return;
         }
@@ -1179,49 +1099,31 @@ const maxWorkingMinutes = 20 * 60;
 
 
 // ----------------------------------------
-// 選択バーの色替え
+// 活動時間 - 選択バーの色替え
 // ----------------------------------------
 
 function updateHourRangeColor(range) {
 
-    const value =
-        Number(range.value);
+    const value = Number(range.value);
 
-    range.classList.toggle(
-        "normal",
-        value <= 12 * 60
-    );
-
-    range.classList.toggle(
-        "overwork",
-        value > 12 * 60
-    );
+    range.classList.toggle("normal", value <= 12 * 60);
+    range.classList.toggle("overwork", value > 12 * 60);
 }
 
 
 // ----------------------------------------
-// 活動時間を入力欄・バーへ反映
+// 活動時間 - 入力欄・選択バー同期
 // ----------------------------------------
 
 function updateWorkingTime(row, totalMinutes) {
 
-    const hours =
-        row.querySelector(".hour-input");
+    const hours = row.querySelector(".hour-input");
+    const minutes = row.querySelector(".minute-input");
+    const range = row.querySelector(".hour-range");
 
-    const minutes =
-        row.querySelector(".minute-input");
-
-    const range =
-        row.querySelector(".hour-range");
-
-    hours.value =
-        Math.floor(totalMinutes / 60);
-
-    minutes.value =
-        totalMinutes % 60;
-
-    range.value =
-        totalMinutes;
+    hours.value = Math.floor(totalMinutes / 60);
+    minutes.value = totalMinutes % 60;
+    range.value = totalMinutes;
 
     updateHourRangeColor(range);
 }
@@ -1234,256 +1136,142 @@ function updateWorkingTime(row, totalMinutes) {
 document
 .querySelectorAll(".day-row")
 .forEach(row => {
+    const hourInput = row.querySelector(".hour-input");
+    const minuteInput = row.querySelector(".minute-input");
+    const range = row.querySelector(".hour-range");
 
-    const hourInput =
-        row.querySelector(".hour-input");
-
-    const minuteInput =
-        row.querySelector(".minute-input");
-
-    const range =
-        row.querySelector(".hour-range");
-
-
-    // ----------------------------------------
-    // 時間入力
-    // ----------------------------------------
-
+    // 時間入力 ----------------------------------------
     hourInput.addEventListener("input",
         () => {
-
             // 空欄の途中は何もしない
             if (hourInput.value === "") {
                 return;
             }
 
-            const hours =
-                Number(hourInput.value);
+            const hours = Number(hourInput.value);
+            const minutes = Number(minuteInput.value) || 0;
 
-            const minutes =
-                Number(minuteInput.value) || 0;
-
-            if (
-                Number.isInteger(hours)
-                &&
-                hours >= 0
-                &&
-                hours <= 20
-            ) {
-
-                let totalMinutes =
-                    hours * 60 + minutes;
+            if (Number.isInteger(hours) && hours >= 0 && hours <= 20) {
+                let totalMinutes = hours * 60 + minutes;
 
                 // 20時間を超えないようにする
                 if (totalMinutes > maxWorkingMinutes) {
                     totalMinutes = maxWorkingMinutes;
                 }
 
-                range.value =
-                    totalMinutes;
+                range.value = totalMinutes;
 
                 updateHourRangeColor(range);
             }
         }
     );
 
-
-    // ----------------------------------------
-    // 分入力
-    // ----------------------------------------
-
+    // 分入力 ----------------------------------------
     minuteInput.addEventListener("input",
         () => {
-
             // 空欄の途中は何もしない
             if (minuteInput.value === "") {
                 return;
             }
 
-            const minutes =
-                Number(minuteInput.value);
+            const minutes = Number(minuteInput.value);
+            const hours = Number(hourInput.value) || 0;
 
-            const hours =
-                Number(hourInput.value) || 0;
-
-            if (
-                Number.isInteger(minutes)
-                &&
-                minutes >= 0
-                &&
-                minutes <= 59
-            ) {
-
-                let totalMinutes =
-                    hours * 60 + minutes;
+            if (Number.isInteger(minutes) && minutes >= 0 && minutes <= 59) {
+                let totalMinutes = hours * 60 + minutes;
 
                 // 20時間を超えないようにする
                 if (totalMinutes > maxWorkingMinutes) {
                     totalMinutes = maxWorkingMinutes;
                 }
 
-                range.value =
-                    totalMinutes;
-
+                range.value = totalMinutes;
+                    
                 updateHourRangeColor(range);
             }
         }
     );
 
-
-    // ----------------------------------------
-    // 時間入力 - 確定時
-    // ----------------------------------------
-
+    // 時間入力 - 確定時 ----------------------------------------
     hourInput.addEventListener("blur",
         () => {
+            let hours = Math.floor(Number(hourInput.value));
+            let minutes = Math.floor(Number(minuteInput.value));
 
-            let hours =
-                Math.floor(
-                    Number(hourInput.value)
-                );
-
-            let minutes =
-                Math.floor(
-                    Number(minuteInput.value)
-                );
-
-            if (
-                hourInput.value === ""
-                ||
-                Number.isNaN(hours)
-            ) {
+            if (hourInput.value === "" || Number.isNaN(hours)) {
                 hours = 0;
             }
 
-            if (
-                minuteInput.value === ""
-                ||
-                Number.isNaN(minutes)
-            ) {
+            if (minuteInput.value === "" || Number.isNaN(minutes)) {
                 minutes = 0;
             }
 
             // 範囲調整
-            hours =
-                Math.max(
-                    0,
-                    Math.min(hours, 20)
-                );
+            hours = Math.max(0, Math.min(hours, 20));
+            minutes = Math.max(0, Math.min(minutes, 59));
 
-            minutes =
-                Math.max(
-                    0,
-                    Math.min(minutes, 59)
-                );
-
-            let totalMinutes =
-                hours * 60 + minutes;
+            let totalMinutes = hours * 60 + minutes;
 
             // 20時間を超えた場合は20:00
             if (totalMinutes > maxWorkingMinutes) {
                 totalMinutes = maxWorkingMinutes;
             }
 
-            updateWorkingTime(
-                row,
-                totalMinutes
-            );
+            updateWorkingTime(row, totalMinutes);
         }
     );
 
-
-    // ----------------------------------------
-    // 分入力 - 確定時
-    // ----------------------------------------
-
+    // 分入力 - 確定時 ----------------------------------------
     minuteInput.addEventListener("blur",
         () => {
+            let hours = Math.floor(Number(hourInput.value));
+            let minutes = Math.floor(Number(minuteInput.value));
 
-            let hours =
-                Math.floor(
-                    Number(hourInput.value)
-                );
-
-            let minutes =
-                Math.floor(
-                    Number(minuteInput.value)
-                );
-
-            if (
-                hourInput.value === ""
-                ||
-                Number.isNaN(hours)
-            ) {
+            if (hourInput.value === "" || Number.isNaN(hours)) {
                 hours = 0;
             }
 
-            if (
-                minuteInput.value === ""
-                ||
-                Number.isNaN(minutes)
-            ) {
+            if (minuteInput.value === "" || Number.isNaN(minutes)) {
                 minutes = 0;
             }
 
             // 範囲調整
-            hours =
-                Math.max(
-                    0,
-                    Math.min(hours, 20)
-                );
+            hours = Math.max(0, Math.min(hours, 20));
+            minutes = Math.max(0, Math.min(minutes, 59));
 
-            minutes =
-                Math.max(
-                    0,
-                    Math.min(minutes, 59)
-                );
-
-            let totalMinutes =
-                hours * 60 + minutes;
+            let totalMinutes = hours * 60 + minutes;
 
             // 20時間を超えた場合は20:00
             if (totalMinutes > maxWorkingMinutes) {
                 totalMinutes = maxWorkingMinutes;
             }
 
-            updateWorkingTime(
-                row,
-                totalMinutes
-            );
+            updateWorkingTime(row, totalMinutes);
         }
     );
 
-
-    // ----------------------------------------
-    // 調整バー
-    // ----------------------------------------
-
+    // 調整バー ----------------------------------------
     range.addEventListener("input",
         () => {
-
-            updateWorkingTime(
-                row,
-                Number(range.value)
-            );
+            updateWorkingTime(row, Number(range.value));
         }
     );
-
 
     // 初期状態の色を設定
     updateHourRangeColor(range);
-
 });
 
 
 // ----------------------------------------
 // 休日カレンダー
 // ----------------------------------------
+
 let holidayDate = new Date();
 
 const holidays = new Set();
 
 function renderHolidayCalendar() {
+
     const year = holidayDate.getFullYear();
     const month = holidayDate.getMonth();
 
@@ -1507,12 +1295,14 @@ function renderHolidayCalendar() {
     // 日付
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement("div");
+
         cell.className = "calendar-day";
 
         const date = new Date(year, month, day);
 
         // 日付表示
         const dateNumber = document.createElement("div");
+
         dateNumber.className = "day-number";
         dateNumber.textContent = day;
 
@@ -1528,8 +1318,8 @@ function renderHolidayCalendar() {
 
         // アイコン表示エリア
         const dayIcon = document.createElement("div");
-        dayIcon.className = "day-icon";
 
+        dayIcon.className = "day-icon";
         cell.appendChild(dayIcon);
 
         const key = `${year}-${month + 1}-${day}`;
@@ -1584,8 +1374,9 @@ renderHolidayCalendar();
 
 
 // ----------------------------------------
-// 入力チェック
+// エラーチェック
 // ----------------------------------------
+
 function validateScheduleInput() {
 
     // 1.ページ数 -----------------------------
@@ -1608,11 +1399,8 @@ function validateScheduleInput() {
 
     const hasInvalidProcess = [...processRows].some(
         row => {
-            const hours =
-                Number(row.querySelector(".process-hours").value);
-
-            const minutes =
-                Number(row.querySelector(".process-minutes").value);
+            const hours = Number(row.querySelector(".process-hours").value);
+            const minutes = Number(row.querySelector(".process-minutes").value);
 
             return hours === 0 && minutes === 0;
         }
@@ -1625,29 +1413,16 @@ function validateScheduleInput() {
     }
 
     // 3.活動時間 -----------------------------
-    const hourInputs =
-        document.querySelectorAll(".hour-input");
+    const hourInputs = document.querySelectorAll(".hour-input");
+    const minuteInputs = document.querySelectorAll(".minute-input");
+    const hasWorkingTime = [...hourInputs].some(
+        (input, index) => {
+            const hours = Number(input.value);
+            const minutes = Number(minuteInputs[index].value);
 
-    const minuteInputs =
-        document.querySelectorAll(".minute-input");
-
-    const hasWorkingTime =
-        [...hourInputs].some(
-            (input, index) => {
-
-                const hours =
-                    Number(input.value);
-
-                const minutes =
-                    Number(
-                        minuteInputs[index].value
-                    );
-
-                return (
-                    hours * 60 + minutes >= 60
-                );
-            }
-        );
+            return (hours * 60 + minutes >= 60);
+        }
+    );
 
     if (!hasWorkingTime) {
         alert("作業可能時間を設定してください。");
@@ -1678,10 +1453,10 @@ function validateScheduleInput() {
 // ----------------------------------------
 // スケジュール作成
 // ----------------------------------------
+
 function createSchedule() {
 
-    const pageCount =
-        document.getElementById("page-count").value;
+    const pageCount = document.getElementById("page-count").value;
 
     console.log("ページ数:",pageCount);
     console.log("開始日:",startDate);
@@ -1690,5 +1465,4 @@ function createSchedule() {
 
     // 結果画面へ移動
     showSection(inputSections.length);
-
 }
