@@ -340,15 +340,35 @@ body {
 
 
 /* --------------------------------------------------
-    フッター - 【次へ】ボタン
+    フッター - セクション移動ボタン
 -------------------------------------------------- */
 
-.next-button {
+.section-footer {
     position: fixed;
-    left: 50%;
-    bottom: 30px;
-    min-width: 150px;
-    padding: 12px 25px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 20px;
+
+    background: rgba(248,243,232,0.95);
+
+    z-index: 900;
+}
+
+
+/* --------------------------------------------------
+    セクション移動ボタン
+-------------------------------------------------- */
+
+.section-nav-button {
+    min-width: 130px;
+    padding: 10px 18px;
+
     border: none;
     border-radius: 12px;
 
@@ -358,14 +378,25 @@ body {
     font-size: 16px;
     cursor: pointer;
 
-    transform: translateX(-50%);
-
-    z-index: 900;
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
 }
 
-.next-button span {
-    display: block;
-    margin-top: 5px;
+.section-nav-button:active {
+    transform: scale(0.94);
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.06);
+}
+
+
+/* --------------------------------------------------
+    「戻る」ボタン - 非表示
+-------------------------------------------------- */
+
+.back-button.hidden {
+    visibility: hidden;
 }
 
 

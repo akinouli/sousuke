@@ -49,10 +49,10 @@ function showSection(nextIndex) {
     currentSection = nextIndex;
 
     updateProgress();
-    updateNextButton();
+    updateFooterButtons();
 
     // セクション表示時にスクロールリセット
-    window.scrollTo({top: 0,behavior: "instant"});
+    window.scrollTo({top: 0, behavior: "instant"});
 
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
@@ -319,58 +319,81 @@ function validateAllSections() {
 
 
 // ----------------------------------------
-// 「次へ」/「スケジュール作成」の表示
+// セクション移動ボタン
 // ----------------------------------------
 
+// 「戻る」ボタン ----------------------------------------
+
+backButton.addEventListener("click",
+    () => {
+
+        showSection(currentSection - 1);
+    }
+);
+
+
+// 「次へ」/「作成する」ボタン ----------------------------------------
+
+nextButton.addEventListener("click",
+    () => {
+
+        // 現在のセクションを保存
+        const sectionBeforeMove = currentSection;
+
+        // 現在のセクションをチェック
+        if (!validateSection(sectionBeforeMove)) {
+            return;
+        }
+
+        // 最後の入力セクション
+        if (sectionBeforeMove === inputSections.length - 1) {
+
+            // 全セクションをチェック
+            if (!validateAllSections()) {
+                return;
+            }
+
+            // スケジュール作成
+            createSchedule();
+
+            return;
+        }
+
+        // 次のセクションへ
+        showSection(sectionBeforeMove + 1);
+    }
+);
+
+
+// ----------------------------------------
+// セクション移動ボタン
+// ----------------------------------------
+
+const footer = document.querySelector(".section-footer");
+const backButton = document.querySelector(".back-button");
 const nextButton = document.querySelector(".next-button");
-const nextButtonText = nextButton.querySelector(".next-button-text");
 
-function updateNextButton() {
 
-    if (currentSection === inputSections.length - 1) {
-        nextButtonText.textContent = "スケジュール作成";
+// フッターボタン表示更新 ----------------------------------------
+
+function updateFooterButtons() {
+
+    // ①では「戻る」を非表示
+    if (currentSection === 0) {
+        backButton.classList.add("hidden");
     } else {
-        nextButtonText.textContent = "次へ";
+        backButton.classList.remove("hidden");
     }
 
+    // ⑤では「作成する」
+    if (currentSection === inputSections.length - 1) {
+        nextButton.textContent = "作成する";
+    } else {
+        nextButton.textContent = "次へ▼";
+    }
 }
 
-// 「次へ」ボタン ----------------------------------------
-document
-.querySelectorAll(".next-button")
-.forEach(button => {
-    button.addEventListener("click",
-        () => {
-
-            // 現在のセクションを保存
-            const sectionBeforeMove = currentSection;
-
-            // 現在のセクションをチェック
-            if (!validateSection(sectionBeforeMove)) {
-                return;
-            }
-
-            // 最後の入力セクションでオールチェック → スケジュール作成
-            if (sectionBeforeMove === inputSections.length - 1) {
-
-                if (!validateAllSections()) {
-                    return;
-                }
-
-                createSchedule();
-
-                return;
-            }
-
-            // ①～④なら次のセクションへ移動
-            showSection(sectionBeforeMove + 1);
-        }
-    );
-});
-
-// 「次へ」ボタン初期表示 ----------------------------------------
-updateProgress();
-updateNextButton();
+updateFooterButtons();
 
 
 // ----------------------------------------
