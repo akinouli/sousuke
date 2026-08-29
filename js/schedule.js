@@ -53,11 +53,14 @@ function showSection(nextIndex) {
     // セクション表示時にスクロールリセット
     window.scrollTo({top: 0,behavior: "instant"});
 
+    updateFloatingNav();
+
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
     requestAnimationFrame(
         () => {
             next.classList.add("active-section");
+            updateFloatingNav();
         }
     );
 
@@ -383,39 +386,39 @@ document
 // セクション移動ボタン - 画面追尾
 // ----------------------------------------
 
-const navObserver = new IntersectionObserver(
-    entries => {
+function updateFloatingNav() {
 
-        entries.forEach(entry => {
+    sectionNavs.forEach(wrapper => {
 
-            const wrapper = entry.target;
-            const nav = wrapper.querySelector(".section-nav");
-            const section = wrapper.closest(".form-section");
+        const nav = wrapper.querySelector(".section-nav");
+        const section = wrapper.closest(".form-section");
 
-            const sectionIndex = Number(section.dataset.section);
+        const sectionIndex = Number(section.dataset.section);
 
-            // 現在表示中のセクションだけ追尾
-            if (sectionIndex !== currentSection) {
-                nav.classList.remove("is-floating");
-                return;
-            }
+        // 現在表示中のセクション以外は追尾しない
+        if (sectionIndex !== currentSection) {
+            nav.classList.remove("is-floating");
+            return;
+        }
 
-            nav.classList.toggle(
-                "is-floating",
-                !entry.isIntersecting
-            );
+        const rect = wrapper.getBoundingClientRect();
 
-        });
+        // ボタンが画面外なら追尾
+        const isOutside =
+            rect.top > window.innerHeight ||
+            rect.bottom < 0;
 
-    },
-    {
-        threshold: 0
-    }
-);
+        nav.classList.toggle(
+            "is-floating",
+            isOutside
+        );
 
-sectionNavs.forEach(wrapper => {
-    navObserver.observe(wrapper);
-});
+    });
+
+}
+
+window.addEventListener("scroll", updateFloatingNav);
+window.addEventListener("resize", updateFloatingNav);
 
 
 // ----------------------------------------

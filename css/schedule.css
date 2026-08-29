@@ -1224,7 +1224,7 @@ body {
     .section-nav.is-floating {
         left: 15px;
         right: 15px;
-        bottom: 15px;
+        bottom: calc(20px + env(safe-area-inset-bottom));
     }
     */
 
