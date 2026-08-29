@@ -470,6 +470,7 @@ body {
 /* 工程時間入力グループ */
 .process-time-input .time-input-group {
     width: 55px;
+    min-height: 40px;
 }
 
 /* 工程時間入力欄 */
@@ -502,6 +503,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 7px 8px;
+    min-height: 40px;
 
     font-size: 11px;
     line-height: 1.2;
@@ -863,8 +865,8 @@ body {
     flex-direction: column;
     align-items: stretch;
 
-    width: 60px;
-    padding: 4px 6px 2px;
+    width: 55px;
+    padding: 2px 5px 1px;
 
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -1252,7 +1254,7 @@ body {
 
     .time-input-group {
         width: 54px;
-        padding: 4px 5px 2px;
+        padding: 2px 5px 1px;
     }
 
     .hour-input,
