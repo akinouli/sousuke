@@ -35,12 +35,22 @@
         <!-- セクション① ページ数 -->
         <section class="form-section active-section" data-section="0">
             <div class="section-content">
+
                 <h1>ページ数</h1>
                 <p>本文の制作予定ページ数を入力しよう</p>
 
                 <div class="page-count-area">
                     <input type="number" id="page-count" min="1" value="1" inputmode="numeric"><span>ページ</span>
                 </div>
+
+                <div class="section-nav-wrapper">
+                    <div class="section-nav">
+                        <button type="button" class="section-nav-button next-button">
+                            次へ▼
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -48,6 +58,7 @@
         <!-- セクション② 工程リスト ========================= -->
         <section class="form-section" data-section="1">
             <div class="section-content">
+
                 <h1>工程リスト</h1>
                 <p>
                     作業工程と確保したい作業時間を入力しよう<br>
@@ -133,6 +144,19 @@
                     </div>
 
                 </div>
+
+                <div class="section-nav-wrapper">
+                    <div class="section-nav">
+                        <button type="button" class="section-nav-button back-button">
+                            ▲戻る
+                        </button>
+
+                        <button type="button" class="section-nav-button next-button">
+                            次へ▼
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -140,6 +164,7 @@
         <!-- セクション③ 活動時間 ========================= -->
         <section class="form-section" data-section="2">
             <div class="section-content">
+
                 <h1>活動時間</h1>
                 <p>曜日ごとに作業できる時間を設定しよう</p>
 
@@ -285,6 +310,19 @@
                     </div>
 
                 </div>
+
+                <div class="section-nav-wrapper">
+                    <div class="section-nav">
+                        <button type="button" class="section-nav-button back-button">
+                            ▲戻る
+                        </button>
+
+                        <button type="button" class="section-nav-button next-button">
+                            次へ▼
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -292,10 +330,11 @@
         <!-- セクション④ 休日 ========================= -->
         <section class="form-section" data-section="3">
             <div class="section-content">
+
                 <h1>休日</h1>
                 <p>
                     活動しない日があれば選択しよう<br>
-                    作業期間内にある休日を計算対象外にするよ
+                    作業期間内の休日を計算対象外にするよ
                 </p>
 
                 <div class="calendar">
@@ -317,6 +356,19 @@
 
                     <div id="holiday-calendar" class="calendar-grid"></div>
                 </div>
+
+                <div class="section-nav-wrapper">
+                    <div class="section-nav">
+                        <button type="button" class="section-nav-button back-button">
+                            ▲戻る
+                        </button>
+
+                        <button type="button" class="section-nav-button next-button">
+                            次へ▼
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -324,6 +376,7 @@
         <!-- セクション⑤ 作業期間 -->
         <section class="form-section" data-section="4">
             <div class="section-content">
+
                 <h1>作業期間</h1>
                 <p>作業開始日と締切日を選択しよう</p>
 
@@ -346,6 +399,19 @@
 
                     <div id="period-calendar" class="calendar-grid"></div>
                 </div>
+
+                <div class="section-nav-wrapper">
+                    <div class="section-nav">
+                        <button type="button" class="section-nav-button back-button">
+                            戻る
+                        </button>
+
+                        <button type="button" class="section-nav-button next-button">
+                            作成する
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -372,12 +438,7 @@
 
     </main>
 
-    <footer>
-        <button type="button" class="next-button">
-            <span class="next-button-text">次へ</span>
-            <span>▼</span>
-        </button>
-    </footer>
+
 
     <script src="js/schedule.js"></script>
 
