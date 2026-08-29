@@ -398,6 +398,8 @@ function updateFloatingNav() {
         // 現在表示中のセクション以外は追尾しない
         if (sectionIndex !== currentSection) {
             nav.classList.remove("is-floating");
+            section.classList.remove("floating-nav-section");
+
             return;
         }
 
@@ -413,6 +415,10 @@ function updateFloatingNav() {
             isOutside
         );
 
+        section.classList.toggle(
+            "floating-nav-section",
+            isOutside
+        );
     });
 
 }

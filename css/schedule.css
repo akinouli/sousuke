@@ -334,6 +334,11 @@ body {
     z-index: 900;
 }
 
+/* 追尾中は固定位置の基準を画面に戻す */
+.form-section.floating-nav-section {
+    transform: none;
+}
+
 
 /* --------------------------------------------------
     メイン
