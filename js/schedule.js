@@ -322,6 +322,10 @@ function validateAllSections() {
 // セクション移動ボタン
 // ----------------------------------------
 
+const footer = document.querySelector(".section-footer");
+const backButton = document.querySelector(".back-button");
+const nextButton = document.querySelector(".next-button");
+
 // 「戻る」ボタン ----------------------------------------
 
 backButton.addEventListener("click",
@@ -363,16 +367,6 @@ nextButton.addEventListener("click",
         showSection(sectionBeforeMove + 1);
     }
 );
-
-
-// ----------------------------------------
-// セクション移動ボタン
-// ----------------------------------------
-
-const footer = document.querySelector(".section-footer");
-const backButton = document.querySelector(".back-button");
-const nextButton = document.querySelector(".next-button");
-
 
 // フッターボタン表示更新 ----------------------------------------
 
