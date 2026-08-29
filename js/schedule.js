@@ -49,18 +49,16 @@ function showSection(nextIndex) {
     currentSection = nextIndex;
 
     updateProgress();
+    updateNextButton();
 
     // セクション表示時にスクロールリセット
     window.scrollTo({top: 0,behavior: "instant"});
-
-    updateFloatingNav();
 
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
     requestAnimationFrame(
         () => {
             next.classList.add("active-section");
-            updateFloatingNav();
         }
     );
 
@@ -321,34 +319,26 @@ function validateAllSections() {
 
 
 // ----------------------------------------
-// セクション移動ボタン
+// 「次へ」/「スケジュール作成」の表示
 // ----------------------------------------
 
-const sectionNavs = document.querySelectorAll(".section-nav-wrapper");
+const nextButton = document.querySelector(".next-button");
+const nextButtonText = nextButton.querySelector(".next-button-text");
 
+function updateNextButton() {
 
-// 「戻る」ボタン ----------------------------------------
+    if (currentSection === inputSections.length - 1) {
+        nextButtonText.textContent = "スケジュール作成";
+    } else {
+        nextButtonText.textContent = "次へ";
+    }
 
-document
-.querySelectorAll(".back-button")
-.forEach(button => {
+}
 
-    button.addEventListener("click",
-        () => {
-
-            showSection(currentSection - 1);
-        }
-    );
-
-});
-
-
-// 「次へ」/「作成する」ボタン ----------------------------------------
-
+// 「次へ」ボタン ----------------------------------------
 document
 .querySelectorAll(".next-button")
 .forEach(button => {
-
     button.addEventListener("click",
         () => {
 
@@ -360,71 +350,27 @@ document
                 return;
             }
 
-            // 最後の入力セクション
+            // 最後の入力セクションでオールチェック → スケジュール作成
             if (sectionBeforeMove === inputSections.length - 1) {
 
-                // 全セクションをチェック
                 if (!validateAllSections()) {
                     return;
                 }
 
-                // スケジュール作成
                 createSchedule();
 
                 return;
             }
 
-            // 次のセクションへ
+            // ①～④なら次のセクションへ移動
             showSection(sectionBeforeMove + 1);
         }
     );
-
 });
 
-
-// ----------------------------------------
-// セクション移動ボタン - 画面追尾
-// ----------------------------------------
-
-function updateFloatingNav() {
-
-    sectionNavs.forEach(wrapper => {
-
-        const nav = wrapper.querySelector(".section-nav");
-        const section = wrapper.closest(".form-section");
-
-        const sectionIndex = Number(section.dataset.section);
-
-        // 現在表示中のセクション以外は追尾しない
-        if (sectionIndex !== currentSection) {
-            nav.classList.remove("is-floating");
-            section.classList.remove("floating-nav-section");
-
-            return;
-        }
-
-        const rect = wrapper.getBoundingClientRect();
-
-        // ボタンが画面外なら追尾
-        const isOutside =
-            rect.top > window.innerHeight ||
-            rect.bottom < 0;
-
-        nav.classList.toggle(
-            "is-floating",
-            isOutside
-        );
-
-        section.classList.toggle(
-            "floating-nav-section",
-            isOutside
-        );
-    });
-
-}
-
-window.addEventListener("scroll", updateFloatingNav);
-window.addEventListener("resize", updateFloatingNav);
+// 「次へ」ボタン初期表示 ----------------------------------------
+updateProgress();
+updateNextButton();
 
 
 // ----------------------------------------
