@@ -483,7 +483,7 @@ body {
 
     background: transparent;
 
-    text-align: center;
+    text-align: right;
     font-size: 16px;
 }
 
@@ -885,7 +885,7 @@ body {
 
     background: transparent;
 
-    text-align: center;
+    text-align: right;
     font-size: 16px;
 }
 
@@ -1194,6 +1194,11 @@ body {
         font-size: 16px;
     }
 
+    .process-hours,
+    .process-minutes {
+        text-align: right;
+    }
+
     .auto-adjust-btn {
         padding: 6px 5px;
         font-size: 10px;
@@ -1261,8 +1266,9 @@ body {
 
     .hour-input,
     .minute-input {
-        font-size: 16px;
         padding: 1px 0px;
+        font-size: 16px;
+        text-align: center;
     }
 
     .time-input-group span {
