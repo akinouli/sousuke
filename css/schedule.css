@@ -908,6 +908,7 @@ body {
 .time-colon {
     font-size: 18px;
     color: #666;
+    text-align: center;
 }
 
 /* 調整バー */
