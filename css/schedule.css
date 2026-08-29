@@ -867,7 +867,7 @@ body {
     align-items: stretch;
 
     width: 55px;
-    padding: 1px 3px;
+    padding: 2px 3px;
 
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -1190,7 +1190,7 @@ body {
     }
 
     .process-time-input .time-input-group {
-        width: 50px;
+        width: 45px;
         font-size: 16px;
     }
 
@@ -1250,18 +1250,19 @@ body {
     -------------------------------------------------- */
 
     .day-row {
-        grid-template-columns: 30px 45px 9px 45px 1fr;
+        grid-template-columns: 30px 45px 7px 45px 1fr;
         gap: 5px;
     }
 
     .time-input-group {
         width: 45px;
-        padding: 1px 3px;
+        padding: 2px 3px;
     }
 
     .hour-input,
     .minute-input {
         font-size: 16px;
+        padding: 1px 0px;
     }
 
     .time-input-group span {
