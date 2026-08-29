@@ -330,7 +330,6 @@ const nextButton = document.querySelector(".next-button");
 
 backButton.addEventListener("click",
     () => {
-
         showSection(currentSection - 1);
     }
 );
