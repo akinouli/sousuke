@@ -1250,7 +1250,7 @@ body {
     -------------------------------------------------- */
 
     .day-row {
-        grid-template-columns: 30px 45px 14px 45px 1fr;
+        grid-template-columns: 30px 45px 9px 45px 1fr;
         gap: 5px;
     }
 
