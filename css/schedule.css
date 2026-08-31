@@ -1224,7 +1224,7 @@ body {
 
     .process-hours,
     .process-minutes {
-        text-align: right;
+        text-align: center;
     }
 
     .auto-adjust-btn {
