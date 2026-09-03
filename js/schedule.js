@@ -179,7 +179,7 @@ function validateSection(index) {
     // 2.工程リスト ----------------------------------------
     if (index === 1) {
 
-        // 作品制作 ----------------------------------------
+        // 制作 ----------------------------------------
         const processRows = processList.querySelectorAll(".process-row");
 
         // 行程が1個もない
@@ -188,7 +188,7 @@ function validateSection(index) {
             return false;
         }
 
-        // 作品制作の各行程をチェック
+        // 制作の各行程をチェック
         for (const row of processRows) {
 
             const name = row.querySelector(".process-name").value.trim();
@@ -227,7 +227,7 @@ function validateSection(index) {
                 return false;
             }
 
-            // 完成後の各行程をチェック
+            // 仕立ての各行程をチェック
             for (const row of postProcessRows) {
 
                 const name = row.querySelector(".process-name").value.trim();
@@ -548,7 +548,7 @@ renderPeriodCalendar();
 // 初期工程
 // ----------------------------------------
 
-// 作品制作 ----------------------------------------
+// 制作 ----------------------------------------
 const defaultProcesses = [
     {
         name: "プロット",
@@ -775,7 +775,7 @@ function createProcessItem(process) {
 // 工程追加
 // ----------------------------------------
 
-// 作品制作 ----------------------------------------
+// 制作 ----------------------------------------
 document
 .getElementById("add-process")
 .addEventListener("click",
@@ -817,7 +817,7 @@ document
 const processList = document.getElementById("process-list");
 const postProcessList = document.getElementById("post-process-list");
 
-// 作品制作 ----------------------------------------
+// 制作 ----------------------------------------
 defaultProcesses.forEach(
     process => {
         processList.appendChild(createProcessItem(process));
