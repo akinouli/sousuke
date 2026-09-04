@@ -719,17 +719,17 @@
             // 算出結果
             // ----------------------------------------
 
-            if (productionSchedule.length > 0) {
+            if (finishingSchedule.length > 0) {
 
-                const completionDate =
-                    productionSchedule[
-                        productionSchedule.length - 1
+                const finishingEndDate =
+                    finishingSchedule[
+                        finishingSchedule.length - 1
                     ].date;
 
                 document.getElementById(
-                    "completion-result"
+                    "finishing-end-result"
                 ).textContent =
-                    completionDate.toLocaleDateString(
+                    finishingEndDate.toLocaleDateString(
                         "ja-JP"
                     );
 
