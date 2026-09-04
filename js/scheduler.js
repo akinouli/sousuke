@@ -89,6 +89,16 @@ function getActivityMinutesForDate(date, activityMinutes) {
     return activityMinutes[day];
 }
 
+// 日付比較
+function isSameDate(dateA, dateB) {
+
+    return (
+        dateA.getFullYear() === dateB.getFullYear() &&
+        dateA.getMonth() === dateB.getMonth() &&
+        dateA.getDate() === dateB.getDate()
+    );
+}
+
 // 休日判定
 function isHoliday(date, holidays) {
 
