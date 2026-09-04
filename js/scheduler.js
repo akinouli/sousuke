@@ -218,3 +218,60 @@ function isDeadlineMet(finalEndDate, deadline) {
 
     return finalEndDate <= deadline;
 }
+
+
+// ========================================
+// Step.4
+// 自動調整
+// ========================================
+
+
+// 調整対象の工程を取得
+function getAdjustmentTargets(
+    productionProcesses,
+    finishingProcesses,
+    productionSettings,
+    finishingSettings
+) {
+
+    const targets = [];
+
+
+    // 制作工程
+    productionProcesses.forEach(
+        (process, index) => {
+
+            if (productionSettings[index]) {
+
+                targets.push({
+                    type: "production",
+                    index: index,
+                    name: process.name
+                });
+
+            }
+
+        }
+    );
+
+
+    // 仕立て工程
+    finishingProcesses.forEach(
+        (process, index) => {
+
+            if (finishingSettings[index]) {
+
+                targets.push({
+                    type: "finishing",
+                    index: index,
+                    name: process.name
+                });
+
+            }
+
+        }
+    );
+
+
+    return targets;
+}
