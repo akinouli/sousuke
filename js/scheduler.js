@@ -279,3 +279,63 @@ function getAdjustmentTargets(
 
     return targets;
 }
+
+
+// ----------------------------------------
+// 全体の活動分数を取得
+// ----------------------------------------
+
+function calculateTotalActivityMinutes(
+    schedule,
+    activityMinutes,
+    holidays
+) {
+
+    if (schedule.length === 0) {
+        return 0;
+    }
+
+
+    const startDate =
+        schedule[0].date;
+
+    const endDate =
+        schedule[
+            schedule.length - 1
+        ].date;
+
+
+    let totalMinutes = 0;
+
+    let currentDate =
+        new Date(startDate);
+
+
+    while (currentDate <= endDate) {
+
+        if (
+            isWorkableDate(
+                currentDate,
+                activityMinutes,
+                holidays
+            )
+        ) {
+
+            totalMinutes +=
+                getActivityMinutesForDate(
+                    currentDate,
+                    activityMinutes
+                );
+
+        }
+
+
+        currentDate.setDate(
+            currentDate.getDate() + 1
+        );
+
+    }
+
+
+    return totalMinutes;
+}
