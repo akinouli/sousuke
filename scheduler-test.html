@@ -719,6 +719,25 @@
             // 算出結果
             // ----------------------------------------
 
+            // 作品完成日
+            if (productionSchedule.length > 0) {
+
+                const productionEndDate =
+                    productionSchedule[
+                        productionSchedule.length - 1
+                    ].date;
+
+                document.getElementById(
+                    "completion-result"
+                ).textContent =
+                    productionEndDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+            }
+
+
+            // 作業終了日
             if (finishingSchedule.length > 0) {
 
                 const finishingEndDate =
@@ -736,23 +755,7 @@
             }
 
 
-            if (productionSchedule.length > 0) {
-
-                const productionEndDate =
-                    productionSchedule[
-                        productionSchedule.length - 1
-                    ].date;
-
-                document.getElementById(
-                    "finishing-end-result"
-                ).textContent =
-                    productionEndDate.toLocaleDateString(
-                        "ja-JP"
-                    );
-
-            }
-
-
+            // 最終作業終了日
             if (finishingSchedule.length > 0) {
 
                 const finalEndDate =
