@@ -306,6 +306,20 @@
     </div>
 
 
+    <!-- Step.4-② 活動分数 -->
+
+    <h3>② 活動分数</h3>
+
+    <div class="test-block">
+
+        <p>
+            全体の活動分数：
+            <strong id="total-activity-result">---</strong>
+        </p>
+
+    </div>
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
@@ -1139,6 +1153,30 @@
 
                     }
                 );
+
+                // ----------------------------------------
+                // Step.4-② 全体の活動分数
+                // ----------------------------------------
+
+                const totalActivityMinutes =
+                    calculateTotalActivityMinutes(
+                        [
+                            ...productionSchedule,
+                            ...finishingSchedule
+                        ],
+                        activityMinutes,
+                        holidays
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "total-activity-result"
+                ).textContent =
+                    `${totalActivityMinutes}分`;
 
             }
         );
