@@ -147,6 +147,88 @@
     </button>
 
 
+    <!-- ========================================
+    Step.2
+    ========================================= -->
+
+    <h2>Step.2　仮スケジュール作成</h2>
+
+
+    <!-- Step.2-① 作業可能日判定 -->
+
+    <h3>① 作業可能日判定</h3>
+
+    <div class="test-block">
+
+        <p>
+            作業開始日：2026/9/7
+        </p>
+
+        <p>
+            休日：2026/9/12
+        </p>
+
+        <div id="workable-result" class="result"></div>
+
+    </div>
+
+
+    <!-- Step.2-② 工程割り当て -->
+
+    <h3>② 工程の割り当て</h3>
+
+    <div class="test-block">
+
+        <div id="schedule-result" class="result"></div>
+
+    </div>
+
+
+    <!-- Step.2-③ 日付結果 -->
+
+    <h3>③ 算出結果</h3>
+
+    <div class="test-block">
+
+        <p>
+            作品完成日：
+            <strong id="completion-result">---</strong>
+        </p>
+
+        <p>
+            作業終了日：
+            <strong id="finishing-end-result">---</strong>
+        </p>
+
+        <p>
+            最終作業終了日：
+            <strong id="final-end-result">---</strong>
+        </p>
+
+    </div>
+
+
+    <button id="run-step2-test">
+        Step.2を計算
+    </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     <!-- scheduler.jsを読み込む -->
 
     <script src="js/scheduler.js"></script>
@@ -340,6 +422,350 @@
         );
 
     </script>
+
+
+    <script>
+
+    // ========================================
+    // Step.2 テスト
+    // ========================================
+
+    document.getElementById("run-step2-test").addEventListener(
+        "click",
+        () => {
+
+            // ----------------------------------------
+            // Step.2 テスト用入力データ
+            // ----------------------------------------
+
+            const pageCount = 32;
+
+            const startDate = new Date("2026-09-07");
+
+            const holidays = [
+                new Date("2026-09-12")
+            ];
+
+
+            // 曜日別活動時間
+
+            const activityTimes = [
+
+                {
+                    name: "日",
+                    hours: 1,
+                    minutes: 30
+                },
+
+                {
+                    name: "月",
+                    hours: 2,
+                    minutes: 0
+                },
+
+                {
+                    name: "火",
+                    hours: 1,
+                    minutes: 30
+                },
+
+                {
+                    name: "水",
+                    hours: 0,
+                    minutes: 0
+                },
+
+                {
+                    name: "木",
+                    hours: 2,
+                    minutes: 0
+                },
+
+                {
+                    name: "金",
+                    hours: 1,
+                    minutes: 0
+                },
+
+                {
+                    name: "土",
+                    hours: 3,
+                    minutes: 0
+                }
+
+            ];
+
+
+            // 制作工程
+
+            const productionProcesses = [
+
+                {
+                    name: "プロット",
+                    unit: "total",
+                    hours: 4,
+                    minutes: 0
+                },
+
+                {
+                    name: "ネーム",
+                    unit: "page",
+                    hours: 1,
+                    minutes: 0
+                }
+
+            ];
+
+
+            // 仕立て工程
+
+            const finishingProcesses = [
+
+                {
+                    name: "入稿",
+                    unit: "total",
+                    hours: 1,
+                    minutes: 30
+                }
+
+            ];
+
+
+            // ----------------------------------------
+            // Step.1の計算
+            // ----------------------------------------
+
+            const productionMinutes =
+                convertProductionWorkMinutes(
+                    productionProcesses,
+                    pageCount
+                );
+
+            const finishingMinutes =
+                convertFinishingWorkMinutes(
+                    finishingProcesses,
+                    pageCount
+                );
+
+            const activityMinutes =
+                convertActivityMinutes(
+                    activityTimes
+                );
+
+
+            // ----------------------------------------
+            // Step.2用の工程データ
+            // ----------------------------------------
+
+            const productionScheduleProcesses =
+                productionProcesses.map(
+                    (process, index) => {
+
+                        return {
+                            name: process.name,
+                            minutes: productionMinutes[index]
+                        };
+
+                    }
+                );
+
+
+            const finishingScheduleProcesses =
+                finishingProcesses.map(
+                    (process, index) => {
+
+                        return {
+                            name: process.name,
+                            minutes: finishingMinutes[index]
+                        };
+
+                    }
+                );
+
+
+            // ----------------------------------------
+            // Step.2 作業可能日判定テスト
+            // ----------------------------------------
+
+            const workableResult =
+                document.getElementById(
+                    "workable-result"
+                );
+
+            workableResult.innerHTML = "";
+
+
+            let testDate = new Date(startDate);
+
+
+            for (let i = 0; i < 10; i++) {
+
+                const workable =
+                    isWorkableDate(
+                        testDate,
+                        activityMinutes,
+                        holidays
+                    );
+
+
+                const dateText =
+                    testDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+
+                workableResult.innerHTML += `
+                    <p>
+                        ${dateText}
+                        → ${workable ? "作業可能" : "作業不可"}
+                    </p>
+                `;
+
+
+                testDate.setDate(
+                    testDate.getDate() + 1
+                );
+
+            }
+
+
+            // ----------------------------------------
+            // Step.2 仮スケジュール作成
+            // ----------------------------------------
+
+            const productionSchedule =
+                createDraftSchedule(
+                    productionScheduleProcesses,
+                    activityMinutes,
+                    holidays,
+                    startDate
+                );
+
+
+            const finishingStartDate =
+                productionSchedule.length > 0
+                    ? productionSchedule[
+                        productionSchedule.length - 1
+                    ].date
+                    : startDate;
+
+
+            const finishingSchedule =
+                createDraftSchedule(
+                    finishingScheduleProcesses,
+                    activityMinutes,
+                    holidays,
+                    finishingStartDate
+                );
+
+
+            // ----------------------------------------
+            // 工程割り当て結果
+            // ----------------------------------------
+
+            const scheduleResult =
+                document.getElementById(
+                    "schedule-result"
+                );
+
+            scheduleResult.innerHTML = "";
+
+
+            productionSchedule.forEach(
+                item => {
+
+                    scheduleResult.innerHTML += `
+                        <p>
+                            ${item.date.toLocaleDateString("ja-JP")}
+                        　
+                            ${item.processName}
+                        　
+                            ${item.minutes}分
+                        </p>
+                    `;
+
+                }
+            );
+
+
+            finishingSchedule.forEach(
+                item => {
+
+                    scheduleResult.innerHTML += `
+                        <p>
+                            ${item.date.toLocaleDateString("ja-JP")}
+                        　
+                            ${item.processName}
+                        　
+                            ${item.minutes}分
+                        </p>
+                    `;
+
+                }
+            );
+
+
+            // ----------------------------------------
+            // 算出結果
+            // ----------------------------------------
+
+            if (productionSchedule.length > 0) {
+
+                const completionDate =
+                    productionSchedule[
+                        productionSchedule.length - 1
+                    ].date;
+
+                document.getElementById(
+                    "completion-result"
+                ).textContent =
+                    completionDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+            }
+
+
+            if (productionSchedule.length > 0) {
+
+                const productionEndDate =
+                    productionSchedule[
+                        productionSchedule.length - 1
+                    ].date;
+
+                document.getElementById(
+                    "finishing-end-result"
+                ).textContent =
+                    productionEndDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+            }
+
+
+            if (finishingSchedule.length > 0) {
+
+                const finalEndDate =
+                    finishingSchedule[
+                        finishingSchedule.length - 1
+                    ].date;
+
+                document.getElementById(
+                    "final-end-result"
+                ).textContent =
+                    finalEndDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+            }
+
+        }
+
+    );
+
+    </script>
+
+
 
 </body>
 
