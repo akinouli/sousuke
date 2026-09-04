@@ -213,6 +213,70 @@
     </button>
 
 
+    <!-- ========================================
+    Step.3
+    ========================================= -->
+
+    <h2>Step.3　自動調整チェック</h2>
+
+
+    <h3>① 自動調整</h3>
+
+    <div class="test-block">
+
+        <p>
+            自動調整：
+        </p>
+
+        <label>
+            <input
+                type="radio"
+                name="auto-adjust"
+                value="true"
+                checked
+            >
+            する
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="auto-adjust"
+                value="false"
+            >
+            しない
+        </label>
+
+    </div>
+
+
+    <h3>② 締切日判定</h3>
+
+    <div class="test-block">
+
+        <p>
+            最終作業終了日：
+            <strong id="step3-final-date">---</strong>
+        </p>
+
+        <p>
+            締切日：
+            <strong id="step3-deadline">---</strong>
+        </p>
+
+        <p>
+            判定：
+            <strong id="step3-result">---</strong>
+        </p>
+
+    </div>
+
+
+    <button id="run-step3-test">
+        Step.3を計算
+    </button>
+
+
 
 
 
@@ -775,6 +839,82 @@
         }
 
     );
+
+    </script>
+
+    <script>
+
+        // ========================================
+        // Step.3 テスト
+        // ========================================
+
+        document.getElementById("run-step3-test").addEventListener(
+            "click",
+            () => {
+
+                // ----------------------------------------
+                // テスト用データ
+                // ----------------------------------------
+
+                const finalEndDate =
+                    new Date("2026-10-04");
+
+                const deadline =
+                    new Date("2026-10-10");
+
+
+                // ----------------------------------------
+                // 自動調整
+                // ----------------------------------------
+
+                const autoAdjust =
+                    document.querySelector(
+                        'input[name="auto-adjust"]:checked'
+                    ).value === "true";
+
+
+                // ----------------------------------------
+                // Step.3 判定
+                // ----------------------------------------
+
+                const deadlineMet =
+                    isDeadlineMet(
+                        finalEndDate,
+                        deadline
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "step3-final-date"
+                ).textContent =
+                    finalEndDate.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+
+                document.getElementById(
+                    "step3-deadline"
+                ).textContent =
+                    deadline.toLocaleDateString(
+                        "ja-JP"
+                    );
+
+
+                document.getElementById(
+                    "step3-result"
+                ).textContent =
+                    deadlineMet
+                        ? "締切日に間に合う → Step.5"
+                        : autoAdjust
+                            ? "締切日に間に合わない → Step.4"
+                            : "締切日に間に合わない → 自動調整しない";
+
+            }
+        );
 
     </script>
 

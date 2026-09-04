@@ -205,3 +205,16 @@ function createDraftSchedule(
 
     return schedule;
 }
+
+
+// ========================================
+// Step.3
+// 自動調整チェック
+// ========================================
+
+
+// 最終作業終了日と締切日を比較
+function isDeadlineMet(finalEndDate, deadline) {
+
+    return finalEndDate <= deadline;
+}
