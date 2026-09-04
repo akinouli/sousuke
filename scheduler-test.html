@@ -277,6 +277,40 @@
     </button>
 
 
+    <!-- ========================================
+    Step.4
+    ========================================= -->
+
+    <h2>Step.4　自動調整</h2>
+
+
+    <!-- Step.4-① 調整対象 -->
+
+    <h3>① 調整対象の工程</h3>
+
+    <div class="test-block">
+
+        <p>
+            制作工程
+        </p>
+
+        <div id="production-target-result" class="result"></div>
+
+
+        <p>
+            仕立て工程
+        </p>
+
+        <div id="finishing-target-result" class="result"></div>
+
+    </div>
+
+
+    <button id="run-step4-test">
+        Step.4を計算
+    </button>
+
+
 
 
 
@@ -912,6 +946,199 @@
                         : autoAdjust
                             ? "締切日に間に合わない → Step.4"
                             : "締切日に間に合わない → 自動調整しない";
+
+            }
+        );
+
+    </script>
+
+    <script>
+
+        // ========================================
+        // Step.4 テスト
+        // ========================================
+
+        document.getElementById("run-step4-test").addEventListener(
+            "click",
+            () => {
+
+                // ----------------------------------------
+                // Step.4 テスト用入力データ
+                // ----------------------------------------
+
+                const pageCount = 32;
+
+
+                // 制作工程
+
+                const productionProcesses = [
+
+                    {
+                        name: "プロット",
+                        unit: "total",
+                        hours: 4,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "ネーム",
+                        unit: "page",
+                        hours: 1,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "作画",
+                        unit: "page",
+                        hours: 2,
+                        minutes: 0
+                    }
+
+                ];
+
+
+                // 仕立て工程
+
+                const finishingProcesses = [
+
+                    {
+                        name: "ノンブル",
+                        unit: "total",
+                        hours: 0,
+                        minutes: 30
+                    },
+
+                    {
+                        name: "入稿",
+                        unit: "total",
+                        hours: 1,
+                        minutes: 0
+                    }
+
+                ];
+
+
+                // 自動調整設定
+                // true  → ON
+                // false → OFF
+
+                const productionSettings = [
+                    false,
+                    true,
+                    true
+                ];
+
+                const finishingSettings = [
+                    true,
+                    false
+                ];
+
+
+                // ----------------------------------------
+                // Step.1の計算
+                // ----------------------------------------
+
+                const productionMinutes =
+                    convertProductionWorkMinutes(
+                        productionProcesses,
+                        pageCount
+                    );
+
+                const finishingMinutes =
+                    convertFinishingWorkMinutes(
+                        finishingProcesses,
+                        pageCount
+                    );
+
+
+                // ----------------------------------------
+                // Step.4用の工程データ
+                // ----------------------------------------
+
+                const productionScheduleProcesses =
+                    productionProcesses.map(
+                        (process, index) => {
+
+                            return {
+                                name: process.name,
+                                minutes: productionMinutes[index]
+                            };
+
+                        }
+                    );
+
+
+                const finishingScheduleProcesses =
+                    finishingProcesses.map(
+                        (process, index) => {
+
+                            return {
+                                name: process.name,
+                                minutes: finishingMinutes[index]
+                            };
+
+                        }
+                    );
+
+
+                // ----------------------------------------
+                // Step.4-① 調整対象を取得
+                // ----------------------------------------
+
+                const adjustmentTargets =
+                    getAdjustmentTargets(
+                        productionScheduleProcesses,
+                        finishingScheduleProcesses,
+                        productionSettings,
+                        finishingSettings
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                const productionTargetResult =
+                    document.getElementById(
+                        "production-target-result"
+                    );
+
+                const finishingTargetResult =
+                    document.getElementById(
+                        "finishing-target-result"
+                    );
+
+
+                productionTargetResult.innerHTML = "";
+                finishingTargetResult.innerHTML = "";
+
+
+                adjustmentTargets.forEach(
+                    target => {
+
+                        const result = `
+                            <p>
+                                ${target.name}
+                                　
+                                ${target.minutes}分
+                                　
+                                自動調整：${target.autoAdjust ? "ON" : "OFF"}
+                            </p>
+                        `;
+
+
+                        if (target.type === "production") {
+
+                            productionTargetResult.innerHTML += result;
+
+                        } else {
+
+                            finishingTargetResult.innerHTML += result;
+
+                        }
+
+                    }
+                );
 
             }
         );
