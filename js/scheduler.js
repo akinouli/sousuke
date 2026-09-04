@@ -73,3 +73,125 @@ function convertActivityMinutes(activityTimes) {
         );
     });
 }
+
+
+// ========================================
+// Step.2
+// 仮スケジュール作成
+// ========================================
+
+
+// 曜日の活動分数を取得
+function getActivityMinutesForDate(date, activityMinutes) {
+
+    const day = date.getDay();
+
+    return activityMinutes[day];
+}
+
+// 休日判定
+function isHoliday(date, holidays) {
+
+    return holidays.some(
+        holiday => isSameDate(date, holiday)
+    );
+}
+
+// 作業可能日判定
+function isWorkableDate(date, activityMinutes, holidays) {
+
+    const dailyMinutes =
+        getActivityMinutesForDate(
+            date,
+            activityMinutes
+        );
+
+    if (dailyMinutes <= 0) {
+        return false;
+    }
+
+    if (isHoliday(date, holidays)) {
+        return false;
+    }
+
+    return true;
+}
+
+// スケジュール作成
+function createDraftSchedule(
+    processes,
+    activityMinutes,
+    holidays,
+    startDate
+) {
+
+    const schedule = [];
+
+    let currentDate = new Date(startDate);
+    let remainingMinutes = 0;
+    let processIndex = 0;
+
+    while (processIndex < processes.length) {
+
+        // 作業可能日まで進める
+        while (
+            !isWorkableDate(
+                currentDate,
+                activityMinutes,
+                holidays
+            )
+        ) {
+
+            currentDate.setDate(
+                currentDate.getDate() + 1
+            );
+        }
+
+        // 当日の活動分数
+        const dailyMinutes =
+            getActivityMinutesForDate(
+                currentDate,
+                activityMinutes
+            );
+
+        // 現在の工程
+        const process = processes[processIndex];
+
+        // 工程の残り作業分数
+        if (remainingMinutes === 0) {
+            remainingMinutes = process.minutes;
+        }
+
+        // 今日作業できる分数
+        const workMinutes =
+            Math.min(
+                remainingMinutes,
+                dailyMinutes
+            );
+
+        // スケジュールに追加
+        schedule.push({
+
+            date: new Date(currentDate),
+
+            processName: process.name,
+
+            minutes: workMinutes
+
+        });
+
+        remainingMinutes -= workMinutes;
+
+        // 工程完了
+        if (remainingMinutes === 0) {
+            processIndex++;
+        }
+
+        // 次の日へ
+        currentDate.setDate(
+            currentDate.getDate() + 1
+        );
+    }
+
+    return schedule;
+}
