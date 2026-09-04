@@ -246,7 +246,9 @@ function getAdjustmentTargets(
                 targets.push({
                     type: "production",
                     index: index,
-                    name: process.name
+                    name: process.name,
+                    minutes: process.minutes,
+                    autoAdjust: true
                 });
 
             }
@@ -264,7 +266,9 @@ function getAdjustmentTargets(
                 targets.push({
                     type: "finishing",
                     index: index,
-                    name: process.name
+                    name: process.name,
+                    minutes: process.minutes,
+                    autoAdjust: true
                 });
 
             }
