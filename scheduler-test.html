@@ -227,7 +227,7 @@
 
 
 
-    
+
 
     <!-- scheduler.jsを読み込む -->
 
@@ -644,10 +644,20 @@
 
             const finishingStartDate =
                 productionSchedule.length > 0
-                    ? productionSchedule[
-                        productionSchedule.length - 1
-                    ].date
-                    : startDate;
+                    ? new Date(
+                        productionSchedule[
+                            productionSchedule.length - 1
+                        ].date
+                    )
+                    : new Date(startDate);
+
+            if (productionSchedule.length > 0) {
+
+                finishingStartDate.setDate(
+                    finishingStartDate.getDate() + 1
+                );
+
+            }
 
 
             const finishingSchedule =
