@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SOUSUKE 計算ロジックテスト</title>
+
+    <style>
+
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+
+            font-family: sans-serif;
+            line-height: 1.6;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            padding-bottom: 8px;
+
+            border-bottom: 2px solid #333;
+        }
+
+        h3 {
+            margin-top: 24px;
+        }
+
+        .test-block {
+            margin-top: 20px;
+            padding: 20px;
+
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 12px;
+
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .result p {
+            margin: 4px 0;
+        }
+
+        .error {
+            color: red;
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 12px 24px;
+
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <h1>SOUSUKE 計算ロジックテスト</h1>
+
+
+    <!-- ========================================
+    Step.1
+    ========================================= -->
+
+    <h2>Step.1　作業時間・活動時間を分数へ変換</h2>
+
+
+    <!-- 制作工程 -->
+
+    <h3>① 制作工程</h3>
+
+    <div class="test-block">
+
+        <p>
+            ページ数：<strong>32ページ</strong>
+        </p>
+
+        <p>
+            プロット：40時間・全体
+        </p>
+
+        <p>
+            ネーム：2時間・ページ毎
+        </p>
+
+        <div id="production-result" class="result"></div>
+
+    </div>
+
+
+    <!-- 仕立て工程 -->
+
+    <h3>② 仕立て工程</h3>
+
+    <div class="test-block">
+
+        <p>
+            入稿：1時間30分・全体
+        </p>
+
+        <div id="finishing-result" class="result"></div>
+
+    </div>
+
+
+    <!-- 活動時間 -->
+
+    <h3>③ 曜日別活動時間</h3>
+
+    <div class="test-block">
+
+        <p>月：2時間</p>
+        <p>火：1時間30分</p>
+        <p>水：0時間</p>
+        <p>木：2時間</p>
+        <p>金：1時間</p>
+        <p>土：3時間</p>
+        <p>日：1時間30分</p>
+
+        <div id="activity-result" class="result"></div>
+
+    </div>
+
+
+    <button id="run-test">
+        Step.1を計算
+    </button>
+
+
+    <!-- scheduler.jsを読み込む -->
+
+    <script src="js/scheduler.js"></script>
+
+
+    <!-- テスト実行 -->
+
+    <script>
+
+        // ----------------------------------------
+        // Step.1 テスト
+        // ----------------------------------------
+
+        document.getElementById("run-test").addEventListener(
+            "click",
+            () => {
+
+                // ----------------------------------------
+                // テスト用入力データ
+                // ----------------------------------------
+
+                const pageCount = 32;
+
+
+                // 制作工程
+
+                const productionProcesses = [
+
+                    {
+                        name: "プロット",
+                        unit: "total",
+                        hours: 40,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "ネーム",
+                        unit: "page",
+                        hours: 2,
+                        minutes: 0
+                    }
+
+                ];
+
+
+                // 仕立て工程
+
+                const finishingProcesses = [
+
+                    {
+                        name: "入稿",
+                        unit: "total",
+                        hours: 1,
+                        minutes: 30
+                    }
+
+                ];
+
+
+                // 曜日別活動時間
+
+                const activityTimes = [
+
+                    {
+                        name: "月",
+                        hours: 2,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "火",
+                        hours: 1,
+                        minutes: 30
+                    },
+
+                    {
+                        name: "水",
+                        hours: 0,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "木",
+                        hours: 2,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "金",
+                        hours: 1,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "土",
+                        hours: 3,
+                        minutes: 0
+                    },
+
+                    {
+                        name: "日",
+                        hours: 1,
+                        minutes: 30
+                    }
+
+                ];
+
+
+                // ----------------------------------------
+                // Step.1 計算
+                // ----------------------------------------
+
+                const productionMinutes =
+                    convertProductionWorkMinutes(
+                        productionProcesses,
+                        pageCount
+                    );
+
+
+                const finishingMinutes =
+                    convertFinishingWorkMinutes(
+                        finishingProcesses,
+                        pageCount
+                    );
+
+
+                const activityMinutes =
+                    convertActivityMinutes(
+                        activityTimes
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                const productionResult =
+                    document.getElementById("production-result");
+
+                productionResult.innerHTML = "";
+
+                productionProcesses.forEach(
+                    (process, index) => {
+
+                        productionResult.innerHTML += `
+                            <p>
+                                ${process.name}
+                                → ${productionMinutes[index]}分
+                            </p>
+                        `;
+                    }
+                );
+
+
+                const finishingResult =
+                    document.getElementById("finishing-result");
+
+                finishingResult.innerHTML = "";
+
+                finishingProcesses.forEach(
+                    (process, index) => {
+
+                        finishingResult.innerHTML += `
+                            <p>
+                                ${process.name}
+                                → ${finishingMinutes[index]}分
+                            </p>
+                        `;
+                    }
+                );
+
+
+                const activityResult =
+                    document.getElementById("activity-result");
+
+                activityResult.innerHTML = "";
+
+                activityTimes.forEach(
+                    (day, index) => {
+
+                        activityResult.innerHTML += `
+                            <p>
+                                ${day.name}
+                                → ${activityMinutes[index]}分
+                            </p>
+                        `;
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
