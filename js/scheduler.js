@@ -427,7 +427,9 @@ function calculateAdjustableActivityMinutes(
 
     // 仕立てなし
     if (!hasFinishing) {
+
         return adjustableActivityMinutes;
+
     }
 
 
