@@ -634,3 +634,78 @@ function checkAdjustedDeadline(
 
     };
 }
+
+
+// ----------------------------------------
+// 自動調整設定を全てONにする
+// ----------------------------------------
+
+function enableAllAutoAdjust(
+    productionProcesses,
+    finishingProcesses
+) {
+
+    const productionSettings =
+        productionProcesses.map(() => true);
+
+
+    const finishingSettings =
+        finishingProcesses.map(() => true);
+
+
+    return {
+        productionSettings:
+            productionSettings,
+
+        finishingSettings:
+            finishingSettings
+    };
+}
+
+
+// ----------------------------------------
+// 自動調整設定が全てONか判定
+// ----------------------------------------
+
+function areAllAutoAdjustEnabled(
+    productionSettings,
+    finishingSettings
+) {
+
+    const allSettings = [
+        ...productionSettings,
+        ...finishingSettings
+    ];
+
+
+    return (
+        allSettings.length > 0 &&
+        allSettings.every(
+            setting => setting === true
+        )
+    );
+}
+
+
+// ----------------------------------------
+// 自動調整設定が全てOFFか判定
+// ----------------------------------------
+
+function areAllAutoAdjustDisabled(
+    productionSettings,
+    finishingSettings
+) {
+
+    const allSettings = [
+        ...productionSettings,
+        ...finishingSettings
+    ];
+
+
+    return (
+        allSettings.length > 0 &&
+        allSettings.every(
+            setting => setting === false
+        )
+    );
+}

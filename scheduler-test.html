@@ -445,9 +445,40 @@
     </div>
 
 
+    <!-- Step.4-⑧ 自動調整設定の再判定 -->
+
+    <h3>⑧ 自動調整設定の再判定</h3>
+
+    <div class="test-block">
+
+        <p>
+            現在の設定：
+            <strong id="adjustment-setting-state-result">
+                ---
+            </strong>
+        </p>
+
+        <p>
+            次の処理：
+            <strong id="adjustment-next-step-result">
+                ---
+            </strong>
+        </p>
+
+    </div>
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
+
+
+
+
+
+
+
+
 
 
 
@@ -1680,6 +1711,91 @@
                     adjustedDeadlineResult.isMet
                         ? "間に合う"
                         : "間に合わない";
+
+
+                // ----------------------------------------
+                // Step.4-⑧
+                // 自動調整設定の再判定
+                // ----------------------------------------
+
+                const allAutoAdjustEnabled =
+                    areAllAutoAdjustEnabled(
+                        productionSettings,
+                        finishingSettings
+                    );
+
+
+                const allAutoAdjustDisabled =
+                    areAllAutoAdjustDisabled(
+                        productionSettings,
+                        finishingSettings
+                    );
+
+
+                let adjustmentSettingState = "";
+                let adjustmentNextStep = "";
+
+
+                // ----------------------------------------
+                // 締切に間に合っている
+                // ----------------------------------------
+
+                if (adjustedDeadlineResult.isMet) {
+
+                    adjustmentSettingState =
+                        "調整成功";
+
+                    adjustmentNextStep =
+                        "Step.5 スケジュール確定";
+
+
+                // ----------------------------------------
+                // 締切に間に合わない
+                // ----------------------------------------
+
+                } else if (allAutoAdjustEnabled) {
+
+                    adjustmentSettingState =
+                        "全てON";
+
+                    adjustmentNextStep =
+                        "成立不能判定";
+
+
+                } else if (allAutoAdjustDisabled) {
+
+                    adjustmentSettingState =
+                        "全てOFF";
+
+                    adjustmentNextStep =
+                        "全てONに切り替えて再調整";
+
+
+                } else {
+
+                    adjustmentSettingState =
+                        "一部ON";
+
+                    adjustmentNextStep =
+                        "全てONに切り替えて再調整";
+
+                }
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "adjustment-setting-state-result"
+                ).textContent =
+                    adjustmentSettingState;
+
+
+                document.getElementById(
+                    "adjustment-next-step-result"
+                ).textContent =
+                    adjustmentNextStep;
 
 
 
