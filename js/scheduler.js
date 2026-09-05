@@ -453,7 +453,7 @@ function calculateAdjustmentMinutes(
 
         const adjustmentMinutes =
             target.autoAdjust
-                ? Math.round(
+                ? Math.floor(
                     target.minutes *
                     adjustmentRate
                 )
