@@ -1174,6 +1174,77 @@
 
 
                 // ----------------------------------------
+                // Step.4-①
+                // 調整対象の工程
+                // ----------------------------------------
+
+                const productionSettings = [
+                    false,
+                    true
+                ];
+
+                const finishingSettings = [
+                    true
+                ];
+
+
+                const adjustmentTargets =
+                    getAdjustmentTargets(
+                        productionScheduleProcesses,
+                        finishingScheduleProcesses,
+                        productionSettings,
+                        finishingSettings
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                const productionTargetResult =
+                    document.getElementById(
+                        "production-target-result"
+                    );
+
+                const finishingTargetResult =
+                    document.getElementById(
+                        "finishing-target-result"
+                    );
+
+
+                productionTargetResult.innerHTML = "";
+                finishingTargetResult.innerHTML = "";
+
+
+                adjustmentTargets.forEach(
+                    target => {
+
+                        const result = `
+                            <p>
+                                ${target.name}
+                                　
+                                ${target.minutes}分
+                                　
+                                自動調整：${target.autoAdjust ? "ON" : "OFF"}
+                            </p>
+                        `;
+
+
+                        if (target.type === "production") {
+
+                            productionTargetResult.innerHTML += result;
+
+                        } else {
+
+                            finishingTargetResult.innerHTML += result;
+
+                        }
+
+                    }
+                );
+
+
+                // ----------------------------------------
                 // Step.4-②
                 // 全体の活動分数
                 // ----------------------------------------
@@ -1204,7 +1275,9 @@
             }
         );
 
-    </script>
+        </script>
+
+
 
 
 
