@@ -1242,7 +1242,7 @@
                         productionScheduleProcesses,
                         finishingScheduleProcesses
                     );
-                    
+
 
                 const fixedWorkMinutes =
                     totalWorkMinutes.totalMinutes -
@@ -1257,19 +1257,24 @@
                 // ----------------------------------------
 
                 document.getElementById(
-                    "production-work-result"
+                    "adjustable-activity-result"
                 ).textContent =
-                    `${totalWorkMinutes.productionMinutes}分`;
+                    `${adjustableActivityMinutes}分`;
 
                 document.getElementById(
-                    "finishing-work-result"
+                    "adjustable-work-result"
                 ).textContent =
-                    `${totalWorkMinutes.finishingMinutes}分`;
+                    `${adjustableWorkMinutes}分`;
 
                 document.getElementById(
-                    "total-work-result"
+                    "adjustment-work-result"
                 ).textContent =
                     `${totalWorkMinutes.totalMinutes}分`;
+
+                document.getElementById(
+                    "adjustment-rate-result"
+                ).textContent =
+                    `${(adjustmentRate * 100).toFixed(1)}%`;
 
 
                 // ----------------------------------------
