@@ -1227,11 +1227,29 @@
                 // 全行程の作業分数
                 // ----------------------------------------
 
+                // ----------------------------------------
+                // 調整対象の作業分数
+                // ----------------------------------------
+
+                const adjustableWorkMinutes =
+                    calculateAdjustableWorkMinutes(
+                        adjustmentTargets
+                    );
+
+
                 const totalWorkMinutes =
                     calculateTotalWorkMinutes(
                         productionScheduleProcesses,
                         finishingScheduleProcesses
                     );
+                    
+
+                const fixedWorkMinutes =
+                    totalWorkMinutes.totalMinutes -
+                    adjustableWorkMinutes;
+
+
+
 
 
                 // ----------------------------------------
@@ -1268,18 +1286,12 @@
                     calculateAdjustableActivityMinutes(
                         totalActivityMinutes,
                         activityMinutes,
-                        hasFinishing
+                        hasFinishing,
+                        fixedWorkMinutes
                     );
 
 
-                // ----------------------------------------
-                // 調整対象の作業分数
-                // ----------------------------------------
 
-                const adjustableWorkMinutes =
-                    calculateAdjustableWorkMinutes(
-                        adjustmentTargets
-                    );
 
 
                 // ----------------------------------------
