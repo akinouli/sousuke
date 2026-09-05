@@ -320,6 +320,30 @@
     </div>
 
 
+    <!-- Step.4-③ 全行程の作業分数 -->
+
+    <h3>③ 全行程の作業分数</h3>
+
+    <div class="test-block">
+
+        <p>
+            制作工程：
+            <strong id="production-work-result">---</strong>
+        </p>
+
+        <p>
+            仕立て工程：
+            <strong id="finishing-work-result">---</strong>
+        </p>
+
+        <p>
+            全行程：
+            <strong id="total-work-result">---</strong>
+        </p>
+
+    </div>
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
@@ -1271,6 +1295,39 @@
                     "total-activity-result"
                 ).textContent =
                     `${totalActivityMinutes}分`;
+
+
+                
+                // ----------------------------------------
+                // Step.4-③
+                // 全行程の作業分数
+                // ----------------------------------------
+
+                const totalWorkMinutes =
+                    calculateTotalWorkMinutes(
+                        productionScheduleProcesses,
+                        finishingScheduleProcesses
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "production-work-result"
+                ).textContent =
+                    `${totalWorkMinutes.productionMinutes}分`;
+
+                document.getElementById(
+                    "finishing-work-result"
+                ).textContent =
+                    `${totalWorkMinutes.finishingMinutes}分`;
+
+                document.getElementById(
+                    "total-work-result"
+                ).textContent =
+                    `${totalWorkMinutes.totalMinutes}分`;
 
             }
         );

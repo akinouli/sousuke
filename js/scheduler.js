@@ -339,3 +339,48 @@ function calculateTotalActivityMinutes(
 
     return totalMinutes;
 }
+
+
+// ----------------------------------------
+// 全行程の作業分数を取得
+// ----------------------------------------
+
+function calculateTotalWorkMinutes(
+    productionProcesses,
+    finishingProcesses
+) {
+
+    const productionMinutes =
+        productionProcesses.reduce(
+            (total, process) => {
+
+                return total + process.minutes;
+
+            },
+            0
+        );
+
+
+    const finishingMinutes =
+        finishingProcesses.reduce(
+            (total, process) => {
+
+                return total + process.minutes;
+
+            },
+            0
+        );
+
+
+    return {
+
+        productionMinutes: productionMinutes,
+
+        finishingMinutes: finishingMinutes,
+
+        totalMinutes:
+            productionMinutes +
+            finishingMinutes
+
+    };
+}
