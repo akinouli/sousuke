@@ -595,3 +595,42 @@ function createAdjustedSchedule(
         ]
     };
 }
+
+
+// ----------------------------------------
+// 自動調整後の締切判定
+// ----------------------------------------
+
+function checkAdjustedDeadline(
+    adjustedSchedule,
+    deadline
+) {
+
+    if (adjustedSchedule.length === 0) {
+
+        return {
+            isMet: false,
+            finalEndDate: null
+        };
+
+    }
+
+
+    const finalEndDate =
+        adjustedSchedule[
+            adjustedSchedule.length - 1
+        ].date;
+
+
+    return {
+
+        isMet:
+            isDeadlineMet(
+                finalEndDate,
+                deadline
+            ),
+
+        finalEndDate: finalEndDate
+
+    };
+}

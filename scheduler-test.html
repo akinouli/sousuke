@@ -412,7 +412,37 @@
             <strong id="adjusted-final-end-result">---</strong>
         </p>
 
-    </div>  
+    </div>
+
+
+    <!-- Step.4-⑦ 自動調整後の締切判定 -->
+
+    <h3>⑦ 自動調整後の締切判定</h3>
+
+    <div class="test-block">
+
+        <p>
+            最終作業終了日：
+            <strong id="adjusted-deadline-date-result">
+                ---
+            </strong>
+        </p>
+
+        <p>
+            締切日：
+            <strong id="deadline-result">
+                ---
+            </strong>
+        </p>
+
+        <p>
+            判定：
+            <strong id="adjusted-deadline-result">
+                ---
+            </strong>
+        </p>
+
+    </div>
 
 
     <button id="run-step4-test">
@@ -1608,6 +1638,49 @@
                     adjustedFinalEndDate
                         ? adjustedFinalEndDate.toLocaleDateString("ja-JP")
                         : "---";
+
+
+                // ----------------------------------------
+                // Step.4-⑦
+                // 自動調整後の締切判定
+                // ----------------------------------------
+
+                const adjustedDeadlineResult =
+                    checkAdjustedDeadline(
+                        adjustedScheduleResult.schedule,
+                        deadline
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "adjusted-deadline-date-result"
+                ).textContent =
+                    adjustedDeadlineResult.finalEndDate
+                        ? adjustedDeadlineResult.finalEndDate
+                            .toLocaleDateString("ja-JP")
+                        : "---";
+
+
+                document.getElementById(
+                    "deadline-result"
+                ).textContent =
+                    deadline.toLocaleDateString("ja-JP");
+
+
+                document.getElementById(
+                    "adjusted-deadline-result"
+                ).textContent =
+                    adjustedDeadlineResult.isMet
+                        ? "間に合う"
+                        : "間に合わない";
+
+
+
+
 
 
 
