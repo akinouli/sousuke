@@ -387,6 +387,25 @@ function calculateTotalWorkMinutes(
 
 
 // ----------------------------------------
+// 調整対象の作業分数を取得
+// ----------------------------------------
+
+function calculateAdjustableWorkMinutes(
+    adjustmentTargets
+) {
+
+    return adjustmentTargets.reduce(
+        (total, target) => {
+
+            return total + target.minutes;
+
+        },
+        0
+    );
+}
+
+
+// ----------------------------------------
 // 調整用の活動分数を取得
 // ----------------------------------------
 
@@ -425,17 +444,17 @@ function calculateAdjustableActivityMinutes(
 
 function calculateAdjustmentRate(
     adjustableActivityMinutes,
-    totalWorkMinutes
+    adjustableWorkMinutes
 ) {
 
-    if (totalWorkMinutes <= 0) {
+    if (adjustableWorkMinutes <= 0) {
         return 1;
     }
 
 
     return (
         adjustableActivityMinutes /
-        totalWorkMinutes
+        adjustableWorkMinutes
     );
 }
 

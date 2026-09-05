@@ -217,6 +217,7 @@
         <p>仕立て作業：<strong id="finishing-setting-result">---</strong></p>
         <p>最大活動分数：<strong id="max-activity-result">---</strong></p>
         <p>調整用活動分数：<strong id="adjustable-activity-result">---</strong></p>
+        <p>調整対象の作業分数：<strong id="adjustable-work-result">---</strong></p>
         <p>トータル作業分数：<strong id="adjustment-work-result">---</strong></p>
         <p>調整率：<strong id="adjustment-rate-result">---</strong></p>
     </div>
@@ -1271,11 +1272,24 @@
                     );
 
 
+                // ----------------------------------------
+                // 調整対象の作業分数
+                // ----------------------------------------
+
+                const adjustableWorkMinutes =
+                    calculateAdjustableWorkMinutes(
+                        adjustmentTargets
+                    );
+
+
+                // ----------------------------------------
                 // 調整率
+                // ----------------------------------------
+
                 const adjustmentRate =
                     calculateAdjustmentRate(
                         adjustableActivityMinutes,
-                        totalWorkMinutes.totalMinutes
+                        adjustableWorkMinutes
                     );
 
 
@@ -1584,6 +1598,12 @@
                     "adjustment-next-step-result"
                 ).textContent =
                     adjustmentNextStep;
+
+                
+                document.getElementById(
+                    "adjustable-work-result"
+                ).textContent =
+                    `${adjustableWorkMinutes}分`;
 
 
 
