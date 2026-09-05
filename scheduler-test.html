@@ -389,6 +389,32 @@
     </div>
 
 
+    <!-- Step.4-⑥ 再スケジュール -->
+
+    <h3>⑥ 再スケジュール</h3>
+
+    <div class="test-block">
+
+        <div id="adjusted-schedule-result" class="result"></div>
+
+        <p>
+            作品完成日：
+            <strong id="adjusted-completion-result">---</strong>
+        </p>
+
+        <p>
+            作業終了日：
+            <strong id="adjusted-finishing-end-result">---</strong>
+        </p>
+
+        <p>
+            最終作業終了日：
+            <strong id="adjusted-final-end-result">---</strong>
+        </p>
+
+    </div>  
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
@@ -1481,6 +1507,116 @@
                     `;
 
                 });
+
+
+                // ----------------------------------------
+                // Step.4-⑥
+                // 再スケジュール
+                // ----------------------------------------
+
+                const adjustedScheduleResult =
+                    createAdjustedSchedule(
+                        productionScheduleProcesses,
+                        finishingScheduleProcesses,
+                        adjustedTargets,
+                        activityMinutes,
+                        holidays,
+                        startDate
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                const scheduleResult =
+                    document.getElementById(
+                        "adjusted-schedule-result"
+                    );
+
+                scheduleResult.innerHTML = "";
+
+
+                adjustedScheduleResult.schedule.forEach(
+                    item => {
+
+                        scheduleResult.innerHTML += `
+                            <p>
+                                ${item.date.toLocaleDateString("ja-JP")}
+                                　
+                                ${item.processName}
+                                　
+                                ${item.minutes}分
+                            </p>
+                        `;
+
+                    }
+                );
+
+
+                // ----------------------------------------
+                // 再スケジュール後の日付
+                // ----------------------------------------
+
+                const adjustedProductionSchedule =
+                    adjustedScheduleResult.productionSchedule;
+
+                const adjustedFinishingSchedule =
+                    adjustedScheduleResult.finishingSchedule;
+
+
+                const adjustedCompletionDate =
+                    adjustedProductionSchedule.length > 0
+                        ? adjustedProductionSchedule[
+                            adjustedProductionSchedule.length - 1
+                        ].date
+                        : null;
+
+
+                const adjustedFinishingEndDate =
+                    adjustedFinishingSchedule.length > 0
+                        ? adjustedFinishingSchedule[
+                            adjustedFinishingSchedule.length - 1
+                        ].date
+                        : null;
+
+
+                const adjustedFinalEndDate =
+                    adjustedFinishingEndDate ||
+                    adjustedCompletionDate;
+
+
+                document.getElementById(
+                    "adjusted-completion-result"
+                ).textContent =
+                    adjustedCompletionDate
+                        ? adjustedCompletionDate.toLocaleDateString("ja-JP")
+                        : "---";
+
+
+                document.getElementById(
+                    "adjusted-finishing-end-result"
+                ).textContent =
+                    adjustedFinishingEndDate
+                        ? adjustedFinishingEndDate.toLocaleDateString("ja-JP")
+                        : "---";
+
+
+                document.getElementById(
+                    "adjusted-final-end-result"
+                ).textContent =
+                    adjustedFinalEndDate
+                        ? adjustedFinalEndDate.toLocaleDateString("ja-JP")
+                        : "---";
+
+
+
+
+
+
+
+
+
 
             }
         );

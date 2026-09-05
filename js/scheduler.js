@@ -466,3 +466,132 @@ function calculateAdjustmentMinutes(
 
     });
 }
+
+
+// ----------------------------------------
+// 調整後の工程データを作成
+// ----------------------------------------
+
+function applyAdjustmentMinutes(
+    processes,
+    targets,
+    type
+) {
+
+    return processes.map(
+        (process, index) => {
+
+            const target =
+                targets.find(
+                    target =>
+                        target.type === type &&
+                        target.index === index
+                );
+
+
+            // 調整対象ではない工程
+            if (!target) {
+
+                return {
+                    ...process
+                };
+
+            }
+
+
+            // 調整対象の工程
+            return {
+                ...process,
+                minutes: target.adjustmentMinutes
+            };
+
+        }
+    );
+}
+
+
+// ----------------------------------------
+// 調整後のスケジュールを作成
+// ----------------------------------------
+
+function createAdjustedSchedule(
+    productionProcesses,
+    finishingProcesses,
+    adjustedTargets,
+    activityMinutes,
+    holidays,
+    startDate
+) {
+
+    // ----------------------------------------
+    // 制作工程
+    // ----------------------------------------
+
+    const adjustedProductionProcesses =
+        applyAdjustmentMinutes(
+            productionProcesses,
+            adjustedTargets,
+            "production"
+        );
+
+
+    const productionSchedule =
+        createDraftSchedule(
+            adjustedProductionProcesses,
+            activityMinutes,
+            holidays,
+            startDate
+        );
+
+
+    // ----------------------------------------
+    // 仕立て工程
+    // ----------------------------------------
+
+    let finishingSchedule = [];
+
+
+    if (finishingProcesses.length > 0) {
+
+        const finishingStartDate =
+            new Date(
+                productionSchedule[
+                    productionSchedule.length - 1
+                ].date
+            );
+
+
+        finishingStartDate.setDate(
+            finishingStartDate.getDate() + 1
+        );
+
+
+        const adjustedFinishingProcesses =
+            applyAdjustmentMinutes(
+                finishingProcesses,
+                adjustedTargets,
+                "finishing"
+            );
+
+
+        finishingSchedule =
+            createDraftSchedule(
+                adjustedFinishingProcesses,
+                activityMinutes,
+                holidays,
+                finishingStartDate
+            );
+
+    }
+
+
+    return {
+        productionSchedule: productionSchedule,
+        finishingSchedule: finishingSchedule,
+
+        schedule: [
+            ...productionSchedule,
+            ...finishingSchedule
+        ]
+    };
+}
