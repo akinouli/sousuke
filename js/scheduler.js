@@ -412,12 +412,22 @@ function calculateAdjustableWorkMinutes(
 function calculateAdjustableActivityMinutes(
     totalActivityMinutes,
     activityMinutes,
-    hasFinishing
+    hasFinishing,
+    fixedWorkMinutes
 ) {
+
+    let adjustableActivityMinutes =
+        totalActivityMinutes;
+
+
+    // 固定工程の作業時間を差し引く
+    adjustableActivityMinutes -=
+        fixedWorkMinutes;
+
 
     // 仕立てなし
     if (!hasFinishing) {
-        return totalActivityMinutes;
+        return adjustableActivityMinutes;
     }
 
 
@@ -431,10 +441,11 @@ function calculateAdjustableActivityMinutes(
 
 
     // 最大1日分を差し引く
-    return (
-        totalActivityMinutes -
-        maxDailyMinutes
-    );
+    adjustableActivityMinutes -=
+        maxDailyMinutes;
+
+
+    return adjustableActivityMinutes;
 }
 
 

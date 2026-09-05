@@ -1263,13 +1263,20 @@
                 const hasFinishing = true;
 
 
+                // 固定工程時間
+                const fixedWorkMinutes =
+                totalWorkMinutes.totalMinutes -
+                adjustableWorkMinutes;
+
+
                 // 調整用の活動分数
                 const adjustableActivityMinutes =
-                    calculateAdjustableActivityMinutes(
-                        totalActivityMinutes,
-                        activityMinutes,
-                        hasFinishing
-                    );
+                calculateAdjustableActivityMinutes(
+                    totalActivityMinutes,
+                    activityMinutes,
+                    hasFinishing,
+                    fixedWorkMinutes
+                );
 
 
                 // ----------------------------------------
