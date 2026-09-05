@@ -378,6 +378,17 @@
     </div>
 
 
+    <!-- Step.4-⑤ 調整後作業分数 -->
+
+    <h3>⑤ 調整後作業分数</h3>
+
+    <div class="test-block">
+
+        <div id="adjusted-work-result" class="result"></div>
+
+    </div>
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
@@ -1432,6 +1443,44 @@
                     "adjustment-rate-result"
                 ).textContent =
                     `${(adjustmentRate * 100).toFixed(1)}%`;
+
+
+                // ----------------------------------------
+                // Step.4-⑤
+                // 調整後作業分数
+                // ----------------------------------------
+
+                const adjustedTargets =
+                    calculateAdjustmentMinutes(
+                        adjustmentTargets,
+                        adjustmentRate
+                    );
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                const adjustedWorkResult =
+                    document.getElementById(
+                        "adjusted-work-result"
+                    );
+
+                adjustedWorkResult.innerHTML = "";
+
+
+                adjustedTargets.forEach(target => {
+
+                    adjustedWorkResult.innerHTML += `
+                        <p>
+                            ${target.name}
+                            → 元：${target.minutes}分
+                            → 調整後：${target.adjustmentMinutes}分
+                            → 自動調整：${target.autoAdjust ? "ON" : "OFF"}
+                        </p>
+                    `;
+
+                });
 
             }
         );

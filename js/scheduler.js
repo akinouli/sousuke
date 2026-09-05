@@ -438,3 +438,31 @@ function calculateAdjustmentRate(
         totalWorkMinutes
     );
 }
+
+
+// ----------------------------------------
+// 工程の作業分数を調整
+// ----------------------------------------
+
+function calculateAdjustmentMinutes(
+    targets,
+    adjustmentRate
+) {
+
+    return targets.map(target => {
+
+        const adjustmentMinutes =
+            target.autoAdjust
+                ? Math.round(
+                    target.minutes *
+                    adjustmentRate
+                )
+                : target.minutes;
+
+        return {
+            ...target,
+            adjustmentMinutes: adjustmentMinutes
+        };
+
+    });
+}
