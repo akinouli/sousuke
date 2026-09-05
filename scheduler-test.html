@@ -79,56 +79,29 @@
 
 
     <!-- ========================================
-    Step.1
+    Step.1　作業時間・活動時間を分数へ変換
     ========================================= -->
-
     <h2>Step.1　作業時間・活動時間を分数へ変換</h2>
-
-
-    <!-- 制作工程 -->
 
     <h3>① 制作工程</h3>
 
     <div class="test-block">
-
-        <p>
-            ページ数：<strong>32ページ</strong>
-        </p>
-
-        <p>
-            プロット：40時間・全体
-        </p>
-
-        <p>
-            ネーム：2時間・ページ毎
-        </p>
-
+        <p>ページ数：<strong>32ページ</strong></p>
+        <p>プロット：40時間・全体</p>
+        <p>ネーム：2時間・ページ毎</p>
         <div id="production-result" class="result"></div>
-
     </div>
-
-
-    <!-- 仕立て工程 -->
 
     <h3>② 仕立て工程</h3>
-
+    
     <div class="test-block">
-
-        <p>
-            入稿：1時間30分・全体
-        </p>
-
+        <p>入稿：1時間30分・全体</p>
         <div id="finishing-result" class="result"></div>
-
     </div>
 
-
-    <!-- 活動時間 -->
-
     <h3>③ 曜日別活動時間</h3>
-
+    
     <div class="test-block">
-
         <p>月：2時間</p>
         <p>火：1時間30分</p>
         <p>水：0時間</p>
@@ -136,11 +109,8 @@
         <p>金：1時間</p>
         <p>土：3時間</p>
         <p>日：1時間30分</p>
-
         <div id="activity-result" class="result"></div>
-
     </div>
-
 
     <button id="run-test">
         Step.1を計算
@@ -148,65 +118,34 @@
 
 
     <!-- ========================================
-    Step.2
+    Step.2　仮スケジュール作成
     ========================================= -->
-
     <h2>Step.2　仮スケジュール作成</h2>
 
-
     <!-- Step.2-① 作業可能日判定 -->
-
     <h3>① 作業可能日判定</h3>
 
     <div class="test-block">
-
-        <p>
-            作業開始日：2026/9/7
-        </p>
-
-        <p>
-            休日：2026/9/12
-        </p>
-
+        <p>作業開始日：2026/9/7</p>
+        <p>休日：2026/9/12</p>
         <div id="workable-result" class="result"></div>
-
     </div>
 
-
     <!-- Step.2-② 工程割り当て -->
-
     <h3>② 工程の割り当て</h3>
 
     <div class="test-block">
-
         <div id="schedule-result" class="result"></div>
-
     </div>
 
-
     <!-- Step.2-③ 日付結果 -->
-
     <h3>③ 算出結果</h3>
 
     <div class="test-block">
-
-        <p>
-            作品完成日：
-            <strong id="completion-result">---</strong>
-        </p>
-
-        <p>
-            作業終了日：
-            <strong id="finishing-end-result">---</strong>
-        </p>
-
-        <p>
-            最終作業終了日：
-            <strong id="final-end-result">---</strong>
-        </p>
-
+        <p>作品完成日：<strong id="completion-result">---</strong></p>
+        <p>作業終了日：<strong id="finishing-end-result">---</strong></p>
+        <p>最終作業終了日：<strong id="final-end-result">---</strong></p>
     </div>
-
 
     <button id="run-step2-test">
         Step.2を計算
@@ -214,63 +153,25 @@
 
 
     <!-- ========================================
-    Step.3
+    Step.3　自動調整チェック
     ========================================= -->
-
     <h2>Step.3　自動調整チェック</h2>
-
 
     <h3>① 自動調整</h3>
 
     <div class="test-block">
-
-        <p>
-            自動調整：
-        </p>
-
-        <label>
-            <input
-                type="radio"
-                name="auto-adjust"
-                value="true"
-                checked
-            >
-            する
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="auto-adjust"
-                value="false"
-            >
-            しない
-        </label>
-
+        <p>自動調整：</p>
+        <label><input type="radio" name="auto-adjust" value="true" checked>する</label>
+        <label><input type="radio" name="auto-adjust" value="false">しない</label>
     </div>
-
 
     <h3>② 締切日判定</h3>
 
     <div class="test-block">
-
-        <p>
-            最終作業終了日：
-            <strong id="step3-final-date">---</strong>
-        </p>
-
-        <p>
-            締切日：
-            <strong id="step3-deadline">---</strong>
-        </p>
-
-        <p>
-            判定：
-            <strong id="step3-result">---</strong>
-        </p>
-
+        <p>最終作業終了日：<strong id="step3-final-date">---</strong></p>
+        <p>締切日：<strong id="step3-deadline">---</strong></p>
+        <p>判定：<strong id="step3-result">---</strong>
     </div>
-
 
     <button id="run-step3-test">
         Step.3を計算
@@ -278,193 +179,80 @@
 
 
     <!-- ========================================
-    Step.4
+    Step.4　自動調整
     ========================================= -->
-
     <h2>Step.4　自動調整</h2>
 
-
     <!-- Step.4-① 調整対象 -->
-
     <h3>① 調整対象の工程</h3>
 
     <div class="test-block">
-
-        <p>
-            制作工程
-        </p>
-
+        <p>制作工程</p>
         <div id="production-target-result" class="result"></div>
 
-
-        <p>
-            仕立て工程
-        </p>
-
+        <p>仕立て工程</p>
         <div id="finishing-target-result" class="result"></div>
-
     </div>
 
-
     <!-- Step.4-② 活動分数 -->
-
     <h3>② 活動分数</h3>
 
     <div class="test-block">
-
-        <p>
-            全体の活動分数：
-            <strong id="total-activity-result">---</strong>
-        </p>
-
+        <p>全体の活動分数：<strong id="total-activity-result">---</strong></p>
     </div>
 
-
     <!-- Step.4-③ 全行程の作業分数 -->
-
     <h3>③ 全行程の作業分数</h3>
 
     <div class="test-block">
-
-        <p>
-            制作工程：
-            <strong id="production-work-result">---</strong>
-        </p>
-
-        <p>
-            仕立て工程：
-            <strong id="finishing-work-result">---</strong>
-        </p>
-
-        <p>
-            全行程：
-            <strong id="total-work-result">---</strong>
-        </p>
-
+        <p>制作工程：<strong id="production-work-result">---</strong></p>
+        <p>仕立て工程：<strong id="finishing-work-result">---</strong></p>
+        <p>全行程：<strong id="total-work-result">---</strong></p>
     </div>
 
-
     <!-- Step.4-④ 調整率 -->
-
     <h3>④ 調整率</h3>
 
     <div class="test-block">
-
-        <p>
-            仕立て作業：
-            <strong id="finishing-setting-result">---</strong>
-        </p>
-
-        <p>
-            最大活動分数：
-            <strong id="max-activity-result">---</strong>
-        </p>
-
-        <p>
-            調整用活動分数：
-            <strong id="adjustable-activity-result">---</strong>
-        </p>
-
-        <p>
-            トータル作業分数：
-            <strong id="adjustment-work-result">---</strong>
-        </p>
-
-        <p>
-            調整率：
-            <strong id="adjustment-rate-result">---</strong>
-        </p>
-
+        <p>仕立て作業：<strong id="finishing-setting-result">---</strong></p>
+        <p>最大活動分数：<strong id="max-activity-result">---</strong></p>
+        <p>調整用活動分数：<strong id="adjustable-activity-result">---</strong></p>
+        <p>トータル作業分数：<strong id="adjustment-work-result">---</strong></p>
+        <p>調整率：<strong id="adjustment-rate-result">---</strong></p>
     </div>
 
-
     <!-- Step.4-⑤ 調整後作業分数 -->
-
     <h3>⑤ 調整後作業分数</h3>
 
     <div class="test-block">
-
         <div id="adjusted-work-result" class="result"></div>
-
     </div>
 
-
     <!-- Step.4-⑥ 再スケジュール -->
-
     <h3>⑥ 再スケジュール</h3>
 
     <div class="test-block">
-
         <div id="adjusted-schedule-result" class="result"></div>
-
-        <p>
-            作品完成日：
-            <strong id="adjusted-completion-result">---</strong>
-        </p>
-
-        <p>
-            作業終了日：
-            <strong id="adjusted-finishing-end-result">---</strong>
-        </p>
-
-        <p>
-            最終作業終了日：
-            <strong id="adjusted-final-end-result">---</strong>
-        </p>
-
+        <p>作品完成日：<strong id="adjusted-completion-result">---</strong></p>
+        <p>作業終了日：<strong id="adjusted-finishing-end-result">---</strong></p>
+        <p>最終作業終了日：<strong id="adjusted-final-end-result">---</strong></p>
     </div>
 
-
     <!-- Step.4-⑦ 自動調整後の締切判定 -->
-
     <h3>⑦ 自動調整後の締切判定</h3>
 
     <div class="test-block">
-
-        <p>
-            最終作業終了日：
-            <strong id="adjusted-deadline-date-result">
-                ---
-            </strong>
-        </p>
-
-        <p>
-            締切日：
-            <strong id="deadline-result">
-                ---
-            </strong>
-        </p>
-
-        <p>
-            判定：
-            <strong id="adjusted-deadline-result">
-                ---
-            </strong>
-        </p>
-
+        <p>最終作業終了日：<strong id="adjusted-deadline-date-result">---</strong></p>
+        <p>締切日：<strong id="deadline-result">---</strong></p>
+        <p>判定：<strong id="adjusted-deadline-result">---</strong></p>
     </div>
 
-
     <!-- Step.4-⑧ 自動調整設定の再判定 -->
-
     <h3>⑧ 自動調整設定の再判定</h3>
 
     <div class="test-block">
-
-        <p>
-            現在の設定：
-            <strong id="adjustment-setting-state-result">
-                ---
-            </strong>
-        </p>
-
-        <p>
-            次の処理：
-            <strong id="adjustment-next-step-result">
-                ---
-            </strong>
-        </p>
-
+        <p>現在の設定：<strong id="adjustment-setting-state-result">---</strong></p>
+        <p>次の処理：<strong id="adjustment-next-step-result">---</strong></p>
     </div>
 
 
