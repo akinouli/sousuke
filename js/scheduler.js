@@ -384,3 +384,57 @@ function calculateTotalWorkMinutes(
 
     };
 }
+
+
+// ----------------------------------------
+// 調整用の活動分数を取得
+// ----------------------------------------
+
+function calculateAdjustableActivityMinutes(
+    totalActivityMinutes,
+    activityMinutes,
+    hasFinishing
+) {
+
+    // 仕立てなし
+    if (!hasFinishing) {
+        return totalActivityMinutes;
+    }
+
+
+    // 作業可能日の最大活動分数を取得
+    const maxDailyMinutes =
+        Math.max(
+            ...activityMinutes.filter(
+                minutes => minutes > 0
+            )
+        );
+
+
+    // 最大1日分を差し引く
+    return (
+        totalActivityMinutes -
+        maxDailyMinutes
+    );
+}
+
+
+// ----------------------------------------
+// 調整率を取得
+// ----------------------------------------
+
+function calculateAdjustmentRate(
+    adjustableActivityMinutes,
+    totalWorkMinutes
+) {
+
+    if (totalWorkMinutes <= 0) {
+        return 1;
+    }
+
+
+    return (
+        adjustableActivityMinutes /
+        totalWorkMinutes
+    );
+}

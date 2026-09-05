@@ -344,6 +344,40 @@
     </div>
 
 
+    <!-- Step.4-④ 調整率 -->
+
+    <h3>④ 調整率</h3>
+
+    <div class="test-block">
+
+        <p>
+            仕立て作業：
+            <strong id="finishing-setting-result">---</strong>
+        </p>
+
+        <p>
+            最大活動分数：
+            <strong id="max-activity-result">---</strong>
+        </p>
+
+        <p>
+            調整用活動分数：
+            <strong id="adjustable-activity-result">---</strong>
+        </p>
+
+        <p>
+            トータル作業分数：
+            <strong id="adjustment-work-result">---</strong>
+        </p>
+
+        <p>
+            調整率：
+            <strong id="adjustment-rate-result">---</strong>
+        </p>
+
+    </div>
+
+
     <button id="run-step4-test">
         Step.4を計算
     </button>
@@ -1328,6 +1362,76 @@
                     "total-work-result"
                 ).textContent =
                     `${totalWorkMinutes.totalMinutes}分`;
+
+
+                // ----------------------------------------
+                // Step.4-④
+                // 調整率
+                // ----------------------------------------
+
+                // 仕立て作業の有無
+                const hasFinishing = true;
+
+
+                // 調整用の活動分数
+                const adjustableActivityMinutes =
+                    calculateAdjustableActivityMinutes(
+                        totalActivityMinutes,
+                        activityMinutes,
+                        hasFinishing
+                    );
+
+
+                // 調整率
+                const adjustmentRate =
+                    calculateAdjustmentRate(
+                        adjustableActivityMinutes,
+                        totalWorkMinutes.totalMinutes
+                    );
+
+
+                // ----------------------------------------
+                // 最大活動分数
+                // ----------------------------------------
+
+                const maxActivityMinutes =
+                    hasFinishing
+                        ? Math.max(
+                            ...activityMinutes.filter(
+                                minutes => minutes > 0
+                            )
+                        )
+                        : 0;
+
+
+                // ----------------------------------------
+                // 結果表示
+                // ----------------------------------------
+
+                document.getElementById(
+                    "finishing-setting-result"
+                ).textContent =
+                    hasFinishing ? "する" : "しない";
+
+                document.getElementById(
+                    "max-activity-result"
+                ).textContent =
+                    `${maxActivityMinutes}分`;
+
+                document.getElementById(
+                    "adjustable-activity-result"
+                ).textContent =
+                    `${adjustableActivityMinutes}分`;
+
+                document.getElementById(
+                    "adjustment-work-result"
+                ).textContent =
+                    `${totalWorkMinutes.totalMinutes}分`;
+
+                document.getElementById(
+                    "adjustment-rate-result"
+                ).textContent =
+                    `${(adjustmentRate * 100).toFixed(1)}%`;
 
             }
         );
