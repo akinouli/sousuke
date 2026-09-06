@@ -286,32 +286,25 @@ function getAdjustmentTargets(
 // ----------------------------------------
 
 function calculateTotalActivityMinutes(
-    schedule,
+    startDate,
+    deadline,
     activityMinutes,
     holidays
 ) {
 
-    if (schedule.length === 0) {
+    if (
+        !startDate ||
+        !deadline
+    ) {
         return 0;
     }
-
-
-    const startDate =
-        schedule[0].date;
-
-    const endDate =
-        schedule[
-            schedule.length - 1
-        ].date;
-
 
     let totalMinutes = 0;
 
     let currentDate =
         new Date(startDate);
 
-
-    while (currentDate <= endDate) {
+    while (currentDate <= deadline) {
 
         if (
             isWorkableDate(
@@ -329,13 +322,11 @@ function calculateTotalActivityMinutes(
 
         }
 
-
         currentDate.setDate(
             currentDate.getDate() + 1
         );
 
     }
-
 
     return totalMinutes;
 }
