@@ -504,7 +504,7 @@ Step.5
     <p>休日：</p>
     <div id="final-holiday-result" class="result"></div>
 
-    <p>最終作業終了日：<strong id="final-end-result">---</strong></p>
+    <p>最終作業終了日：<strong id="step5-final-end-result">---</strong></p>
 
     <p>自動調整結果：<strong id="final-auto-adjust-result">---</strong></p>
 
@@ -1256,7 +1256,7 @@ scheduler.js
         document.getElementById("final-deadline-result"
         ).textContent = formatDate(data.deadline);
 
-        document.getElementById("final-end-result"
+        document.getElementById("step5-final-end-result"
         ).textContent = formatDate(finalEndDate);
 
         document.getElementById("final-holiday-result"
