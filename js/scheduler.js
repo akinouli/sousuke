@@ -342,109 +342,118 @@ function calculateTotalActivityMinutes(
 
 
 // ----------------------------------------
-// 全行程の作業分数を取得
+// 調整対象・対象外の作業分数を取得
 // ----------------------------------------
 
-function calculateTotalWorkMinutes(
+function calculateWorkMinutes(
     productionProcesses,
-    finishingProcesses
+    finishingProcesses,
+    adjustmentTargets
 ) {
 
-    const productionMinutes =
-        productionProcesses.reduce(
-            (total, process) => {
-
-                return total + process.minutes;
-
-            },
-            0
-        );
+    let adjustableMinutes = 0;
+    let fixedMinutes = 0;
 
 
-    const finishingMinutes =
-        finishingProcesses.reduce(
-            (total, process) => {
+    // 制作工程
+    productionProcesses.forEach(
+        (process, index) => {
 
-                return total + process.minutes;
+            const target =
+                adjustmentTargets.find(
+                    target =>
+                        target.type === "production" &&
+                        target.index === index
+                );
 
-            },
-            0
-        );
+
+            if (target) {
+
+                adjustableMinutes +=
+                    process.minutes;
+
+            } else {
+
+                fixedMinutes +=
+                    process.minutes;
+
+            }
+
+        }
+    );
+
+
+    // 仕立て工程
+    finishingProcesses.forEach(
+        (process, index) => {
+
+            const target =
+                adjustmentTargets.find(
+                    target =>
+                        target.type === "finishing" &&
+                        target.index === index
+                );
+
+
+            if (target) {
+
+                adjustableMinutes +=
+                    process.minutes;
+
+            } else {
+
+                fixedMinutes +=
+                    process.minutes;
+
+            }
+
+        }
+    );
 
 
     return {
 
-        productionMinutes: productionMinutes,
+        adjustableMinutes:
+            adjustableMinutes,
 
-        finishingMinutes: finishingMinutes,
-
-        totalMinutes:
-            productionMinutes +
-            finishingMinutes
+        fixedMinutes:
+            fixedMinutes
 
     };
 }
 
 
 // ----------------------------------------
-// 調整対象の作業分数を取得
-// ----------------------------------------
-
-function calculateAdjustableWorkMinutes(
-    adjustmentTargets
-) {
-
-    return adjustmentTargets.reduce(
-        (total, target) => {
-
-            return total + target.minutes;
-
-        },
-        0
-    );
-}
-
-
-// ----------------------------------------
-// 調整用の活動分数を取得
+// 調整対象の活動分数を取得
 // ----------------------------------------
 
 function calculateAdjustableActivityMinutes(
     totalActivityMinutes,
     activityMinutes,
     hasFinishing,
-    fixedWorkMinutes
+    fixedMinutes
 ) {
 
     let adjustableActivityMinutes =
-        totalActivityMinutes;
+        totalActivityMinutes -
+        fixedMinutes;
 
 
-    // 固定工程の作業時間を差し引く
-    adjustableActivityMinutes -=
-        fixedWorkMinutes;
+    // 仕立て作業あり
+    if (hasFinishing) {
+
+        const maxDailyMinutes =
+            Math.max(
+                ...activityMinutes.filter(
+                    minutes => minutes > 0
+                )
+            );
 
 
-    // 仕立てなし
-    if (!hasFinishing) {
-
-        return adjustableActivityMinutes;
+        adjustableActivityMinutes -=
+            maxDailyMinutes;
 
     }
-
-
-    // 作業可能日の最大活動分数を取得
-    const maxDailyMinutes =
-        Math.max(
-            ...activityMinutes.filter(
-                minutes => minutes > 0
-            )
-        );
-
-
-    // 最大1日分を差し引く
-    adjustableActivityMinutes -=
-        maxDailyMinutes;
 
 
     return adjustableActivityMinutes;

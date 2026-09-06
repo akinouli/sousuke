@@ -202,12 +202,11 @@
     </div>
 
     <!-- Step.4-③ 全行程の作業分数 -->
-    <h3>③ 全行程の作業分数</h3>
+    <h3>③ 作業分数</h3>
 
     <div class="test-block">
-        <p>制作工程：<strong id="production-work-result">---</strong></p>
-        <p>仕立て工程：<strong id="finishing-work-result">---</strong></p>
-        <p>全行程：<strong id="total-work-result">---</strong></p>
+        <p>調整対象：<strong id="adjustable-work-result">---</strong></p>
+        <p>調整対象外：<strong id="fixed-work-result">---</strong></p>
     </div>
 
     <!-- Step.4-④ 調整率 -->
@@ -216,9 +215,8 @@
     <div class="test-block">
         <p>仕立て作業：<strong id="finishing-setting-result">---</strong></p>
         <p>最大活動分数：<strong id="max-activity-result">---</strong></p>
-        <p>調整用活動分数：<strong id="adjustable-activity-result">---</strong></p>
-        <p>調整対象の作業分数：<strong id="adjustable-work-result">---</strong></p>
-        <p>トータル作業分数：<strong id="adjustment-work-result">---</strong></p>
+        <p>調整対象の活動分数：<strong id="adjustable-activity-result">---</strong></p>
+        <p>調整対象の作業分数：<strong id="adjustable-work-rate-result">---</strong></p>
         <p>調整率：<strong id="adjustment-rate-result">---</strong></p>
     </div>
 
@@ -922,206 +920,6 @@
             () => {
 
                 // ----------------------------------------
-                // Step.4 テスト用入力データ
-                // ----------------------------------------
-
-                const pageCount = 32;
-
-                const startDate =
-                    new Date("2026-09-07");
-
-                const deadline =
-                    new Date("2026-10-10");
-
-                const holidays = [
-                    new Date("2026-09-12")
-                ];
-
-
-                // ----------------------------------------
-                // 曜日別活動時間
-                // ----------------------------------------
-
-                const activityTimes = [
-
-                    {
-                        name: "日",
-                        hours: 1,
-                        minutes: 30
-                    },
-
-                    {
-                        name: "月",
-                        hours: 2,
-                        minutes: 0
-                    },
-
-                    {
-                        name: "火",
-                        hours: 1,
-                        minutes: 30
-                    },
-
-                    {
-                        name: "水",
-                        hours: 0,
-                        minutes: 0
-                    },
-
-                    {
-                        name: "木",
-                        hours: 2,
-                        minutes: 0
-                    },
-
-                    {
-                        name: "金",
-                        hours: 1,
-                        minutes: 0
-                    },
-
-                    {
-                        name: "土",
-                        hours: 3,
-                        minutes: 0
-                    }
-
-                ];
-
-
-                // ----------------------------------------
-                // 制作工程
-                // ----------------------------------------
-
-                const productionProcesses = [
-
-                    {
-                        name: "プロット",
-                        unit: "total",
-                        hours: 4,
-                        minutes: 0
-                    },
-
-                    {
-                        name: "ネーム",
-                        unit: "page",
-                        hours: 2,
-                        minutes: 0
-                    }
-
-                ];
-
-
-                // ----------------------------------------
-                // 仕立て工程
-                // ----------------------------------------
-
-                const finishingProcesses = [
-
-                    {
-                        name: "入稿",
-                        unit: "total",
-                        hours: 3,
-                        minutes: 30
-                    }
-
-                ];
-
-
-                // ----------------------------------------
-                // Step.1
-                // ----------------------------------------
-
-                const productionMinutes =
-                    convertProductionWorkMinutes(
-                        productionProcesses,
-                        pageCount
-                    );
-
-                const finishingMinutes =
-                    convertFinishingWorkMinutes(
-                        finishingProcesses,
-                        pageCount
-                    );
-
-                const activityMinutes =
-                    convertActivityMinutes(
-                        activityTimes
-                    );
-
-
-                // ----------------------------------------
-                // Step.2用の工程データ
-                // ----------------------------------------
-
-                const productionScheduleProcesses =
-                    productionProcesses.map(
-                        (process, index) => {
-
-                            return {
-                                name: process.name,
-                                minutes: productionMinutes[index]
-                            };
-
-                        }
-                    );
-
-
-                const finishingScheduleProcesses =
-                    finishingProcesses.map(
-                        (process, index) => {
-
-                            return {
-                                name: process.name,
-                                minutes: finishingMinutes[index]
-                            };
-
-                        }
-                    );
-
-
-                // ----------------------------------------
-                // Step.2 仮スケジュール作成
-                // ----------------------------------------
-
-                const productionSchedule =
-                    createDraftSchedule(
-                        productionScheduleProcesses,
-                        activityMinutes,
-                        holidays,
-                        startDate
-                    );
-
-
-                const finishingStartDate =
-                    productionSchedule.length > 0
-                        ? new Date(
-                            productionSchedule[
-                                productionSchedule.length - 1
-                            ].date
-                        )
-                        : new Date(startDate);
-
-
-                if (productionSchedule.length > 0) {
-
-                    finishingStartDate.setDate(
-                        finishingStartDate.getDate() + 1
-                    );
-
-                }
-
-
-                const finishingSchedule =
-                    createDraftSchedule(
-                        finishingScheduleProcesses,
-                        activityMinutes,
-                        holidays,
-                        finishingStartDate
-                    );
-
-
-                // ----------------------------------------
                 // Step.4-①
                 // 調整対象の工程
                 // ----------------------------------------
@@ -1131,6 +929,7 @@
                     true
                 ];
 
+
                 const finishingSettings = [
                     true
                 ];
@@ -1138,58 +937,11 @@
 
                 const adjustmentTargets =
                     getAdjustmentTargets(
-                        productionScheduleProcesses,
-                        finishingScheduleProcesses,
+                        productionProcesses,
+                        finishingProcesses,
                         productionSettings,
                         finishingSettings
                     );
-
-
-                // ----------------------------------------
-                // 結果表示
-                // ----------------------------------------
-
-                const productionTargetResult =
-                    document.getElementById(
-                        "production-target-result"
-                    );
-
-                const finishingTargetResult =
-                    document.getElementById(
-                        "finishing-target-result"
-                    );
-
-
-                productionTargetResult.innerHTML = "";
-                finishingTargetResult.innerHTML = "";
-
-
-                adjustmentTargets.forEach(
-                    target => {
-
-                        const result = `
-                            <p>
-                                ${target.name}
-                                　
-                                ${target.minutes}分
-                                　
-                                自動調整：${target.autoAdjust ? "ON" : "OFF"}
-                            </p>
-                        `;
-
-
-                        if (target.type === "production") {
-
-                            productionTargetResult.innerHTML += result;
-
-                        } else {
-
-                            finishingTargetResult.innerHTML += result;
-
-                        }
-
-                    }
-                );
 
 
                 // ----------------------------------------
@@ -1197,56 +949,33 @@
                 // 全体の活動分数
                 // ----------------------------------------
 
-                const combinedSchedule = [
-                    ...productionSchedule,
-                    ...finishingSchedule
-                ];
-
-
                 const totalActivityMinutes =
                     calculateTotalActivityMinutes(
-                        combinedSchedule,
+                        productionSchedule,
                         activityMinutes,
                         holidays
                     );
 
 
                 // ----------------------------------------
-                // 結果表示
-                // ----------------------------------------
-
-                document.getElementById(
-                    "total-activity-result"
-                ).textContent =
-                    `${totalActivityMinutes}分`;
-
-
-                
-                // ----------------------------------------
                 // Step.4-③
-                // 全行程の作業分数
+                // 作業分数
                 // ----------------------------------------
 
-                // ----------------------------------------
-                // 調整対象の作業分数
-                // ----------------------------------------
-
-                const adjustableWorkMinutes =
-                    calculateAdjustableWorkMinutes(
+                const workMinutes =
+                    calculateWorkMinutes(
+                        productionProcesses,
+                        finishingProcesses,
                         adjustmentTargets
                     );
 
 
-                const totalWorkMinutes =
-                    calculateTotalWorkMinutes(
-                        productionScheduleProcesses,
-                        finishingScheduleProcesses
-                    );
+                const adjustableWorkMinutes =
+                    workMinutes.adjustableMinutes;
 
 
                 const fixedWorkMinutes =
-                    totalWorkMinutes.totalMinutes -
-                    adjustableWorkMinutes;
+                    workMinutes.fixedMinutes;
 
 
                 // ----------------------------------------
@@ -1254,11 +983,9 @@
                 // 調整率
                 // ----------------------------------------
 
-                // 仕立て作業の有無
                 const hasFinishing = true;
 
 
-                // 調整用の活動分数
                 const adjustableActivityMinutes =
                     calculateAdjustableActivityMinutes(
                         totalActivityMinutes,
@@ -1267,10 +994,6 @@
                         fixedWorkMinutes
                     );
 
-
-                // ----------------------------------------
-                // 調整率
-                // ----------------------------------------
 
                 const adjustmentRate =
                     calculateAdjustmentRate(
@@ -1298,29 +1021,54 @@
                 // ----------------------------------------
 
                 document.getElementById(
+                    "adjustment-setting-state-result"
+                ).textContent =
+                    adjustmentTargets.length > 0
+                        ? "一部ON"
+                        : "全てOFF";
+
+
+                document.getElementById(
                     "finishing-setting-result"
                 ).textContent =
                     hasFinishing ? "する" : "しない";
+
 
                 document.getElementById(
                     "max-activity-result"
                 ).textContent =
                     `${maxActivityMinutes}分`;
 
+
                 document.getElementById(
-                    "adjustable-activity-result"
+                    "total-activity-result"
                 ).textContent =
-                    `${adjustableActivityMinutes}分`;
+                    `${totalActivityMinutes}分`;
+
 
                 document.getElementById(
                     "adjustable-work-result"
                 ).textContent =
                     `${adjustableWorkMinutes}分`;
 
+
                 document.getElementById(
-                    "adjustment-work-result"
+                    "fixed-work-result"
                 ).textContent =
-                    `${totalWorkMinutes.totalMinutes}分`;
+                    `${fixedWorkMinutes}分`;
+
+
+                document.getElementById(
+                    "adjustable-activity-result"
+                ).textContent =
+                    `${adjustableActivityMinutes}分`;
+
+
+                document.getElementById(
+                    "adjustable-work-rate-result"
+                ).textContent =
+                    `${adjustableWorkMinutes}分`;
+
 
                 document.getElementById(
                     "adjustment-rate-result"
