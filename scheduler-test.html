@@ -4,11 +4,8 @@
 
 <head>
 
-```
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>SOUSUKE 計算ロジックテスト</title>
 
 <style>
@@ -138,996 +135,384 @@
     }
 
 </style>
-```
 
 </head>
 
+
 <body>
 
-```
 <h1>SOUSUKE 計算ロジックテスト</h1>
-
 
 <!-- ========================================
 入力データ
 ========================================= -->
-
 <h2>入力データ</h2>
 
-
 <!-- ページ数 -->
-
 <div class="input-section">
-
     <h3>ページ数</h3>
-
     <div class="input-block">
-
         <div class="input-row">
-
-            <span class="input-label">
-                ページ数［ページ数］
-            </span>
-
-            <input
-                type="number"
-                id="page-count"
-                value="32"
-            >
-
+            <span class="input-label">ページ数</span>
+            <input type="number" id="page-count" value="32">
             <span>ページ</span>
-
         </div>
-
     </div>
-
 </div>
-
 
 <!-- 制作工程 -->
-
 <div class="input-section">
-
     <h3>制作工程</h3>
-
     <div class="input-block">
-
         <!-- 制作① -->
-
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆行程名１［行程名］
-            </span>
-
-            <input
-                type="text"
-                id="production-name-1"
-                value="プロット"
-            >
-
+            <span class="input-label">制作◆行程名１</span>
+            <input type="text" id="production-name-1" value="プロット">
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆作業時間１［全体・ページ毎］
-            </span>
-
+            <span class="input-label">制作◆作業時間１</span>
             <select id="production-unit-1">
-
-                <option value="total">
-                    全体
-                </option>
-
-                <option value="page">
-                    ページ毎
-                </option>
-
+                <option value="total">全体</option>
+                <option value="page">ページ毎</option>
             </select>
-
             <div class="time-input">
-
-                <input
-                    type="number"
-                    id="production-hours-1"
-                    value="40"
-                >
-
-                <span>時間</span>
-
-                <input
-                    type="number"
-                    id="production-minutes-1"
-                    value="0"
-                >
-
-                <span>分</span>
-
+                <input type="number" id="production-hours-1" value="40"><span>時間</span>
+                <input type="number" id="production-minutes-1" value="0"><span>分</span>
             </div>
-
         </div>
-
 
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆自動調整１［ON・OFF］
-            </span>
-
+            <span class="input-label">制作◆自動調整１</span>
             <select id="production-auto-adjust-1">
-
-                <option value="false">
-                    OFF
-                </option>
-
-                <option value="true">
-                    ON
-                </option>
-
+                <option value="false">OFF</option>
+                <option value="true">ON</option>
             </select>
-
         </div>
-
 
         <!-- 制作② -->
-
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆行程名２［行程名］
-            </span>
-
-            <input
-                type="text"
-                id="production-name-2"
-                value="ネーム"
-            >
-
+            <span class="input-label">制作◆行程名２</span>
+            <input type="text" id="production-name-2" value="ネーム">
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆作業時間２［全体・ページ毎］
-            </span>
-
+            <span class="input-label">制作◆作業時間２</span>
             <select id="production-unit-2">
-
-                <option value="total">
-                    全体
-                </option>
-
-                <option value="page" selected>
-                    ページ毎
-                </option>
-
+                <option value="total">全体</option>
+                <option value="page" selected>ページ毎</option>
             </select>
-
             <div class="time-input">
-
-                <input
-                    type="number"
-                    id="production-hours-2"
-                    value="2"
-                >
-
+                <input type="number" id="production-hours-2" value="2">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    id="production-minutes-2"
-                    value="0"
-                >
-
+                <input type="number" id="production-minutes-2" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
-
 
         <div class="input-row">
-
-            <span class="input-label">
-                制作◆自動調整２［ON・OFF］
-            </span>
-
+            <span class="input-label">制作◆自動調整２</span>
             <select id="production-auto-adjust-2">
-
-                <option value="false">
-                    OFF
-                </option>
-
-                <option value="true" selected>
-                    ON
-                </option>
-
+                <option value="false">OFF</option>
+                <option value="true" selected>ON</option>
             </select>
-
         </div>
-
     </div>
-
 </div>
-
 
 <!-- 仕立て -->
-
 <div class="input-section">
-
     <h3>仕立て作業</h3>
-
     <div class="input-block">
-
         <div class="input-row">
-
-            <span class="input-label">
-                仕上げ作業［する・しない］
-            </span>
-
+            <span class="input-label">仕上げ作業</span>
             <select id="has-finishing">
-
-                <option value="true" selected>
-                    する
-                </option>
-
-                <option value="false">
-                    しない
-                </option>
-
+                <option value="true" selected>する</option>
+                <option value="false">しない</option>
             </select>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                仕上げ★行程名［行程名］
-            </span>
-
-            <input
-                type="text"
-                id="finishing-name"
-                value="入稿"
-            >
-
+            <span class="input-label">仕上げ★行程名</span>
+            <input type="text" id="finishing-name" value="入稿">
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                仕上げ★作業時間［全体・ページ毎］
-            </span>
-
+            <span class="input-label">仕上げ★作業時間</span>
             <select id="finishing-unit">
-
-                <option value="total" selected>
-                    全体
-                </option>
-
-                <option value="page">
-                    ページ毎
-                </option>
-
+                <option value="total" selected>全体</option>
+                <option value="page">ページ毎</option>
             </select>
-
             <div class="time-input">
-
-                <input
-                    type="number"
-                    id="finishing-hours"
-                    value="3"
-                >
-
+                <input type="number" id="finishing-hours" value="3">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    id="finishing-minutes"
-                    value="30"
-                >
-
+                <input type="number" id="finishing-minutes" value="30">
                 <span>分</span>
-
             </div>
-
         </div>
-
 
         <div class="input-row">
-
-            <span class="input-label">
-                仕上げ★自動調整［ON・OFF］
-            </span>
-
+            <span class="input-label">仕上げ★自動調整</span>
             <select id="finishing-auto-adjust">
-
-                <option value="false">
-                    OFF
-                </option>
-
-                <option value="true" selected>
-                    ON
-                </option>
-
+                <option value="false">OFF</option>
+                <option value="true" selected>ON</option>
             </select>
-
         </div>
-
     </div>
-
 </div>
-
 
 <!-- 活動時間 -->
-
 <div class="input-section">
-
     <h3>活動時間</h3>
-
     <div class="input-block">
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　日
-            </span>
-
+            <span class="input-label">活動時間　日</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="0"
-                    value="1"
-                >
-
+                <input type="number" class="activity-hours" data-day="0" value="1">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="0"
-                    value="30"
-                >
-
+                <input type="number" class="activity-minutes" data-day="0" value="30">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　月
-            </span>
-
+            <span class="input-label">活動時間　月</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="1"
-                    value="2"
-                >
-
+                <input type="number" class="activity-hours" data-day="1" value="2">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="1"
-                    value="0"
-                >
-
+                <input type="number" class="activity-minutes" data-day="1" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　火
-            </span>
-
+            <span class="input-label">活動時間　火</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="2"
-                    value="1"
-                >
-
+                <input type="number" class="activity-hours" data-day="2" value="1">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="2"
-                    value="30"
-                >
-
+                <input type="number" class="activity-minutes" data-day="2" value="30">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　水
-            </span>
-
+            <span class="input-label">活動時間　水</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="3"
-                    value="0"
-                >
-
+                <input type="number" class="activity-hours" data-day="3" value="0">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="3"
-                    value="0"
-                >
-
+                <input type="number" class="activity-minutes" data-day="3" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　木
-            </span>
-
+            <span class="input-label">活動時間　木</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="4"
-                    value="2"
-                >
-
+                <input type="number" class="activity-hours" data-day="4" value="2">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="4"
-                    value="0"
-                >
-
+                <input type="number" class="activity-minutes" data-day="4" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　金
-            </span>
-
+            <span class="input-label">活動時間　金</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="5"
-                    value="1"
-                >
-
+                <input type="number" class="activity-hours" data-day="5" value="1">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="5"
-                    value="0"
-                >
-
+                <input type="number" class="activity-minutes" data-day="5" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                活動時間　土
-            </span>
-
+            <span class="input-label">活動時間　土</span>
             <div class="time-input">
-
-                <input
-                    type="number"
-                    class="activity-hours"
-                    data-day="6"
-                    value="3"
-                >
-
+                <input type="number" class="activity-hours" data-day="6" value="3">
                 <span>時間</span>
-
-                <input
-                    type="number"
-                    class="activity-minutes"
-                    data-day="6"
-                    value="0"
-                >
-
+                <input type="number" class="activity-minutes" data-day="6" value="0">
                 <span>分</span>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-
 
 <!-- 日付 -->
-
 <div class="input-section">
-
     <h3>日付</h3>
-
     <div class="input-block">
-
         <div class="input-row">
-
-            <span class="input-label">
-                休日［年月日］
-            </span>
-
-            <input
-                type="date"
-                id="holiday-date"
-                value="2026-09-12"
-            >
-
+            <span class="input-label">休日</span>
+            <input type="date" id="holiday-date" value="2026-09-12">
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                作業開始日［年月日］
-            </span>
-
-            <input
-                type="date"
-                id="start-date"
-                value="2026-09-07"
-            >
-
+            <span class="input-label">作業開始日</span>
+            <input type="date" id="start-date" value="2026-09-01">
         </div>
 
-
         <div class="input-row">
-
-            <span class="input-label">
-                締切日［年月日］
-            </span>
-
-            <input
-                type="date"
-                id="deadline-date"
-                value="2026-10-10"
-            >
-
+            <span class="input-label">締切日</span>
+            <input type="date" id="deadline-date" value="2026-10-10">
         </div>
-
     </div>
-
 </div>
 
 
-<button id="run-test">
-    計算する
-</button>
+<button id="run-test">計算する</button>
 
 
 <!-- ========================================
 結果
 ========================================= -->
-
 <h2>計算結果</h2>
-
 
 <!-- ========================================
 Step.1
 ========================================= -->
-
 <h3>Step.1</h3>
 
 <div class="result-block">
 
-    <p>
-        制作◆作業分数：
-        <strong id="production-result">---</strong>
-    </p>
-
+    <p>制作◆作業分数：<strong id="production-result">---</strong></p>
     <div id="production-result-list" class="result"></div>
 
-
-    <p>
-        仕立て★作業分数：
-        <strong id="finishing-result">---</strong>
-    </p>
-
+    <p>仕立て★作業分数：<strong id="finishing-result">---</strong></p>
     <div id="finishing-result-list" class="result"></div>
 
-
-    <p>
-        活動分数：
-        <strong id="activity-result">---</strong>
-    </p>
-
+    <p>活動分数：<strong id="activity-result">---</strong></p>
     <div id="activity-result-list" class="result"></div>
 
 </div>
 
-
 <!-- ========================================
 Step.2
 ========================================= -->
-
 <h3>Step.2</h3>
 
 <div class="result-block">
 
-    <p>
-        作業可能日：
-        <strong id="workable-result">---</strong>
-    </p>
+    <p>作業可能日：<strong id="workable-result">---</strong></p>
 
+    <p>仮スケジュール（行程割り当て）：</p>
+    <div id="schedule-result" class="result"></div>
 
-    <p>
-        仮スケジュール（行程割り当て）：
-    </p>
+    <p>作品完成日：<strong id="completion-result">---</strong></p>
 
-    <div
-        id="schedule-result"
-        class="result"
-    ></div>
+    <p>作業終了日：<strong id="finishing-end-result">---</strong></p>
 
-
-    <p>
-        作品完成日：
-        <strong id="completion-result">---</strong>
-    </p>
-
-
-    <p>
-        作業終了日：
-        <strong id="finishing-end-result">---</strong>
-    </p>
-
-
-    <p>
-        最終作業終了日：
-        <strong id="final-end-result">---</strong>
-    </p>
+    <p>最終作業終了日：<strong id="final-end-result">---</strong></p>
 
 </div>
-
 
 <!-- ========================================
 Step.3
 ========================================= -->
-
 <h3>Step.3</h3>
 
 <div class="result-block">
 
-    <p>
-        締切判定：
-        <strong id="step3-result">---</strong>
-    </p>
+    <p>締切判定：<strong id="step3-result">---</strong></p>
 
 </div>
-
 
 <!-- ========================================
 Step.4
 ========================================= -->
-
 <h3>Step.4</h3>
 
 <div class="result-block">
 
-    <p>
-        調整対象の行程（制作）：
-    </p>
+    <p>調整対象の行程（制作）：</p>
+    <div id="production-target-result" class="result"></div>
 
-    <div
-        id="production-target-result"
-        class="result"
-    ></div>
+    <p>調整対象の作業分数（制作）：<strong id="production-target-minutes-result">---</strong></p>
 
+    <p>調整対象の行程（仕立て）：</p>
+    <div id="finishing-target-result" class="result"></div>
 
-    <p>
-        調整対象の作業分数（制作）：
-        <strong id="production-target-minutes-result">
-            ---
-        </strong>
-    </p>
+    <p>調整対象の作業分数（仕立て）：<strong id="finishing-target-minutes-result">---</strong></p>
 
+    <p>全体の活動分数：<strong id="step4-total-activity-result">---</strong></p>
 
-    <p>
-        調整対象の行程（仕立て）：
-    </p>
+    <p>調整対象の活動分数：<strong id="adjustable-activity-result">---</strong></p>
 
-    <div
-        id="finishing-target-result"
-        class="result"
-    ></div>
+    <p>最大活動分数：<strong id="max-activity-result">---</strong></p>
 
-
-    <p>
-        調整対象の作業分数（仕立て）：
-        <strong id="finishing-target-minutes-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        全体の活動分数：
-        <strong id="step4-total-activity-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        調整対象の活動分数：
-        <strong id="adjustable-activity-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        最大活動分数：
-        <strong id="max-activity-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        調整率：
-        <strong id="adjustment-rate-result">
-            ---
-        </strong>
-    </p>
+    <p>調整率：<strong id="adjustment-rate-result">---</strong></p>
 
 </div>
-
 
 <div class="result-block">
 
-    <p>
-        制作◆調整作業分数：
-    </p>
+    <p>制作◆調整作業分数：</p>
+    <div id="adjusted-production-result"class="result"></div>
 
-    <div
-        id="adjusted-production-result"
-        class="result"
-    ></div>
-
-
-    <p>
-        仕立て★調整作業分数：
-    </p>
-
-    <div
-        id="adjusted-finishing-result"
-        class="result"
-    ></div>
+    <p>仕立て★調整作業分数：</p>
+    <div id="adjusted-finishing-result" class="result"></div>
 
 </div>
-
 
 <div class="result-block">
 
-    <p>
-        再スケジュール：
-    </p>
+    <p>再スケジュール：</p>
+    <div id="adjusted-schedule-result" class="result"></div>
 
-    <div
-        id="adjusted-schedule-result"
-        class="result"
-    ></div>
+    <p>作品完成日：<strong id="adjusted-completion-result">---</strong></p>
 
+    <p>作業終了日：<strong id="adjusted-finishing-end-result">---</strong></p>
 
-    <p>
-        作品完成日：
-        <strong id="adjusted-completion-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        作業終了日：
-        <strong id="adjusted-finishing-end-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        最終作業終了日：
-        <strong id="adjusted-final-end-result">
-            ---
-        </strong>
-    </p>
+    <p>最終作業終了日：<strong id="adjusted-final-end-result">---</strong></p>
 
 </div>
-
 
 <div class="result-block">
 
-    <p>
-        締切判定：
-        <strong id="adjusted-deadline-result">
-            ---
-        </strong>
-    </p>
+    <p>締切判定：<strong id="adjusted-deadline-result">---</strong></p>
 
+    <p>次の処理：<strong id="adjustment-next-step-result">---</strong></p>
 
-    <p>
-        次の処理：
-        <strong id="adjustment-next-step-result">
-            ---
-        </strong>
-    </p>
-
-
-    <p>
-        成立判定：
-        <strong id="settlement-result">
-            ---
-        </strong>
-    </p>
+    <p>成立判定：<strong id="settlement-result">---</strong></p>
 
 </div>
-
 
 <!-- ========================================
 Step.5
 ========================================= -->
-
 <h3>Step.5</h3>
 
 <div class="result-block">
 
-    <p>
-        空き日数：
-        <strong id="empty-days-result">---</strong>
-    </p>
+    <p>空き日数：<strong id="empty-days-result">---</strong></p>
 
+    <p>自動調整結果：<strong id="auto-adjust-result">---</strong></p>
 
-    <p>
-        自動調整結果：
-        <strong id="auto-adjust-result">---</strong>
-    </p>
+    <p>調整率：<strong id="final-adjustment-rate-result">---</strong></p>
 
+    <p>作業開始日：<strong id="final-start-date-result">---</strong></p>
 
-    <p>
-        調整率：
-        <strong id="final-adjustment-rate-result">---</strong>
-    </p>
+    <p>制作◆スケジュール：</p>
+    <div id="final-production-schedule-result" class="result"></div>
 
+    <p>作品完成日：<strong id="final-completion-result">---</strong></p>
 
-    <p>
-        作業開始日：
-        <strong id="final-start-date-result">---</strong>
-    </p>
+    <p>仕立て★スケジュール：</p>
+    <div id="final-finishing-schedule-result" class="result"></div>
 
+    <p>締切日：<strong id="final-deadline-result">---</strong></p>
 
-    <p>
-        制作◆スケジュール：
-    </p>
+    <p>休日：</p>
+    <div id="final-holiday-result" class="result"></div>
 
-    <div
-        id="final-production-schedule-result"
-        class="result"
-    ></div>
+    <p>最終作業終了日：<strong id="final-end-result">---</strong></p>
 
+    <p>自動調整結果：<strong id="final-auto-adjust-result">---</strong></p>
 
-    <p>
-        作品完成日：
-        <strong id="final-completion-result">---</strong>
-    </p>
+    <p>制作◆行程リスト：</p>
+    <div id="final-production-process-result" class="result"></div>
 
-
-    <p>
-        仕立て★スケジュール：
-    </p>
-
-    <div
-        id="final-finishing-schedule-result"
-        class="result"
-    ></div>
-
-
-    <p>
-        締切日：
-        <strong id="final-deadline-result">---</strong>
-    </p>
-
-
-    <p>
-        休日：
-    </p>
-
-    <div
-        id="final-holiday-result"
-        class="result"
-    ></div>
-
-
-    <p>
-        最終作業終了日：
-        <strong id="final-end-result">---</strong>
-    </p>
-
-
-    <p>
-        自動調整結果：
-        <strong id="final-auto-adjust-result">---</strong>
-    </p>
-
-
-    <p>
-        制作◆行程リスト：
-    </p>
-
-    <div
-        id="final-production-process-result"
-        class="result"
-    ></div>
-
-
-    <p>
-        仕立て★行程リスト：
-    </p>
-
-    <div
-        id="final-finishing-process-result"
-        class="result"
-    ></div>
+    <p>仕立て★行程リスト：</p>
+    <div id="final-finishing-process-result" class="result"></div>
 
 </div>
 
@@ -1148,303 +533,157 @@ scheduler.js
     // ----------------------------------------
     // 日付表示
     // ----------------------------------------
-
     function formatDate(date) {
 
         if (!date) {
             return "---";
         }
 
-        const year =
-            date.getFullYear();
-
-        const month =
-            String(
-                date.getMonth() + 1
-            ).padStart(2, "0");
-
-        const day =
-            String(
-                date.getDate()
-            ).padStart(2, "0");
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
 
         return `${year}/${month}/${day}`;
     }
 
-
     // ----------------------------------------
     // 入力データ取得
     // ----------------------------------------
-
     function getInputData() {
 
-        const pageCount =
-            Number(
-                document.getElementById(
-                    "page-count"
-                ).value
-            );
-
+        const pageCount = Number(document.getElementById("page-count").value);
 
         // ----------------------------------------
         // 制作工程
         // ----------------------------------------
-
         const productionProcesses = [];
-
 
         for (let index = 1; index <= 2; index++) {
 
             productionProcesses.push({
 
                 name:
-                    document.getElementById(
-                        `production-name-${index}`
-                    ).value,
+                    document.getElementById(`production-name-${index}`).value, 
 
                 unit:
-                    document.getElementById(
-                        `production-unit-${index}`
-                    ).value,
+                    document.getElementById(`production-unit-${index}`).value,
 
                 hours:
-                    Number(
-                        document.getElementById(
-                            `production-hours-${index}`
-                        ).value
-                    ),
-
+                    Number(document.getElementById(`production-hours-${index}`).value),
+                    
                 minutes:
-                    Number(
-                        document.getElementById(
-                            `production-minutes-${index}`
-                        ).value
-                    ),
+                    Number(document.getElementById(`production-minutes-${index}`).value),
 
                 autoAdjust:
-                    document.getElementById(
-                        `production-auto-adjust-${index}`
-                    ).value === "true"
-
+                    document.getElementById(`production-auto-adjust-${index}`).value === "true"
             });
-
         }
-
 
         // ----------------------------------------
         // 仕立て工程
         // ----------------------------------------
+        const hasFinishing = document.getElementById("has-finishing").value === "true";
 
-        const hasFinishing =
-            document.getElementById(
-                "has-finishing"
-            ).value === "true";
-
-
-        const finishingProcesses =
-            hasFinishing
+        const finishingProcesses = hasFinishing
                 ? [
                     {
                         name:
-                            document.getElementById(
-                                "finishing-name"
-                            ).value,
+                            document.getElementById("finishing-name").value,
 
                         unit:
-                            document.getElementById(
-                                "finishing-unit"
-                            ).value,
+                            document.getElementById("finishing-unit").value,
 
                         hours:
-                            Number(
-                                document.getElementById(
-                                    "finishing-hours"
-                                ).value
-                            ),
+                            Number(document.getElementById("finishing-hours").value),
 
                         minutes:
-                            Number(
-                                document.getElementById(
-                                    "finishing-minutes"
-                                ).value
-                            ),
+                            Number(document.getElementById("finishing-minutes").value),
 
                         autoAdjust:
-                            document.getElementById(
-                                "finishing-auto-adjust"
-                            ).value === "true"
+                            document.getElementById("finishing-auto-adjust").value === "true"
                     }
                 ]
                 : [];
 
-
         // ----------------------------------------
         // 活動時間
         // ----------------------------------------
-
         const activityTimes = [];
-
 
         for (let day = 0; day < 7; day++) {
 
-            const hoursInput =
-                document.querySelector(
-                    `.activity-hours[data-day="${day}"]`
-                );
-
-            const minutesInput =
-                document.querySelector(
-                    `.activity-minutes[data-day="${day}"]`
-                );
-
+            const hoursInput = document.querySelector(`.activity-hours[data-day="${day}"]`);
+            const minutesInput = document.querySelector(`.activity-minutes[data-day="${day}"]`);
 
             activityTimes.push({
 
                 name:
-                    [
-                        "日",
-                        "月",
-                        "火",
-                        "水",
-                        "木",
-                        "金",
-                        "土"
-                    ][day],
+                    ["日","月","火","水","木","金","土"][day],
 
                 hours:
-                    Number(
-                        hoursInput.value
-                    ),
+                    Number(hoursInput.value),
 
                 minutes:
-                    Number(
-                        minutesInput.value
-                    )
-
+                    Number(minutesInput.value)
             });
-
         }
-
 
         // ----------------------------------------
         // 休日
         // ----------------------------------------
-
-        const holidayValue =
-            document.getElementById(
-                "holiday-date"
-            ).value;
-
-
-        const holidays =
-            holidayValue
-                ? [
-                    new Date(
-                        `${holidayValue}T00:00:00`
-                    )
-                ]
-                : [];
-
+        const holidayValue = document.getElementById("holiday-date").value;
+        const holidays = holidayValue ? [new Date(`${holidayValue}T00:00:00`)] : [];
 
         // ----------------------------------------
         // 作業期間
         // ----------------------------------------
-
-        const startDateValue =
-            document.getElementById(
-                "start-date"
-            ).value;
-
-
-        const deadlineValue =
-            document.getElementById(
-                "deadline-date"
-            ).value;
-
-
-        const startDate =
-            startDateValue
-                ? new Date(
-                    `${startDateValue}T00:00:00`
-                )
-                : null;
-
-
-        const deadline =
-            deadlineValue
-                ? new Date(
-                    `${deadlineValue}T00:00:00`
-                )
-                : null;
-
+        const startDateValue = document.getElementById("start-date").value;
+        const deadlineValue = document.getElementById("deadline-date").value;
+        const startDate = startDateValue ? new Date(`${startDateValue}T00:00:00`) : null;
+        const deadline = deadlineValue ? new Date(`${deadlineValue}T00:00:00`) : null;
 
         return {
-
             pageCount,
-
             productionProcesses,
-
             finishingProcesses,
-
             activityTimes,
-
             holidays,
-
             startDate,
-
             deadline,
-
             hasFinishing
-
         };
-
     }
-
 
     // ----------------------------------------
     // 結果初期化
     // ----------------------------------------
-
     function clearResults() {
 
-        document.querySelectorAll(
-            "strong"
+        document.querySelectorAll("strong"
         ).forEach(
             element => {
-
-                element.textContent =
-                    "---";
-
+                element.textContent = "---";
             }
         );
 
-
-        document.querySelectorAll(
-            ".result"
+        document.querySelectorAll(".result"
         ).forEach(
             element => {
-
-                element.innerHTML =
-                    "";
-
+                element.innerHTML = "";
             }
         );
-
     }
-
 
     // ----------------------------------------
     // Step.1
     // ----------------------------------------
-
     function runStep1(data) {
 
-        const productionMinutes =
+        const productionMinutes = 
             convertProductionWorkMinutes(
                 data.productionProcesses,
                 data.pageCount
             );
-
 
         const finishingMinutes =
             convertFinishingWorkMinutes(
@@ -1452,47 +691,35 @@ scheduler.js
                 data.pageCount
             );
 
-
         const activityMinutes =
             convertActivityMinutes(
                 data.activityTimes
             );
 
-
         // ----------------------------------------
         // 工程データに分数を追加
         // ----------------------------------------
-
         const productionProcesses =
             data.productionProcesses.map(
                 (process, index) => {
 
                     return {
-
                         ...process,
-
                         minutes:
                             productionMinutes[index]
-
                     };
-
                 }
             );
-
 
         const finishingProcesses =
             data.finishingProcesses.map(
                 (process, index) => {
 
                     return {
-
                         ...process,
-
                         minutes:
                             finishingMinutes[index]
-
                     };
-
                 }
             );
 
@@ -1500,203 +727,98 @@ scheduler.js
         // ----------------------------------------
         // 結果表示
         // ----------------------------------------
+        const productionTotal = productionMinutes.reduce((total, minutes) => total + minutes, 0);
+        const finishingTotal = finishingMinutes.reduce((total, minutes) => total + minutes, 0);
+        const activityTotal = activityMinutes.reduce((total, minutes) => total + minutes, 0);
 
-        const productionTotal =
-            productionMinutes.reduce(
-                (total, minutes) =>
-                    total + minutes,
-                0
-            );
+        document.getElementById("production-result").textContent = `${productionTotal}分`;
+        document.getElementById("finishing-result").textContent = `${finishingTotal}分`;
+        document.getElementById("activity-result").textContent = `${activityTotal}分`;
 
-
-        const finishingTotal =
-            finishingMinutes.reduce(
-                (total, minutes) =>
-                    total + minutes,
-                0
-            );
-
-
-        const activityTotal =
-            activityMinutes.reduce(
-                (total, minutes) =>
-                    total + minutes,
-                0
-            );
-
-
-        document.getElementById(
-            "production-result"
-        ).textContent =
-            `${productionTotal}分`;
-
-
-        document.getElementById(
-            "finishing-result"
-        ).textContent =
-            `${finishingTotal}分`;
-
-
-        document.getElementById(
-            "activity-result"
-        ).textContent =
-            `${activityTotal}分`;
-
-
-        const productionResultList =
-            document.getElementById(
-                "production-result-list"
-            );
-
+        const productionResultList = document.getElementById("production-result-list");
 
         productionProcesses.forEach(
             process => {
-
                 productionResultList.innerHTML += `
-                    <p>
-                        ${process.name}
-                        → ${process.minutes}分
-                    </p>
+                    <p>${process.name} → ${process.minutes}分</p>
                 `;
-
             }
         );
 
-
-        const finishingResultList =
-            document.getElementById(
-                "finishing-result-list"
-            );
-
+        const finishingResultList = document.getElementById("finishing-result-list");
 
         finishingProcesses.forEach(
             process => {
-
                 finishingResultList.innerHTML += `
-                    <p>
-                        ${process.name}
-                        → ${process.minutes}分
-                    </p>
+                    <p>${process.name} → ${process.minutes}分</p>
                 `;
-
             }
         );
-
 
         activityMinutes.forEach(
             (minutes, index) => {
 
-                document.getElementById(
-                    "activity-result-list"
-                ).innerHTML += `
-                    <p>
-                        ${data.activityTimes[index].name}
-                        → ${minutes}分
-                    </p>
+                document.getElementById("activity-result-list").innerHTML += `
+                    <p>${data.activityTimes[index].name} → ${minutes}分</p>
                 `;
-
             }
         );
 
-
         return {
-
             productionProcesses,
-
             finishingProcesses,
-
             activityMinutes
-
         };
-
     }
-
 
     // ----------------------------------------
     // Step.2
     // ----------------------------------------
+    function runStep2(data,step1Data) {
 
-    function runStep2(
-        data,
-        step1Data
-    ) {
-
-        const productionSchedule =
-            createDraftSchedule(
-                step1Data.productionProcesses,
-                step1Data.activityMinutes,
-                data.holidays,
-                data.startDate
-            );
-
+        const productionSchedule = createDraftSchedule(
+            step1Data.productionProcesses,
+            step1Data.activityMinutes,
+            data.holidays,
+            data.startDate
+        );
 
         let finishingSchedule = [];
 
-
         if (data.hasFinishing) {
 
-            const completionDate =
-                productionSchedule.length > 0
-                    ? productionSchedule[
-                        productionSchedule.length - 1
-                    ].date
-                    : null;
+            const completionDate = productionSchedule.length > 0
+                ? productionSchedule[productionSchedule.length - 1].date
+                : null;
 
-
-            const finishingStartDate =
-                completionDate
-                    ? new Date(completionDate)
-                    : new Date(data.startDate);
-
+            const finishingStartDate = completionDate
+                ? new Date(completionDate)
+                : new Date(data.startDate);
 
             if (completionDate) {
-
-                finishingStartDate.setDate(
-                    finishingStartDate.getDate() + 1
-                );
-
+                finishingStartDate.setDate(finishingStartDate.getDate() + 1);
             }
 
-
-            finishingSchedule =
-                createDraftSchedule(
-                    step1Data.finishingProcesses,
-                    step1Data.activityMinutes,
-                    data.holidays,
-                    finishingStartDate
-                );
-
+            finishingSchedule = createDraftSchedule(
+                step1Data.finishingProcesses,
+                step1Data.activityMinutes,
+                data.holidays,
+                finishingStartDate
+            );
         }
 
-
-        const fullSchedule = [
-
-            ...productionSchedule,
-
-            ...finishingSchedule
-
-        ];
-
+        const fullSchedule = [...productionSchedule, ...finishingSchedule];
 
         // ----------------------------------------
         // 作業可能日
         // ----------------------------------------
-
         const workableDates = [];
 
+        if (data.startDate && data.deadline) {
 
-        if (
-            data.startDate &&
-            data.deadline
-        ) {
+            let currentDate = new Date(data.startDate);
 
-            let currentDate =
-                new Date(data.startDate);
-
-
-            while (
-                currentDate <= data.deadline
-            ) {
+            while (currentDate <= data.deadline) {
 
                 if (
                     isWorkableDate(
@@ -1705,203 +827,98 @@ scheduler.js
                         data.holidays
                     )
                 ) {
-
-                    workableDates.push(
-                        new Date(currentDate)
-                    );
-
+                    workableDates.push(new Date(currentDate));
                 }
 
-
-                currentDate.setDate(
-                    currentDate.getDate() + 1
-                );
-
+                currentDate.setDate(currentDate.getDate() + 1);
             }
-
         }
 
-
-        document.getElementById(
-            "workable-result"
-        ).textContent =
-            `${workableDates.length}日`;
-
+        document.getElementById("workable-result").textContent = `${workableDates.length}日`;
 
         // ----------------------------------------
         // 仮スケジュール表示
         // ----------------------------------------
-
-        const scheduleResult =
-            document.getElementById(
-                "schedule-result"
-            );
-
+        const scheduleResult = document.getElementById("schedule-result");
 
         fullSchedule.forEach(
             item => {
 
                 scheduleResult.innerHTML += `
-                    <p>
-                        ${formatDate(item.date)}
-                        ：
-                        ${item.processName}
-                        ${item.minutes}分
-                    </p>
+                    <p>${formatDate(item.date)} ：${item.processName}${item.minutes}分</p>
                 `;
-
             }
         );
-
 
         // ----------------------------------------
         // 日付結果
         // ----------------------------------------
+        const completionDate = productionSchedule.length > 0
+            ? productionSchedule[productionSchedule.length - 1].date
+            : null;
 
-        const completionDate =
-            productionSchedule.length > 0
-                ? productionSchedule[
-                    productionSchedule.length - 1
-                ].date
-                : null;
+        const finishingEndDate = finishingSchedule.length > 0
+            ? finishingSchedule[finishingSchedule.length - 1].date
+            : null;
 
+        const finalEndDate = finishingEndDate || completionDate;
 
-        const finishingEndDate =
-            finishingSchedule.length > 0
-                ? finishingSchedule[
-                    finishingSchedule.length - 1
-                ].date
-                : null;
-
-
-        const finalEndDate =
-            finishingEndDate ||
-            completionDate;
-
-
-        document.getElementById(
-            "completion-result"
-        ).textContent =
-            formatDate(completionDate);
-
-
-        document.getElementById(
-            "finishing-end-result"
-        ).textContent =
-            formatDate(finishingEndDate);
-
-
-        document.getElementById(
-            "final-end-result"
-        ).textContent =
-            formatDate(finalEndDate);
-
+        document.getElementById("completion-result").textContent = formatDate(completionDate);
+        document.getElementById("finishing-end-result").textContent = formatDate(finishingEndDate);
+        document.getElementById("final-end-result").textContent = formatDate(finalEndDate);
 
         return {
-
             productionSchedule,
-
             finishingSchedule,
-
             schedule:
                 fullSchedule,
-
             completionDate,
-
             finishingEndDate,
-
             finalEndDate
-
         };
-
     }
-
 
     // ----------------------------------------
     // Step.3
     // ----------------------------------------
-
-    function runStep3(
-        data,
-        step2Data
-    ) {
+    function runStep3(data, step2Data) {
 
         if (!step2Data.finalEndDate) {
-
-            return {
-
-                isMet: false
-
-            };
-
+            return {isMet: false};
         }
 
+        const isMet = isDeadlineMet(step2Data.finalEndDate, data.deadline);
 
-        const isMet =
-            isDeadlineMet(
-                step2Data.finalEndDate,
-                data.deadline
-            );
-
-
-        document.getElementById(
-            "step3-result"
-        ).textContent =
-            isMet
-                ? "間に合う"
-                : "間に合わない";
-
+        document.getElementById("step3-result").textContent = isMet
+            ? "間に合う"
+            : "間に合わない";
 
         return {
-
             isMet
-
         };
-
     }
-
 
     // ----------------------------------------
     // Step.4
     // ----------------------------------------
-
-    function runStep4(
-        data,
-        step1Data,
-        step2Data,
-        step3Data
-    ) {
+    function runStep4(data, step1Data, step2Data, step3Data) {
 
         // ----------------------------------------
         // 締切に間に合う場合
         // ----------------------------------------
-
         if (step3Data.isMet) {
 
-            document.getElementById(
-                "adjustment-next-step-result"
-            ).textContent =
-                "Step.5へ";
-
+            document.getElementById("adjustment-next-step-result").textContent = "Step.5へ";
 
             return {
-
                 skipped: true
-
             };
-
         }
-
 
         // ----------------------------------------
         // 自動調整しない場合
         // ----------------------------------------
-
-        const autoAdjust =
-            document.querySelector(
-                'input[name="auto-adjust"]:checked'
-            );
-
+        const autoAdjust = document.querySelector('input[name="auto-adjust"]:checked');
 
         // テストページでは
         // 自動調整のON/OFFを制作工程・
@@ -1910,452 +927,256 @@ scheduler.js
         // 締切に間に合わない場合は
         // Step.4の処理へ進む
 
-
         // ----------------------------------------
         // 自動調整対象を取得
         // ----------------------------------------
+        let productionSettings = data.productionProcesses.map(
+            process => process.autoAdjust
+        );
 
-        let productionSettings =
-            data.productionProcesses.map(
-                process =>
-                    process.autoAdjust
-            );
+        let finishingSettings = data.finishingProcesses.map(
+            process => process.autoAdjust
+        );
 
-
-        let finishingSettings =
-            data.finishingProcesses.map(
-                process =>
-                    process.autoAdjust
-            );
-
-
-        let adjustmentTargets =
-            getAdjustmentTargets(
-                step1Data.productionProcesses,
-                step1Data.finishingProcesses,
-                productionSettings,
-                finishingSettings
-            );
-
+        let adjustmentTargets = getAdjustmentTargets(
+            step1Data.productionProcesses,
+            step1Data.finishingProcesses,
+            productionSettings,
+            finishingSettings
+        );
 
         // ----------------------------------------
         // 全てOFFなら全てON
         // ----------------------------------------
+        if (areAllAutoAdjustDisabled(productionSettings, finishingSettings)) {
 
-        if (
-            areAllAutoAdjustDisabled(
+            const allSettings = enableAllAutoAdjust(
+                step1Data.productionProcesses,
+                step1Data.finishingProcesses
+            );
+
+            productionSettings = allSettings.productionSettings;
+
+            finishingSettings = allSettings.finishingSettings;
+
+            adjustmentTargets = getAdjustmentTargets(
+                step1Data.productionProcesses,
+                step1Data.finishingProcesses,
                 productionSettings,
                 finishingSettings
-            )
-        ) {
-
-            const allSettings =
-                enableAllAutoAdjust(
-                    step1Data.productionProcesses,
-                    step1Data.finishingProcesses
-                );
-
-
-            productionSettings =
-                allSettings.productionSettings;
-
-
-            finishingSettings =
-                allSettings.finishingSettings;
-
-
-            adjustmentTargets =
-                getAdjustmentTargets(
-                    step1Data.productionProcesses,
-                    step1Data.finishingProcesses,
-                    productionSettings,
-                    finishingSettings
-                );
-
+            );
         }
-
 
         // ----------------------------------------
         // Step.4-①
         // ----------------------------------------
+        const productionTargets = adjustmentTargets.filter(
+            target => target.type === "production"
+        );
 
-        const productionTargets =
-            adjustmentTargets.filter(
-                target =>
-                    target.type === "production"
-            );
+        const finishingTargets = adjustmentTargets.filter(
+            target => target.type === "finishing"
+        );
 
-
-        const finishingTargets =
-            adjustmentTargets.filter(
-                target =>
-                    target.type === "finishing"
-            );
-
-
-        document.getElementById(
-            "production-target-result"
+        document.getElementById("production-target-result"
         ).innerHTML =
             productionTargets.length > 0
-                ? productionTargets.map(
-                    target =>
-                        `<p>${target.name}</p>`
-                ).join("")
+                ? productionTargets.map(target => `<p>${target.name}</p>`).join("")
                 : "---";
 
-
-        document.getElementById(
-            "finishing-target-result"
+        document.getElementById("finishing-target-result"
         ).innerHTML =
             finishingTargets.length > 0
-                ? finishingTargets.map(
-                    target =>
-                        `<p>${target.name}</p>`
-                ).join("")
+                ? finishingTargets.map(target => `<p>${target.name}</p>`).join("")
                 : "---";
 
-
-        document.getElementById(
-            "production-target-minutes-result"
+        document.getElementById("production-target-minutes-result"
         ).textContent =
-            productionTargets.reduce(
-                (total, target) =>
-                    total + target.minutes,
-                0
-            ) + "分";
+            productionTargets.reduce((total, target) => total + target.minutes, 0) + "分";
 
-
-        document.getElementById(
-            "finishing-target-minutes-result"
+        document.getElementById("finishing-target-minutes-result"
         ).textContent =
-            finishingTargets.reduce(
-                (total, target) =>
-                    total + target.minutes,
-                0
-            ) + "分";
-
+            finishingTargets.reduce((total, target) => total + target.minutes, 0) + "分";
 
         // ----------------------------------------
         // Step.4-②
         // ----------------------------------------
+        const totalActivityMinutes = calculateTotalActivityMinutes(
+            data.startDate,
+            data.deadline,
+            step1Data.activityMinutes,
+            data.holidays
+        );
 
-        const totalActivityMinutes =
-            calculateTotalActivityMinutes(
-                step2Data.schedule,
-                step1Data.activityMinutes,
-                data.holidays
-            );
-
-
-        document.getElementById(
-            "step4-total-activity-result"
-        ).textContent =
-            `${totalActivityMinutes}分`;
-
+        document.getElementById("step4-total-activity-result").textContent = `${totalActivityMinutes}分`;
 
         // ----------------------------------------
         // Step.4-③
         // ----------------------------------------
-
-        const workMinutes =
-            calculateWorkMinutes(
-                step1Data.productionProcesses,
-                step1Data.finishingProcesses,
-                adjustmentTargets
-            );
-
+        const workMinutes = calculateWorkMinutes(
+            step1Data.productionProcesses,
+            step1Data.finishingProcesses,
+            adjustmentTargets
+        );
 
         // ----------------------------------------
         // Step.4-④
         // ----------------------------------------
+        const adjustableActivityMinutes = calculateAdjustableActivityMinutes(
+            totalActivityMinutes,
+            step1Data.activityMinutes,
+            data.hasFinishing,
+            workMinutes.fixedMinutes
+        );
 
-        const adjustableActivityMinutes =
-            calculateAdjustableActivityMinutes(
-                totalActivityMinutes,
-                step1Data.activityMinutes,
-                data.hasFinishing,
-                workMinutes.fixedMinutes
-            );
+        const adjustmentRate = calculateAdjustmentRate(
+            adjustableActivityMinutes,
+            workMinutes.adjustableMinutes
+        );
 
+        const maxActivityMinutes = data.hasFinishing
+            ? Math.max(...step1Data.activityMinutes.filter(minutes => minutes > 0))
+            : 0;
 
-        const adjustmentRate =
-            calculateAdjustmentRate(
-                adjustableActivityMinutes,
-                workMinutes.adjustableMinutes
-            );
+        document.getElementById("adjustable-activity-result").textContent = `${adjustableActivityMinutes}分`;
 
+        document.getElementById("max-activity-result").textContent = `${maxActivityMinutes}分`;
 
-        const maxActivityMinutes =
-            data.hasFinishing
-                ? Math.max(
-                    ...step1Data.activityMinutes.filter(
-                        minutes => minutes > 0
-                    )
-                )
-                : 0;
-
-
-        document.getElementById(
-            "adjustable-activity-result"
-        ).textContent =
-            `${adjustableActivityMinutes}分`;
-
-
-        document.getElementById(
-            "max-activity-result"
-        ).textContent =
-            `${maxActivityMinutes}分`;
-
-
-        document.getElementById(
-            "adjustment-rate-result"
-        ).textContent =
-            `${(adjustmentRate * 100).toFixed(1)}%`;
-
+        document.getElementById("adjustment-rate-result").textContent = `${(adjustmentRate * 100).toFixed(1)}%`;
 
         // ----------------------------------------
         // Step.4-⑤
         // ----------------------------------------
+        const adjustedTargets = calculateAdjustmentMinutes(
+            adjustmentTargets,
+            adjustmentRate
+        );
 
-        const adjustedTargets =
-            calculateAdjustmentMinutes(
-                adjustmentTargets,
-                adjustmentRate
-            );
+        const adjustedProductionProcesses = applyAdjustmentMinutes(
+            step1Data.productionProcesses,
+            adjustedTargets,
+            "production"
+        );
 
+        const adjustedFinishingProcesses = applyAdjustmentMinutes(
+            step1Data.finishingProcesses,
+            adjustedTargets,
+            "finishing"
+        );
 
-        const adjustedProductionProcesses =
-            applyAdjustmentMinutes(
-                step1Data.productionProcesses,
-                adjustedTargets,
-                "production"
-            );
-
-
-        const adjustedFinishingProcesses =
-            applyAdjustmentMinutes(
-                step1Data.finishingProcesses,
-                adjustedTargets,
-                "finishing"
-            );
-
-
-        document.getElementById(
-            "adjusted-production-result"
+        document.getElementById("adjusted-production-result"
         ).innerHTML =
-            adjustedProductionProcesses.map(
-                process =>
-                    `<p>${process.name} → ${process.minutes}分</p>`
-            ).join("");
+            adjustedProductionProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("");
 
-
-        document.getElementById(
-            "adjusted-finishing-result"
+        document.getElementById("adjusted-finishing-result"
         ).innerHTML =
-            adjustedFinishingProcesses.map(
-                process =>
-                    `<p>${process.name} → ${process.minutes}分</p>`
-            ).join("");
-
+            adjustedFinishingProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("");
 
         // ----------------------------------------
         // Step.4-⑥
         // ----------------------------------------
+        const adjustedSchedule = createAdjustedSchedule(
+            step1Data.productionProcesses,
+            step1Data.finishingProcesses,
+            adjustedTargets,
+            step1Data.activityMinutes,
+            data.holidays,
+            data.startDate
+        );
 
-        const adjustedSchedule =
-            createAdjustedSchedule(
-                step1Data.productionProcesses,
-                step1Data.finishingProcesses,
-                adjustedTargets,
-                step1Data.activityMinutes,
-                data.holidays,
-                data.startDate
-            );
+        const adjustedProductionSchedule = adjustedSchedule.productionSchedule;
+        const adjustedFinishingSchedule = adjustedSchedule.finishingSchedule;
+        const adjustedFullSchedule = adjustedSchedule.schedule;
 
+        const adjustedCompletionDate = adjustedProductionSchedule.length > 0
+            ? adjustedProductionSchedule[adjustedProductionSchedule.length - 1].date
+            : null;
 
-        const adjustedProductionSchedule =
-            adjustedSchedule.productionSchedule;
+        const adjustedFinishingEndDate = adjustedFinishingSchedule.length > 0
+            ? adjustedFinishingSchedule[adjustedFinishingSchedule.length - 1].date
+            : null;
 
+        const adjustedFinalEndDate = adjustedFinishingEndDate || adjustedCompletionDate;
 
-        const adjustedFinishingSchedule =
-            adjustedSchedule.finishingSchedule;
-
-
-        const adjustedFullSchedule =
-            adjustedSchedule.schedule;
-
-
-        const adjustedCompletionDate =
-            adjustedProductionSchedule.length > 0
-                ? adjustedProductionSchedule[
-                    adjustedProductionSchedule.length - 1
-                ].date
-                : null;
-
-
-        const adjustedFinishingEndDate =
-            adjustedFinishingSchedule.length > 0
-                ? adjustedFinishingSchedule[
-                    adjustedFinishingSchedule.length - 1
-                ].date
-                : null;
-
-
-        const adjustedFinalEndDate =
-            adjustedFinishingEndDate ||
-            adjustedCompletionDate;
-
-
-        const adjustedScheduleResult =
-            document.getElementById(
-                "adjusted-schedule-result"
-            );
-
+        const adjustedScheduleResult = document.getElementById("adjusted-schedule-result");
 
         adjustedFullSchedule.forEach(
             item => {
-
                 adjustedScheduleResult.innerHTML += `
-                    <p>
-                        ${formatDate(item.date)}
-                        ：
-                        ${item.processName}
-                        ${item.minutes}分
-                    </p>
+                    <p>${formatDate(item.date)} ：${item.processName} ${item.minutes}分</p>
                 `;
-
             }
         );
 
-
-        document.getElementById(
-            "adjusted-completion-result"
+        document.getElementById("adjusted-completion-result"
         ).textContent =
-            formatDate(
-                adjustedCompletionDate
-            );
+            formatDate(adjustedCompletionDate);
 
-
-        document.getElementById(
-            "adjusted-finishing-end-result"
+        document.getElementById("adjusted-finishing-end-result"
         ).textContent =
-            formatDate(
-                adjustedFinishingEndDate
-            );
+            formatDate(adjustedFinishingEndDate);
 
-
-        document.getElementById(
-            "adjusted-final-end-result"
+        document.getElementById("adjusted-final-end-result"
         ).textContent =
-            formatDate(
-                adjustedFinalEndDate
-            );
-
+            formatDate(adjustedFinalEndDate);
 
         // ----------------------------------------
         // Step.4-⑦
         // ----------------------------------------
+        const adjustedDeadline = checkAdjustedDeadline(
+            adjustedFullSchedule,
+            data.deadline
+        );
 
-        const adjustedDeadline =
-            checkAdjustedDeadline(
-                adjustedFullSchedule,
-                data.deadline
-            );
-
-
-        document.getElementById(
-            "adjusted-deadline-result"
-        ).textContent =
-            adjustedDeadline.isMet
-                ? "間に合う"
-                : "間に合わない";
-
+        document.getElementById("adjusted-deadline-result"
+        ).textContent = adjustedDeadline.isMet
+            ? "間に合う"
+            : "間に合わない";
 
         // ----------------------------------------
         // Step.4-⑧
         // ----------------------------------------
-
-        let nextStep =
-            "成立判定";
-
+        let nextStep = "成立判定";
 
         if (adjustedDeadline.isMet) {
-
-            nextStep =
-                "Step.5へ";
-
+            nextStep ="Step.5へ";
         } else if (
             !areAllAutoAdjustEnabled(
                 productionSettings,
                 finishingSettings
             )
         ) {
-
-            nextStep =
-                "全行程を自動調整して再計算";
-
+            nextStep = "全行程を自動調整して再計算";
         } else {
-
-            nextStep =
-                "成立不能";
-
+            nextStep = "成立不能";
         }
 
+        document.getElementById("adjustment-next-step-result").textContent = nextStep;
 
-        document.getElementById(
-            "adjustment-next-step-result"
-        ).textContent =
-            nextStep;
-
-
-        document.getElementById(
-            "settlement-result"
-        ).textContent =
-            adjustedDeadline.isMet
-                ? "成立"
-                : "未成立";
-
+        document.getElementById("settlement-result"
+        ).textContent = adjustedDeadline.isMet
+            ? "成立"
+            : "未成立";
 
         return {
-
             adjustmentTargets,
-
             adjustedTargets,
-
             productionSettings,
-
             finishingSettings,
-
             totalActivityMinutes,
-
             workMinutes,
-
             adjustableActivityMinutes,
-
             adjustmentRate,
-
             adjustedSchedule,
-
             adjustedDeadline,
-
             nextStep
-
         };
-
     }
-
 
     // ----------------------------------------
     // Step.5
     // ----------------------------------------
-
-    function runStep5(
-        data,
-        step1Data,
-        step2Data,
-        step3Data,
-        step4Data
-    ) {
+    function runStep5(data, step1Data, step2Data, step3Data, step4Data) {
 
         if (
             !step3Data.isMet &&
@@ -2365,11 +1186,8 @@ scheduler.js
                 !step4Data.adjustedDeadline.isMet
             )
         ) {
-
             return;
-
         }
-
 
         const finalSchedule =
             step4Data &&
@@ -2378,332 +1196,177 @@ scheduler.js
                 ? step4Data.adjustedSchedule
                 : step2Data;
 
-
         let finalFullSchedule;
 
-
         if (finalSchedule.schedule) {
-
-            finalFullSchedule =
-                finalSchedule.schedule;
-
+            finalFullSchedule = finalSchedule.schedule;
         } else {
-
-            finalFullSchedule =
-                [
+            finalFullSchedule = [
                     ...finalSchedule.productionSchedule,
                     ...finalSchedule.finishingSchedule
                 ];
-
         }
 
+        const finalProductionSchedule = finalSchedule.productionSchedule;
 
-        const finalProductionSchedule =
-            finalSchedule.productionSchedule;
+        const finalFinishingSchedule = finalSchedule.finishingSchedule;
 
+        const finalCompletionDate = finalProductionSchedule.length > 0
+            ? finalProductionSchedule[finalProductionSchedule.length - 1].date
+            : null;
 
-        const finalFinishingSchedule =
-            finalSchedule.finishingSchedule;
-
-
-        const finalCompletionDate =
-            finalProductionSchedule.length > 0
-                ? finalProductionSchedule[
-                    finalProductionSchedule.length - 1
-                ].date
-                : null;
-
-
-        const finalEndDate =
-            finalFullSchedule.length > 0
-                ? finalFullSchedule[
-                    finalFullSchedule.length - 1
-                ].date
-                : null;
-
+        const finalEndDate = finalFullSchedule.length > 0
+            ? finalFullSchedule[finalFullSchedule.length - 1].date
+            : null;
 
         // ----------------------------------------
         // 空き日数
         // ----------------------------------------
-
         let emptyDays = 0;
 
+        if (finalEndDate && data.deadline) {
 
-        if (
-            finalEndDate &&
-            data.deadline
-        ) {
+            const millisecondsPerDay = 1000 * 60 * 60 * 24;
 
-            const millisecondsPerDay =
-                1000 * 60 * 60 * 24;
-
-
-            emptyDays =
-                Math.max(
-                    0,
-                    Math.floor(
-                        (
-                            data.deadline -
-                            finalEndDate
-                        ) /
-                        millisecondsPerDay
-                    )
-                );
-
+            emptyDays = Math.max(0, Math.floor((data.deadline - finalEndDate) / millisecondsPerDay));
         }
-
 
         // ----------------------------------------
         // 表示
         // ----------------------------------------
+        document.getElementById("empty-days-result"
+        ).textContent = `${emptyDays}日`;
 
-        document.getElementById(
-            "empty-days-result"
-        ).textContent =
-            `${emptyDays}日`;
+        document.getElementById("auto-adjust-result"
+        ).textContent = step4Data
+            ? "自動調整あり"
+            : "自動調整なし";
 
+        document.getElementById("final-adjustment-rate-result"
+        ).textContent = step4Data
+            ? `${(step4Data.adjustmentRate * 100).toFixed(1)}%`
+            : "100.0%";
 
-        document.getElementById(
-            "auto-adjust-result"
-        ).textContent =
-            step4Data
-                ? "自動調整あり"
-                : "自動調整なし";
+        document.getElementById("final-start-date-result"
+        ).textContent = formatDate(data.startDate);
 
+        document.getElementById("final-completion-result"
+        ).textContent = formatDate(finalCompletionDate);
 
-        document.getElementById(
-            "final-adjustment-rate-result"
-        ).textContent =
-            step4Data
-                ? `${(
-                    step4Data.adjustmentRate * 100
-                ).toFixed(1)}%`
-                : "100.0%";
+        document.getElementById("final-deadline-result"
+        ).textContent = formatDate(data.deadline);
 
+        document.getElementById("final-end-result"
+        ).textContent = formatDate(finalEndDate);
 
-        document.getElementById(
-            "final-start-date-result"
-        ).textContent =
-            formatDate(data.startDate);
-
-
-        document.getElementById(
-            "final-completion-result"
-        ).textContent =
-            formatDate(finalCompletionDate);
-
-
-        document.getElementById(
-            "final-deadline-result"
-        ).textContent =
-            formatDate(data.deadline);
-
-
-        document.getElementById(
-            "final-end-result"
-        ).textContent =
-            formatDate(finalEndDate);
-
-
-        document.getElementById(
-            "final-holiday-result"
-        ).innerHTML =
-            data.holidays.length > 0
-                ? data.holidays.map(
-                    holiday =>
-                        `<p>${formatDate(holiday)}</p>`
-                ).join("")
-                : "---";
-
+        document.getElementById("final-holiday-result"
+        ).innerHTML = data.holidays.length > 0
+            ? data.holidays.map(holiday => `<p>${formatDate(holiday)}</p>`).join("")
+            : "---";
 
         // ----------------------------------------
         // 制作スケジュール
         // ----------------------------------------
-
-        const productionResult =
-            document.getElementById(
-                "final-production-schedule-result"
-            );
-
+        const productionResult = document.getElementById("final-production-schedule-result");
 
         finalProductionSchedule.forEach(
             item => {
 
                 productionResult.innerHTML += `
-                    <p>
-                        ${formatDate(item.date)}
-                        ：
-                        ${item.processName}
-                        ${item.minutes}分
-                    </p>
+                    <p>${formatDate(item.date)} ：${item.processName} ${item.minutes}分</p>
                 `;
-
             }
         );
-
 
         // ----------------------------------------
         // 仕立てスケジュール
         // ----------------------------------------
-
-        const finishingResult =
-            document.getElementById(
-                "final-finishing-schedule-result"
-            );
-
+        const finishingResult = document.getElementById("final-finishing-schedule-result");
 
         finalFinishingSchedule.forEach(
             item => {
 
                 finishingResult.innerHTML += `
-                    <p>
-                        ${formatDate(item.date)}
-                        ：
-                        ${item.processName}
-                        ${item.minutes}分
-                    </p>
+                    <p>${formatDate(item.date)} ：${item.processName} ${item.minutes}分</p>
                 `;
-
             }
         );
-
 
         // ----------------------------------------
         // 工程リスト
         // ----------------------------------------
-
-        document.getElementById(
-            "final-production-process-result"
+        document.getElementById("final-production-process-result"
         ).innerHTML =
-            step1Data.productionProcesses.map(
-                process =>
-                    `<p>${process.name} → ${process.minutes}分</p>`
-            ).join("");
+            step1Data.productionProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("");
 
-
-        document.getElementById(
-            "final-finishing-process-result"
+        document.getElementById("final-finishing-process-result"
         ).innerHTML =
             step1Data.finishingProcesses.length > 0
-                ? step1Data.finishingProcesses.map(
-                    process =>
-                        `<p>${process.name} → ${process.minutes}分</p>`
-                ).join("")
+                ? step1Data.finishingProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("")
                 : "---";
 
-
-        document.getElementById(
-            "final-auto-adjust-result"
+        document.getElementById("final-auto-adjust-result"
         ).textContent =
             step4Data
                 ? step4Data.nextStep
                 : "自動調整なし";
-
     }
-
 
     // ----------------------------------------
     // 計算実行
     // ----------------------------------------
-
-    document.getElementById(
-        "run-test"
-    ).addEventListener(
-        "click",
+    document.getElementById("run-test").addEventListener("click",
         () => {
 
             clearResults();
 
-
             try {
-
                 // ----------------------------------------
                 // 入力値を取得
                 // ----------------------------------------
-
-                const data =
-                    getInputData();
-
+                const data = getInputData();
 
                 // ----------------------------------------
                 // Step.1
                 // ----------------------------------------
-
-                const step1Data =
-                    runStep1(data);
-
+                const step1Data = runStep1(data);
 
                 // ----------------------------------------
                 // Step.2
                 // ----------------------------------------
-
-                const step2Data =
-                    runStep2(
-                        data,
-                        step1Data
-                    );
-
+                const step2Data = runStep2(data, step1Data);
 
                 // ----------------------------------------
                 // Step.3
                 // ----------------------------------------
-
-                const step3Data =
-                    runStep3(
-                        data,
-                        step2Data
-                    );
-
+                const step3Data = runStep3(data, step2Data);
 
                 // ----------------------------------------
                 // Step.4
                 // ----------------------------------------
-
-                const step4Data =
-                    runStep4(
-                        data,
-                        step1Data,
-                        step2Data,
-                        step3Data
-                    );
-
+                const step4Data = runStep4(data, step1Data, step2Data, step3Data);
 
                 // ----------------------------------------
                 // Step.5
                 // ----------------------------------------
-
-                runStep5(
-                    data,
-                    step1Data,
-                    step2Data,
-                    step3Data,
-                    step4Data
-                );
+                runStep5(data, step1Data, step2Data, step3Data, step4Data);
 
             } catch (error) {
 
                 console.error(error);
 
-                document.querySelectorAll(
-                    ".result"
+                document.querySelectorAll(".result"
                 ).forEach(
                     element => {
-
-                        element.innerHTML =
-                            `<p class="error">
-                                エラー：${error.message}
-                            </p>`;
-
+                        element.innerHTML = `<p class="error">エラー：${error.message}</p>`;
                     }
                 );
-
             }
-
         }
     );
 
 </script>
-```
+
 
 </body>
 
