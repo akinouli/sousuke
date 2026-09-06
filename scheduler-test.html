@@ -1249,34 +1249,6 @@
                     adjustableWorkMinutes;
 
 
-
-
-
-                // ----------------------------------------
-                // 結果表示
-                // ----------------------------------------
-
-                document.getElementById(
-                    "adjustable-activity-result"
-                ).textContent =
-                    `${adjustableActivityMinutes}分`;
-
-                document.getElementById(
-                    "adjustable-work-result"
-                ).textContent =
-                    `${adjustableWorkMinutes}分`;
-
-                document.getElementById(
-                    "adjustment-work-result"
-                ).textContent =
-                    `${totalWorkMinutes.totalMinutes}分`;
-
-                document.getElementById(
-                    "adjustment-rate-result"
-                ).textContent =
-                    `${(adjustmentRate * 100).toFixed(1)}%`;
-
-
                 // ----------------------------------------
                 // Step.4-④
                 // 調整率
@@ -1294,9 +1266,6 @@
                         hasFinishing,
                         fixedWorkMinutes
                     );
-
-
-
 
 
                 // ----------------------------------------
@@ -1342,6 +1311,11 @@
                     "adjustable-activity-result"
                 ).textContent =
                     `${adjustableActivityMinutes}分`;
+
+                document.getElementById(
+                    "adjustable-work-result"
+                ).textContent =
+                    `${adjustableWorkMinutes}分`;
 
                 document.getElementById(
                     "adjustment-work-result"
