@@ -140,6 +140,7 @@ function createDraftSchedule(
     let currentDate = new Date(startDate);
     let remainingMinutes = 0;
     let processIndex = 0;
+    let remainingDailyMinutes = 0;
 
     while (processIndex < processes.length) {
 
@@ -157,12 +158,16 @@ function createDraftSchedule(
             );
         }
 
-        // 当日の活動分数
-        const dailyMinutes =
-            getActivityMinutesForDate(
-                currentDate,
-                activityMinutes
-            );
+        // 新しい作業可能日に入ったら
+        // 当日の活動分数を設定
+        if (remainingDailyMinutes === 0) {
+
+            remainingDailyMinutes =
+                getActivityMinutesForDate(
+                    currentDate,
+                    activityMinutes
+                );
+        }
 
         // 現在の工程
         const process = processes[processIndex];
@@ -176,7 +181,7 @@ function createDraftSchedule(
         const workMinutes =
             Math.min(
                 remainingMinutes,
-                dailyMinutes
+                remainingDailyMinutes
             );
 
         // スケジュールに追加
@@ -191,16 +196,31 @@ function createDraftSchedule(
         });
 
         remainingMinutes -= workMinutes;
+        remainingDailyMinutes -= workMinutes;
 
         // 工程完了
         if (remainingMinutes === 0) {
+
             processIndex++;
+
+            // 当日の活動時間が残っていれば
+            // 次の工程へそのまま進む
+            if (
+                processIndex < processes.length &&
+                remainingDailyMinutes > 0
+            ) {
+                continue;
+            }
         }
 
         // 次の日へ
         currentDate.setDate(
             currentDate.getDate() + 1
         );
+
+        // 翌日に入ったら
+        // 活動分数を再取得する
+        remainingDailyMinutes = 0;
     }
 
     return schedule;
@@ -507,10 +527,10 @@ function calculateAdjustmentRate(
     }
 
 
-    return Math.floor(
+    return(
         (adjustableActivityMinutes /
-            adjustableWorkMinutes) * 100
-    ) / 100;
+            adjustableWorkMinutes)
+    )
 }
 
 
