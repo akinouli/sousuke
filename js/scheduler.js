@@ -507,10 +507,10 @@ function calculateAdjustmentRate(
     }
 
 
-    return (
-        adjustableActivityMinutes /
-        adjustableWorkMinutes
-    );
+    return Math.floor(
+        (adjustableActivityMinutes /
+            adjustableWorkMinutes) * 100
+    ) / 100;
 }
 
 
