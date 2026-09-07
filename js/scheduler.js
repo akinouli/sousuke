@@ -1004,6 +1004,9 @@ function calculateAutoAdjustment(
 
             ...result,
 
+            autoAdjustmentResult:
+                "一部",
+
             nextStep:
                 "Step.5へ"
 
@@ -1041,6 +1044,9 @@ function calculateAutoAdjustment(
 
             ...result,
 
+            autoAdjustmentResult:
+                "全て",
+
             nextStep:
                 "Step.5へ"
 
@@ -1056,6 +1062,9 @@ function calculateAutoAdjustment(
     return {
 
         ...result,
+
+        autoAdjustmentResult:
+            "全て",
 
         nextStep:
             "成立不能"
@@ -1291,20 +1300,7 @@ function getAutoAdjustmentResult(
         return "なし";
     }
 
-    if (
-        step4Data.adjustAll === true
-    ) {
-        return "全て";
-    }
-
-    if (
-        step4Data.adjustmentTargets &&
-        step4Data.adjustmentTargets.length > 0
-    ) {
-        return "一部";
-    }
-
-    return "なし";
+    return step4Data.autoAdjustmentResult || "なし";
 }
 
 
