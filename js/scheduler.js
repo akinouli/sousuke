@@ -1062,3 +1062,438 @@ function calculateAutoAdjustment(
 
     };
 }
+
+
+// ========================================
+// Step.5
+// スケジュール確定用データを作成
+// ========================================
+
+
+// ----------------------------------------
+// 作業分数 → 時間・分へ変換
+// ----------------------------------------
+
+function minutesToTime(
+    minutes,
+    unit,
+    pageCount
+) {
+
+    let displayMinutes = minutes;
+
+    // ページ毎
+    if (
+        unit === "page" &&
+        pageCount > 0
+    ) {
+
+        displayMinutes =
+            Math.floor(
+                minutes / pageCount
+            );
+
+    }
+
+    const hours =
+        Math.floor(
+            displayMinutes / 60
+        );
+
+    const remainingMinutes =
+        displayMinutes % 60;
+
+    return {
+        hours: hours,
+        minutes: remainingMinutes
+    };
+}
+
+
+// ----------------------------------------
+// 作業時間を表示用データへ変換
+// ----------------------------------------
+
+function createDisplayWorkTime(
+    process,
+    minutes,
+    pageCount
+) {
+
+    const time =
+        minutesToTime(
+            minutes,
+            process.unit,
+            pageCount
+        );
+
+    return {
+
+        unit:
+            process.unit,
+
+        hours:
+            time.hours,
+
+        minutes:
+            time.minutes
+
+    };
+}
+
+
+// ----------------------------------------
+// 工程リストを表示用データへ変換
+// ----------------------------------------
+
+function createDisplayProcessList(
+    processes,
+    adjustedTargets,
+    type,
+    pageCount
+) {
+
+    return processes.map(
+        (process, index) => {
+
+            const target =
+                adjustedTargets.find(
+                    target =>
+                        target.type === type &&
+                        target.index === index
+                );
+
+            const adjustedMinutes =
+                target
+                    ? target.adjustmentMinutes
+                    : process.minutes;
+
+            return {
+
+                name:
+                    process.name,
+
+                workTime:
+                    createDisplayWorkTime(
+                        process,
+                        process.minutes,
+                        pageCount
+                    ),
+
+                adjustedWorkTime:
+                    createDisplayWorkTime(
+                        process,
+                        adjustedMinutes,
+                        pageCount
+                    )
+
+            };
+
+        }
+    );
+}
+
+
+// ----------------------------------------
+// スケジュールを行程ごとにまとめる
+// ----------------------------------------
+
+function createDisplaySchedule(
+    schedule
+) {
+
+    const result = [];
+
+    let currentProcess = null;
+
+    schedule.forEach(
+        item => {
+
+            if (
+                !currentProcess ||
+                currentProcess.name !== item.processName
+            ) {
+
+                if (currentProcess) {
+                    result.push(currentProcess);
+                }
+
+                currentProcess = {
+
+                    name:
+                        item.processName,
+
+                    startDate:
+                        new Date(item.date),
+
+                    endDate:
+                        new Date(item.date)
+
+                };
+
+                return;
+            }
+
+            currentProcess.endDate =
+                new Date(item.date);
+
+        }
+    );
+
+    if (currentProcess) {
+        result.push(currentProcess);
+    }
+
+    return result;
+}
+
+
+// ----------------------------------------
+// 空き日数を算出
+// ----------------------------------------
+
+function calculateEmptyDays(
+    finalEndDate,
+    deadline
+) {
+
+    if (
+        !finalEndDate ||
+        !deadline
+    ) {
+        return 0;
+    }
+
+    const millisecondsPerDay =
+        1000 * 60 * 60 * 24;
+
+    return Math.max(
+        0,
+        Math.floor(
+            (
+                deadline -
+                finalEndDate
+            ) / millisecondsPerDay
+        )
+    );
+}
+
+
+// ----------------------------------------
+// 自動調整結果を判定
+// ----------------------------------------
+
+function getAutoAdjustmentResult(
+    step4Data
+) {
+
+    if (!step4Data) {
+        return "なし";
+    }
+
+    if (
+        step4Data.adjustAll === true
+    ) {
+        return "全て";
+    }
+
+    if (
+        step4Data.adjustmentTargets &&
+        step4Data.adjustmentTargets.length > 0
+    ) {
+        return "一部";
+    }
+
+    return "なし";
+}
+
+
+// ----------------------------------------
+// 調整率を表示用％へ変換
+// ----------------------------------------
+
+function formatAdjustmentRate(
+    adjustmentRate
+) {
+
+    if (
+        typeof adjustmentRate !== "number"
+    ) {
+        return null;
+    }
+
+    return adjustmentRate * 100;
+}
+
+
+// ----------------------------------------
+// Step.5 表示用データを作成
+// ----------------------------------------
+
+function createFinalDisplayData(
+    data,
+    step1Data,
+    step2Data,
+    step4Data
+) {
+
+    // Step.4で再調整した場合
+    const finalSchedule =
+        step4Data &&
+        step4Data.adjustedDeadline &&
+        step4Data.adjustedDeadline.isMet
+
+            ? step4Data.adjustedSchedule
+
+            : step2Data;
+
+
+    const finalProductionSchedule =
+        finalSchedule.productionSchedule || [];
+
+    const finalFinishingSchedule =
+        finalSchedule.finishingSchedule || [];
+
+    const finalFullSchedule =
+        finalSchedule.schedule ||
+        [
+            ...finalProductionSchedule,
+            ...finalFinishingSchedule
+        ];
+
+
+    // ----------------------------------------
+    // 最終日
+    // ----------------------------------------
+
+    const finalCompletionDate =
+        finalProductionSchedule.length > 0
+
+            ? finalProductionSchedule[
+                finalProductionSchedule.length - 1
+            ].date
+
+            : null;
+
+    const finalEndDate =
+        finalFullSchedule.length > 0
+
+            ? finalFullSchedule[
+                finalFullSchedule.length - 1
+            ].date
+
+            : null;
+
+
+    // ----------------------------------------
+    // 自動調整結果
+    // ----------------------------------------
+
+    const autoAdjustmentResult =
+        getAutoAdjustmentResult(
+            step4Data
+        );
+
+
+    // ----------------------------------------
+    // 調整率
+    // ----------------------------------------
+
+    const adjustmentRate =
+        step4Data &&
+        typeof step4Data.adjustmentRate === "number"
+
+            ? formatAdjustmentRate(
+                step4Data.adjustmentRate
+            )
+
+            : null;
+
+
+    // ----------------------------------------
+    // 工程リスト
+    // ----------------------------------------
+
+    const productionProcessList =
+        createDisplayProcessList(
+            step1Data.productionProcesses,
+            step4Data
+                ? step4Data.adjustedTargets
+                : [],
+            "production",
+            data.pageCount
+        );
+
+    const finishingProcessList =
+        createDisplayProcessList(
+            step1Data.finishingProcesses,
+            step4Data
+                ? step4Data.adjustedTargets
+                : [],
+            "finishing",
+            data.pageCount
+        );
+
+
+    // ----------------------------------------
+    // スケジュール
+    // ----------------------------------------
+
+    const productionSchedule =
+        createDisplaySchedule(
+            finalProductionSchedule
+        );
+
+    const finishingSchedule =
+        createDisplaySchedule(
+            finalFinishingSchedule
+        );
+
+
+    // ----------------------------------------
+    // 最終結果
+    // ----------------------------------------
+
+    return {
+
+        emptyDays:
+            calculateEmptyDays(
+                finalEndDate,
+                data.deadline
+            ),
+
+        autoAdjustmentResult:
+            autoAdjustmentResult,
+
+        adjustmentRate:
+            adjustmentRate,
+
+        startDate:
+            data.startDate,
+
+        productionSchedule:
+            productionSchedule,
+
+        completionDate:
+            finalCompletionDate,
+
+        finishingSchedule:
+            finishingSchedule,
+
+        deadline:
+            data.deadline,
+
+        holidays:
+            data.holidays,
+
+        finalEndDate:
+            finalEndDate,
+
+        productionProcessList:
+            productionProcessList,
+
+        finishingProcessList:
+            finishingProcessList
+
+    };
+}
