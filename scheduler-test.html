@@ -898,280 +898,346 @@ scheduler.js
         };
     }
 
+
     // ----------------------------------------
     // Step.4
     // ----------------------------------------
-    function runStep4(data, step1Data, step2Data, step3Data) {
+    function runStep4(
+        data,
+        step1Data,
+        step2Data,
+        step3Data
+    ) {
 
         // ----------------------------------------
-        // 締切に間に合う場合
+        // Step.3で間に合っている場合
         // ----------------------------------------
+
         if (step3Data.isMet) {
 
-            document.getElementById("adjustment-next-step-result").textContent = "Step.5へ";
+            document.getElementById(
+                "adjustment-next-step-result"
+            ).textContent = "Step.5へ";
+
 
             return {
                 skipped: true
             };
+
         }
 
-        // ----------------------------------------
-        // 自動調整しない場合
-        // ----------------------------------------
-        const autoAdjust = document.querySelector('input[name="auto-adjust"]:checked');
-
-        // テストページでは
-        // 自動調整のON/OFFを制作工程・
-        // 仕立て工程の設定から判断する
-        //
-        // 締切に間に合わない場合は
-        // Step.4の処理へ進む
 
         // ----------------------------------------
-        // 自動調整対象を取得
+        // scheduler.jsで自動調整
         // ----------------------------------------
-        let productionSettings = data.productionProcesses.map(
-            process => process.autoAdjust
-        );
 
-        let finishingSettings = data.finishingProcesses.map(
-            process => process.autoAdjust
-        );
+        const step4Data =
+            calculateAutoAdjustment(
 
-        let adjustmentTargets = getAdjustmentTargets(
-            step1Data.productionProcesses,
-            step1Data.finishingProcesses,
-            productionSettings,
-            finishingSettings
-        );
-
-        // ----------------------------------------
-        // 全てOFFなら全てON
-        // ----------------------------------------
-        if (areAllAutoAdjustDisabled(productionSettings, finishingSettings)) {
-
-            const allSettings = enableAllAutoAdjust(
                 step1Data.productionProcesses,
-                step1Data.finishingProcesses
-            );
 
-            productionSettings = allSettings.productionSettings;
-
-            finishingSettings = allSettings.finishingSettings;
-
-            adjustmentTargets = getAdjustmentTargets(
-                step1Data.productionProcesses,
                 step1Data.finishingProcesses,
-                productionSettings,
-                finishingSettings
+
+                step1Data.activityMinutes,
+
+                data.holidays,
+
+                data.startDate,
+
+                data.deadline,
+
+                data.hasFinishing
+
             );
-        }
+
 
         // ----------------------------------------
         // Step.4-①
+        // 調整対象
         // ----------------------------------------
-        const productionTargets = adjustmentTargets.filter(
-            target => target.type === "production"
-        );
 
-        const finishingTargets = adjustmentTargets.filter(
-            target => target.type === "finishing"
-        );
+        const productionTargets =
+            step4Data.adjustmentTargets.filter(
+                target =>
+                    target.type === "production"
+            );
 
-        document.getElementById("production-target-result"
+
+        const finishingTargets =
+            step4Data.adjustmentTargets.filter(
+                target =>
+                    target.type === "finishing"
+            );
+
+
+        document.getElementById(
+            "production-target-result"
         ).innerHTML =
+
             productionTargets.length > 0
-                ? productionTargets.map(target => `<p>${target.name}</p>`).join("")
+
+                ? productionTargets
+                    .map(
+                        target =>
+                            `<p>${target.name}</p>`
+                    )
+                    .join("")
+
                 : "---";
 
-        document.getElementById("finishing-target-result"
+
+        document.getElementById(
+            "finishing-target-result"
         ).innerHTML =
+
             finishingTargets.length > 0
-                ? finishingTargets.map(target => `<p>${target.name}</p>`).join("")
+
+                ? finishingTargets
+                    .map(
+                        target =>
+                            `<p>${target.name}</p>`
+                    )
+                    .join("")
+
                 : "---";
 
-        document.getElementById("production-target-minutes-result"
-        ).textContent =
-            productionTargets.reduce((total, target) => total + target.minutes, 0) + "分";
 
-        document.getElementById("finishing-target-minutes-result"
+        document.getElementById(
+            "production-target-minutes-result"
         ).textContent =
-            finishingTargets.reduce((total, target) => total + target.minutes, 0) + "分";
+
+            productionTargets.reduce(
+                (total, target) =>
+                    total + target.minutes,
+                0
+            ) + "分";
+
+
+        document.getElementById(
+            "finishing-target-minutes-result"
+        ).textContent =
+
+            finishingTargets.reduce(
+                (total, target) =>
+                    total + target.minutes,
+                0
+            ) + "分";
+
 
         // ----------------------------------------
         // Step.4-②
         // ----------------------------------------
-        const totalActivityMinutes = calculateTotalActivityMinutes(
-            data.startDate,
-            data.deadline,
-            step1Data.activityMinutes,
-            data.holidays
-        );
 
-        document.getElementById("step4-total-activity-result").textContent = `${totalActivityMinutes}分`;
+        document.getElementById(
+            "step4-total-activity-result"
+        ).textContent =
+
+            `${step4Data.totalActivityMinutes}分`;
+
 
         // ----------------------------------------
         // Step.4-③
         // ----------------------------------------
-        const workMinutes = calculateWorkMinutes(
-            step1Data.productionProcesses,
-            step1Data.finishingProcesses,
-            adjustmentTargets
-        );
+
+        document.getElementById(
+            "adjustable-activity-result"
+        ).textContent =
+
+            `${step4Data.adjustableActivityMinutes}分`;
+
 
         // ----------------------------------------
         // Step.4-④
         // ----------------------------------------
-        const adjustableActivityMinutes = calculateAdjustableActivityMinutes(
-            totalActivityMinutes,
-            step1Data.activityMinutes,
-            data.hasFinishing,
-            workMinutes.fixedMinutes
-        );
 
-        const adjustmentRate = calculateAdjustmentRate(
-            adjustableActivityMinutes,
-            workMinutes.adjustableMinutes
-        );
+        document.getElementById(
+            "max-activity-result"
+        ).textContent =
 
-        const maxActivityMinutes = data.hasFinishing
-            ? Math.max(...step1Data.activityMinutes.filter(minutes => minutes > 0))
-            : 0;
+            `${step4Data.maxActivityMinutes}分`;
 
-        document.getElementById("adjustable-activity-result").textContent = `${adjustableActivityMinutes}分`;
-
-        document.getElementById("max-activity-result").textContent = `${maxActivityMinutes}分`;
-
-        document.getElementById("adjustment-rate-result").textContent = `${(adjustmentRate * 100).toFixed(1)}%`;
 
         // ----------------------------------------
         // Step.4-⑤
         // ----------------------------------------
-        const adjustedTargets = calculateAdjustmentMinutes(
-            adjustmentTargets,
-            adjustmentRate
-        );
 
-        const adjustedProductionProcesses = applyAdjustmentMinutes(
-            step1Data.productionProcesses,
-            adjustedTargets,
-            "production"
-        );
+        document.getElementById(
+            "adjustment-rate-result"
+        ).textContent =
 
-        const adjustedFinishingProcesses = applyAdjustmentMinutes(
-            step1Data.finishingProcesses,
-            adjustedTargets,
-            "finishing"
-        );
+            `${(
+                step4Data.adjustmentRate * 100
+            ).toFixed(1)}%`;
 
-        document.getElementById("adjusted-production-result"
-        ).innerHTML =
-            adjustedProductionProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("");
-
-        document.getElementById("adjusted-finishing-result"
-        ).innerHTML =
-            adjustedFinishingProcesses.map(process => `<p>${process.name} → ${process.minutes}分</p>`).join("");
 
         // ----------------------------------------
         // Step.4-⑥
         // ----------------------------------------
-        const adjustedSchedule = createAdjustedSchedule(
-            step1Data.productionProcesses,
-            step1Data.finishingProcesses,
-            adjustedTargets,
-            step1Data.activityMinutes,
-            data.holidays,
-            data.startDate
-        );
 
-        const adjustedProductionSchedule = adjustedSchedule.productionSchedule;
-        const adjustedFinishingSchedule = adjustedSchedule.finishingSchedule;
-        const adjustedFullSchedule = adjustedSchedule.schedule;
+        const adjustedProductionProcesses =
+            applyAdjustmentMinutes(
+                step1Data.productionProcesses,
+                step4Data.adjustedTargets,
+                "production"
+            );
 
-        const adjustedCompletionDate = adjustedProductionSchedule.length > 0
-            ? adjustedProductionSchedule[adjustedProductionSchedule.length - 1].date
-            : null;
 
-        const adjustedFinishingEndDate = adjustedFinishingSchedule.length > 0
-            ? adjustedFinishingSchedule[adjustedFinishingSchedule.length - 1].date
-            : null;
+        const adjustedFinishingProcesses =
+            applyAdjustmentMinutes(
+                step1Data.finishingProcesses,
+                step4Data.adjustedTargets,
+                "finishing"
+            );
 
-        const adjustedFinalEndDate = adjustedFinishingEndDate || adjustedCompletionDate;
 
-        const adjustedScheduleResult = document.getElementById("adjusted-schedule-result");
+        document.getElementById(
+            "adjusted-production-result"
+        ).innerHTML =
 
-        adjustedFullSchedule.forEach(
-            item => {
-                adjustedScheduleResult.innerHTML += `
-                    <p>${formatDate(item.date)} ：${item.processName} ${item.minutes}分</p>
-                `;
-            }
-        );
+            adjustedProductionProcesses
+                .map(
+                    process =>
+                        `<p>${process.name} → ${process.minutes}分</p>`
+                )
+                .join("");
 
-        document.getElementById("adjusted-completion-result"
-        ).textContent =
-            formatDate(adjustedCompletionDate);
 
-        document.getElementById("adjusted-finishing-end-result"
-        ).textContent =
-            formatDate(adjustedFinishingEndDate);
+        document.getElementById(
+            "adjusted-finishing-result"
+        ).innerHTML =
 
-        document.getElementById("adjusted-final-end-result"
-        ).textContent =
-            formatDate(adjustedFinalEndDate);
+            adjustedFinishingProcesses
+                .map(
+                    process =>
+                        `<p>${process.name} → ${process.minutes}分</p>`
+                )
+                .join("");
+
 
         // ----------------------------------------
         // Step.4-⑦
         // ----------------------------------------
-        const adjustedDeadline = checkAdjustedDeadline(
-            adjustedFullSchedule,
-            data.deadline
+
+        const adjustedSchedule =
+            step4Data.adjustedSchedule;
+
+
+        const adjustedProductionSchedule =
+            adjustedSchedule.productionSchedule;
+
+
+        const adjustedFinishingSchedule =
+            adjustedSchedule.finishingSchedule;
+
+
+        const adjustedCompletionDate =
+            adjustedProductionSchedule.length > 0
+
+                ? adjustedProductionSchedule[
+                    adjustedProductionSchedule.length - 1
+                ].date
+
+                : null;
+
+
+        const adjustedFinishingEndDate =
+            adjustedFinishingSchedule.length > 0
+
+                ? adjustedFinishingSchedule[
+                    adjustedFinishingSchedule.length - 1
+                ].date
+
+                : null;
+
+
+        const adjustedFinalEndDate =
+            adjustedFinishingEndDate ||
+            adjustedCompletionDate;
+
+
+        const adjustedScheduleResult =
+            document.getElementById(
+                "adjusted-schedule-result"
+            );
+
+
+        adjustedScheduleResult.innerHTML = "";
+
+
+        adjustedSchedule.schedule.forEach(
+            item => {
+
+                adjustedScheduleResult.innerHTML += `
+                    <p>
+                        ${formatDate(item.date)}：
+                        ${item.processName}
+                        ${item.minutes}分
+                    </p>
+                `;
+
+            }
         );
 
-        document.getElementById("adjusted-deadline-result"
-        ).textContent = adjustedDeadline.isMet
-            ? "間に合う"
-            : "間に合わない";
+
+        document.getElementById(
+            "adjusted-completion-result"
+        ).textContent =
+            formatDate(adjustedCompletionDate);
+
+
+        document.getElementById(
+            "adjusted-finishing-end-result"
+        ).textContent =
+            formatDate(adjustedFinishingEndDate);
+
+
+        document.getElementById(
+            "adjusted-final-end-result"
+        ).textContent =
+            formatDate(adjustedFinalEndDate);
+
 
         // ----------------------------------------
         // Step.4-⑧
         // ----------------------------------------
-        let nextStep = "成立判定";
 
-        if (adjustedDeadline.isMet) {
-            nextStep ="Step.5へ";
-        } else if (
-            !areAllAutoAdjustEnabled(
-                productionSettings,
-                finishingSettings
-            )
-        ) {
-            nextStep = "全行程を自動調整して再計算";
-        } else {
-            nextStep = "成立不能";
-        }
+        document.getElementById(
+            "adjusted-deadline-result"
+        ).textContent =
 
-        document.getElementById("adjustment-next-step-result").textContent = nextStep;
+            step4Data.adjustedDeadline.isMet
 
-        document.getElementById("settlement-result"
-        ).textContent = adjustedDeadline.isMet
-            ? "成立"
-            : "未成立";
+                ? "間に合う"
 
-        return {
-            adjustmentTargets,
-            adjustedTargets,
-            productionSettings,
-            finishingSettings,
-            totalActivityMinutes,
-            workMinutes,
-            adjustableActivityMinutes,
-            adjustmentRate,
-            adjustedSchedule,
-            adjustedDeadline,
-            nextStep
-        };
+                : "間に合わない";
+
+
+        document.getElementById(
+            "adjustment-next-step-result"
+        ).textContent =
+            step4Data.nextStep;
+
+
+        // ----------------------------------------
+        // 成立判定
+        // ----------------------------------------
+
+        document.getElementById(
+            "settlement-result"
+        ).textContent =
+
+            step4Data.nextStep === "成立不能"
+
+                ? "未成立"
+
+                : "成立";
+
+
+        return step4Data;
     }
+
+
+
 
     // ----------------------------------------
     // Step.5

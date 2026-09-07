@@ -226,7 +226,11 @@ function isDeadlineMet(finalEndDate, deadline) {
 // ========================================
 
 
-// 調整対象の工程を取得
+// ----------------------------------------
+// Step.4-①
+// 調整対象を決定
+// ----------------------------------------
+
 function getAdjustmentTargets(
     productionProcesses,
     finishingProcesses,
@@ -281,59 +285,31 @@ function getAdjustmentTargets(
 }
 
 
-// ----------------------------------------
-// 全体の活動分数を取得
-// ----------------------------------------
-
-function calculateTotalActivityMinutes(
-    startDate,
-    deadline,
-    activityMinutes,
-    holidays
+// 全工程を調整対象にする
+function enableAllAutoAdjust(
+    productionProcesses,
+    finishingProcesses
 ) {
 
-    if (
-        !startDate ||
-        !deadline
-    ) {
-        return 0;
-    }
+    return {
 
-    let totalMinutes = 0;
+        productionSettings:
+            productionProcesses.map(
+                () => true
+            ),
 
-    let currentDate =
-        new Date(startDate);
-
-    while (currentDate <= deadline) {
-
-        if (
-            isWorkableDate(
-                currentDate,
-                activityMinutes,
-                holidays
+        finishingSettings:
+            finishingProcesses.map(
+                () => true
             )
-        ) {
 
-            totalMinutes +=
-                getActivityMinutesForDate(
-                    currentDate,
-                    activityMinutes
-                );
-
-        }
-
-        currentDate.setDate(
-            currentDate.getDate() + 1
-        );
-
-    }
-
-    return totalMinutes;
+    };
 }
 
 
 // ----------------------------------------
-// 調整対象・対象外の作業分数を取得
+// Step.4-②
+// 調整対象・調整対象外の作業分数を算出
 // ----------------------------------------
 
 function calculateWorkMinutes(
@@ -415,44 +391,110 @@ function calculateWorkMinutes(
 
 
 // ----------------------------------------
-// 調整対象の活動分数を取得
+// Step.4-③
+// 全体の活動分数を算出
 // ----------------------------------------
 
-function calculateAdjustableActivityMinutes(
-    totalActivityMinutes,
+function calculateTotalActivityMinutes(
+    startDate,
+    deadline,
     activityMinutes,
-    hasFinishing,
-    fixedMinutes
+    holidays
 ) {
 
-    let adjustableActivityMinutes =
-        totalActivityMinutes -
-        fixedMinutes;
+    if (
+        !startDate ||
+        !deadline
+    ) {
+        return 0;
+    }
 
 
-    // 仕立て作業あり
-    if (hasFinishing) {
+    let totalMinutes = 0;
 
-        const maxDailyMinutes =
-            Math.max(
-                ...activityMinutes.filter(
-                    minutes => minutes > 0
-                )
-            );
+    let currentDate =
+        new Date(startDate);
 
 
-        adjustableActivityMinutes -=
-            maxDailyMinutes;
+    while (currentDate <= deadline) {
+
+        if (
+            isWorkableDate(
+                currentDate,
+                activityMinutes,
+                holidays
+            )
+        ) {
+
+            totalMinutes +=
+                getActivityMinutesForDate(
+                    currentDate,
+                    activityMinutes
+                );
+
+        }
+
+
+        currentDate.setDate(
+            currentDate.getDate() + 1
+        );
 
     }
 
 
-    return adjustableActivityMinutes;
+    return totalMinutes;
 }
 
 
 // ----------------------------------------
-// 調整率を取得
+// Step.4-④
+// 調整対象の活動分数を算出
+// ----------------------------------------
+
+function calculateMaxActivityMinutes(
+    activityMinutes,
+    hasFinishing
+) {
+
+    if (!hasFinishing) {
+        return 0;
+    }
+
+
+    const workableMinutes =
+        activityMinutes.filter(
+            minutes => minutes > 0
+        );
+
+
+    if (workableMinutes.length === 0) {
+        return 0;
+    }
+
+
+    return Math.max(
+        ...workableMinutes
+    );
+}
+
+
+function calculateAdjustableActivityMinutes(
+    totalActivityMinutes,
+    fixedMinutes,
+    maxActivityMinutes
+) {
+
+    return (
+        totalActivityMinutes -
+        fixedMinutes -
+        maxActivityMinutes
+    );
+}
+
+
+// ----------------------------------------
+// Step.4-⑤
+// 調整率を算出
 // ----------------------------------------
 
 function calculateAdjustmentRate(
@@ -473,7 +515,8 @@ function calculateAdjustmentRate(
 
 
 // ----------------------------------------
-// 工程の作業分数を調整
+// Step.4-⑥
+// 調整作業分数を算出
 // ----------------------------------------
 
 function calculateAdjustmentMinutes(
@@ -481,27 +524,33 @@ function calculateAdjustmentMinutes(
     adjustmentRate
 ) {
 
-    return targets.map(target => {
+    return targets.map(
+        target => {
 
-        const adjustmentMinutes =
-            target.autoAdjust
-                ? Math.floor(
+            const adjustmentMinutes =
+                Math.floor(
                     target.minutes *
                     adjustmentRate
-                )
-                : target.minutes;
+                );
 
-        return {
-            ...target,
-            adjustmentMinutes: adjustmentMinutes
-        };
 
-    });
+            return {
+
+                ...target,
+
+                adjustmentMinutes:
+                    adjustmentMinutes
+
+            };
+
+        }
+    );
 }
 
 
 // ----------------------------------------
-// 調整後の工程データを作成
+// Step.4-⑦
+// 再スケジューリング
 // ----------------------------------------
 
 function applyAdjustmentMinutes(
@@ -521,7 +570,7 @@ function applyAdjustmentMinutes(
                 );
 
 
-            // 調整対象ではない工程
+            // 調整対象外
             if (!target) {
 
                 return {
@@ -531,20 +580,20 @@ function applyAdjustmentMinutes(
             }
 
 
-            // 調整対象の工程
+            // 調整対象
             return {
+
                 ...process,
-                minutes: target.adjustmentMinutes
+
+                minutes:
+                    target.adjustmentMinutes
+
             };
 
         }
     );
 }
 
-
-// ----------------------------------------
-// 調整後のスケジュールを作成
-// ----------------------------------------
 
 function createAdjustedSchedule(
     productionProcesses,
@@ -585,17 +634,27 @@ function createAdjustedSchedule(
 
     if (finishingProcesses.length > 0) {
 
-        const finishingStartDate =
-            new Date(
-                productionSchedule[
+        const completionDate =
+            productionSchedule.length > 0
+                ? productionSchedule[
                     productionSchedule.length - 1
                 ].date
+                : null;
+
+
+        const finishingStartDate =
+            completionDate
+                ? new Date(completionDate)
+                : new Date(startDate);
+
+
+        if (completionDate) {
+
+            finishingStartDate.setDate(
+                finishingStartDate.getDate() + 1
             );
 
-
-        finishingStartDate.setDate(
-            finishingStartDate.getDate() + 1
-        );
+        }
 
 
         const adjustedFinishingProcesses =
@@ -618,19 +677,25 @@ function createAdjustedSchedule(
 
 
     return {
-        productionSchedule: productionSchedule,
-        finishingSchedule: finishingSchedule,
+
+        productionSchedule:
+            productionSchedule,
+
+        finishingSchedule:
+            finishingSchedule,
 
         schedule: [
             ...productionSchedule,
             ...finishingSchedule
         ]
+
     };
 }
 
 
 // ----------------------------------------
-// 自動調整後の締切判定
+// Step.4-⑧
+// 締切判定
 // ----------------------------------------
 
 function checkAdjustedDeadline(
@@ -638,11 +703,16 @@ function checkAdjustedDeadline(
     deadline
 ) {
 
-    if (adjustedSchedule.length === 0) {
+    if (
+        adjustedSchedule.length === 0
+    ) {
 
         return {
+
             isMet: false,
+
             finalEndDate: null
+
         };
 
     }
@@ -662,82 +732,313 @@ function checkAdjustedDeadline(
                 deadline
             ),
 
-        finalEndDate: finalEndDate
+        finalEndDate:
+            finalEndDate
 
     };
 }
 
 
 // ----------------------------------------
-// 自動調整設定を全てONにする
+// 自動調整を1回実行
 // ----------------------------------------
 
-function enableAllAutoAdjust(
+function runAutoAdjustment(
     productionProcesses,
-    finishingProcesses
+    finishingProcesses,
+    activityMinutes,
+    holidays,
+    startDate,
+    deadline,
+    hasFinishing,
+    adjustAll
 ) {
 
-    const productionSettings =
-        productionProcesses.map(() => true);
+    // ----------------------------------------
+    // Step.4-①
+    // 調整対象を決定
+    // ----------------------------------------
+
+    let productionSettings =
+        productionProcesses.map(
+            process =>
+                adjustAll
+                    ? true
+                    : process.autoAdjust
+        );
 
 
-    const finishingSettings =
-        finishingProcesses.map(() => true);
+    let finishingSettings =
+        finishingProcesses.map(
+            process =>
+                adjustAll
+                    ? true
+                    : process.autoAdjust
+        );
+
+
+    const adjustmentTargets =
+        getAdjustmentTargets(
+            productionProcesses,
+            finishingProcesses,
+            productionSettings,
+            finishingSettings
+        );
+
+
+    // ----------------------------------------
+    // Step.4-②
+    // 調整対象・対象外の作業分数
+    // ----------------------------------------
+
+    const workMinutes =
+        calculateWorkMinutes(
+            productionProcesses,
+            finishingProcesses,
+            adjustmentTargets
+        );
+
+
+    // ----------------------------------------
+    // Step.4-③
+    // 全体の活動分数
+    // ----------------------------------------
+
+    const totalActivityMinutes =
+        calculateTotalActivityMinutes(
+            startDate,
+            deadline,
+            activityMinutes,
+            holidays
+        );
+
+
+    // ----------------------------------------
+    // Step.4-④
+    // 調整対象の活動分数
+    // ----------------------------------------
+
+    const maxActivityMinutes =
+        calculateMaxActivityMinutes(
+            activityMinutes,
+            hasFinishing
+        );
+
+
+    const adjustableActivityMinutes =
+        calculateAdjustableActivityMinutes(
+            totalActivityMinutes,
+            workMinutes.fixedMinutes,
+            maxActivityMinutes
+        );
+
+
+    // ----------------------------------------
+    // Step.4-⑤
+    // 調整率
+    // ----------------------------------------
+
+    const adjustmentRate =
+        calculateAdjustmentRate(
+            adjustableActivityMinutes,
+            workMinutes.adjustableMinutes
+        );
+
+
+    // ----------------------------------------
+    // Step.4-⑥
+    // 調整作業分数
+    // ----------------------------------------
+
+    const adjustedTargets =
+        calculateAdjustmentMinutes(
+            adjustmentTargets,
+            adjustmentRate
+        );
+
+
+    // ----------------------------------------
+    // Step.4-⑦
+    // 再スケジューリング
+    // ----------------------------------------
+
+    const adjustedSchedule =
+        createAdjustedSchedule(
+            productionProcesses,
+            finishingProcesses,
+            adjustedTargets,
+            activityMinutes,
+            holidays,
+            startDate
+        );
+
+
+    // ----------------------------------------
+    // Step.4-⑧
+    // 締切判定
+    // ----------------------------------------
+
+    const adjustedDeadline =
+        checkAdjustedDeadline(
+            adjustedSchedule.schedule,
+            deadline
+        );
 
 
     return {
+
+        adjustAll:
+
+            adjustAll,
+
         productionSettings:
+
             productionSettings,
 
         finishingSettings:
-            finishingSettings
+
+            finishingSettings,
+
+        adjustmentTargets:
+
+            adjustmentTargets,
+
+        workMinutes:
+
+            workMinutes,
+
+        totalActivityMinutes:
+
+            totalActivityMinutes,
+
+        maxActivityMinutes:
+
+            maxActivityMinutes,
+
+        adjustableActivityMinutes:
+
+            adjustableActivityMinutes,
+
+        adjustmentRate:
+
+            adjustmentRate,
+
+        adjustedTargets:
+
+            adjustedTargets,
+
+        adjustedSchedule:
+
+            adjustedSchedule,
+
+        adjustedDeadline:
+
+            adjustedDeadline
+
     };
 }
 
 
 // ----------------------------------------
-// 自動調整設定が全てONか判定
+// 自動調整全体
 // ----------------------------------------
 
-function areAllAutoAdjustEnabled(
-    productionSettings,
-    finishingSettings
+function calculateAutoAdjustment(
+    productionProcesses,
+    finishingProcesses,
+    activityMinutes,
+    holidays,
+    startDate,
+    deadline,
+    hasFinishing
 ) {
 
-    const allSettings = [
-        ...productionSettings,
-        ...finishingSettings
-    ];
+    // ----------------------------------------
+    // まず一部調整
+    // adjustAll = false
+    // ----------------------------------------
+
+    let result =
+        runAutoAdjustment(
+            productionProcesses,
+            finishingProcesses,
+            activityMinutes,
+            holidays,
+            startDate,
+            deadline,
+            hasFinishing,
+            false
+        );
 
 
-    return (
-        allSettings.length > 0 &&
-        allSettings.every(
-            setting => setting === true
-        )
-    );
-}
+    // ----------------------------------------
+    // Step.4-⑧
+    // 締切判定
+    // ----------------------------------------
+
+    if (
+        result.adjustedDeadline.isMet
+    ) {
+
+        return {
+
+            ...result,
+
+            nextStep:
+                "Step.5へ"
+
+        };
+
+    }
 
 
-// ----------------------------------------
-// 自動調整設定が全てOFFか判定
-// ----------------------------------------
+    // ----------------------------------------
+    // 全行程調整へ切り替え
+    // ----------------------------------------
 
-function areAllAutoAdjustDisabled(
-    productionSettings,
-    finishingSettings
-) {
+    result =
+        runAutoAdjustment(
+            productionProcesses,
+            finishingProcesses,
+            activityMinutes,
+            holidays,
+            startDate,
+            deadline,
+            hasFinishing,
+            true
+        );
 
-    const allSettings = [
-        ...productionSettings,
-        ...finishingSettings
-    ];
+
+    // ----------------------------------------
+    // 全行程調整後の締切判定
+    // ----------------------------------------
+
+    if (
+        result.adjustedDeadline.isMet
+    ) {
+
+        return {
+
+            ...result,
+
+            nextStep:
+                "Step.5へ"
+
+        };
+
+    }
 
 
-    return (
-        allSettings.length > 0 &&
-        allSettings.every(
-            setting => setting === false
-        )
-    );
+    // ----------------------------------------
+    // 成立不能
+    // ----------------------------------------
+
+    return {
+
+        ...result,
+
+        nextStep:
+            "成立不能"
+
+    };
 }
