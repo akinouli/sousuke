@@ -398,17 +398,11 @@ nextButton.addEventListener("click",
         // 現在のセクションを保存
         const sectionBeforeMove = currentSection;
 
-        // 現在のセクションをチェック
-        if (
-            !validateSection(sectionBeforeMove)
-        ) {
-            return;
-        }
-
         // 最後の入力セクション
         if (
             sectionBeforeMove === inputSections.length - 1
         ) {
+
             // 全セクションをチェック
             if (
                 !validateAllSections()
@@ -419,6 +413,13 @@ nextButton.addEventListener("click",
             // スケジュール作成
             createSchedule();
 
+            return;
+        }
+
+        // 現在のセクションをチェック
+        if (
+            !validateSection(sectionBeforeMove)
+        ) {
             return;
         }
 
