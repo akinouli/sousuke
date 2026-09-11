@@ -15,7 +15,9 @@ const allSections = [...inputSections, resultSection];
 // 初期状態では現在のセクション以外を非表示
 allSections.forEach(
     (section, index) => {
-        if (index !== currentSection) {
+        if (
+            index !== currentSection
+        ) {
             section.classList.add("hidden-section");
         }
     }
@@ -26,16 +28,22 @@ allSections.forEach(
 // セクション表示
 // ----------------------------------------
 
-function showSection(nextIndex) {
+function showSection(
+    nextIndex
+) {
 
-    if (nextIndex < 0 || nextIndex >= allSections.length) {
+    if (
+        nextIndex < 0 || nextIndex >= allSections.length
+    ) {
         return;
     }
 
     const current = allSections[currentSection];
     const next = allSections[nextIndex];
 
-    if (currentSection === nextIndex) {
+    if (
+        currentSection === nextIndex
+    ) {
         return;
     }
 
@@ -52,7 +60,7 @@ function showSection(nextIndex) {
     updateFooterButtons();
 
     // セクション表示時にスクロールリセット
-    window.scrollTo({top: 0, behavior: "instant"});
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     // ブラウザに一度「opacity: 0」の状態を描画させてから
     // active-sectionを追加してフェードインさせる
@@ -60,16 +68,15 @@ function showSection(nextIndex) {
         () => {
             next.classList.add("active-section");
         }
-    );
+   );
 
     // アニメーション終了後、前のセクションを完全に非表示
     setTimeout(
         () => {
             current.classList.remove("exit-section");
             current.classList.add("hidden-section");
-        },
-        500
-    );
+        }, 500
+   );
 }
 
 
@@ -82,23 +89,22 @@ function updateProgress() {
     progressItems.forEach(
         (item, index) => {
             /* ①～⑤ 現在表示中のセクションだけ見た目変化 */
-            if (index < inputSections.length) {
-
-                if (index === currentSection) {
+            if (
+                index < inputSections.length
+            ) {
+                if (
+                    index === currentSection
+                ) {
                     item.classList.add("active");
                 } else {
                     item.classList.remove("active");
                 }
-
             }
         }
-    );
+   );
 
     /* 結果画面表示中だけ見た目変化 */
-    resultStatus.classList.toggle(
-        "active",
-        currentSection === inputSections.length
-    );
+    resultStatus.classList.toggle("active", currentSection === inputSections.length);
 }
 
 
@@ -111,15 +117,20 @@ progressItems.forEach(
         item.addEventListener("click",
             () => {
                 /* 1～5だけセクション移動可能 */
-                if (index < inputSections.length) {
-
+                if (
+                    index < inputSections.length
+                ) {
                     /* 現在のセクションをクリックした場合は何もしない */
-                    if (index === currentSection) {
+                    if (
+                        index === currentSection
+                    ) {
                         return;
                     }
 
                     /* 現在のセクションをチェック */
-                    if (!validateSection(currentSection)) {
+                    if (
+                        !validateSection(currentSection)
+                    ) {
                         return;
                     }
 
@@ -127,7 +138,7 @@ progressItems.forEach(
                     showSection(index);
                 }
             }
-        );
+       );
     }
 );
 
@@ -139,7 +150,9 @@ progressItems.forEach(
 resultStatus.addEventListener("click",
     () => {
         // 全セクションをチェック
-        if (!validateAllSections()) {
+        if (
+            !validateAllSections()
+        ) {
             return;
         }
 
@@ -162,54 +175,68 @@ let deadlineDate = null;
 // エラーチェック - セクション毎
 // ----------------------------------------
 
-function validateSection(index) {
+function validateSection(
+    index
+) {
 
     // 1.ページ数 ----------------------------------------
-    if (index === 0) {
-
+    if (
+        index === 0
+    ) {
         const pageCount = Number(document.getElementById("page-count").value);
 
-        if (!pageCount || pageCount < 1) {
+        if (
+            !pageCount || pageCount < 1
+        ) {
             alert("ページ数を入力してください");
             return false;
         }
-
     }
 
     // 2.工程リスト ----------------------------------------
-    if (index === 1) {
-
+    if (
+        index === 1
+    ) {
         // 制作 ----------------------------------------
         const processRows = processList.querySelectorAll(".process-row");
 
         // 行程が1個もない
-        if (processRows.length === 0) {
+        if (
+            processRows.length === 0
+        ) {
             alert("行程を1個以上作成してください");
             return false;
         }
 
         // 制作の各行程をチェック
-        for (const row of processRows) {
-
+        for (
+            const row of processRows
+        ) {
             const name = row.querySelector(".process-name").value.trim();
             const hours = Number(row.querySelector(".process-hours").value);
             const minutes = Number(row.querySelector(".process-minutes").value);
             const hasTime = hours > 0 || minutes > 0;
 
             // 行程名・作業時間ともに未入力
-            if (!name && !hasTime) {
+            if (
+                !name && !hasTime
+            ) {
                 alert("行程名・作業時間を入力してください");
                 return false;
             }
 
             // 行程名のみ未入力
-            if (!name) {
+            if (
+                !name
+            ) {
                 alert("行程名を入力してください");
                 return false;
             }
 
             // 作業時間のみ未入力
-            if (!hasTime) {
+            if (
+                !hasTime
+            ) {
                 alert("作業時間を入力してください");
                 return false;
             }
@@ -217,38 +244,48 @@ function validateSection(index) {
 
         // 仕立て ----------------------------------------
         // 【しない】ならチェックしない
-        if (postWorkYes.classList.contains("selected")) {
-
+        if (
+            postWorkYes.classList.contains("selected")
+        ) {
             const postProcessRows = postProcessList.querySelectorAll(".process-row");
 
             // 行程が1個もない
-            if (postProcessRows.length === 0) {
+            if (
+                postProcessRows.length === 0
+            ) {
                 alert("行程を1個以上作成してください");
                 return false;
             }
 
             // 仕立ての各行程をチェック
-            for (const row of postProcessRows) {
-
+            for (
+                const row of postProcessRows
+            ) {
                 const name = row.querySelector(".process-name").value.trim();
                 const hours = Number(row.querySelector(".process-hours").value);
                 const minutes = Number(row.querySelector(".process-minutes").value);
                 const hasTime = hours > 0 || minutes > 0;
 
                 // 行程名・作業時間ともに未入力
-                if (!name && !hasTime) {
+                if (
+                    !name && !hasTime
+                ) {
                     alert("行程名・作業時間を入力してください");
                     return false;
                 }
 
                 // 行程名のみ未入力
-                if (!name) {
+                if (
+                    !name
+                ) {
                     alert("行程名を入力してください");
                     return false;
                 }
 
                 // 作業時間のみ未入力
-                if (!hasTime) {
+                if (
+                    !hasTime
+                ) {
                     alert("作業時間を入力してください");
                     return false;
                 }
@@ -257,19 +294,26 @@ function validateSection(index) {
     }
 
     // 3.活動時間 ----------------------------------------
-    if (index === 2) {
-
+    if (
+        index === 2
+    ) {
         let totalMinutes = 0;
 
-        document.querySelectorAll(".day-row").forEach(row => {
+        document
+        .querySelectorAll(".day-row")
+        .forEach(
+            row => {
+                const hours = Number(row.querySelector(".hour-input").value);
+                const minutes = Number(row.querySelector(".minute-input").value);
 
-            const hours = Number(row.querySelector(".hour-input").value);
-            const minutes = Number(row.querySelector(".minute-input").value);
+                totalMinutes += hours * 60 + minutes;
+            }
+       );
 
-            totalMinutes += hours * 60 + minutes;
-        });
-
-        if (totalMinutes < 60) {
+        // 全体で1時間未満
+        if (
+            totalMinutes < 60
+        ) {
             alert("全体で1時間以上になるよう活動時間を設定してください");
             return false;
         }
@@ -277,19 +321,28 @@ function validateSection(index) {
     }
 
     // 4.休日 ----------------------------------------
-    if (index === 3) {
+    if (
+        index === 3
+    ) {
         // 休日は任意なのでチェックなし
     }
 
     // 5.作業期間 ----------------------------------------
-    if (index === 4) {
-
-        if (!startDate && !deadlineDate) {
+    if (
+        index === 4
+    ) {
+        // 両方未入力
+        if (
+            !startDate && !deadlineDate
+        ) {
             alert("作業開始日・締切日を選択してください");
             return false;
         }
 
-        if (!deadlineDate) {
+        // 締切日だけ未入力
+        if (
+            !deadlineDate
+        ) {
             alert("締切日を選択してください");
             return false;
         }
@@ -305,9 +358,12 @@ function validateSection(index) {
 
 function validateAllSections() {
 
-    for (let index = 0; index < inputSections.length; index++) {
-
-        if (!validateSection(index)) {
+    for (
+        let index = 0; index < inputSections.length; index++
+    ) {
+        if (
+            !validateSection(index)
+        ) {
             showSection(index);
 
             return false;
@@ -334,7 +390,6 @@ backButton.addEventListener("click",
     }
 );
 
-
 // 「次へ」/「作成する」ボタン ----------------------------------------
 
 nextButton.addEventListener("click",
@@ -344,15 +399,20 @@ nextButton.addEventListener("click",
         const sectionBeforeMove = currentSection;
 
         // 現在のセクションをチェック
-        if (!validateSection(sectionBeforeMove)) {
+        if (
+            !validateSection(sectionBeforeMove)
+        ) {
             return;
         }
 
         // 最後の入力セクション
-        if (sectionBeforeMove === inputSections.length - 1) {
-
+        if (
+            sectionBeforeMove === inputSections.length - 1
+        ) {
             // 全セクションをチェック
-            if (!validateAllSections()) {
+            if (
+                !validateAllSections()
+            ) {
                 return;
             }
 
@@ -372,14 +432,18 @@ nextButton.addEventListener("click",
 function updateFooterButtons() {
 
     // ①では「戻る」を非表示
-    if (currentSection === 0) {
+    if (
+        currentSection === 0
+    ) {
         backButton.classList.add("hidden");
     } else {
         backButton.classList.remove("hidden");
     }
 
     // ⑤では「作成する」
-    if (currentSection === inputSections.length - 1) {
+    if (
+        currentSection === inputSections.length - 1
+    ) {
         nextButton.textContent = "作成する";
     } else {
         nextButton.textContent = "次へ▼";
@@ -410,8 +474,9 @@ function renderPeriodCalendar() {
     const daysInMonth = new Date(year,month + 1,0).getDate();
 
     // 月初までの空白
-    for (let i = 0;i < firstDay;i++) {
-
+    for (
+        let i = 0;i < firstDay;i++
+    ) {
         const empty = document.createElement("div");
 
         empty.className = "calendar-day empty";
@@ -420,8 +485,9 @@ function renderPeriodCalendar() {
     }
 
     // 日付
-    for (let day = 1;day <= daysInMonth;day++) {
-
+    for (
+        let day = 1;day <= daysInMonth;day++
+    ) {
         const cell = document.createElement("div");
 
         cell.className = "calendar-day";
@@ -434,11 +500,15 @@ function renderPeriodCalendar() {
         dateNumber.className = "day-number";
         dateNumber.textContent = day;
 
-        if (date.getDay() === 0) {
+        if (
+            date.getDay() === 0
+        ) {
             cell.classList.add("sunday");
         }
 
-        if (date.getDay() === 6) {
+        if (
+            date.getDay() === 6
+        ) {
             cell.classList.add("saturday");
         }
 
@@ -452,7 +522,9 @@ function renderPeriodCalendar() {
         cell.appendChild(dayIcon);
 
         // 作業開始日
-        if (startDate && isSameDate(date,startDate)) {
+        if (
+            startDate && isSameDate(date, startDate)
+        ) {
             cell.classList.add("selected-start");
 
             const icon = document.createElement("img");
@@ -464,7 +536,9 @@ function renderPeriodCalendar() {
         }
 
         // 締切日
-        if (deadlineDate && isSameDate(date,deadlineDate)) {
+        if (
+            deadlineDate && isSameDate(date,deadlineDate)
+        ) {
             cell.classList.add("selected-end");
 
             const icon = document.createElement("img");
@@ -476,7 +550,9 @@ function renderPeriodCalendar() {
         }
 
         // 期間内
-        if (startDate && deadlineDate && date > startDate && date < deadlineDate) {
+        if (
+            startDate && deadlineDate && date > startDate && date < deadlineDate
+        ) {
             cell.classList.add("period");
         }
 
@@ -485,21 +561,27 @@ function renderPeriodCalendar() {
             () => {
                 selectPeriodDate(date);
             }
-        );
+       );
 
         calendar.appendChild(cell);
     }
 }
 
-function selectPeriodDate(date) {
+function selectPeriodDate(
+    date
+) {
 
     /* まだ開始日がない、または期間選択済みで新しい期間を選び直す */
-    if (!startDate || (startDate && deadlineDate)) {
+    if (
+        !startDate || (startDate && deadlineDate)
+    ) {
         startDate = new Date(date);
         deadlineDate = null;
     } else {
         /* 開始日より前を選択した場合は自動的に日付を入れ替える */
-        if (date < startDate) {
+        if (
+            date < startDate
+        ) {
             deadlineDate = startDate;
             startDate = new Date(date);
         } else {
@@ -510,15 +592,17 @@ function selectPeriodDate(date) {
     renderPeriodCalendar();
 }
 
-function isSameDate(a, b) {
-
+function isSameDate(
+    a,
+    b
+) {
     return (
         a.getFullYear() === b.getFullYear()
         &&
         a.getMonth() === b.getMonth()
         &&
         a.getDate() === b.getDate()
-    );
+   );
 }
 
 // 前月 ----------------------------------------
@@ -636,7 +720,9 @@ const postWorkNo = document.getElementById("post-work-no");
 const postWorkArea = document.getElementById("post-work-area");
 const postWorkBottomArrow = document.getElementById("post-work-bottom-arrow");
 
-function updatePostWorkDisplay(shouldSchedule) {
+function updatePostWorkDisplay(
+    shouldSchedule
+) {
     // する
     postWorkYes.classList.toggle("selected", shouldSchedule);
     // しない
@@ -669,7 +755,9 @@ updatePostWorkDisplay(true);
 // 工程追加 - 行程セット生成
 // ----------------------------------------
 
-function createProcessItem(process) {
+function createProcessItem(
+    process
+) {
 
     // 工程カード＋▼をまとめる親
     const item = document.createElement("div");
@@ -735,10 +823,11 @@ function createProcessItem(process) {
 
     hourInput.addEventListener("blur",
         () => {
-
             let value = Math.floor(Number(hourInput.value));
                 
-            if (hourInput.value === "" || Number.isNaN(value)) {
+            if (
+                hourInput.value === "" || Number.isNaN(value)
+            ) {
                 value = 0;
             }
 
@@ -746,13 +835,15 @@ function createProcessItem(process) {
 
             hourInput.value = value;
         }
-    );
+   );
 
     minuteInput.addEventListener("blur",
         () => {
             let value = Math.floor(Number(minuteInput.value));
 
-            if (minuteInput.value === "" || Number.isNaN(value)) {
+            if (
+                minuteInput.value === "" || Number.isNaN(value)
+            ) {
                 value = 0;
             }
 
@@ -760,8 +851,7 @@ function createProcessItem(process) {
 
             minuteInput.value = value;
         }
-    );
-
+   );
 
     // 工程カード＋▼をセットにする ----------------------------------------
     item.appendChild(row);
@@ -840,7 +930,9 @@ document.addEventListener("click",
     event => {
         const button = event.target.closest(".auto-adjust-btn");
 
-        if (!button) {
+        if (
+            !button
+        ) {
             return;
         }
 
@@ -848,8 +940,8 @@ document.addEventListener("click",
         const newState = !isOn;
 
         button.dataset.autoAdjust = newState;
-        button.classList.toggle("on",newState);
-        button.classList.toggle("off",!newState);
+        button.classList.toggle("on", newState);
+        button.classList.toggle("off", !newState);
         button.querySelector("span").textContent = newState ? "ON" : "OFF";
     }
 );
@@ -861,7 +953,9 @@ document.addEventListener("click",
 
 document.addEventListener("click",
     event => {
-        if (event.target.classList.contains("delete-btn")) {
+        if (
+            event.target.classList.contains("delete-btn")
+        ) {
             event.target.closest(".process-item").remove();
         }
     }
@@ -872,7 +966,9 @@ document.addEventListener("click",
 // 工程リスト並び替え - 移動後アニメーション
 // ----------------------------------------
 
-function animateMovedProcess(item) {
+function animateMovedProcess(
+    item
+) {
 
     item.classList.remove("process-shake");
 
@@ -885,7 +981,7 @@ function animateMovedProcess(item) {
             item.classList.remove("process-shake");
         },
         {once: true}
-    );
+   );
 }
 
 
@@ -915,12 +1011,16 @@ let autoScrollFrame = null;
 
 function startAutoScroll() {
 
-    if (autoScrollFrame) {
+    if (
+        autoScrollFrame
+    ) {
         return;
     }
 
     function scrollLoop() {
-        if (!draggingItem) {
+        if (
+            !draggingItem
+        ) {
             autoScrollFrame = null;
             return;
         }
@@ -928,8 +1028,9 @@ function startAutoScroll() {
         const viewportHeight = window.innerHeight;
 
         // 上端 ----------------------------------------
-        if (lastPointerY < topScrollZone) {
-
+        if (
+            lastPointerY < topScrollZone
+        ) {
             const distance = topScrollZone - lastPointerY;
             const ratio = Math.min(distance / topScrollZone, 1);
             const scrollSpeed = maxScrollSpeed * ratio * ratio;
@@ -938,8 +1039,9 @@ function startAutoScroll() {
         }
 
         // 下端 ----------------------------------------
-        else if (lastPointerY > viewportHeight - bottomScrollZone) {
-
+        else if (
+            lastPointerY > viewportHeight - bottomScrollZone
+        ) {
             const distance = lastPointerY - (viewportHeight - bottomScrollZone);
             const ratio = Math.min(distance / bottomScrollZone, 1);
             const scrollSpeed = maxScrollSpeed * ratio * ratio;
@@ -960,7 +1062,9 @@ function startAutoScroll() {
 // ----------------------------------------
 
 function stopAutoScroll() {
-    if (autoScrollFrame) {
+    if (
+        autoScrollFrame
+    ) {
         cancelAnimationFrame(autoScrollFrame);
         autoScrollFrame = null;
     }
@@ -973,16 +1077,19 @@ function stopAutoScroll() {
 
 document.addEventListener("pointerdown",
     event => {
-
         const handle = event.target.closest(".drag-handle");
 
-        if (!handle) {
+        if (
+            !handle
+        ) {
             return;
         }
 
         draggingItem = handle.closest(".process-item");
 
-        if (!draggingItem) {
+        if (
+            !draggingItem
+        ) {
             return;
         }
 
@@ -990,14 +1097,9 @@ document.addEventListener("pointerdown",
 
         // ドラッグ開始時の位置を記録
         originalIndex = Array.from(draggingList.children).indexOf(draggingItem);
-
         dragPointerId = event.pointerId;
-
         lastPointerY = event.clientY;
-
-        draggingItem
-        .querySelector(".process-row")
-        .classList.add("dragging");
+        draggingItem.querySelector(".process-row").classList.add("dragging");
 
         handle.setPointerCapture(event.pointerId);
 
@@ -1013,35 +1115,53 @@ document.addEventListener("pointerdown",
 
 document.addEventListener("pointermove",
     event => {
-        if (!draggingItem || event.pointerId !== dragPointerId) {
+        if (
+            !draggingItem || event.pointerId !== dragPointerId
+        ) {
             return;
         }
 
         const currentY = event.clientY;
 
         // 上方向へ移動 ---------------------------------------- ----------------------------------------
-        if (currentY < lastPointerY) {
+        if (
+            currentY < lastPointerY
+        ) {
             const previousItem = draggingItem.previousElementSibling;
 
-            if (previousItem) {
+            if (
+                previousItem
+            ) {
                 const rect = previousItem.getBoundingClientRect();
+
+                //移動判定位置（▼分+0.4）
                 const middle = rect.top + rect.height * 0.6;
 
-                if (currentY < middle) {
+                if (
+                    currentY < middle
+                ) {
                     draggingList.insertBefore(draggingItem,previousItem);
                 }
             }
         }
 
         // 下方向へ移動 ---------------------------------------- ----------------------------------------
-        if (currentY > lastPointerY) {
+        if (
+            currentY > lastPointerY
+        ) {
             const nextItem = draggingItem.nextElementSibling;
 
-            if (nextItem) {
+            if (
+                nextItem
+            ) {
                 const rect = nextItem.getBoundingClientRect();
+
+                //移動判定位置
                 const middle = rect.top + rect.height * 0.2;
 
-                if (currentY > middle) {
+                if (
+                    currentY > middle
+                ) {
                     draggingList.insertBefore(nextItem,draggingItem);
                 }
             }
@@ -1059,7 +1179,9 @@ document.addEventListener("pointermove",
 
 document.addEventListener("pointerup",
     event => {
-        if (!draggingItem || event.pointerId !== dragPointerId) {
+        if (
+            !draggingItem || event.pointerId !== dragPointerId
+        ) {
             return;
         }
 
@@ -1069,12 +1191,12 @@ document.addEventListener("pointerup",
         const currentIndex = Array.from(draggingList.children).indexOf(draggingItem);
         const hasMoved = currentIndex !== originalIndex;
 
-        draggingItem
-        .querySelector(".process-row")
-        .classList.remove("dragging");
+        draggingItem.querySelector(".process-row").classList.remove("dragging");
 
         // 実際に位置が変わっていたら掴んでいたカードだけアニメーション
-        if (hasMoved) {
+        if (
+            hasMoved
+        ) {
             animateMovedProcess(draggingItem.querySelector(".process-row"));
         }
 
@@ -1093,15 +1215,15 @@ document.addEventListener("pointerup",
 
 document.addEventListener("pointercancel",
     event => {
-        if (!draggingItem || event.pointerId !== dragPointerId) {
+        if (
+            !draggingItem || event.pointerId !== dragPointerId
+        ) {
             return;
         }
 
         stopAutoScroll();
 
-        draggingItem
-        .querySelector(".process-row")
-        .classList.remove("dragging");
+        draggingItem.querySelector(".process-row").classList.remove("dragging");
 
         draggingItem = null;
         dragPointerId = null;
@@ -1124,7 +1246,9 @@ const maxWorkingMinutes = 20 * 60;
 // 活動時間 - 選択バーの色替え
 // ----------------------------------------
 
-function updateHourRangeColor(range) {
+function updateHourRangeColor(
+    range
+) {
 
     const value = Number(range.value);
 
@@ -1137,7 +1261,10 @@ function updateHourRangeColor(range) {
 // 活動時間 - 入力欄・選択バー同期
 // ----------------------------------------
 
-function updateWorkingTime(row, totalMinutes) {
+function updateWorkingTime(
+    row,
+    totalMinutes
+) {
 
     const hours = row.querySelector(".hour-input");
     const minutes = row.querySelector(".minute-input");
@@ -1157,131 +1284,157 @@ function updateWorkingTime(row, totalMinutes) {
 
 document
 .querySelectorAll(".day-row")
-.forEach(row => {
-    const hourInput = row.querySelector(".hour-input");
-    const minuteInput = row.querySelector(".minute-input");
-    const range = row.querySelector(".hour-range");
+.forEach(
+    row => {
+        const hourInput = row.querySelector(".hour-input");
+        const minuteInput = row.querySelector(".minute-input");
+        const range = row.querySelector(".hour-range");
 
-    // 時間入力 ----------------------------------------
-    hourInput.addEventListener("input",
-        () => {
-            // 空欄の途中は何もしない
-            if (hourInput.value === "") {
-                return;
+        // 時間入力 ----------------------------------------
+        hourInput.addEventListener("input",
+            () => {
+                // 空欄の途中は何もしない
+                if (
+                    hourInput.value === ""
+                ) {
+                    return;
+                }
+
+                const hours = Number(hourInput.value);
+                const minutes = Number(minuteInput.value) || 0;
+
+                if (
+                    Number.isInteger(hours) && hours >= 0 && hours <= 20
+                ) {
+                    let totalMinutes = hours * 60 + minutes;
+
+                    // 20時間を超えないようにする
+                    if (
+                        totalMinutes > maxWorkingMinutes
+                    ) {
+                        totalMinutes = maxWorkingMinutes;
+                    }
+
+                    range.value = totalMinutes;
+
+                    updateHourRangeColor(range);
+                }
             }
+       );
 
-            const hours = Number(hourInput.value);
-            const minutes = Number(minuteInput.value) || 0;
+        // 分入力 ----------------------------------------
+        minuteInput.addEventListener("input",
+            () => {
+                // 空欄の途中は何もしない
+                if (
+                    minuteInput.value === ""
+                ) {
+                    return;
+                }
 
-            if (Number.isInteger(hours) && hours >= 0 && hours <= 20) {
+                const minutes = Number(minuteInput.value);
+                const hours = Number(hourInput.value) || 0;
+
+                if (
+                    Number.isInteger(minutes) && minutes >= 0 && minutes <= 59
+                ) {
+                    let totalMinutes = hours * 60 + minutes;
+
+                    // 20時間を超えないようにする
+                    if (
+                        totalMinutes > maxWorkingMinutes
+                    ) {
+                        totalMinutes = maxWorkingMinutes;
+                    }
+
+                    range.value = totalMinutes;
+                        
+                    updateHourRangeColor(range);
+                }
+            }
+       );
+
+        // 時間入力 - 確定時 ----------------------------------------
+        hourInput.addEventListener("blur",
+            () => {
+                let hours = Math.floor(Number(hourInput.value));
+                let minutes = Math.floor(Number(minuteInput.value));
+
+                if (
+                    hourInput.value === "" || Number.isNaN(hours)
+                ) {
+                    hours = 0;
+                }
+
+                if (
+                    minuteInput.value === "" || Number.isNaN(minutes)
+                ) {
+                    minutes = 0;
+                }
+
+                // 範囲調整
+                hours = Math.max(0, Math.min(hours, 20));
+                minutes = Math.max(0, Math.min(minutes, 59));
+
                 let totalMinutes = hours * 60 + minutes;
 
-                // 20時間を超えないようにする
-                if (totalMinutes > maxWorkingMinutes) {
+                // 20時間を超えた場合は20:00
+                if (
+                    totalMinutes > maxWorkingMinutes
+                ) {
                     totalMinutes = maxWorkingMinutes;
                 }
 
-                range.value = totalMinutes;
-
-                updateHourRangeColor(range);
+                updateWorkingTime(row, totalMinutes);
             }
-        }
-    );
+       );
 
-    // 分入力 ----------------------------------------
-    minuteInput.addEventListener("input",
-        () => {
-            // 空欄の途中は何もしない
-            if (minuteInput.value === "") {
-                return;
-            }
+        // 分入力 - 確定時 ----------------------------------------
+        minuteInput.addEventListener("blur",
+            () => {
+                let hours = Math.floor(Number(hourInput.value));
+                let minutes = Math.floor(Number(minuteInput.value));
 
-            const minutes = Number(minuteInput.value);
-            const hours = Number(hourInput.value) || 0;
+                if (
+                    hourInput.value === "" || Number.isNaN(hours)
+                ) {
+                    hours = 0;
+                }
 
-            if (Number.isInteger(minutes) && minutes >= 0 && minutes <= 59) {
+                if (
+                    minuteInput.value === "" || Number.isNaN(minutes)
+                ) {
+                    minutes = 0;
+                }
+
+                // 範囲調整
+                hours = Math.max(0, Math.min(hours, 20));
+                minutes = Math.max(0, Math.min(minutes, 59));
+
                 let totalMinutes = hours * 60 + minutes;
 
-                // 20時間を超えないようにする
-                if (totalMinutes > maxWorkingMinutes) {
+                // 20時間を超えた場合は20:00
+                if (
+                    totalMinutes > maxWorkingMinutes
+                ) {
                     totalMinutes = maxWorkingMinutes;
                 }
 
-                range.value = totalMinutes;
-                    
-                updateHourRangeColor(range);
+                updateWorkingTime(row, totalMinutes);
             }
-        }
-    );
+       );
 
-    // 時間入力 - 確定時 ----------------------------------------
-    hourInput.addEventListener("blur",
-        () => {
-            let hours = Math.floor(Number(hourInput.value));
-            let minutes = Math.floor(Number(minuteInput.value));
-
-            if (hourInput.value === "" || Number.isNaN(hours)) {
-                hours = 0;
+        // 調整バー ----------------------------------------
+        range.addEventListener("input",
+            () => {
+                updateWorkingTime(row, Number(range.value));
             }
+       );
 
-            if (minuteInput.value === "" || Number.isNaN(minutes)) {
-                minutes = 0;
-            }
-
-            // 範囲調整
-            hours = Math.max(0, Math.min(hours, 20));
-            minutes = Math.max(0, Math.min(minutes, 59));
-
-            let totalMinutes = hours * 60 + minutes;
-
-            // 20時間を超えた場合は20:00
-            if (totalMinutes > maxWorkingMinutes) {
-                totalMinutes = maxWorkingMinutes;
-            }
-
-            updateWorkingTime(row, totalMinutes);
-        }
-    );
-
-    // 分入力 - 確定時 ----------------------------------------
-    minuteInput.addEventListener("blur",
-        () => {
-            let hours = Math.floor(Number(hourInput.value));
-            let minutes = Math.floor(Number(minuteInput.value));
-
-            if (hourInput.value === "" || Number.isNaN(hours)) {
-                hours = 0;
-            }
-
-            if (minuteInput.value === "" || Number.isNaN(minutes)) {
-                minutes = 0;
-            }
-
-            // 範囲調整
-            hours = Math.max(0, Math.min(hours, 20));
-            minutes = Math.max(0, Math.min(minutes, 59));
-
-            let totalMinutes = hours * 60 + minutes;
-
-            // 20時間を超えた場合は20:00
-            if (totalMinutes > maxWorkingMinutes) {
-                totalMinutes = maxWorkingMinutes;
-            }
-
-            updateWorkingTime(row, totalMinutes);
-        }
-    );
-
-    // 調整バー ----------------------------------------
-    range.addEventListener("input",
-        () => {
-            updateWorkingTime(row, Number(range.value));
-        }
-    );
-
-    // 初期状態の色を設定
-    updateHourRangeColor(range);
-});
+        // 初期状態の色を設定
+        updateHourRangeColor(range);
+    }
+);
 
 
 // ----------------------------------------
@@ -1303,11 +1456,13 @@ function renderHolidayCalendar() {
 
     calendar.innerHTML = "";
 
-    const firstDay = new Date(year,month,1).getDay();
-    const daysInMonth = new Date(year,month + 1,0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     // 月初までの空白
-    for (let i = 0; i < firstDay; i++) {
+    for (
+        let i = 0; i < firstDay; i++
+    ) {
         const empty = document.createElement("div");
 
         empty.className = "calendar-day empty";
@@ -1315,7 +1470,9 @@ function renderHolidayCalendar() {
     }
 
     // 日付
-    for (let day = 1; day <= daysInMonth; day++) {
+    for (
+        let day = 1; day <= daysInMonth; day++
+    ) {
         const cell = document.createElement("div");
 
         cell.className = "calendar-day";
@@ -1328,11 +1485,15 @@ function renderHolidayCalendar() {
         dateNumber.className = "day-number";
         dateNumber.textContent = day;
 
-        if (date.getDay() === 0) {
+        if (
+            date.getDay() === 0
+        ) {
             cell.classList.add("sunday");
         }
 
-        if (date.getDay() === 6) {
+        if (
+            date.getDay() === 6
+        ) {
             cell.classList.add("saturday");
         }
 
@@ -1347,7 +1508,9 @@ function renderHolidayCalendar() {
         const key = `${year}-${month + 1}-${day}`;
         
         // 休日判定
-        if (holidays.has(key)) {
+        if (
+            holidays.has(key)
+        ) {
             cell.classList.add("holiday");
 
             const icon = document.createElement("img");
@@ -1361,14 +1524,16 @@ function renderHolidayCalendar() {
         // 日付クリック
         cell.addEventListener("click",
             () => {
-                if (holidays.has(key)) {
+                if (
+                    holidays.has(key)
+                ) {
                     holidays.delete(key);
                 } else {
                     holidays.add(key);
                 }
                 renderHolidayCalendar();
             }
-        );
+       );
 
         calendar.appendChild(cell);
     }
@@ -1396,7 +1561,7 @@ renderHolidayCalendar();
 
 
 // ----------------------------------------
-// エラーチェック
+// エラーチェック - ALL
 // ----------------------------------------
 
 function validateScheduleInput() {
@@ -1404,7 +1569,9 @@ function validateScheduleInput() {
     // 1.ページ数 -----------------------------
     const pageCount = Number(document.getElementById("page-count").value);
 
-    if (!pageCount || pageCount < 1) {
+    if (
+        !pageCount || pageCount < 1
+    ) {
         alert("ページ数を入力してください。");
         showSection(0);
         return false;
@@ -1413,22 +1580,26 @@ function validateScheduleInput() {
     // 2.工程リスト -----------------------------
     const processRows = document.querySelectorAll(".process-row");
 
-    if (processRows.length === 0) {
-        alert("作業工程を1つ以上追加してください。");
+    if (
+        processRows.length === 0
+    ) {
+        alert("行程を1個以上作成してください");
         showSection(2);
         return false;
     }
 
-    const hasInvalidProcess = [...processRows].some(
+    const hasInvalidProcess = [ ...processRows ].some(
         row => {
             const hours = Number(row.querySelector(".process-hours").value);
             const minutes = Number(row.querySelector(".process-minutes").value);
 
             return hours === 0 && minutes === 0;
         }
-    );
+   );
 
-    if (hasInvalidProcess) {
+    if (
+        hasInvalidProcess
+    ) {
         alert("すべての作業工程に作業時間を入力してください。");
         showSection(2);
         return false;
@@ -1444,9 +1615,11 @@ function validateScheduleInput() {
 
             return (hours * 60 + minutes >= 60);
         }
-    );
+   );
 
-    if (!hasWorkingTime) {
+    if (
+        !hasWorkingTime
+    ) {
         alert("作業可能時間を設定してください。");
         showSection(3);
         return false;
@@ -1456,13 +1629,17 @@ function validateScheduleInput() {
     // 任意なのでチェック不要
 
     // 5.作業期間 -----------------------------
-    if (!startDate || !deadlineDate) {
+    if (
+        !startDate || !deadlineDate
+    ) {
         alert("作業期間を選択してください。");
         showSection(1);
         return false;
     }
 
-    if (deadlineDate < startDate) {
+    if (
+        deadlineDate < startDate
+    ) {
         alert("締切日は作業開始日より後の日付にしてください。");
         showSection(1);
         return false;
@@ -1478,211 +1655,79 @@ function validateScheduleInput() {
 
 function createSchedule() {
 
-    // ----------------------------------------
-    // ① ページ数
-    // ----------------------------------------
+    // ① ページ数 ----------------------------------------
 
-    const pageCount =
-        Number(
-            document.getElementById("page-count").value
-        );
+    const pageCount = Number(document.getElementById("page-count").value);
 
+    // ② 制作工程 ----------------------------------------
 
-    // ----------------------------------------
-    // ② 制作工程
-    // ----------------------------------------
-
-    const productionProcesses =
-        Array.from(
-            document.querySelectorAll(
-                "#process-list .process-row"
-            )
-        ).map(row => {
-
+    const productionProcesses = Array.from(document.querySelectorAll("#process-list .process-row")).map(
+       row => {
             return {
-
-                name:
-                    row.querySelector(
-                        ".process-name"
-                    ).value.trim(),
-
-                unit:
-                    row.querySelector(
-                        ".process-unit"
-                    ).value,
-
-                hours:
-                    Number(
-                        row.querySelector(
-                            ".process-hours"
-                        ).value
-                    ),
-
-                minutes:
-                    Number(
-                        row.querySelector(
-                            ".process-minutes"
-                        ).value
-                    ),
-
-                autoAdjust:
-                    row.querySelector(
-                        ".auto-adjust-btn"
-                    ).dataset.autoAdjust === "true"
-
+                name: row.querySelector(".process-name").value.trim(),
+                unit: row.querySelector(".process-unit").value,
+                hours: Number(row.querySelector(".process-hours").value),
+                minutes: Number(row.querySelector(".process-minutes").value),
+                autoAdjust: row.querySelector(".auto-adjust-btn").dataset.autoAdjust === "true"
             };
+        }
+    );
 
-        });
+    // ③ 仕立て工程 ----------------------------------------
 
-
-    // ----------------------------------------
-    // ③ 仕立て工程
-    // ----------------------------------------
-
-    const finishingProcesses =
-        Array.from(
-            document.querySelectorAll(
-                "#post-process-list .process-row"
-            )
-        ).map(row => {
-
+    const finishingProcesses = Array.from(document.querySelectorAll("#post-process-list .process-row")).map(            
+       row => {
             return {
-
-                name:
-                    row.querySelector(
-                        ".process-name"
-                    ).value.trim(),
-
-                unit:
-                    row.querySelector(
-                        ".process-unit"
-                    ).value,
-
-                hours:
-                    Number(
-                        row.querySelector(
-                            ".process-hours"
-                        ).value
-                    ),
-
-                minutes:
-                    Number(
-                        row.querySelector(
-                            ".process-minutes"
-                        ).value
-                    ),
-
-                autoAdjust:
-                    row.querySelector(
-                        ".auto-adjust-btn"
-                    ).dataset.autoAdjust === "true"
-
+                name: row.querySelector(".process-name").value.trim(),
+                unit: row.querySelector(".process-unit").value,
+                hours: Number(row.querySelector(".process-hours").value),
+                minutes: Number(row.querySelector(".process-minutes").value),
+                autoAdjust: row.querySelector(".auto-adjust-btn").dataset.autoAdjust === "true"
             };
+        }
+    );
 
-        });
+    // ④ 活動時間 ----------------------------------------
 
-
-    // ----------------------------------------
-    // ④ 活動時間
-    // ----------------------------------------
-
-    const activityTimes =
-        Array.from(
-            document.querySelectorAll(".day-row")
-        ).map(row => {
-
+    const activityTimes = Array.from(document.querySelectorAll(".day-row")).map(
+       row => {
             return {
-
-                hours:
-                    Number(
-                        row.querySelector(
-                            ".hour-input"
-                        ).value
-                    ),
-
-                minutes:
-                    Number(
-                        row.querySelector(
-                            ".minute-input"
-                        ).value
-                    )
-
+                hours: Number(row.querySelector(".hour-input").value),
+                minutes: Number(row.querySelector(".minute-input").value)
             };
+        }
+    );
 
-        });
+    // ⑤ 休日 ----------------------------------------
 
+    const holidayDates = [...holidays].map(
+        key => {
+            const [year,month,day] = key.split("-").map(Number);
 
-    // ----------------------------------------
-    // ⑤ 休日
-    // ----------------------------------------
+            return new Date(year,month - 1,day);
+        }
+    );
 
-    const holidayDates =
-        [...holidays].map(key => {
-
-            const [
-                year,
-                month,
-                day
-            ] = key.split("-").map(Number);
-
-            return new Date(
-                year,
-                month - 1,
-                day
-            );
-
-        });
-
-
-    // ----------------------------------------
-    // ⑥ 作業期間
-    // ----------------------------------------
+    // ⑥ 作業期間 ----------------------------------------
 
     const scheduleData = {
-
-        pageCount:
-            pageCount,
-
-        productionProcesses:
-            productionProcesses,
-
-        finishingProcesses:
-            postWorkYes.classList.contains("selected")
-                ? finishingProcesses
-                : [],
-
-        activityTimes:
-            activityTimes,
-
-        holidays:
-            holidayDates,
-
-        startDate:
-            startDate,
-
-        deadline:
-            deadlineDate
-
+        pageCount: pageCount,
+        productionProcesses: productionProcesses,
+        finishingProcesses: postWorkYes.classList.contains("selected") ? finishingProcesses : [],
+        activityTimes: activityTimes,
+        holidays: holidayDates,
+        startDate: startDate,
+        deadline: deadlineDate
     };
 
+    // 確認用 ----------------------------------------
 
-    // ----------------------------------------
-    // 確認用
-    // ----------------------------------------
-
-    console.log(
-        "scheduler.jsへ渡すデータ:",
-        scheduleData
-    );
+    console.log("scheduler.jsへ渡すデータ:",scheduleData);
 
     // scheduler.jsへデータを送る
-    const schedulerData =
-        receiveScheduleData(scheduleData);
+    const schedulerData = receiveScheduleData(scheduleData);
 
-    console.log(
-        "scheduler.jsから受け取ったデータ:",
-        schedulerData
-    );
+    console.log("scheduler.jsから受け取ったデータ:",schedulerData);
 
     // 結果画面へ移動
     showSection(inputSections.length);
