@@ -1478,12 +1478,203 @@ function validateScheduleInput() {
 
 function createSchedule() {
 
-    const pageCount = document.getElementById("page-count").value;
+    // ----------------------------------------
+    // ① ページ数
+    // ----------------------------------------
 
-    console.log("ページ数:",pageCount);
-    console.log("開始日:",startDate);
-    console.log("締切日:",deadlineDate);
-    console.log("休日:",[...holidays]);
+    const pageCount =
+        Number(
+            document.getElementById("page-count").value
+        );
+
+
+    // ----------------------------------------
+    // ② 制作工程
+    // ----------------------------------------
+
+    const productionProcesses =
+        Array.from(
+            document.querySelectorAll(
+                "#process-list .process-row"
+            )
+        ).map(row => {
+
+            return {
+
+                name:
+                    row.querySelector(
+                        ".process-name"
+                    ).value.trim(),
+
+                unit:
+                    row.querySelector(
+                        ".process-unit"
+                    ).value,
+
+                hours:
+                    Number(
+                        row.querySelector(
+                            ".process-hours"
+                        ).value
+                    ),
+
+                minutes:
+                    Number(
+                        row.querySelector(
+                            ".process-minutes"
+                        ).value
+                    ),
+
+                autoAdjust:
+                    row.querySelector(
+                        ".auto-adjust-btn"
+                    ).dataset.autoAdjust === "true"
+
+            };
+
+        });
+
+
+    // ----------------------------------------
+    // ③ 仕立て工程
+    // ----------------------------------------
+
+    const finishingProcesses =
+        Array.from(
+            document.querySelectorAll(
+                "#post-process-list .process-row"
+            )
+        ).map(row => {
+
+            return {
+
+                name:
+                    row.querySelector(
+                        ".process-name"
+                    ).value.trim(),
+
+                unit:
+                    row.querySelector(
+                        ".process-unit"
+                    ).value,
+
+                hours:
+                    Number(
+                        row.querySelector(
+                            ".process-hours"
+                        ).value
+                    ),
+
+                minutes:
+                    Number(
+                        row.querySelector(
+                            ".process-minutes"
+                        ).value
+                    ),
+
+                autoAdjust:
+                    row.querySelector(
+                        ".auto-adjust-btn"
+                    ).dataset.autoAdjust === "true"
+
+            };
+
+        });
+
+
+    // ----------------------------------------
+    // ④ 活動時間
+    // ----------------------------------------
+
+    const activityTimes =
+        Array.from(
+            document.querySelectorAll(".day-row")
+        ).map(row => {
+
+            return {
+
+                hours:
+                    Number(
+                        row.querySelector(
+                            ".hour-input"
+                        ).value
+                    ),
+
+                minutes:
+                    Number(
+                        row.querySelector(
+                            ".minute-input"
+                        ).value
+                    )
+
+            };
+
+        });
+
+
+    // ----------------------------------------
+    // ⑤ 休日
+    // ----------------------------------------
+
+    const holidayDates =
+        [...holidays].map(key => {
+
+            const [
+                year,
+                month,
+                day
+            ] = key.split("-").map(Number);
+
+            return new Date(
+                year,
+                month - 1,
+                day
+            );
+
+        });
+
+
+    // ----------------------------------------
+    // ⑥ 作業期間
+    // ----------------------------------------
+
+    const scheduleData = {
+
+        pageCount:
+            pageCount,
+
+        productionProcesses:
+            productionProcesses,
+
+        finishingProcesses:
+            postWorkYes.classList.contains("selected")
+                ? finishingProcesses
+                : [],
+
+        activityTimes:
+            activityTimes,
+
+        holidays:
+            holidayDates,
+
+        startDate:
+            startDate,
+
+        deadline:
+            deadlineDate
+
+    };
+
+
+    // ----------------------------------------
+    // 確認用
+    // ----------------------------------------
+
+    console.log(
+        "scheduler.jsへ渡すデータ:",
+        scheduleData
+    );
+
 
     // 結果画面へ移動
     showSection(inputSections.length);
