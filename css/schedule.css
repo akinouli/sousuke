@@ -1194,7 +1194,7 @@ body {
 
 
 /* --------------------------------------------------
-    ① 結果コメント
+    結果① 結果コメント
 -------------------------------------------------- */
 
 #result-comment {
@@ -1209,6 +1209,239 @@ body {
     max-width: 700px;
     height: auto;
     margin: 0 auto;
+}
+
+
+/* --------------------------------------------------
+    結果② スケジュールカレンダー
+-------------------------------------------------- */
+
+#schedule-calendar {
+    width: 100%;
+    margin-top: 30px;
+}
+
+
+/* --------------------------------------------------
+    カレンダーヘッダー
+-------------------------------------------------- */
+
+.schedule-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.schedule-calendar-header h2 {
+    margin: 0;
+}
+
+
+/* カレンダーチェンジ */
+
+.calendar-change-button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 10px;
+
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+    font-size: 13px;
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+.calendar-change-button:active {
+    transform: scale(0.94);
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.06);
+}
+
+
+/* --------------------------------------------------
+    カレンダー表示
+-------------------------------------------------- */
+
+.schedule-calendar-view {
+    width: 100%;
+}
+
+.schedule-calendar-view[hidden] {
+    display: none;
+}
+
+
+/* --------------------------------------------------
+    月ナビゲーション
+-------------------------------------------------- */
+
+.schedule-calendar-month-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+#schedule-month {
+    min-width: 120px;
+
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.schedule-calendar-nav {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: transform 0.1s ease;
+}
+
+.schedule-calendar-nav:active {
+    transform: scale(0.9);
+}
+
+
+/* --------------------------------------------------
+    曜日
+-------------------------------------------------- */
+
+.schedule-week-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    border-left: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+}
+
+.schedule-week-header span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 32px;
+
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+
+    background: #f5f5f5;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* --------------------------------------------------
+    日付グリッド
+-------------------------------------------------- */
+
+#schedule-calendar-grid,
+#schedule-calendar-list {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    border-left: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+}
+
+
+/* --------------------------------------------------
+    日付マス
+-------------------------------------------------- */
+
+.schedule-day {
+    position: relative;
+
+    min-height: 80px;
+    padding: 6px;
+
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+
+    background: white;
+}
+
+
+/* 日付 */
+
+.schedule-day-number {
+    position: relative;
+    z-index: 2;
+
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+
+/* --------------------------------------------------
+    月が変わった位置
+-------------------------------------------------- */
+
+.schedule-day.month-start .schedule-day-number::before {
+    content: attr(data-month) "/";
+
+    margin-right: 2px;
+
+    font-size: 11px;
+    font-weight: normal;
+}
+
+
+/* --------------------------------------------------
+    範囲外の日付
+-------------------------------------------------- */
+
+.schedule-day.outside-period {
+    background: #f7f7f7;
+}
+
+
+/* --------------------------------------------------
+    今日
+-------------------------------------------------- */
+
+.schedule-day.today {
+    box-shadow: inset 0 0 0 2px #5d8fd8;
+}
+
+
+/* --------------------------------------------------
+    休日
+-------------------------------------------------- */
+
+.schedule-day.holiday {
+    background: rgba(220,220,220,0.35);
+}
+
+
+/* --------------------------------------------------
+    縦型
+-------------------------------------------------- */
+
+#schedule-calendar-vertical #schedule-calendar-list {
+    align-items: stretch;
+}
+
+#schedule-calendar-vertical .schedule-day {
+    min-height: 80px;
 }
 
 
@@ -1324,5 +1557,50 @@ body {
 
     .time-colon {
         font-size: 16px;
+    }
+
+    /* --------------------------------------------------
+        結果②　スケジュールカレンダー
+    -------------------------------------------------- */    
+    .schedule-calendar-header {
+        align-items: flex-start;
+    }
+
+    .schedule-calendar-header h2 {
+        font-size: 20px;
+    }
+
+    .calendar-change-button {
+        flex-shrink: 0;
+        padding: 7px 10px;
+
+        font-size: 11px;
+    }
+
+    .schedule-calendar-month-header {
+        gap: 10px;
+    }
+
+    #schedule-month {
+        font-size: 17px;
+    }
+
+    .schedule-calendar-nav {
+        width: 32px;
+        height: 32px;
+    }
+
+    .schedule-week-header span {
+        min-height: 28px;
+        font-size: 11px;
+    }
+
+    .schedule-day {
+        min-height: 65px;
+        padding: 4px;
+    }
+
+    .schedule-day-number {
+        font-size: 12px;
     }
 }
