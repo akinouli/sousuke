@@ -132,21 +132,40 @@ let scheduleCalendarMonth = null;
 // 日付をDateへ変換
 // ----------------------------------------
 
-function parseScheduleDate(dateString) {
+function parseScheduleDate(dateValue) {
 
-    if (!dateString) {
+    if (!dateValue) {
         return null;
     }
 
-    const [year, month, day] =
-        dateString.split("-").map(Number);
 
-    return new Date(
-        year,
-        month - 1,
-        day
-    );
+    // Dateオブジェクトの場合
+    if (
+        dateValue instanceof Date
+    ) {
+        return new Date(dateValue);
+    }
+
+
+    // 文字列の場合
+    if (
+        typeof dateValue === "string"
+    ) {
+
+        const [year, month, day] =
+            dateValue.split("-").map(Number);
+
+        return new Date(
+            year,
+            month - 1,
+            day
+        );
+    }
+
+
+    return null;
 }
+
 
 
 // ----------------------------------------
