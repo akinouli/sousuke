@@ -1675,6 +1675,14 @@ function createSchedule() {
         scheduleData
     );
 
+    // scheduler.jsへデータを送る
+    const schedulerData =
+        receiveScheduleData(scheduleData);
+
+    console.log(
+        "scheduler.jsから受け取ったデータ:",
+        schedulerData
+    );
 
     // 結果画面へ移動
     showSection(inputSections.length);

@@ -1,4 +1,112 @@
 // ========================================
+// スケジュール作成
+// 入力データ受け取り
+// ========================================
+
+function receiveScheduleData(scheduleData) {
+
+    // ----------------------------------------
+    // 入力データを受け取る
+    // ----------------------------------------
+
+    const pageCount =
+        scheduleData.pageCount;
+
+    const productionProcesses =
+        scheduleData.productionProcesses;
+
+    const finishingProcesses =
+        scheduleData.finishingProcesses;
+
+    const activityTimes =
+        scheduleData.activityTimes;
+
+    const holidays =
+        scheduleData.holidays;
+
+    const startDate =
+        scheduleData.startDate;
+
+    const deadline =
+        scheduleData.deadline;
+
+
+    // ----------------------------------------
+    // 受け取ったデータを確認
+    // ----------------------------------------
+
+    console.log(
+        "scheduler.js - 入力データ受信:",
+        scheduleData
+    );
+
+
+    // ----------------------------------------
+    // Step.1へ渡す
+    // ----------------------------------------
+
+    const productionWorkMinutes =
+        convertProductionWorkMinutes(
+            productionProcesses,
+            pageCount
+        );
+
+    const finishingWorkMinutes =
+        convertFinishingWorkMinutes(
+            finishingProcesses,
+            pageCount
+        );
+
+    const activityMinutes =
+        convertActivityMinutes(
+            activityTimes
+        );
+
+
+    console.log(
+        "scheduler.js - Step.1変換結果:",
+        {
+            productionWorkMinutes,
+            finishingWorkMinutes,
+            activityMinutes
+        }
+    );
+
+
+    // ----------------------------------------
+    // 計算用データ
+    // ----------------------------------------
+
+    return {
+
+        pageCount,
+
+        productionProcesses,
+
+        finishingProcesses,
+
+        productionWorkMinutes,
+
+        finishingWorkMinutes,
+
+        activityTimes,
+
+        activityMinutes,
+
+        holidays,
+
+        startDate,
+
+        deadline,
+
+        hasFinishing:
+            finishingProcesses.length > 0
+
+    };
+}
+
+
+// ========================================
 // Step.1
 // 作業時間・活動時間を分数へ変換
 // ========================================
