@@ -353,6 +353,81 @@
                     <!-- ① 結果コメント -->
                     <div id="result-comment"></div>
 
+                    <!-- ② スケジュールカレンダー -->
+                    <div id="schedule-calendar">
+
+                        <!-- カレンダーヘッダー -->
+                        <div class="schedule-calendar-header">
+
+                            <h2>スケジュール</h2>
+
+                            <button
+                                type="button"
+                                id="calendar-change"
+                                class="calendar-change-button"
+                            >
+                                カレンダーチェンジ
+                            </button>
+
+                        </div>
+
+
+                        <!-- 横型カレンダー -->
+                        <div
+                            id="schedule-calendar-horizontal"
+                            class="schedule-calendar-view"
+                        >
+
+                            <div class="schedule-calendar-month-header">
+
+                                <button
+                                    type="button"
+                                    id="schedule-prev"
+                                    class="schedule-calendar-nav"
+                                >
+                                    ＜
+                                </button>
+
+                                <div id="schedule-month"></div>
+
+                                <button
+                                    type="button"
+                                    id="schedule-next"
+                                    class="schedule-calendar-nav"
+                                >
+                                    ＞
+                                </button>
+
+                            </div>
+
+
+                            <div class="schedule-week-header">
+                                <span>日</span>
+                                <span>月</span>
+                                <span>火</span>
+                                <span>水</span>
+                                <span>木</span>
+                                <span>金</span>
+                                <span>土</span>
+                            </div>
+
+
+                            <div id="schedule-calendar-grid"></div>
+
+                        </div>
+
+
+                        <!-- 縦型カレンダー -->
+                        <div
+                            id="schedule-calendar-vertical"
+                            class="schedule-calendar-view"
+                            hidden
+                        >
+                            <div id="schedule-calendar-list"></div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </section>
