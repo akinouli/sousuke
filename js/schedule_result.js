@@ -333,6 +333,209 @@ function createScheduleDayElement(
 
 
 // ----------------------------------------
+// カレンダーの週を作成
+// ----------------------------------------
+
+function createScheduleWeeks(
+    startDate,
+    deadline
+) {
+
+    const weeks = [];
+
+    // 作業開始日を含む週の日曜日
+    const firstWeekStart =
+        new Date(startDate);
+
+    firstWeekStart.setDate(
+        firstWeekStart.getDate() -
+        firstWeekStart.getDay()
+    );
+
+
+    // 締切日を含む週の土曜日
+    const lastWeekEnd =
+        new Date(deadline);
+
+    lastWeekEnd.setDate(
+        lastWeekEnd.getDate() +
+        (6 - lastWeekEnd.getDay())
+    );
+
+
+    let weekStart =
+        new Date(firstWeekStart);
+
+
+    while (
+        weekStart <= lastWeekEnd
+    ) {
+
+        const week = [];
+
+
+        // 1週間 = 7日
+        for (
+            let i = 0;
+            i < 7;
+            i++
+        ) {
+
+            const date =
+                new Date(weekStart);
+
+            date.setDate(
+                weekStart.getDate() + i
+            );
+
+            week.push(date);
+        }
+
+
+        weeks.push(week);
+
+
+        // 次の週へ
+        weekStart.setDate(
+            weekStart.getDate() + 7
+        );
+    }
+
+
+    return weeks;
+}
+
+
+// ----------------------------------------
+// 日付マスを作成
+// ----------------------------------------
+
+function createScheduleDayElement(
+    date,
+    data
+) {
+
+    const dateString =
+        formatScheduleDate(date);
+
+    const dayElement =
+        document.createElement("div");
+
+    dayElement.className =
+        "schedule-day";
+
+
+    // ------------------------------------
+    // 作業期間外
+    // ------------------------------------
+
+    const startDate =
+        parseScheduleDate(
+            data.startDate
+        );
+
+    const deadline =
+        parseScheduleDate(
+            data.deadline
+        );
+
+
+    if (
+        date < startDate ||
+        date > deadline
+    ) {
+
+        dayElement.classList.add(
+            "outside-period"
+        );
+    }
+
+
+    // ------------------------------------
+    // 休日
+    // ------------------------------------
+
+    if (
+        isScheduleHoliday(
+            dateString,
+            data.holidays
+        )
+    ) {
+
+        dayElement.classList.add(
+            "holiday"
+        );
+    }
+
+
+    // ------------------------------------
+    // 日付
+    // ------------------------------------
+
+    const dayNumber =
+        document.createElement("div");
+
+    dayNumber.className =
+        "schedule-day-number";
+
+    dayNumber.textContent =
+        date.getDate();
+
+
+    // ------------------------------------
+    // 月初
+    // ------------------------------------
+
+    if (
+        date.getDate() === 1
+    ) {
+
+        dayElement.classList.add(
+            "month-start"
+        );
+
+        dayNumber.dataset.month =
+            date.getMonth() + 1;
+    }
+
+
+    dayElement.appendChild(
+        dayNumber
+    );
+
+
+    return dayElement;
+}
+
+
+// ----------------------------------------
+// 週をカレンダーへ追加
+// ----------------------------------------
+
+function appendScheduleWeek(
+    container,
+    week,
+    data
+) {
+
+    week.forEach(
+        date => {
+
+            const dayElement =
+                createScheduleDayElement(
+                    date,
+                    data
+                );
+
+            container.appendChild(
+                dayElement
+            );
+        }
+    );
+}
+
+
+// ----------------------------------------
 // 横型カレンダー描画
 // ----------------------------------------
 
@@ -355,6 +558,7 @@ function renderHorizontalScheduleCalendar() {
         !scheduleCalendarData ||
         !scheduleCalendarMonth
     ) {
+
         return;
     }
 
@@ -373,64 +577,41 @@ function renderHorizontalScheduleCalendar() {
         `${year}年${month + 1}月`;
 
 
-    // 月初の日曜日
-
-    const firstDay =
-        new Date(
-            year,
-            month,
-            1
+    const weeks =
+        createScheduleWeeks(
+            parseScheduleDate(
+                scheduleCalendarData.startDate
+            ),
+            parseScheduleDate(
+                scheduleCalendarData.deadline
+            )
         );
 
-    const firstCalendarDate =
-        new Date(firstDay);
 
-    firstCalendarDate.setDate(
-        firstDay.getDate() -
-        firstDay.getDay()
+    // 現在の月に関係する週だけ表示
+    weeks.forEach(
+        week => {
+
+            const includesCurrentMonth =
+                week.some(
+                    date =>
+                        date.getFullYear() === year &&
+                        date.getMonth() === month
+                );
+
+
+            if (
+                includesCurrentMonth
+            ) {
+
+                appendScheduleWeek(
+                    grid,
+                    week,
+                    scheduleCalendarData
+                );
+            }
+        }
     );
-
-
-    // 月末の土曜日
-
-    const lastDay =
-        new Date(
-            year,
-            month + 1,
-            0
-        );
-
-    const lastCalendarDate =
-        new Date(lastDay);
-
-    lastCalendarDate.setDate(
-        lastDay.getDate() +
-        (6 - lastDay.getDay())
-    );
-
-
-    let currentDate =
-        new Date(firstCalendarDate);
-
-
-    while (
-        currentDate <= lastCalendarDate
-    ) {
-
-        const dayElement =
-            createScheduleDayElement(
-                currentDate,
-                scheduleCalendarData
-            );
-
-        grid.appendChild(
-            dayElement
-        );
-
-        currentDate =
-            addScheduleDay(currentDate);
-    }
-
 }
 
 
@@ -450,6 +631,7 @@ function renderVerticalScheduleCalendar() {
         !list ||
         !scheduleCalendarData
     ) {
+
         return;
     }
 
@@ -472,80 +654,29 @@ function renderVerticalScheduleCalendar() {
         !startDate ||
         !deadline
     ) {
+
         return;
     }
 
 
-    let currentDate =
-        new Date(startDate);
-
-
-    // 開始日より前の曜日を埋める
-
-    for (
-        let i = 0;
-        i < currentDate.getDay();
-        i++
-    ) {
-
-        const emptyDay =
-            document.createElement("div");
-
-        emptyDay.className =
-            "schedule-day outside-period";
-
-        list.appendChild(
-            emptyDay
+    const weeks =
+        createScheduleWeeks(
+            startDate,
+            deadline
         );
-    }
 
 
-    while (
-        currentDate <= deadline
-    ) {
+    // 作業期間に関係する週をすべて表示
+    weeks.forEach(
+        week => {
 
-        const dayElement =
-            createScheduleDayElement(
-                currentDate,
+            appendScheduleWeek(
+                list,
+                week,
                 scheduleCalendarData
             );
-
-        list.appendChild(
-            dayElement
-        );
-
-        currentDate =
-            addScheduleDay(currentDate);
-    }
-
-
-    // 最終週を土曜日まで埋める
-
-    const finalWeekday =
-        deadline.getDay();
-
-    if (
-        finalWeekday < 6
-    ) {
-
-        for (
-            let i = finalWeekday + 1;
-            i <= 6;
-            i++
-        ) {
-
-            const emptyDay =
-                document.createElement("div");
-
-            emptyDay.className =
-                "schedule-day outside-period";
-
-            list.appendChild(
-                emptyDay
-            );
         }
-    }
-
+    );
 }
 
 
@@ -566,7 +697,6 @@ function renderScheduleCalendar() {
 
 
     renderVerticalScheduleCalendar();
-
 }
 
 
@@ -581,6 +711,7 @@ function displayScheduleCalendar(
     if (
         !resultData
     ) {
+
         return;
     }
 
@@ -595,7 +726,10 @@ function displayScheduleCalendar(
         );
 
 
-    if (!startDate) {
+    if (
+        !startDate
+    ) {
+
         return;
     }
 
@@ -609,7 +743,6 @@ function displayScheduleCalendar(
 
 
     renderScheduleCalendar();
-
 }
 
 
@@ -634,6 +767,7 @@ function changeScheduleCalendar() {
         !horizontal ||
         !vertical
     ) {
+
         return;
     }
 
@@ -665,7 +799,6 @@ function changeScheduleCalendar() {
 
 
     renderScheduleCalendar();
-
 }
 
 
@@ -676,13 +809,26 @@ function changeScheduleCalendar() {
 function showPreviousScheduleMonth() {
 
     if (
-        !scheduleCalendarMonth
+        !scheduleCalendarMonth ||
+        !scheduleCalendarData
     ) {
+
         return;
     }
 
 
-    scheduleCalendarMonth =
+    const startDate =
+        parseScheduleDate(
+            scheduleCalendarData.startDate
+        );
+
+    const deadline =
+        parseScheduleDate(
+            scheduleCalendarData.deadline
+        );
+
+
+    const previousMonth =
         new Date(
             scheduleCalendarMonth.getFullYear(),
             scheduleCalendarMonth.getMonth() - 1,
@@ -690,8 +836,24 @@ function showPreviousScheduleMonth() {
         );
 
 
-    renderHorizontalScheduleCalendar();
+    // 作業開始月より前には移動しない
+    if (
+        previousMonth <
+        new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            1
+        )
+    ) {
 
+        return;
+    }
+
+
+    scheduleCalendarMonth =
+        previousMonth;
+
+    renderHorizontalScheduleCalendar();
 }
 
 
@@ -702,13 +864,26 @@ function showPreviousScheduleMonth() {
 function showNextScheduleMonth() {
 
     if (
-        !scheduleCalendarMonth
+        !scheduleCalendarMonth ||
+        !scheduleCalendarData
     ) {
+
         return;
     }
 
 
-    scheduleCalendarMonth =
+    const startDate =
+        parseScheduleDate(
+            scheduleCalendarData.startDate
+        );
+
+    const deadline =
+        parseScheduleDate(
+            scheduleCalendarData.deadline
+        );
+
+
+    const nextMonth =
         new Date(
             scheduleCalendarMonth.getFullYear(),
             scheduleCalendarMonth.getMonth() + 1,
@@ -716,9 +891,26 @@ function showNextScheduleMonth() {
         );
 
 
-    renderHorizontalScheduleCalendar();
+    // 締切月より後には移動しない
+    if (
+        nextMonth >
+        new Date(
+            deadline.getFullYear(),
+            deadline.getMonth(),
+            1
+        )
+    ) {
 
+        return;
+    }
+
+
+    scheduleCalendarMonth =
+        nextMonth;
+
+    renderHorizontalScheduleCalendar();
 }
+
 
 
 // ----------------------------------------
