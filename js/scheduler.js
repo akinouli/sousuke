@@ -32,17 +32,8 @@ function receiveScheduleData(scheduleData) {
 
 
     // ----------------------------------------
-    // 受け取ったデータを確認
-    // ----------------------------------------
-
-    console.log(
-        "scheduler.js - 入力データ受信:",
-        scheduleData
-    );
-
-
-    // ----------------------------------------
-    // Step.1へ渡す
+    // Step.1
+    // 作業時間・活動時間を分数へ変換
     // ----------------------------------------
 
     const productionWorkMinutes =
@@ -63,47 +54,214 @@ function receiveScheduleData(scheduleData) {
         );
 
 
+    // ----------------------------------------
+    // 計算用工程データ
+    // ----------------------------------------
+
+    const productionCalculationProcesses =
+        productionProcesses.map(
+            (process, index) => {
+
+                return {
+                    ...process,
+                    minutes:
+                        productionWorkMinutes[index]
+                };
+
+            }
+        );
+
+    const finishingCalculationProcesses =
+        finishingProcesses.map(
+            (process, index) => {
+
+                return {
+                    ...process,
+                    minutes:
+                        finishingWorkMinutes[index]
+                };
+
+            }
+        );
+
+
+    // ----------------------------------------
+    // Step.2
+    // 仮スケジュール作成
+    // ----------------------------------------
+
+    const productionSchedule =
+        createDraftSchedule(
+            productionCalculationProcesses,
+            activityMinutes,
+            holidays,
+            startDate
+        );
+
+
+    // 仕立て工程
+    let finishingSchedule = [];
+
+
+    if (finishingCalculationProcesses.length > 0) {
+
+        const completionDate =
+            productionSchedule.length > 0
+                ? productionSchedule[
+                    productionSchedule.length - 1
+                ].date
+                : null;
+
+        const finishingStartDate =
+            completionDate
+                ? new Date(completionDate)
+                : new Date(startDate);
+
+
+        // 制作終了日の翌日から仕立て開始
+        if (completionDate) {
+
+            finishingStartDate.setDate(
+                finishingStartDate.getDate() + 1
+            );
+
+        }
+
+
+        finishingSchedule =
+            createDraftSchedule(
+                finishingCalculationProcesses,
+                activityMinutes,
+                holidays,
+                finishingStartDate
+            );
+    }
+
+
+    const draftSchedule = {
+
+        productionSchedule:
+            productionSchedule,
+
+        finishingSchedule:
+            finishingSchedule,
+
+        schedule: [
+            ...productionSchedule,
+            ...finishingSchedule
+        ]
+
+    };
+
+
+    // ----------------------------------------
+    // Step.3
+    // 締切判定
+    // ----------------------------------------
+
+    const draftFinalEndDate =
+        draftSchedule.schedule.length > 0
+            ? draftSchedule.schedule[
+                draftSchedule.schedule.length - 1
+            ].date
+            : null;
+
+
+    const draftDeadlineMet =
+        draftFinalEndDate
+            ? isDeadlineMet(
+                draftFinalEndDate,
+                deadline
+            )
+            : false;
+
+
     console.log(
-        "scheduler.js - Step.1変換結果:",
+        "scheduler.js - Step.3 締切判定:",
         {
-            productionWorkMinutes,
-            finishingWorkMinutes,
-            activityMinutes
+            finalEndDate: draftFinalEndDate,
+            deadline: deadline,
+            isMet: draftDeadlineMet
         }
     );
 
 
     // ----------------------------------------
-    // 計算用データ
+    // Step.4
+    // 自動調整
     // ----------------------------------------
 
-    return {
+    let step4Data = null;
 
-        pageCount,
 
-        productionProcesses,
+    // 仮スケジュールが締切に間に合わない場合
+    if (!draftDeadlineMet) {
 
-        finishingProcesses,
+        step4Data =
+            calculateAutoAdjustment(
+                productionCalculationProcesses,
+                finishingCalculationProcesses,
+                activityMinutes,
+                holidays,
+                startDate,
+                deadline,
+                finishingCalculationProcesses.length > 0
+            );
 
-        productionWorkMinutes,
+    }
 
-        finishingWorkMinutes,
 
-        activityTimes,
+    // ----------------------------------------
+    // Step.5
+    // スケジュール確定用データを作成
+    // ----------------------------------------
 
-        activityMinutes,
+    const step1Data = {
 
-        holidays,
+        productionProcesses:
+            productionCalculationProcesses,
 
-        startDate,
+        finishingProcesses:
+            finishingCalculationProcesses,
 
-        deadline,
+        productionWorkMinutes:
+            productionWorkMinutes,
 
-        hasFinishing:
-            finishingProcesses.length > 0
+        finishingWorkMinutes:
+            finishingWorkMinutes,
+
+        activityTimes:
+            activityTimes,
+
+        activityMinutes:
+            activityMinutes
 
     };
+
+
+    const finalDisplayData =
+        createFinalDisplayData(
+            scheduleData,
+            step1Data,
+            draftSchedule,
+            step4Data
+        );
+
+
+    // ----------------------------------------
+    // 最終結果を返す
+    // ----------------------------------------
+
+    console.log(
+        "scheduler.js - Step.5 最終表示データ:",
+        finalDisplayData
+    );
+
+
+    return finalDisplayData;
 }
+
+
 
 
 // ========================================
