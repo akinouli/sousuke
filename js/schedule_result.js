@@ -302,8 +302,48 @@ function createScheduleDayElement(
     dayNumber.className =
         "schedule-day-number";
 
-    dayNumber.textContent =
-        date.getDate();
+
+    const isStartDate =
+        date.getTime() ===
+        startDate.getTime();
+
+    const isMonthStart =
+        date.getDate() === 1;
+
+
+    if (
+        isStartDate ||
+        isMonthStart
+    ) {
+
+        dayNumber.textContent =
+            `${date.getMonth() + 1}/${date.getDate()}`;
+
+    } else {
+
+        dayNumber.textContent =
+            date.getDate();
+    }
+
+
+    // 月初の情報
+    if (
+        isMonthStart
+    ) {
+
+        dayElement.classList.add(
+            "month-start"
+        );
+
+        dayNumber.dataset.month =
+            date.getMonth() + 1;
+    }
+
+
+    dayElement.appendChild(
+        dayNumber
+    );
+
 
 
     // ------------------------------------
@@ -404,6 +444,52 @@ function createScheduleWeeks(
 
     return weeks;
 }
+
+
+// ----------------------------------------
+// 曜日ヘッダーを作成
+// ----------------------------------------
+
+function createScheduleWeekdayHeader() {
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "schedule-weekday-header";
+
+
+    const weekdays = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+    ];
+
+
+    weekdays.forEach(
+        weekday => {
+
+            const day =
+                document.createElement("div");
+
+            day.className =
+                "schedule-weekday";
+
+            day.textContent =
+                weekday;
+
+            header.appendChild(day);
+        }
+    );
+
+
+    return header;
+}
+
 
 
 // ----------------------------------------
@@ -565,6 +651,11 @@ function renderHorizontalScheduleCalendar() {
 
     grid.innerHTML = "";
 
+    grid.appendChild(
+        createScheduleWeekdayHeader()
+    );
+
+
 
     const year =
         scheduleCalendarMonth.getFullYear();
@@ -637,6 +728,11 @@ function renderVerticalScheduleCalendar() {
 
 
     list.innerHTML = "";
+
+    list.appendChild(
+        createScheduleWeekdayHeader()
+    );
+
 
 
     const startDate =
