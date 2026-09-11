@@ -274,24 +274,6 @@ function createScheduleDayElement(
 
 
     // ------------------------------------
-    // 月初
-    // ------------------------------------
-
-    if (
-        date.getDate() === 1
-    ) {
-
-        dayElement.classList.add(
-            "month-start"
-        );
-
-        dayNumber.dataset.month =
-            date.getMonth() + 1;
-    }
-
-
-
-    // ------------------------------------
     // 日付
     // ------------------------------------
 
@@ -305,22 +287,27 @@ function createScheduleDayElement(
         date.getDate();
 
 
-    // 月初の月表示用データ
+    // ------------------------------------
+    // 月初
+    // ------------------------------------
 
     if (
         date.getDate() === 1
     ) {
 
+        dayElement.classList.add(
+            "month-start"
+        );
+
+        // 月初の月表示用データ
         dayNumber.dataset.month =
             date.getMonth() + 1;
-
     }
 
 
     dayElement.appendChild(
         dayNumber
     );
-
 
     return dayElement;
 }
