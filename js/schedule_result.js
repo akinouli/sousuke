@@ -3,7 +3,6 @@
 // 結果表示
 // ========================================
 
-
 // ----------------------------------------
 // ① 結果コメント
 // ----------------------------------------
@@ -14,52 +13,55 @@ function getResultCommentImage(
     adjustmentRate
 ) {
 
-    // ----------------------------------------
-    // 成立不能
-    // ----------------------------------------
+    // 成立不能 ----------------------------------------
 
-    if (autoAdjustmentResult === "全て" && adjustmentRate >= 90) {
+    if (
+        autoAdjustmentResult === "全て" && adjustmentRate >= 90
+    ) {
         return "img/result/failed.png";
     }
 
 
-    // ----------------------------------------
-    // 全て自動調整
-    // ----------------------------------------
+    // 全て自動調整 ----------------------------------------
 
-    if (autoAdjustmentResult === "全て") {
-
-        if (adjustmentRate >= 10) {
+    if (
+        autoAdjustmentResult === "全て"
+    ) {
+        if (
+            adjustmentRate >= 10
+        ) {
             return "img/result/all_10%over.png";
         }
-
     }
 
 
-    // ----------------------------------------
-    // 一部自動調整
-    // ----------------------------------------
+    // 一部自動調整 ----------------------------------------
 
-    if (autoAdjustmentResult === "一部") {
-
-        if (adjustmentRate >= 10) {
+    if (
+        autoAdjustmentResult === "一部"
+    ) {
+        if (
+            adjustmentRate >= 10
+        ) {
             return "img/result/pert_10%over.png";
         }
-
     }
 
 
-    // ----------------------------------------
-    // 自動調整なし
-    // ----------------------------------------
+    // 自動調整なし ----------------------------------------
 
-    if (autoAdjustmentResult === "なし") {
-
-        if (emptyDays >= 30) {
+    if (
+        autoAdjustmentResult === "なし"
+    ) {
+        if (
+            emptyDays >= 30
+        ) {
             return "img/result/30DaysLeft_0%.png";
         }
 
-        if (emptyDays >= 7) {
+        if (
+            emptyDays >= 7
+        ) {
             return "img/result/7DaysLeft_0%.png";
         }
 
@@ -71,39 +73,41 @@ function getResultCommentImage(
 }
 
 
-// ----------------------------------------
-// 結果コメントを表示
-// ----------------------------------------
+// 結果コメントを表示 ----------------------------------------
 
-function displayResultComment(resultData) {
-
-    if (!resultData) {
+function displayResultComment(
+    resultData
+) {
+    if (
+        !resultData
+    ) {
         return;
     }
 
-    const resultComment =
-        document.getElementById("result-comment");
+    const resultComment = document.getElementById("result-comment");
 
-    if (!resultComment) {
+    if (
+        !resultComment
+    ) {
         return;
     }
 
-    const imagePath =
-        getResultCommentImage(
-            resultData.emptyDays,
-            resultData.autoAdjustmentResult,
-            resultData.adjustmentRate
-        );
+    const imagePath = getResultCommentImage(
+        resultData.emptyDays,
+        resultData.autoAdjustmentResult,
+        resultData.adjustmentRate
+    );
 
     resultComment.innerHTML = "";
 
-    if (!imagePath) {
+    if (
+        !imagePath
+    ) {
         return;
     }
 
-    const image =
-        document.createElement("img");
-
+    const image = document.createElement("img");
+        
     image.src = imagePath;
     image.alt = "スケジュール結果";
 

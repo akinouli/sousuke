@@ -3,7 +3,9 @@
 // 入力データ受け取り
 // ========================================
 
-function receiveScheduleData(scheduleData) {
+function receiveScheduleData(
+    scheduleData
+) {
 
     // ----------------------------------------
     // 入力データを受け取る
@@ -184,7 +186,10 @@ function receiveScheduleData(scheduleData) {
 // ========================================
 
 // 時間・分 → 分数
-function timeToMinutes(hours, minutes) {
+function timeToMinutes(
+    hours,
+    minutes
+) {
 
     return hours * 60 + minutes;
 }
@@ -193,7 +198,10 @@ function timeToMinutes(hours, minutes) {
 // 制作工程 → 作業分数
 // ----------------------------------------
 
-function convertProductionWorkMinutes(processes, pageCount) {
+function convertProductionWorkMinutes(
+    processes,
+    pageCount
+) {
 
     return processes.map(process => {
 
@@ -248,7 +256,9 @@ function convertFinishingWorkMinutes(
 // 曜日別活動時間 → 活動分数
 // ----------------------------------------
 
-function convertActivityMinutes(activityTimes) {
+function convertActivityMinutes(
+    activityTimes
+) {
 
     return activityTimes.map(day => {
 
