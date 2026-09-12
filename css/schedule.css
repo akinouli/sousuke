@@ -1396,8 +1396,6 @@ body {
 -------------------------------------------------- */
 
 .schedule-day.month-start .schedule-day-number::before {
-    content: attr(data-month) "/";
-
     margin-right: 2px;
 
     font-size: 11px;

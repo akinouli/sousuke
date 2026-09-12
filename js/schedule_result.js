@@ -458,9 +458,6 @@ function createScheduleDayElement(
         dayElement.classList.add(
             "month-start"
         );
-
-        dayNumber.dataset.month =
-            date.getMonth() + 1;
     }
 
 
