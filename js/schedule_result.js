@@ -616,6 +616,182 @@ function createScheduleDayElement(
 
 
 // ----------------------------------------
+// 行程一覧を取得
+// ----------------------------------------
+
+function getScheduleProcessList(data) {
+
+    return [
+        ...(data.productionSchedule || []),
+        ...(data.finishingSchedule || [])
+    ];
+}
+
+
+// ----------------------------------------
+// 行程レーンを作成
+// ----------------------------------------
+
+function createScheduleProcessRow(
+    week,
+    process
+) {
+
+    const startDate =
+        parseScheduleDate(
+            process.startDate
+        );
+
+    const endDate =
+        parseScheduleDate(
+            process.endDate
+        );
+
+    if (
+        !startDate ||
+        !endDate
+    ) {
+        return null;
+    }
+
+
+    const weekStart = week[0];
+    const weekEnd = week[6];
+
+
+    // この週に行程が存在しない
+    if (
+        endDate < weekStart ||
+        startDate > weekEnd
+    ) {
+        return null;
+    }
+
+
+    // この週で実際に表示する開始・終了位置
+    const displayStart =
+        startDate > weekStart
+            ? startDate
+            : weekStart;
+
+    const displayEnd =
+        endDate < weekEnd
+            ? endDate
+            : weekEnd;
+
+
+    // 行程名を表示する曜日
+    // 最初の週 → 実際の開始日
+    // それ以降 → 日曜日
+    const nameColumn =
+        displayStart.getDay();
+
+
+    // →を表示する曜日
+    // 最後の週 → 実際の終了日
+    // それ以外 → 土曜日
+    const arrowColumn =
+        endDate <= weekEnd
+            ? displayEnd.getDay()
+            : 6;
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "schedule-process-row";
+
+
+    // 7曜日分の表示を作成
+    for (
+        let i = 0;
+        i < 7;
+        i++
+    ) {
+
+        const cell =
+            document.createElement("span");
+
+        cell.className =
+            "schedule-process-cell";
+
+
+        // 行程期間外
+        if (
+            i < displayStart.getDay() ||
+            i > arrowColumn
+        ) {
+            row.appendChild(cell);
+            continue;
+        }
+
+
+        // 行程名＋→
+        if (
+            i === nameColumn &&
+            i === arrowColumn
+        ) {
+
+            cell.textContent =
+                `${process.name}→`;
+
+            cell.classList.add(
+                "process-name",
+                "process-arrow"
+            );
+        }
+
+
+        // 行程名
+        else if (
+            i === nameColumn
+        ) {
+
+            cell.textContent =
+                process.name;
+
+            cell.classList.add(
+                "process-name"
+            );
+        }
+
+
+        // →のみ
+        else if (
+            i === arrowColumn
+        ) {
+
+            cell.textContent =
+                "→";
+
+            cell.classList.add(
+                "process-arrow"
+            );
+        }
+
+
+        // ─
+        else {
+
+            cell.textContent =
+                "─";
+
+            cell.classList.add(
+                "process-line"
+            );
+        }
+
+
+        row.appendChild(cell);
+    }
+
+
+    return row;
+}
+
+
+// ----------------------------------------
 // 週をカレンダーへ追加
 // ----------------------------------------
 
@@ -626,6 +802,7 @@ function appendScheduleWeek(
     displayStartDate
 ) {
 
+    // 日付マス
     week.forEach(
         date => {
 
@@ -639,6 +816,31 @@ function appendScheduleWeek(
             container.appendChild(
                 dayElement
             );
+        }
+    );
+
+
+    // 行程
+    const processes =
+        getScheduleProcessList(data);
+
+
+    processes.forEach(
+        process => {
+
+            const processRow =
+                createScheduleProcessRow(
+                    week,
+                    process
+                );
+
+            if (
+                processRow
+            ) {
+                container.appendChild(
+                    processRow
+                );
+            }
         }
     );
 }
