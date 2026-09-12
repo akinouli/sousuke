@@ -629,7 +629,48 @@ function getScheduleProcessList(data) {
 
 
 // ----------------------------------------
-// 行程レーンを作成
+// 週内の行程を取得
+// ----------------------------------------
+
+function getScheduleWeekProcesses(
+    week,
+    data
+) {
+
+    const weekStart = week[0];
+    const weekEnd = week[6];
+
+    return getScheduleProcessList(data).filter(
+        process => {
+
+            const startDate =
+                parseScheduleDate(
+                    process.startDate
+                );
+
+            const endDate =
+                parseScheduleDate(
+                    process.endDate
+                );
+
+            if (
+                !startDate ||
+                !endDate
+            ) {
+                return false;
+            }
+
+            return (
+                endDate >= weekStart &&
+                startDate <= weekEnd
+            );
+        }
+    );
+}
+
+
+// ----------------------------------------
+// 行程表示を作成
 // ----------------------------------------
 
 function createScheduleProcessRow(
@@ -659,7 +700,7 @@ function createScheduleProcessRow(
     const weekEnd = week[6];
 
 
-    // この週に行程が存在しない
+    // この週に存在しない行程
     if (
         endDate < weekStart ||
         startDate > weekEnd
@@ -668,11 +709,19 @@ function createScheduleProcessRow(
     }
 
 
-    // この週で実際に表示する開始・終了位置
+    // ------------------------------------
+    // 表示開始位置
+    // ------------------------------------
+
     const displayStart =
         startDate > weekStart
             ? startDate
             : weekStart;
+
+
+    // ------------------------------------
+    // 表示終了位置
+    // ------------------------------------
 
     const displayEnd =
         endDate < weekEnd
@@ -680,21 +729,41 @@ function createScheduleProcessRow(
             : weekEnd;
 
 
-    // 行程名を表示する曜日
-    // 最初の週 → 実際の開始日
-    // それ以降 → 日曜日
+    // ------------------------------------
+    // 工程名の位置
+    // ------------------------------------
+    //
+    // 最初の週
+    // → 実際の開始曜日
+    //
+    // 2週目以降
+    // → 日曜日
+    //
+
     const nameColumn =
         displayStart.getDay();
 
 
-    // →を表示する曜日
-    // 最後の週 → 実際の終了日
-    // それ以外 → 土曜日
+    // ------------------------------------
+    // → の位置
+    // ------------------------------------
+    //
+    // 最終週
+    // → 実際の終了曜日
+    //
+    // それ以外
+    // → 土曜日
+    //
+
     const arrowColumn =
         endDate <= weekEnd
             ? displayEnd.getDay()
             : 6;
 
+
+    // ------------------------------------
+    // 行程表示
+    // ------------------------------------
 
     const row =
         document.createElement("div");
@@ -703,91 +772,163 @@ function createScheduleProcessRow(
         "schedule-process-row";
 
 
-    // 7曜日分の表示を作成
-    for (
-        let i = 0;
-        i < 7;
-        i++
-    ) {
-
-        const cell =
-            document.createElement("span");
-
-        cell.className =
-            "schedule-process-cell";
+    // 開始位置
+    row.style.gridColumn =
+        `${nameColumn + 1} / ${arrowColumn + 2}`;
 
 
-        // 行程期間外
-        if (
-            i < displayStart.getDay() ||
-            i > arrowColumn
-        ) {
-            row.appendChild(cell);
-            continue;
-        }
+    // ------------------------------------
+    // 工程名
+    // ------------------------------------
+
+    const name =
+        document.createElement("span");
+
+    name.className =
+        "schedule-process-name";
+
+    name.textContent =
+        process.name;
 
 
-        // 行程名＋→
-        if (
-            i === nameColumn &&
-            i === arrowColumn
-        ) {
+    // ------------------------------------
+    // 一本線
+    // ------------------------------------
 
-            cell.textContent =
-                `${process.name}→`;
+    const line =
+        document.createElement("span");
 
-            cell.classList.add(
-                "process-name",
-                "process-arrow"
-            );
-        }
+    line.className =
+        "schedule-process-line";
 
 
-        // 行程名
-        else if (
-            i === nameColumn
-        ) {
+    // ------------------------------------
+    // 矢印
+    // ------------------------------------
 
-            cell.textContent =
-                process.name;
+    const arrow =
+        document.createElement("span");
 
-            cell.classList.add(
-                "process-name"
-            );
-        }
+    arrow.className =
+        "schedule-process-arrow";
 
-
-        // →のみ
-        else if (
-            i === arrowColumn
-        ) {
-
-            cell.textContent =
-                "→";
-
-            cell.classList.add(
-                "process-arrow"
-            );
-        }
+    arrow.textContent =
+        "→";
 
 
-        // ─
-        else {
-
-            cell.textContent =
-                "─";
-
-            cell.classList.add(
-                "process-line"
-            );
-        }
-
-
-        row.appendChild(cell);
-    }
+    row.appendChild(name);
+    row.appendChild(line);
+    row.appendChild(arrow);
 
 
     return row;
+}
+
+
+// ----------------------------------------
+// 週をカレンダーへ追加
+// ----------------------------------------
+
+function appendScheduleWeek(
+    container,
+    week,
+    data,
+    displayStartDate
+) {
+
+    // ------------------------------------
+    // 週全体をまとめる
+    // ------------------------------------
+
+    const weekGrid =
+        document.createElement("div");
+
+    weekGrid.className =
+        "schedule-week-grid";
+
+
+    // ------------------------------------
+    // 日付マス
+    // ------------------------------------
+
+    week.forEach(
+        date => {
+
+            const dayElement =
+                createScheduleDayElement(
+                    date,
+                    data,
+                    displayStartDate
+                );
+
+            weekGrid.appendChild(
+                dayElement
+            );
+        }
+    );
+
+
+    // ------------------------------------
+    // この週の行程
+    // ------------------------------------
+
+    const processes =
+        getScheduleWeekProcesses(
+            week,
+            data
+        );
+
+
+    // 工程数をCSSへ渡す
+    weekGrid.style.setProperty(
+        "--schedule-process-count",
+        processes.length
+    );
+
+
+    // ------------------------------------
+    // 行程表示レイヤー
+    // ------------------------------------
+
+    const processLayer =
+        document.createElement("div");
+
+    processLayer.className =
+        "schedule-process-layer";
+
+
+    processes.forEach(
+        process => {
+
+            const processRow =
+                createScheduleProcessRow(
+                    week,
+                    process
+                );
+
+            if (
+                processRow
+            ) {
+                processLayer.appendChild(
+                    processRow
+                );
+            }
+        }
+    );
+
+
+    weekGrid.appendChild(
+        processLayer
+    );
+
+
+    // ------------------------------------
+    // カレンダーへ追加
+    // ------------------------------------
+
+    container.appendChild(
+        weekGrid
+    );
 }
 
 
