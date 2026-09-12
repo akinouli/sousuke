@@ -1391,6 +1391,42 @@ body {
 }
 
 
+/* --------------------------------------------------
+    カレンダーアイコン
+-------------------------------------------------- */
+
+.schedule-day-icons {
+    position: absolute;
+
+    top: 24px;
+    left: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+
+    width: 100%;
+
+    transform: translateX(-50%);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+.schedule-day-icon {
+    object-fit: contain;
+
+    width: auto;
+    height: 48px;
+
+    opacity: 0.5;
+}
+
+
+
 
 
 
@@ -1592,4 +1628,13 @@ body {
     .schedule-day-number {
         font-size: 12px;
     }
+
+    .schedule-day-icons {
+        top: 20px;
+    }
+
+    .schedule-day-icon {
+        height: 38px;
+    }
+
 }

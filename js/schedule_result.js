@@ -352,6 +352,141 @@ function createScheduleWeekdayHeader() {
 }
 
 
+// ----------------------------------------
+// カレンダーアイコンを作成
+// ----------------------------------------
+
+function createScheduleIcon(
+    src,
+    alt
+) {
+
+    const icon =
+        document.createElement("img");
+
+    icon.src = src;
+    icon.alt = alt;
+
+    icon.className =
+        "schedule-day-icon";
+
+    return icon;
+}
+
+
+// ----------------------------------------
+// カレンダーアイコンを追加
+// ----------------------------------------
+
+function addScheduleIcons(
+    dayElement,
+    date,
+    data
+) {
+
+    const dateString =
+        formatScheduleDate(date);
+
+    const startDate =
+        parseScheduleDate(
+            data.startDate
+        );
+
+    const completionDate =
+        parseScheduleDate(
+            data.completionDate
+        );
+
+    const deadline =
+        parseScheduleDate(
+            data.deadline
+        );
+
+
+    // アイコンエリア
+    const iconArea =
+        document.createElement("div");
+
+    iconArea.className =
+        "schedule-day-icons";
+
+
+    // 作業開始日
+    if (
+        startDate &&
+        date.getTime() === startDate.getTime()
+    ) {
+
+        iconArea.appendChild(
+            createScheduleIcon(
+                "icon/cal1_start.png",
+                "作業開始日"
+            )
+        );
+    }
+
+
+    // 作品完成日
+    if (
+        completionDate &&
+        date.getTime() === completionDate.getTime()
+    ) {
+
+        iconArea.appendChild(
+            createScheduleIcon(
+                "icon/cal2_completed.png",
+                "作品完成日"
+            )
+        );
+    }
+
+
+    // 締切日
+    if (
+        deadline &&
+        date.getTime() === deadline.getTime()
+    ) {
+
+        iconArea.appendChild(
+            createScheduleIcon(
+                "icon/cal3_deadline.png",
+                "締切日"
+            )
+        );
+    }
+
+
+    // 休日
+    if (
+        isScheduleHoliday(
+            dateString,
+            data.holidays
+        )
+    ) {
+
+        iconArea.appendChild(
+            createScheduleIcon(
+                "icon/cal4_holiday.png",
+                "休日"
+            )
+        );
+    }
+
+
+    // アイコンが1つ以上ある場合だけ追加
+    if (
+        iconArea.children.length > 0
+    ) {
+
+        dayElement.appendChild(
+            iconArea
+        );
+    }
+}
+
+
+
+
 
 
 // ----------------------------------------
@@ -466,6 +601,15 @@ function createScheduleDayElement(
     dayElement.appendChild(
         dayNumber
     );
+
+
+    // カレンダーアイコン
+    addScheduleIcons(
+        dayElement,
+        date,
+        data
+    );
+
 
     return dayElement;
 }
