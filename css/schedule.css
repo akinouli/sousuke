@@ -1500,11 +1500,16 @@ body {
     top: 27px;
     left: 0;
     right: 0;
-    bottom: 3px;
 
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 21px);
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(
+            var(--schedule-process-lanes, 0),
+            21px
+        );
 
     gap: 0;
 
@@ -1773,7 +1778,10 @@ body {
         bottom: 2px;
 
         grid-template-rows:
-            repeat(2, 19px);
+            repeat(
+                var(--schedule-process-lanes, 0),
+                19px
+            );
     }
 
 

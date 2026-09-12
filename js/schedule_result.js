@@ -670,17 +670,18 @@ function getScheduleWeekProcesses(
 
 
 // ----------------------------------------
-// 行程を2レーンに振り分け
+// 行程をレーンに振り分け
 // ----------------------------------------
+//
+// 必要な数だけレーンを自動追加
+//
 
 function assignScheduleProcessLanes(
     processes
 ) {
 
-    const laneEndDates = [
-        null,
-        null
-    ];
+    const laneEndDates = [];
+
 
     return processes.map(
         process => {
@@ -696,41 +697,53 @@ function assignScheduleProcessLanes(
                 );
 
 
-            // 1レーン目が空いている
-            if (
-                !laneEndDates[0] ||
-                startDate > laneEndDates[0]
+            // --------------------------------
+            // 空いているレーンを探す
+            // --------------------------------
+
+            let lane = -1;
+
+
+            for (
+                let i = 0;
+                i < laneEndDates.length;
+                i++
             ) {
 
-                laneEndDates[0] =
-                    endDate;
+                // 同じ終了日から始まる工程は
+                // 重なるものとして扱う
+                if (
+                    startDate > laneEndDates[i]
+                ) {
 
-                return 0;
+                    lane = i;
+
+                    break;
+                }
             }
 
 
-            // 2レーン目が空いている
+            // --------------------------------
+            // 空きレーンがなければ新規追加
+            // --------------------------------
+
             if (
-                !laneEndDates[1] ||
-                startDate > laneEndDates[1]
+                lane === -1
             ) {
 
-                laneEndDates[1] =
-                    endDate;
+                lane =
+                    laneEndDates.length;
 
-                return 1;
+                laneEndDates.push(
+                    endDate
+                );
+
+            } else {
+
+                laneEndDates[lane] =
+                    endDate;
             }
 
-
-            // 2レーンとも使用中
-            // → より早く空く方へ配置
-            const lane =
-                laneEndDates[0] <= laneEndDates[1]
-                    ? 0
-                    : 1;
-
-            laneEndDates[lane] =
-                endDate;
 
             return lane;
         }
