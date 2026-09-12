@@ -770,7 +770,10 @@ function createScheduleProcessRow(
     const weekEnd = week[6];
 
 
+    // ------------------------------------
     // この週に存在しない行程
+    // ------------------------------------
+
     if (
         endDate < weekStart ||
         startDate > weekEnd
@@ -780,8 +783,15 @@ function createScheduleProcessRow(
 
 
     // ------------------------------------
-    // 表示開始位置
+    // この週での表示開始日
     // ------------------------------------
+    //
+    // 最初の週
+    // → 実際の開始日
+    //
+    // 週を跨いだ続き
+    // → 日曜日
+    //
 
     const displayStart =
         startDate > weekStart
@@ -790,8 +800,15 @@ function createScheduleProcessRow(
 
 
     // ------------------------------------
-    // 表示終了位置
+    // この週での表示終了日
     // ------------------------------------
+    //
+    // 最終週
+    // → 実際の終了日
+    //
+    // それ以前の週
+    // → 土曜日
+    //
 
     const displayEnd =
         endDate < weekEnd
@@ -800,7 +817,7 @@ function createScheduleProcessRow(
 
 
     // ------------------------------------
-    // 工程名の位置
+    // 工程名の開始曜日
     // ------------------------------------
 
     const nameColumn =
@@ -808,13 +825,11 @@ function createScheduleProcessRow(
 
 
     // ------------------------------------
-    // → の位置
+    // → の終了曜日
     // ------------------------------------
 
     const arrowColumn =
-        endDate <= weekEnd
-            ? displayEnd.getDay()
-            : 6;
+        displayEnd.getDay();
 
 
     // ------------------------------------
@@ -828,12 +843,18 @@ function createScheduleProcessRow(
         "schedule-process-row";
 
 
-    // 曜日位置
+    // ------------------------------------
+    // 作業期間内だけを表示範囲にする
+    // ------------------------------------
+
     row.style.gridColumn =
         `${nameColumn + 1} / ${arrowColumn + 2}`;
 
 
-    // 2レーンのどちらに表示するか
+    // ------------------------------------
+    // 2レーン
+    // ------------------------------------
+
     row.style.gridRow =
         `${lane + 1}`;
 
