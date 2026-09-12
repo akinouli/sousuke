@@ -237,142 +237,6 @@ function getScheduleWeekday(date) {
 
 
 // ----------------------------------------
-// 日付マスを作成
-// ----------------------------------------
-
-function createScheduleDayElement(
-    date,
-    data
-) {
-
-    const dateString =
-        formatScheduleDate(date);
-
-    const dayElement =
-        document.createElement("div");
-
-    dayElement.className =
-        "schedule-day";
-
-
-    // ------------------------------------
-    // 作業期間外
-    // ------------------------------------
-
-    const startDate =
-        parseScheduleDate(data.startDate);
-
-    const deadline =
-        parseScheduleDate(data.deadline);
-
-
-    if (
-        date < startDate ||
-        date > deadline
-    ) {
-        dayElement.classList.add(
-            "outside-period"
-        );
-    }
-
-
-    // ------------------------------------
-    // 休日
-    // ------------------------------------
-
-    if (
-        isScheduleHoliday(
-            dateString,
-            data.holidays
-        )
-    ) {
-        dayElement.classList.add(
-            "holiday"
-        );
-    }
-
-
-    // ------------------------------------
-    // 日付
-    // ------------------------------------
-
-    const dayNumber =
-        document.createElement("div");
-
-    dayNumber.className =
-        "schedule-day-number";
-
-
-    const isStartDate =
-        date.getTime() ===
-        startDate.getTime();
-
-    const isMonthStart =
-        date.getDate() === 1;
-
-
-    if (
-        isStartDate ||
-        isMonthStart
-    ) {
-
-        dayNumber.textContent =
-            `${date.getMonth() + 1}/${date.getDate()}`;
-
-    } else {
-
-        dayNumber.textContent =
-            date.getDate();
-    }
-
-
-    // 月初の情報
-    if (
-        isMonthStart
-    ) {
-
-        dayElement.classList.add(
-            "month-start"
-        );
-
-        dayNumber.dataset.month =
-            date.getMonth() + 1;
-    }
-
-
-    dayElement.appendChild(
-        dayNumber
-    );
-
-
-
-    // ------------------------------------
-    // 月初
-    // ------------------------------------
-
-    if (
-        date.getDate() === 1
-    ) {
-
-        dayElement.classList.add(
-            "month-start"
-        );
-
-        // 月初の月表示用データ
-        dayNumber.dataset.month =
-            date.getMonth() + 1;
-    }
-
-
-    dayElement.appendChild(
-        dayNumber
-    );
-
-    return dayElement;
-}
-
-
-// ----------------------------------------
 // カレンダーの週を作成
 // ----------------------------------------
 
@@ -456,7 +320,7 @@ function createScheduleWeekdayHeader() {
         document.createElement("div");
 
     header.className =
-        "schedule-weekday-header";
+        "schedule-week-header";
 
 
     const weekdays = [
@@ -474,10 +338,7 @@ function createScheduleWeekdayHeader() {
         weekday => {
 
             const day =
-                document.createElement("div");
-
-            day.className =
-                "schedule-weekday";
+                document.createElement("span");
 
             day.textContent =
                 weekday;
@@ -489,6 +350,7 @@ function createScheduleWeekdayHeader() {
 
     return header;
 }
+
 
 
 
@@ -564,16 +426,33 @@ function createScheduleDayElement(
     dayNumber.className =
         "schedule-day-number";
 
-    dayNumber.textContent =
-        date.getDate();
 
+    const isStartDate =
+        date.getTime() ===
+        startDate.getTime();
 
-    // ------------------------------------
-    // 月初
-    // ------------------------------------
+    const isMonthStart =
+        date.getDate() === 1;
+
 
     if (
-        date.getDate() === 1
+        isStartDate ||
+        isMonthStart
+    ) {
+
+        dayNumber.textContent =
+            `${date.getMonth() + 1}/${date.getDate()}`;
+
+    } else {
+
+        dayNumber.textContent =
+            date.getDate();
+    }
+
+
+    // 月初の情報
+    if (
+        isMonthStart
     ) {
 
         dayElement.classList.add(
@@ -589,6 +468,28 @@ function createScheduleDayElement(
         dayNumber
     );
 
+
+    // ------------------------------------
+    // 月初
+    // ------------------------------------
+
+    if (
+        date.getDate() === 1
+    ) {
+
+        dayElement.classList.add(
+            "month-start"
+        );
+
+        // 月初の月表示用データ
+        dayNumber.dataset.month =
+            date.getMonth() + 1;
+    }
+
+
+    dayElement.appendChild(
+        dayNumber
+    );
 
     return dayElement;
 }
@@ -627,6 +528,11 @@ function appendScheduleWeek(
 
 function renderHorizontalScheduleCalendar() {
 
+    const view =
+        document.getElementById(
+            "schedule-calendar-horizontal"
+        );
+
     const grid =
         document.getElementById(
             "schedule-calendar-grid"
@@ -639,6 +545,7 @@ function renderHorizontalScheduleCalendar() {
 
 
     if (
+        !view ||
         !grid ||
         !monthLabel ||
         !scheduleCalendarData ||
@@ -649,11 +556,32 @@ function renderHorizontalScheduleCalendar() {
     }
 
 
+    // 曜日ヘッダーを作り直す
+    const oldHeader =
+        view.querySelector(
+            ".schedule-week-header"
+        );
+
+    if (oldHeader) {
+        oldHeader.remove();
+    }
+
+
+    const weekdayHeader =
+        createScheduleWeekdayHeader();
+
+    view.insertBefore(
+        weekdayHeader,
+        grid
+    );
+
+
     grid.innerHTML = "";
 
-    grid.appendChild(
-        createScheduleWeekdayHeader()
-    );
+
+
+
+
 
 
 
@@ -712,6 +640,11 @@ function renderHorizontalScheduleCalendar() {
 
 function renderVerticalScheduleCalendar() {
 
+    const view =
+        document.getElementById(
+            "schedule-calendar-vertical"
+        );
+
     const list =
         document.getElementById(
             "schedule-calendar-list"
@@ -719,6 +652,7 @@ function renderVerticalScheduleCalendar() {
 
 
     if (
+        !view ||
         !list ||
         !scheduleCalendarData
     ) {
@@ -727,11 +661,30 @@ function renderVerticalScheduleCalendar() {
     }
 
 
+    // 曜日ヘッダーを作り直す
+    const oldHeader =
+        view.querySelector(
+            ".schedule-week-header"
+        );
+
+    if (oldHeader) {
+        oldHeader.remove();
+    }
+
+
+    const weekdayHeader =
+        createScheduleWeekdayHeader();
+
+    view.insertBefore(
+        weekdayHeader,
+        list
+    );
+
+
     list.innerHTML = "";
 
-    list.appendChild(
-        createScheduleWeekdayHeader()
-    );
+
+
 
 
 
