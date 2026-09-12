@@ -1482,15 +1482,12 @@ body {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
 
-    min-height: max(
-        80px,
-        calc(
-            72px +
-            (var(--schedule-process-count, 0) * 28px)
-        )
-    );
-
     grid-column: 1 / -1;
+
+    /* 日付マスの高さをそのまま使用 */
+    min-height: 72px;
+
+    background: transparent;
 }
 
 
@@ -1501,18 +1498,20 @@ body {
 .schedule-process-layer {
     position: absolute;
 
-    top: 72px;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
 
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 1fr);
 
     gap: 0;
 
     pointer-events: none;
 
-    z-index: 3;
+    z-index: 5;
 }
 
 
@@ -1526,13 +1525,14 @@ body {
     display: flex;
     align-items: center;
 
-    height: 28px;
-
     min-width: 0;
+    min-height: 0;
 
     padding: 0;
 
     white-space: nowrap;
+
+    overflow: visible;
 }
 
 
@@ -1549,6 +1549,8 @@ body {
     font-weight: bold;
 
     white-space: nowrap;
+
+    z-index: 2;
 }
 
 
@@ -1559,27 +1561,38 @@ body {
 .schedule-process-line {
     flex: 1;
 
-    min-width: 8px;
+    min-width: 5px;
 
     height: 0;
-
-    margin: 0 2px;
 
     border-top: 2px solid currentColor;
 }
 
 
 /* ----------------------------------------
-    → 
+    CSS三角の矢印
 ---------------------------------------- */
 
 .schedule-process-arrow {
     flex-shrink: 0;
 
-    font-size: 18px;
-    line-height: 1;
+    width: 0;
+    height: 0;
 
-    font-weight: bold;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 9px solid currentColor;
+}
+
+
+/* ----------------------------------------
+    スマホ用 - 行程表示
+---------------------------------------- */
+
+@media (max-width: 600px) {
+
+
+
 }
 
 
@@ -1755,23 +1768,7 @@ body {
 
     /* スマホ用 - 行程表示 ---------------------------------------- */
     .schedule-week-grid {
-        min-height: max(
-            65px,
-            calc(
-                58px +
-                (var(--schedule-process-count, 0) * 24px)
-            )
-        );
-    }
-
-
-    .schedule-process-layer {
-        top: 58px;
-    }
-
-
-    .schedule-process-row {
-        height: 24px;
+        min-height: 65px;
     }
 
 
@@ -1781,16 +1778,16 @@ body {
 
 
     .schedule-process-line {
-        min-width: 5px;
-
-        margin: 0 1px;
+        min-width: 3px;
 
         border-top-width: 1.5px;
     }
 
 
     .schedule-process-arrow {
-        font-size: 15px;
+        border-top-width: 5px;
+        border-bottom-width: 5px;
+        border-left-width: 7px;
     }
 
 }
