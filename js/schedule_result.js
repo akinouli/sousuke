@@ -992,6 +992,21 @@ function appendScheduleWeek(
         "schedule-process-layer";
 
 
+    // ------------------------------------
+    // 行程レーン数に応じて週の高さを調整
+    // ------------------------------------
+
+    const laneCount =
+        lanes.length > 0
+            ? Math.max(...lanes) + 1
+            : 0;
+
+    processLayer.style.setProperty(
+        "--schedule-process-lanes",
+        laneCount
+    );
+
+
     processes.forEach(
         (process, index) => {
 
@@ -1012,6 +1027,19 @@ function appendScheduleWeek(
         }
     );
 
+
+    // ------------------------------------
+    // 行程表示に必要な高さを確保
+    // ------------------------------------
+
+    if (laneCount > 0) {
+
+        const processHeight =
+            27 + (laneCount * 21) + 3;
+
+        weekGrid.style.minHeight =
+            `${Math.max(80, processHeight)}px`;
+    }
 
     weekGrid.appendChild(
         processLayer
