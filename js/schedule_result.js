@@ -360,7 +360,8 @@ function createScheduleWeekdayHeader() {
 
 function createScheduleDayElement(
     date,
-    data
+    data,
+    displayStartDate
 ) {
 
     const dateString =
@@ -427,16 +428,17 @@ function createScheduleDayElement(
         "schedule-day-number";
 
 
-    const isStartDate =
+    const isDisplayStart =
+        displayStartDate &&
         date.getTime() ===
-        startDate.getTime();
+        displayStartDate.getTime();
 
     const isMonthStart =
         date.getDate() === 1;
 
 
     if (
-        isStartDate ||
+        isDisplayStart ||
         isMonthStart
     ) {
 
@@ -476,7 +478,8 @@ function createScheduleDayElement(
 function appendScheduleWeek(
     container,
     week,
-    data
+    data,
+    displayStartDate
 ) {
 
     week.forEach(
@@ -485,7 +488,8 @@ function appendScheduleWeek(
             const dayElement =
                 createScheduleDayElement(
                     date,
-                    data
+                    data,
+                    displayStartDate
                 );
 
             container.appendChild(
@@ -580,8 +584,12 @@ function renderHorizontalScheduleCalendar() {
             )
         );
 
+    
+    
 
     // 現在の月に関係する週だけ表示
+    let isFirstDisplayedWeek = true;
+
     weeks.forEach(
         week => {
 
@@ -600,8 +608,13 @@ function renderHorizontalScheduleCalendar() {
                 appendScheduleWeek(
                     grid,
                     week,
-                    scheduleCalendarData
+                    scheduleCalendarData,
+                    isFirstDisplayedWeek
+                        ? week[0]
+                        : null
                 );
+
+                isFirstDisplayedWeek = false;
             }
         }
     );
@@ -691,12 +704,15 @@ function renderVerticalScheduleCalendar() {
 
     // 作業期間に関係する週をすべて表示
     weeks.forEach(
-        week => {
+        (week, index) => {
 
             appendScheduleWeek(
                 list,
                 week,
-                scheduleCalendarData
+                scheduleCalendarData,
+                index === 0
+                    ? week[0]
+                    : null
             );
         }
     );
