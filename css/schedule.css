@@ -1477,14 +1477,31 @@ body {
 /* 1週間分のカレンダー */
 
 .schedule-week-grid {
+    --schedule-process-top: 27px;
+    --schedule-process-row-height: 21px;
+    --schedule-process-bottom: 3px;
+
     position: relative;
 
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
 
     grid-column: 1 / -1;
 
-    min-height: 72px;
+    min-height:
+        max(
+            80px,
+            calc(
+                var(--schedule-process-top)
+                +
+                var(--schedule-process-lanes, 0)
+                *
+                var(--schedule-process-row-height)
+                +
+                var(--schedule-process-bottom)
+            )
+        );
 
     background: transparent;
 }
@@ -1769,7 +1786,23 @@ body {
 
     /* スマホ用 - 行程表示 ---------------------------------------- */
     .schedule-week-grid {
-        min-height: 65px;
+        --schedule-process-top: 24px;
+        --schedule-process-row-height: 19px;
+        --schedule-process-bottom: 2px;
+
+        min-height:
+            max(
+                65px,
+                calc(
+                    var(--schedule-process-top)
+                    +
+                    var(--schedule-process-lanes, 0)
+                    *
+                    var(--schedule-process-row-height)
+                    +
+                    var(--schedule-process-bottom)
+                )
+            );
     }
 
 
