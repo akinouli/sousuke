@@ -431,10 +431,71 @@ function assignScheduleProcessLanes(processes) {
 }
 
 // ----------------------------------------
+// 行程の虹色を取得
+// ----------------------------------------
+
+function getScheduleProcessColor(
+  processIndex,
+  processCount
+) {
+
+  // 色相の基準点
+  const colorStops = [
+    { position: 0, hue: 0 },    // 赤
+    { position: 0.2, hue: 280 }, // 紫
+    { position: 0.4, hue: 240 }, // 青
+    { position: 0.6, hue: 120 }, // 緑
+    { position: 0.8, hue: 60 },  // 黄色
+    { position: 1, hue: 30 },    // オレンジ
+  ];
+
+  // 工程が1つだけの場合
+  const position = processCount <= 1
+    ? 0
+    : processIndex / (processCount - 1);
+
+  // 該当する色区間を探す
+  let start = colorStops[0];
+  let end = colorStops[colorStops.length - 1];
+
+  for (let i = 0; i < colorStops.length - 1; i++) {
+
+    if (
+      position >= colorStops[i].position &&
+      position <= colorStops[i + 1].position
+    ) {
+      start = colorStops[i];
+      end = colorStops[i + 1];
+
+      break;
+    }
+  }
+
+  // 区間内の位置
+  const range = end.position - start.position;
+
+  const localPosition = range === 0
+    ? 0
+    : (position - start.position) / range;
+
+  // 色相を補間
+  const hue = start.hue +
+    (end.hue - start.hue) * localPosition;
+
+  return hue;
+}
+
+// ----------------------------------------
 // 行程表示を作成
 // ----------------------------------------
 
-function createScheduleProcessRow(week, process, lane) {
+function createScheduleProcessRow(
+  week,
+  process,
+  lane,
+  processIndex,
+  processCount
+) {
 
   const startDate = parseScheduleDate(process.startDate);
   const endDate = parseScheduleDate(process.endDate);
@@ -513,14 +574,40 @@ function createScheduleProcessRow(week, process, lane) {
   row.style.gridRow = `${lane + 1}`;
 
   // ------------------------------------
-  // 工程名
-  // ------------------------------------
+// 工程の色
+// ------------------------------------
 
-  const name = document.createElement("span");
+const hue = getScheduleProcessColor(
+  processIndex,
+  processCount
+);
 
-  name.className = "schedule-process-name";
+// 工程名用：濃い色
+const nameColor = `hsl(${hue}, 65%, 35%)`;
 
-  name.textContent = process.name;
+// 線・矢印用：明るい色
+const accentColor = `hsl(${hue}, 75%, 65%)`;
+
+// ------------------------------------
+// 工程名
+// ------------------------------------
+
+const name = document.createElement("span");
+
+name.className = "schedule-process-name";
+
+name.textContent = process.name;
+
+// 濃い色
+name.style.color = nameColor;
+
+// 白フチ
+name.style.textShadow = `
+  -1px -1px 0 #fff,
+   1px -1px 0 #fff,
+  -1px  1px 0 #fff,
+   1px  1px 0 #fff
+`;
 
   // ------------------------------------
   // 一本線
@@ -530,6 +617,8 @@ function createScheduleProcessRow(week, process, lane) {
 
   line.className = "schedule-process-line";
 
+	line.style.backgroundColor = accentColor;
+
   // ------------------------------------
   // CSS三角の矢印
   // ------------------------------------
@@ -537,6 +626,8 @@ function createScheduleProcessRow(week, process, lane) {
   const arrow = document.createElement("span");
 
   arrow.className = "schedule-process-arrow";
+
+	arrow.style.borderLeftColor = accentColor;
 
   row.appendChild(name);
   row.appendChild(line);
@@ -575,6 +666,8 @@ function appendScheduleWeek(container, week, data, displayStartDate) {
 
   const processes = getScheduleWeekProcesses(week, data);
 
+	const allProcesses = getScheduleProcessList(data);
+
   // ------------------------------------
   // 2レーンへ振り分け
   // ------------------------------------
@@ -597,8 +690,17 @@ function appendScheduleWeek(container, week, data, displayStartDate) {
 
   processLayer.style.setProperty("--schedule-process-lanes", laneCount);
 
-  processes.forEach((process, index) => {
-    const processRow = createScheduleProcessRow(week, process, lanes[index]);
+	processes.forEach((process, index) => {
+
+		const processIndex = allProcesses.indexOf(process);
+
+		const processRow = createScheduleProcessRow(
+			week,
+			process,
+			lanes[index],
+			processIndex,
+			allProcesses.length,
+		);
 
     if (processRow) {
       processLayer.appendChild(processRow);
@@ -894,3 +996,4 @@ document.addEventListener("DOMContentLoaded", function () {
     nextButton.addEventListener("click", showNextScheduleMonth);
   }
 });
+
