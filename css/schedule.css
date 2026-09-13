@@ -1120,7 +1120,7 @@ body {
 .day-icon img {
     object-fit: contain;
     width: auto;
-    height: 60px;
+    height: 50px;
 }
 
 
@@ -1420,7 +1420,7 @@ body {
     object-fit: contain;
 
     width: auto;
-    height: 48px;
+    height: 50px;
 
     opacity: 0.5;
 }
@@ -1514,7 +1514,7 @@ body {
 .schedule-process-layer {
     position: absolute;
 
-    top: 27px;
+    top: 30px; /* 日付部分の余白 */
     left: 0;
     right: 0;
 

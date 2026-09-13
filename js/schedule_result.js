@@ -28,10 +28,18 @@ function getResultCommentImage(
         autoAdjustmentResult === "全て"
     ) {
         if (
+            adjustmentRate >= 90
+        ) {
+            return "img/result/all_t_90p.png";
+        }
+
+        if (
             adjustmentRate >= 10
         ) {
-            return "img/result/all_10%over.png";
+            return "img/result/all_t_10p.png";
         }
+
+        return "img/result/all_t_10p.png";
     }
 
 
@@ -43,7 +51,7 @@ function getResultCommentImage(
         if (
             adjustmentRate >= 10
         ) {
-            return "img/result/pert_10%over.png";
+            return "img/result/all_f_10p.png";
         }
     }
 
@@ -56,16 +64,16 @@ function getResultCommentImage(
         if (
             emptyDays >= 30
         ) {
-            return "img/result/30DaysLeft_0%.png";
+            return "img/result/0p_30dl.png";
         }
 
         if (
             emptyDays >= 7
         ) {
-            return "img/result/7DaysLeft_0%.png";
+            return "img/result/0p_7dl.png";
         }
 
-        return "img/result/0DaysLeft_0%.png";
+        return "img/result/0p_0dl.png";
     }
 
 
@@ -108,7 +116,7 @@ function displayResultComment(
 
     const image = document.createElement("img");
         
-    image.src = imagePath;
+    image.src = encodeURI(imagePath);
     image.alt = "スケジュール結果";
 
     resultComment.appendChild(image);
@@ -219,8 +227,22 @@ function isScheduleHoliday(
         return false;
     }
 
-    return holidays.includes(
-        dateString
+    return holidays.some(
+        holiday => {
+
+            const holidayDate =
+                parseScheduleDate(
+                    holiday
+                );
+
+            if (!holidayDate) {
+                return false;
+            }
+
+            return formatScheduleDate(
+                holidayDate
+            ) === dateString;
+        }
     );
 }
 
