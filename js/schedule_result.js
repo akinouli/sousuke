@@ -558,23 +558,6 @@ function createScheduleDayElement(
 
 
     // ------------------------------------
-    // 休日
-    // ------------------------------------
-
-    if (
-        isScheduleHoliday(
-            dateString,
-            data.holidays
-        )
-    ) {
-
-        dayElement.classList.add(
-            "holiday"
-        );
-    }
-
-
-    // ------------------------------------
     // 日付
     // ------------------------------------
 
