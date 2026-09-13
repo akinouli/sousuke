@@ -1284,6 +1284,10 @@ function createFinalDisplayData(
         step4Data
     );
 
+    const isImpossible =
+        step4Data &&
+        step4Data.nextStep === "成立不能";
+
     // ----------------------------------------
     // 調整率
     // ----------------------------------------
@@ -1330,6 +1334,7 @@ function createFinalDisplayData(
         emptyDays: calculateEmptyDays( finalEndDate, data.deadline ),
         autoAdjustmentResult: autoAdjustmentResult,
         adjustmentRate: adjustmentRate,
+        isImpossible: isImpossible,
         startDate: data.startDate,
         productionSchedule: productionSchedule,
         completionDate: finalCompletionDate,

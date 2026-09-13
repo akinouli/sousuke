@@ -10,13 +10,14 @@
 function getResultCommentImage(
     emptyDays,
     autoAdjustmentResult,
-    adjustmentRate
+    adjustmentRate,
+    isImpossible
 ) {
 
     // 成立不能 ----------------------------------------
 
     if (
-        autoAdjustmentResult === "全て" && adjustmentRate >= 90
+        isImpossible
     ) {
         return "img/result/failed.png";
     }
@@ -28,18 +29,12 @@ function getResultCommentImage(
         autoAdjustmentResult === "全て"
     ) {
         if (
-            adjustmentRate >= 90
+            adjustmentRate <= 50
         ) {
-            return "img/result/all_t_90p.png";
+            return "img/result/all_t_50p.png";
         }
 
-        if (
-            adjustmentRate >= 10
-        ) {
-            return "img/result/all_t_10p.png";
-        }
-
-        return "img/result/all_t_10p.png";
+        return "img/result/all_t_90p.png";
     }
 
 
@@ -48,12 +43,9 @@ function getResultCommentImage(
     if (
         autoAdjustmentResult === "一部"
     ) {
-        if (
-            adjustmentRate >= 10
-        ) {
-            return "img/result/all_f_10p.png";
-        }
+        return "img/result/all_f_90p.png";
     }
+
 
 
     // 自動調整なし ----------------------------------------
@@ -103,7 +95,8 @@ function displayResultComment(
     const imagePath = getResultCommentImage(
         resultData.emptyDays,
         resultData.autoAdjustmentResult,
-        resultData.adjustmentRate
+        resultData.adjustmentRate,
+        resultData.isImpossible
     );
 
     resultComment.innerHTML = "";
