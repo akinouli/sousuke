@@ -698,9 +698,12 @@ function calculateAdjustmentMinutes(
     return targets.map(
         target => {
 
-            const adjustmentMinutes = Math.floor(
-                target.minutes *
-                adjustmentRate
+            const adjustmentMinutes = Math.max(
+                1,
+                Math.floor(
+                    target.minutes *
+                    adjustmentRate
+                )
             );
 
             return {
