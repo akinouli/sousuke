@@ -80,6 +80,7 @@ function displayResultComment(resultData) {
   resultComment.appendChild(image);
 }
 
+
 // ========================================
 // 2.スケジュールカレンダー
 // ========================================
@@ -759,6 +760,11 @@ function displayScheduleCalendar(resultData) {
     return;
   }
 
+	// 成立不能の場合はカレンダーを表示しない
+	if (resultData.isImpossible) {
+		return;
+	}
+
   scheduleCalendarData = resultData;
 
   const startDate = parseScheduleDate(resultData.startDate);
@@ -871,7 +877,7 @@ function showNextScheduleMonth() {
 // ----------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-    
+
   const changeButton = document.getElementById("calendar-change");
   const previousButton = document.getElementById("schedule-prev");
   const nextButton = document.getElementById("schedule-next");
