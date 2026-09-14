@@ -1387,18 +1387,25 @@ body {
 
 /* 工程名 */
 .schedule-process-name {
-	min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
 
-	overflow: hidden;
+  font-size: 13px;
+  line-height: 1.2;
 
-	white-space: nowrap;
+  font-weight: bold;
 
-	text-overflow: ellipsis;
-
-	font-size: 13px;
-	line-height: 1;
-
-	font-weight: bold;
+  text-shadow:
+    -1px -1px 0 #fff,
+     0   -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  0   0 #fff,
+     1px  0   0 #fff,
+    -1px  1px 0 #fff,
+     0    1px 0 #fff,
+     1px  1px 0 #fff;
 }
 
 /* 矢印 - 一本線 */

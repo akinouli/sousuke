@@ -574,40 +574,32 @@ function createScheduleProcessRow(
   row.style.gridRow = `${lane + 1}`;
 
   // ------------------------------------
-// 工程の色
-// ------------------------------------
+  // 工程の色
+  // ------------------------------------
 
-const hue = getScheduleProcessColor(
-  processIndex,
-  processCount
-);
+  const hue = getScheduleProcessColor(
+    processIndex,
+    processCount
+  );
 
-// 工程名用：濃い色
-const nameColor = `hsl(${hue}, 65%, 35%)`;
+  // 工程名用：濃い色
+  const nameColor = `hsl(${hue}, 65%, 35%)`;
 
-// 線・矢印用：明るい色
-const accentColor = `hsl(${hue}, 75%, 65%)`;
+  // 線・矢印用：明るい色
+  const accentColor = `hsl(${hue}, 75%, 65%)`;
 
-// ------------------------------------
-// 工程名
-// ------------------------------------
+  // ------------------------------------
+  // 工程名
+  // ------------------------------------
 
-const name = document.createElement("span");
+  const name = document.createElement("span");
 
-name.className = "schedule-process-name";
+  name.className = "schedule-process-name";
 
-name.textContent = process.name;
+  name.textContent = process.name;
 
-// 濃い色
-name.style.color = nameColor;
-
-// 白フチ
-name.style.textShadow = `
-  -1px -1px 0 #fff,
-   1px -1px 0 #fff,
-  -1px  1px 0 #fff,
-   1px  1px 0 #fff
-`;
+  // 濃い色
+  name.style.color = nameColor;
 
   // ------------------------------------
   // 一本線
