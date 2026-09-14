@@ -441,8 +441,8 @@ function getScheduleProcessColor(
 
   // 色相の基準点
   const colorStops = [
-    { position: 0, hue: 360 },    // 赤
-    { position: 1, hue: 30 },    // オレンジ
+    { position: 0, hue: 360 },  // 赤
+    { position: 1, hue: 30 }, // オレンジ
   ];
 
   // 工程が1つだけの場合
@@ -504,7 +504,7 @@ function createScheduleProcessRow(
   const weekEnd = week[6];
 
   // ------------------------------------
-  // この週に存在しない行程
+  // 週に存在しない行程を非表示
   // ------------------------------------
 
   if (endDate < weekStart || startDate > weekEnd) {
@@ -512,29 +512,17 @@ function createScheduleProcessRow(
   }
 
   // ------------------------------------
-  // この週での表示開始日
+  // 週の表示開始日
   // ------------------------------------
-  //
-  // 最初の週
-  // → 実際の開始日
-  //
-  // 週を跨いだ続き
-  // → 日曜日
-  //
 
+  // 最初の週 → 行程開始日 ・ 続きの週 → 日曜日
   const displayStart = startDate > weekStart ? startDate : weekStart;
 
   // ------------------------------------
-  // この週での表示終了日
+  // 週の表示終了日
   // ------------------------------------
-  //
-  // 最終週
-  // → 実際の終了日
-  //
-  // それ以前の週
-  // → 土曜日
-  //
 
+  // 続きの週 → 土曜日 ・ 最後の週 → 行程終了日
   const displayEnd = endDate < weekEnd ? endDate : weekEnd;
 
   // ------------------------------------
@@ -544,7 +532,7 @@ function createScheduleProcessRow(
   const nameColumn = displayStart.getDay();
 
   // ------------------------------------
-  // → の終了曜日
+  // 矢印の終了曜日
   // ------------------------------------
 
   const arrowColumn = displayEnd.getDay();
@@ -564,7 +552,7 @@ function createScheduleProcessRow(
   row.style.gridColumn = `${nameColumn + 1} / ${arrowColumn + 2}`;
 
   // ------------------------------------
-  // 2レーン
+  // 行程のレーン構成
   // ------------------------------------
 
   row.style.gridRow = `${lane + 1}`;
@@ -578,11 +566,11 @@ function createScheduleProcessRow(
     processCount
   );
 
-  // 工程名用：濃い色
-  const nameColor = `hsl(${hue}, 65%, 35%)`;
+  // 工程名カラー（色相・彩度・明度）
+  const nameColor = `hsl(${hue}, 60%, 30%)`;
 
-  // 線・矢印用：明るい色
-  const accentColor = `hsl(${hue}, 75%, 65%)`;
+  // 線・矢印カラー
+  const accentColor = `hsl(${hue}, 60%, 70%)`;
 
   // ------------------------------------
   // 工程名
