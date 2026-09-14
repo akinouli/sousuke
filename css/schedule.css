@@ -1272,7 +1272,7 @@ body {
 .schedule-day-icons {
 	position: absolute;
 
-	top: 24px;
+	bottom: 2px;
 	left: 50%;
 
 	display: flex;
