@@ -441,11 +441,7 @@ function getScheduleProcessColor(
 
   // 色相の基準点
   const colorStops = [
-    { position: 0, hue: 0 },    // 赤
-    { position: 0.2, hue: 280 }, // 紫
-    { position: 0.4, hue: 240 }, // 青
-    { position: 0.6, hue: 120 }, // 緑
-    { position: 0.8, hue: 60 },  // 黄色
+    { position: 0, hue: 360 },    // 赤
     { position: 1, hue: 30 },    // オレンジ
   ];
 
