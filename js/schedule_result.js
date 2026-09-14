@@ -617,7 +617,7 @@ name.style.textShadow = `
 
   line.className = "schedule-process-line";
 
-	line.style.backgroundColor = accentColor;
+	line.style.color = accentColor;
 
   // ------------------------------------
   // CSS三角の矢印
@@ -627,7 +627,7 @@ name.style.textShadow = `
 
   arrow.className = "schedule-process-arrow";
 
-	arrow.style.borderLeftColor = accentColor;
+	arrow.style.color = accentColor;
 
   row.appendChild(name);
   row.appendChild(line);
