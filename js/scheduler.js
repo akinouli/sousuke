@@ -18,7 +18,7 @@ function receiveScheduleData(scheduleData) {
   const deadline = scheduleData.deadline;
 
   // ----------------------------------------
-  // Step.1　作業時間・活動時間を分数へ変換　へ
+  // Step.1 作業時間・活動時間を分数へ変換 へ
   // ----------------------------------------
 
   const productionWorkMinutes = convertProductionWorkMinutes(
@@ -56,7 +56,7 @@ function receiveScheduleData(scheduleData) {
   );
 
   // ----------------------------------------
-  // Step.2　仮スケジュール作成　へ
+  // Step.2 仮スケジュール作成 へ
   // ----------------------------------------
 
   const productionSchedule = createDraftSchedule(
@@ -99,7 +99,7 @@ function receiveScheduleData(scheduleData) {
   };
 
   // ----------------------------------------
-  // Step.3　締切判定　へ
+  // Step.3 締切判定 へ
   // ----------------------------------------
 
   const draftFinalEndDate =
@@ -118,7 +118,7 @@ function receiveScheduleData(scheduleData) {
   });
 
   // ----------------------------------------
-  // Step.4　自動調整　へ
+  // Step.4 自動調整 へ
   // ----------------------------------------
 
   let step4Data = null;
@@ -137,7 +137,7 @@ function receiveScheduleData(scheduleData) {
   }
 
   // ----------------------------------------
-  // Step.5　スケジュール確定用データを作成　へ
+  // Step.5 スケジュール確定用データを作成 へ
   // ----------------------------------------
 
   const step1Data = {
@@ -355,7 +355,7 @@ function isDeadlineMet(finalEndDate, deadline) {
 // ========================================
 
 // ----------------------------------------
-// Step.4-①　調整対象を決定
+// Step.4-① 調整対象を決定
 // ----------------------------------------
 
 function getAdjustmentTargets(
@@ -407,7 +407,7 @@ function enableAllAutoAdjust(productionProcesses, finishingProcesses) {
 }
 
 // ----------------------------------------
-// Step.4-②　調整対象・調整対象外の作業分数を算出
+// Step.4-② 調整対象・調整対象外の作業分数を算出
 // ----------------------------------------
 
 function calculateWorkMinutes(productionProcesses, finishingProcesses, adjustmentTargets,) {
@@ -448,7 +448,7 @@ function calculateWorkMinutes(productionProcesses, finishingProcesses, adjustmen
 }
 
 // ----------------------------------------
-// Step.4-③　全体の活動分数を算出
+// Step.4-③ 全体の活動分数を算出
 // ----------------------------------------
 
 function calculateTotalActivityMinutes(
@@ -477,7 +477,7 @@ function calculateTotalActivityMinutes(
 }
 
 // ----------------------------------------
-// Step.4-④　調整対象の活動分数を算出
+// Step.4-④ 調整対象の活動分数を算出
 // ----------------------------------------
 
 function calculateMaxActivityMinutes(activityMinutes, hasFinishing) {
@@ -505,7 +505,7 @@ function calculateAdjustableActivityMinutes(
 }
 
 // ----------------------------------------
-// Step.4-⑤　調整率を算出
+// Step.4-⑤ 調整率を算出
 // ----------------------------------------
 
 function calculateAdjustmentRate(
@@ -521,7 +521,7 @@ function calculateAdjustmentRate(
 }
 
 // ----------------------------------------
-// Step.4-⑥　調整作業分数を算出
+// Step.4-⑥ 調整作業分数を算出
 // ----------------------------------------
 
 function calculateAdjustmentMinutes(targets, adjustmentRate) {
@@ -540,7 +540,7 @@ function calculateAdjustmentMinutes(targets, adjustmentRate) {
 }
 
 // ----------------------------------------
-// Step.4-⑦　再スケジューリング
+// Step.4-⑦ 再スケジューリング
 // ----------------------------------------
 
 function applyAdjustmentMinutes(processes, targets, type) {
@@ -627,7 +627,7 @@ function createAdjustedSchedule(
 }
 
 // ----------------------------------------
-// Step.4-⑧　締切判定
+// Step.4-⑧ 締切判定
 // ----------------------------------------
 
 function checkAdjustedDeadline(adjustedSchedule, deadline) {
@@ -662,7 +662,7 @@ function runAutoAdjustment(
   adjustAll,
 ) {
 
-  // Step.4-①　調整対象を決定 ----------------------------------------
+  // Step.4-① 調整対象を決定 ----------------------------------------
 
   let productionSettings = productionProcesses.map((process) =>
     adjustAll ? true : process.autoAdjust,
@@ -679,7 +679,7 @@ function runAutoAdjustment(
     finishingSettings,
   );
 
-  // Step.4-②　調整対象・対象外の作業分数 ----------------------------------------
+  // Step.4-② 調整対象・対象外の作業分数 ----------------------------------------
 
   const workMinutes = calculateWorkMinutes(
     productionProcesses,
@@ -687,7 +687,7 @@ function runAutoAdjustment(
     adjustmentTargets,
   );
 
-  // Step.4-③　全体の活動分数 ----------------------------------------
+  // Step.4-③ 全体の活動分数 ----------------------------------------
 
   const totalActivityMinutes = calculateTotalActivityMinutes(
     startDate,
@@ -696,7 +696,7 @@ function runAutoAdjustment(
     holidays,
   );
 
-  // Step.4-④　調整対象の活動分数 ----------------------------------------
+  // Step.4-④ 調整対象の活動分数 ----------------------------------------
 
   const maxActivityMinutes = calculateMaxActivityMinutes(
     activityMinutes,
@@ -709,21 +709,21 @@ function runAutoAdjustment(
     maxActivityMinutes,
   );
 
-  // Step.4-⑤　調整率 ----------------------------------------
+  // Step.4-⑤ 調整率 ----------------------------------------
 
   const adjustmentRate = calculateAdjustmentRate(
     adjustableActivityMinutes,
     workMinutes.adjustableMinutes,
   );
 
-  // Step.4-⑥　調整作業分数 ----------------------------------------
+  // Step.4-⑥ 調整作業分数 ----------------------------------------
 
   const adjustedTargets = calculateAdjustmentMinutes(
     adjustmentTargets,
     adjustmentRate,
   );
 
-  // Step.4-⑦　再スケジューリング ----------------------------------------
+  // Step.4-⑦ 再スケジューリング ----------------------------------------
 
   const adjustedSchedule = createAdjustedSchedule(
     productionProcesses,
@@ -734,7 +734,7 @@ function runAutoAdjustment(
     startDate,
   );
 
-  // Step.4-⑧　締切判定 ----------------------------------------
+  // Step.4-⑧ 締切判定 ----------------------------------------
 
   const adjustedDeadline = checkAdjustedDeadline(
     adjustedSchedule.schedule,
@@ -771,7 +771,7 @@ function calculateAutoAdjustment(
   hasFinishing,
 ) {
 
-  // まず一部調整　adjustAll = false ----------------------------------------
+  // まず一部調整 adjustAll = false ----------------------------------------
 
   let result = runAutoAdjustment(
     productionProcesses,
@@ -784,7 +784,7 @@ function calculateAutoAdjustment(
     false,
   );
 
-  // 一部調整　→　成立判定　→　成立！ ----------------------------------------
+  // 一部調整 → 成立判定 → 成立！ ----------------------------------------
 
   if (result.adjustedDeadline.isMet) {
     return {
@@ -794,7 +794,7 @@ function calculateAutoAdjustment(
     };
   }
 
-  // お節介判定　adjustAll = true ----------------------------------------
+  // お節介判定 adjustAll = true ----------------------------------------
 
   result = runAutoAdjustment(
     productionProcesses,
@@ -807,7 +807,7 @@ function calculateAutoAdjustment(
     true,
   );
 
-  // 全て調整　→　成立判定　→　成立！ ----------------------------------------
+  // 全て調整 → 成立判定 → 成立！ ----------------------------------------
 
   if (result.adjustedDeadline.isMet) {
     return {
@@ -817,7 +817,7 @@ function calculateAutoAdjustment(
     };
   }
 
-  // 全て調整　→　成立判定　→　成立不能 ----------------------------------------
+  // 全て調整 → 成立判定 → 成立不能 ----------------------------------------
 
   return {
     ...result,
