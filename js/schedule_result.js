@@ -973,3 +973,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+
+// ========================================
+// 3.作業終了予定日
+// ========================================
+
+// 作業終了予定日を表示 ----------------------------------------
+
+function displayResultEndDate(resultData) {
+
+    if (!resultData) {
+        return;
+    }
+
+    const endDate = document.getElementById("schedule-end-date-value");
+
+    if (!endDate) {
+        return;
+    }
+
+    const finalEndDate = parseScheduleDate(resultData.finalEndDate);
+
+    if (!finalEndDate) {
+        endDate.textContent = "";
+        return;
+    }
+
+    const year = finalEndDate.getFullYear();
+    const month = finalEndDate.getMonth() + 1;
+    const day = finalEndDate.getDate();
+
+    endDate.textContent = `${year}年${month}月${day}日`;
+}

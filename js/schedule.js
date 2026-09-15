@@ -1335,11 +1335,14 @@ function createSchedule() {
 
   console.log("scheduler.jsから受け取ったデータ:", schedulerData);
 
-  // 結果①　結果コメントを表示
+  // 結果① 結果コメントを表示
   displayResultComment(schedulerData);
 
   // 結果② スケジュールカレンダーを表示
   displayScheduleCalendar(schedulerData);
+
+  // 結果③ 作業終了予定日を表示
+  displayResultEndDate(schedulerData);
 
   // 結果画面へ移動
   showSection(inputSections.length);

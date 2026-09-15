@@ -1424,6 +1424,27 @@ body {
 }
 
 /* --------------------------------------------------
+  結果③ - 作業終了予定日
+-------------------------------------------------- */
+
+#schedule-end-date {
+    margin-top: 32px;
+    text-align: center;
+}
+
+#schedule-end-date h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+#schedule-end-date-value {
+    margin: 6px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* --------------------------------------------------
   スマホ用
 -------------------------------------------------- */
 
