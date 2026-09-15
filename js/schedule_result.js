@@ -1005,3 +1005,41 @@ function displayResultEndDate(resultData) {
 
     endDate.textContent = `${year}年${month}月${day}日`;
 }
+
+// ========================================
+// 4.自動調整結果
+// ========================================
+
+// 自動調整結果を表示 ----------------------------------------
+
+function displayResultAutoAdjustment(resultData) {
+
+  if (!resultData) {
+    return;
+  }
+
+  const adjustmentElement = document.getElementById(
+    "schedule-auto-adjustment"
+  );
+
+  const adjustmentValueElement = document.getElementById(
+    "schedule-auto-adjustment-value"
+  );
+
+  if (!adjustmentElement || !adjustmentValueElement) {
+    return;
+  }
+
+  // 自動調整なしの場合は何も表示しない
+  if (resultData.autoAdjustmentResult === "なし") {
+    adjustmentElement.style.display = "none";
+
+    return;
+  }
+
+  // 「一部」または「全て」を表示
+  adjustmentValueElement.textContent =
+    resultData.autoAdjustmentResult;
+
+  adjustmentElement.style.display = "";
+}
