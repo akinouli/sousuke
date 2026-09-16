@@ -665,7 +665,7 @@ function createProcessItem(process) {
   // ▼ ----------------------------------------
   const arrow = document.createElement("div");
 
-  arrow.className = "process-arrow";
+  arrow.className = "flow-arrow";
 
   // 小数点以下を切り捨てる
   const hourInput = row.querySelector(".process-hours");
