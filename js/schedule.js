@@ -577,18 +577,17 @@ const defaultPostProcesses = [
 const postWorkYes = document.getElementById("post-work-yes");
 const postWorkNo = document.getElementById("post-work-no");
 const postWorkArea = document.getElementById("post-work-area");
-const postWorkBottomArrow = document.getElementById("post-work-bottom-arrow");
 
 function updatePostWorkDisplay(shouldSchedule) {
 
   // する
   postWorkYes.classList.toggle("selected", shouldSchedule);
+
   // しない
   postWorkNo.classList.toggle("selected", !shouldSchedule);
-  // しない - 行程リスト非表示エリア
+
+  // 仕立て工程エリアを表示 / 非表示
   postWorkArea.hidden = !shouldSchedule;
-  // しない - ▼非表示エリア
-  postWorkBottomArrow.hidden = !shouldSchedule;
 }
 
 // する → リスト表示
@@ -696,9 +695,9 @@ function createProcessItem(process) {
     minuteInput.value = value;
   });
 
-  // 工程カード＋▼をセットにする ----------------------------------------
-  item.appendChild(row);
+  // ▼＋工程カードをセットにする
   item.appendChild(arrow);
+  item.appendChild(row);
 
   return item;
 }

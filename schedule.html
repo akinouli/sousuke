@@ -52,55 +52,92 @@
 							<img src="icon/pro1_start.png" alt="制作開始" />
 							<span>制作開始</span>
 						</div>
-
-						<div class="flow-arrow"></div>
 					</div>
 
-					<!-- 制作◆行程リスト ======================================== -->
+					<!-- 制作◆行程リスト -->
 					<div id="process-list" class="process-list"></div>
 
 					<!-- 制作行程用フッター -->
 					<div class="process-footer">
-						<!-- 左 -->
-						<button type="button" id="add-process" class="add-process-button">＋ 行程追加</button>
 
-						<!-- 中央 -->
-						<div class="completion-card">
-							<img src="icon/pro2_completed.png" alt="作品完成" />
-							<span>作品完成</span>
+						<!-- 左：行程追加 -->
+						<button
+							type="button"
+							id="add-process"
+							class="add-process-button"
+						>
+							＋ 行程追加
+						</button>
+
+						<!-- 中央：▼＋作品完成 -->
+						<div class="flow-item">
+							<div class="flow-arrow"></div>
+
+							<div class="completion-card">
+								<img src="icon/pro2_completed.png" alt="作品完成" />
+								<span>作品完成</span>
+							</div>
 						</div>
 
 						<!-- 右：空白 -->
 						<div></div>
 					</div>
 
-					<!-- 仕立て案内 ======================================== -->
-					<div class="post-work-flow-arrow"></div>
+					<!-- 仕立て案内 -->
+					<div class="flow-item post-work-option-item">
 
-					<div class="post-work-option">
-						<p>仕立て作業も<br />スケジューリングする？</p>
+						<div class="flow-arrow"></div>
 
-						<div class="post-work-buttons">
-							<button type="button" id="post-work-yes" class="post-work-btn selected">する</button>
-							<button type="button" id="post-work-no" class="post-work-btn">しない</button>
+						<div class="post-work-option">
+							<p>
+								仕立て作業も<br />
+								スケジューリングする？
+							</p>
+
+							<div class="post-work-buttons">
+								<button
+									type="button"
+									id="post-work-yes"
+									class="post-work-btn selected"
+								>
+									する
+								</button>
+
+								<button
+									type="button"
+									id="post-work-no"
+									class="post-work-btn"
+								>
+									しない
+								</button>
+							</div>
 						</div>
 					</div>
 
-					<div id="post-work-bottom-arrow" class="post-work-flow-arrow"></div>
-
-					<!-- 仕立て★行程リスト ======================================== -->
+					<!-- 仕立て★行程リスト -->
 					<div id="post-work-area">
 						<div id="post-process-list" class="process-list"></div>
 
 						<!-- 仕立て行程用フッター -->
 						<div class="process-footer">
-							<!-- 左 -->
-							<button type="button" id="add-post-process" class="add-process-button">＋ 行程追加</button>
 
-							<!-- 中央 -->
-							<div class="completion-card">
-								<img src="icon/pro3_deadline.png" alt="作業終了" />
-								<span>作業終了</span>
+							<!-- 左：行程追加 -->
+							<button
+								type="button"
+								id="add-post-process"
+								class="add-process-button"
+							>
+								＋ 行程追加
+							</button>
+
+							<!-- 中央：▼＋作業終了 -->
+							<div class="flow-item">
+								<div class="flow-arrow"></div>
+
+								<div class="completion-card">
+									<img src="icon/pro3_deadline.png" alt="作業終了" />
+									<span>作業終了</span>
+								</div>
 							</div>
 
 							<!-- 右：空白 -->
