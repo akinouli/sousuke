@@ -1442,7 +1442,8 @@ body {
 /* 最終行程カード */
 
 .final-process-card {
-    width: min(320px, 90%);
+    width: 90%;
+    max-width: 320px;
     min-height: 90px;
     margin: 0 auto;
 
