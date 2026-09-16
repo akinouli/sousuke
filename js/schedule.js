@@ -924,8 +924,8 @@ document.addEventListener("pointermove", (event) => {
     if (previousItem) {
       const rect = previousItem.getBoundingClientRect();
 
-      //移動判定位置（▼分+0.4）
-      const middle = rect.top + rect.height * 0.6;
+      //移動判定位置
+      const middle = rect.top + rect.height * 0.8;
 
       if (currentY < middle) {
         draggingList.insertBefore(draggingItem, previousItem);
@@ -940,8 +940,8 @@ document.addEventListener("pointermove", (event) => {
     if (nextItem) {
       const rect = nextItem.getBoundingClientRect();
 
-      //移動判定位置
-      const middle = rect.top + rect.height * 0.2;
+      //移動判定位置（▼分+0.4）
+      const middle = rect.top + rect.height * 0.4;
 
       if (currentY > middle) {
         draggingList.insertBefore(nextItem, draggingItem);
