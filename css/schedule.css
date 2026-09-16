@@ -1432,6 +1432,77 @@ body {
 }
 
 /* --------------------------------------------------
+  結果⑤ - 最終行程リスト
+-------------------------------------------------- */
+
+#final-process-list {
+    margin-top: 32px;
+}
+
+/* 最終行程カード */
+
+.final-process-card {
+    width: min(320px, 90%);
+    min-height: 90px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 14px 18px;
+
+    box-sizing: border-box;
+
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+}
+
+/* 行程名 */
+
+.final-process-name {
+    font-size: 16px;
+}
+
+/* 作業時間 */
+
+.final-process-time {
+    margin-top: 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 13px;
+}
+
+/* 「全体」「ページ毎」 */
+
+.final-process-unit {
+    white-space: nowrap;
+}
+
+/* 入力時間 → 調整後時間 */
+
+.final-process-adjustment {
+    white-space: nowrap;
+}
+
+/* 行程リスト編集ボタン */
+
+.edit-process-list-button {
+    display: block;
+
+    margin: 32px auto 0;
+}
+
+/* --------------------------------------------------
   スマホ用
 -------------------------------------------------- */
 

@@ -971,6 +971,16 @@ document.addEventListener("DOMContentLoaded", function () {
   if (nextButton) {
     nextButton.addEventListener("click", showNextScheduleMonth);
   }
+
+  const editProcessListButton =
+    document.getElementById("edit-process-list");
+
+  if (editProcessListButton) {
+    editProcessListButton.addEventListener(
+      "click",
+      editFinalProcessList
+    );
+  }
 });
 
 
@@ -1042,4 +1052,226 @@ function displayResultAutoAdjustment(resultData) {
     resultData.autoAdjustmentResult;
 
   adjustmentElement.style.display = "";
+}
+
+// ========================================
+// 5.最終行程リスト
+// ========================================
+
+// 作業時間を表示用文字列へ変換
+function formatFinalProcessWorkTime(workTime) {
+
+  if (!workTime) {
+    return "";
+  }
+
+  const unitText =
+    workTime.unit === "page"
+      ? "ページ毎"
+      : "全体";
+
+  const timeText =
+    `${workTime.hours}時間${workTime.minutes}分`;
+
+  return {
+    unitText: unitText,
+    timeText: timeText,
+  };
+}
+
+
+// 行程カードを作成
+function createFinalProcessCard(process) {
+
+  const card = document.createElement("div");
+
+  card.className = "final-process-card";
+
+
+  // ------------------------------------
+  // 行程名
+  // ------------------------------------
+
+  const name = document.createElement("div");
+
+  name.className = "final-process-name";
+
+  name.textContent = process.name;
+
+
+  // ------------------------------------
+  // 作業時間
+  // ------------------------------------
+
+  const time = document.createElement("div");
+
+  time.className = "final-process-time";
+
+
+  const workTime = formatFinalProcessWorkTime(
+    process.workTime
+  );
+
+
+  // 全体 / ページ毎
+  const unit = document.createElement("span");
+
+  unit.className = "final-process-unit";
+
+  unit.textContent = workTime.unitText;
+
+
+  // 入力時の作業時間
+  const originalTime = document.createElement("span");
+
+  originalTime.textContent =
+    `${workTime.timeText}`;
+
+
+  time.appendChild(unit);
+  time.appendChild(originalTime);
+
+
+  // ------------------------------------
+  // 調整後作業時間
+  // ------------------------------------
+
+  const adjustedTime = formatFinalProcessWorkTime(
+    process.adjustedWorkTime
+  );
+
+
+  const isAdjusted =
+    process.workTime.hours !== process.adjustedWorkTime.hours ||
+    process.workTime.minutes !== process.adjustedWorkTime.minutes;
+
+
+  if (isAdjusted) {
+
+    const adjustment = document.createElement("span");
+
+    adjustment.className =
+      "final-process-adjustment";
+
+    adjustment.textContent =
+      ` → ${adjustedTime.timeText}`;
+
+    time.appendChild(adjustment);
+  }
+
+
+  card.appendChild(name);
+  card.appendChild(time);
+
+  return card;
+}
+
+function displayFinalProcessList(resultData) {
+
+  if (!resultData) {
+    return;
+  }
+
+
+  const productionList =
+    document.getElementById("final-production-list");
+
+  const finishingList =
+    document.getElementById("final-finishing-list");
+
+  const finishingArea =
+    document.getElementById("final-finishing-area");
+
+
+  if (
+    !productionList ||
+    !finishingList ||
+    !finishingArea
+  ) {
+    return;
+  }
+
+
+  // ------------------------------------
+  // 制作工程
+  // ------------------------------------
+
+  productionList.innerHTML = "";
+
+  (resultData.productionProcessList || []).forEach(
+    (process) => {
+
+      const item = document.createElement("div");
+
+      item.className = "flow-item";
+
+
+      const arrow = document.createElement("div");
+
+      arrow.className = "flow-arrow";
+
+
+      const card = createFinalProcessCard(process);
+
+
+      item.appendChild(arrow);
+      item.appendChild(card);
+
+      productionList.appendChild(item);
+    }
+  );
+
+
+  // ------------------------------------
+  // 仕立て工程
+  // ------------------------------------
+
+  const finishingProcesses =
+    resultData.finishingProcessList || [];
+
+
+  if (finishingProcesses.length === 0) {
+
+    finishingArea.hidden = true;
+
+    return;
+  }
+
+
+  finishingArea.hidden = false;
+
+  finishingList.innerHTML = "";
+
+
+  finishingProcesses.forEach((process) => {
+
+    const item = document.createElement("div");
+
+    item.className = "flow-item";
+
+
+    const arrow = document.createElement("div");
+
+    arrow.className = "flow-arrow";
+
+
+    const card = createFinalProcessCard(process);
+
+
+    item.appendChild(arrow);
+    item.appendChild(card);
+
+    finishingList.appendChild(item);
+  });
+}
+
+// ----------------------------------------
+// 行程リスト編集ボタン
+// ----------------------------------------
+
+function editFinalProcessList() {
+
+  const processSectionIndex = 1;
+
+  showSection(processSectionIndex);
 }

@@ -1346,6 +1346,9 @@ function createSchedule() {
   // 結果④ 自動調整結果を表示
   displayResultAutoAdjustment(schedulerData);
 
+  // 結果⑤ 工程リストを表示
+  displayFinalProcessList(schedulerData);
+
   // 結果画面へ移動
   showSection(inputSections.length);
 }
