@@ -187,6 +187,18 @@ function validateSection(index) {
       }
     }
 
+    // 行程名の重複チェック
+    const processNames = processRows.length > 0
+      ? Array.from(processRows).map((row) =>
+          row.querySelector(".process-name").value.trim()
+        )
+      : [];
+
+    if (new Set(processNames).size !== processNames.length) {
+      alert("行程名は被らないように設定してください");
+      return false;
+    }
+
     // 仕立て ----------------------------------------
     // 【しない】ならチェックしない
     if (postWorkYes.classList.contains("selected")) {
@@ -222,6 +234,18 @@ function validateSection(index) {
           alert("作業時間を入力してください");
           return false;
         }
+      }
+
+      // 行程名の重複チェック
+      const postProcessNames = postProcessRows.length > 0
+        ? Array.from(postProcessRows).map((row) =>
+            row.querySelector(".process-name").value.trim()
+          )
+        : [];
+
+      if (new Set(postProcessNames).size !== postProcessNames.length) {
+        alert("行程名は被らないように設定してください");
+        return false;
       }
     }
   }
