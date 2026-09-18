@@ -723,28 +723,28 @@ body {
 
 /* ▼＋カードをまとめるセット */
 .flow-item {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
 
 /* ▼ */
 .flow-arrow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 32px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 32px;
 }
 
 .flow-arrow::before {
-    content: "";
+	content: "";
 
-    width: 0;
-    height: 0;
+	width: 0;
+	height: 0;
 
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 10px solid #aaa;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-top: 10px solid #aaa;
 }
 
 .post-work-flow-arrow[hidden] {
@@ -1356,21 +1356,21 @@ body {
 
 /* 工程名 */
 .schedule-process-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 0;
 
-  padding: 1px 4px;
+	padding: 1px 4px;
 
-  font-size: 13px;
-  line-height: 1.2;
+	font-size: 13px;
+	line-height: 1.2;
 
-  font-weight: bold;
+	font-weight: bold;
 
-  background: rgba(255, 255, 255, 0.5);
+	background: rgba(255, 255, 255, 0.5);
 
-  border-radius: 999px;
+	border-radius: 999px;
 }
 
 /* 矢印 - 一本線 */
@@ -1397,20 +1397,20 @@ body {
 -------------------------------------------------- */
 
 #schedule-end-date {
-    margin-top: 32px;
-    text-align: center;
+	margin-top: 32px;
+	text-align: center;
 }
 
 #schedule-end-date h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: normal;
+	margin: 0;
+	font-size: 18px;
+	font-weight: normal;
 }
 
 #schedule-end-date-value {
-    margin: 6px 0 0;
-    font-size: 24px;
-    font-weight: bold;
+	margin: 6px 0 0;
+	font-size: 24px;
+	font-weight: bold;
 }
 
 /* --------------------------------------------------
@@ -1418,17 +1418,17 @@ body {
 -------------------------------------------------- */
 
 #schedule-auto-adjustment {
-    margin-top: 20px;
-    text-align: center;
+	margin-top: 20px;
+	text-align: center;
 }
 
 #schedule-auto-adjustment p {
-    margin: 0;
+	margin: 0;
 }
 
 #schedule-auto-adjustment-value {
-    padding: 0 4px;
-    font-weight: bold;
+	padding: 0 4px;
+	font-weight: bold;
 }
 
 /* --------------------------------------------------
@@ -1436,71 +1436,71 @@ body {
 -------------------------------------------------- */
 
 #final-process-list {
-    margin-top: 32px;
+	margin-top: 32px;
 }
 
 /* 最終行程カード */
 
 .final-process-card {
-    width: 90%;
-    max-width: 320px;
-    min-height: 90px;
-    margin: 0 auto;
+	width: 90%;
+	max-width: 320px;
+	min-height: 90px;
+	margin: 0 auto;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
-    padding: 14px 18px;
+	padding: 14px 18px;
 
-    box-sizing: border-box;
+	box-sizing: border-box;
 
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 
-    font-size: 13px;
-    font-weight: bold;
-    color: #666;
+	font-size: 13px;
+	font-weight: bold;
+	color: #666;
 }
 
 /* 行程名 */
 
 .final-process-name {
-    font-size: 16px;
+	font-size: 16px;
 }
 
 /* 作業時間 */
 
 .final-process-time {
-    margin-top: 8px;
+	margin-top: 8px;
 
-    display: flex;
-    align-items: center;
-    gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 
-    font-size: 13px;
+	font-size: 13px;
 }
 
 /* 「全体」「ページ毎」 */
 
 .final-process-unit {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 /* 入力時間 → 調整後時間 */
 
 .final-process-adjustment {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 /* 行程リスト編集ボタン */
 
 .edit-process-list-button {
-    display: block;
+	display: block;
 
-    margin: 32px auto 0;
+	margin: 32px auto 0;
 }
 
 /* --------------------------------------------------
@@ -1570,28 +1570,22 @@ body {
 		line-height: 1.3;
 	}
 
-	/* --------------------------------------------------
-      行程リスト - 丸カード（制作開始 / 作品完成 / 作業終了）
-    -------------------------------------------------- */
-
+	/* 行程リスト - 丸カード（制作開始 / 作品完成 / 作業終了） -------------------------------------------------- */
 	.flow-card,
 	.completion-card {
-		width: 100px;
-		height: 100px;
+		width: 80px;
+		height: 80px;
 
 		font-size: 13px;
 	}
 
 	.flow-card img,
 	.completion-card img {
-		width: 50px;
-		height: 50px;
+		width: 55px;
+		height: 55px;
 	}
 
-	/* --------------------------------------------------
-      活動時間
-    -------------------------------------------------- */
-
+	/* 活動時間 -------------------------------------------------- */
 	.day-row {
 		grid-template-columns: 30px 45px 7px 45px 1fr;
 		gap: 5px;
@@ -1617,9 +1611,7 @@ body {
 		font-size: 16px;
 	}
 
-	/* --------------------------------------------------
-    	結果② スケジュールカレンダー
-    -------------------------------------------------- */
+	/* 結果② スケジュールカレンダー -------------------------------------------------- */
 	.schedule-calendar-header {
 		align-items: flex-start;
 	}
@@ -1670,7 +1662,7 @@ body {
 		height: 38px;
 	}
 
-	/* スマホ用 - 行程表示 ---------------------------------------- */
+	/* 行程表示 ---------------------------------------- */
 	.schedule-week-grid {
 		--schedule-process-top: 24px;
 		--schedule-process-row-height: 19px;
