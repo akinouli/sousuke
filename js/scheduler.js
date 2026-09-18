@@ -874,7 +874,13 @@ function createDisplayWorkTime(process, minutes, pageCount) {
 // 工程リストを表示用データへ変換
 // ----------------------------------------
 
-function createDisplayProcessList(processes, adjustedTargets, type, pageCount) {
+function createDisplayProcessList(
+  processes,
+  adjustedTargets,
+  type,
+  pageCount,
+  schedule
+) {
 
   return processes.map((process, index) => {
     const target = adjustedTargets.find(
@@ -1036,6 +1042,13 @@ function createFinalDisplayData(data, step1Data, step2Data, step4Data) {
       : null;
 
   // ----------------------------------------
+  // スケジュール
+  // ----------------------------------------
+
+  const productionSchedule = createDisplaySchedule(finalProductionSchedule);
+  const finishingSchedule = createDisplaySchedule(finalFinishingSchedule);
+
+  // ----------------------------------------
   // 工程リスト
   // ----------------------------------------
 
@@ -1044,6 +1057,7 @@ function createFinalDisplayData(data, step1Data, step2Data, step4Data) {
     step4Data ? step4Data.adjustedTargets : [],
     "production",
     data.pageCount,
+    productionSchedule,
   );
 
   const finishingProcessList = createDisplayProcessList(
@@ -1051,14 +1065,8 @@ function createFinalDisplayData(data, step1Data, step2Data, step4Data) {
     step4Data ? step4Data.adjustedTargets : [],
     "finishing",
     data.pageCount,
+    finishingSchedule,
   );
-
-  // ----------------------------------------
-  // スケジュール
-  // ----------------------------------------
-
-  const productionSchedule = createDisplaySchedule(finalProductionSchedule);
-  const finishingSchedule = createDisplaySchedule(finalFinishingSchedule);
 
   // ----------------------------------------
   // 最終結果
