@@ -908,25 +908,35 @@ function createDisplaySchedule(schedule) {
   let currentProcess = null;
 
   schedule.forEach((item) => {
+    const itemDate = new Date(item.date);
+
     if (!currentProcess || currentProcess.name !== item.processName) {
       if (currentProcess) {
-        result.push(currentProcess);
+        result.push({
+          ...currentProcess,
+          workDays: currentProcess.workDateKeys.size,
+        });
       }
 
       currentProcess = {
         name: item.processName,
-        startDate: new Date(item.date),
-        endDate: new Date(item.date),
+        startDate: itemDate,
+        endDate: itemDate,
+        workDateKeys: new Set([itemDate.toDateString()]),
       };
 
       return;
     }
 
-    currentProcess.endDate = new Date(item.date);
+    currentProcess.endDate = itemDate;
+    currentProcess.workDateKeys.add(itemDate.toDateString());
   });
 
   if (currentProcess) {
-    result.push(currentProcess);
+    result.push({
+      ...currentProcess,
+      workDays: currentProcess.workDateKeys.size,
+    });
   }
 
   return result;

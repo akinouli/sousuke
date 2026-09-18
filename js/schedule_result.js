@@ -1159,9 +1159,33 @@ function createFinalProcessCard(process) {
     time.appendChild(adjustment);
   }
 
+  // ------------------------------------
+  // 作業期間
+  // ------------------------------------
 
+  const period = document.createElement("div");
+
+  period.className = "final-process-period";
+
+  const startDate = parseScheduleDate(process.startDate);
+  const endDate = parseScheduleDate(process.endDate);
+
+  if (startDate && endDate) {
+
+    const startText =
+      `${startDate.getMonth() + 1}月${startDate.getDate()}日`;
+
+    const endText =
+      `${endDate.getMonth() + 1}月${endDate.getDate()}日`;
+
+    period.textContent =
+      `${startText}〜${endText}（${process.workDays}日間）`;
+  }
+
+  // 結果表示
   card.appendChild(name);
   card.appendChild(time);
+  card.appendChild(period);
 
   return card;
 }
