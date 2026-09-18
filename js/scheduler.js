@@ -889,6 +889,8 @@ function createDisplayProcessList(
 
     const adjustedMinutes = target ? target.adjustmentMinutes : process.minutes;
 
+    const processSchedule = schedule[index];
+
     return {
       name: process.name,
 
@@ -899,6 +901,10 @@ function createDisplayProcessList(
         adjustedMinutes,
         pageCount,
       ),
+
+      startDate: processSchedule ? processSchedule.startDate : null,
+      endDate: processSchedule ? processSchedule.endDate : null,
+      workDays: processSchedule ? processSchedule.workDays : 0,
     };
   });
 }
