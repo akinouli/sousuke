@@ -13,10 +13,14 @@ body {
 }
 
 body {
-	font-family: "Yu Gothic", sans-serif;
+	font-family: "M PLUS Rounded 1c", sans-serif;
 	min-height: 100vh;
 	overflow-x: hidden;
 	background: #b0ca71;
+}
+
+.font-en {
+	font-family: "Nunito", sans-serif;
 }
 
 /* --------------------------------------------------
@@ -36,17 +40,11 @@ body {
 	box-shadow: 0 2px 1px #0003;
 }
 
-.logo {
-	font-size: 22px;
+.subtitle {
+	color: #e45e32;
+	font-size: 18px;
 	font-weight: bold;
-	line-height: 1.1;
-}
-
-.logo span {
-	display: block;
-
-	font-size: 14px;
-	font-weight: normal;
+	line-height: 1.4;
 }
 
 /* --------------------------------------------------
