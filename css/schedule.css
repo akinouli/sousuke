@@ -36,15 +36,67 @@ body {
 	padding: 12px 20px;
 	text-align: center;
 
-	background: #fffe;
+	background: #fff;
 	box-shadow: 0 2px 1px #0003;
 }
 
-.subtitle {
+/* ヘッダー上段 */
+.header-main {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 42px;
+	padding: 0;
+}
+
+/* ホームボタン */
+.home-button {
+	position: absolute;
+	left: 20px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 42px;
+	height: 42px;
+}
+
+.home-button img {
+	display: block;
+	width: 100%;
+	height: 100%;
+
+	object-fit: contain;
+}
+
+/* ページタイトル */
+.page-title {
 	color: #e45e32;
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 1.4;
+}
+
+/* メニューボタン */
+.menu-button {
+	position: absolute;
+	right: 20px;
+
+	width: 42px;
+	height: 42px;
+
+	padding: 0;
+	border: none;
+	background: transparent;
+
+	font-size: 28px;
+	line-height: 1;
+
+	cursor: pointer;
 }
 
 /* --------------------------------------------------
@@ -312,7 +364,7 @@ body {
 	width: 100%;
 	padding: 12px 20px;
 
-	background: #fffe;
+	background: #b0ca71;
 
 	z-index: 900;
 }
@@ -353,16 +405,43 @@ body {
 .page-count-area {
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	gap: 8px;
 	margin-top: 60px;
 }
 
-#page-count {
+.page-count-input {
+	position: relative;
+
 	width: 150px;
+	height: 60px;
+
+	border: 1px solid #ccc;
+	border-radius: 8px;
+
+	background: #fff;
+}
+
+#page-count {
+	width: 100%;
+	height: 100%;
+
+	padding: 4px 12px 16px;
+
+	border: none;
+	outline: none;
+	background: transparent;
 
 	font-size: 28px;
 	text-align: center;
+}
+
+.page-count-input span {
+	position: absolute;
+	right: 8px;
+	bottom: 5px;
+
+	font-size: 9px;
+	line-height: 1.2;
+	color: #333;
 }
 
 /* --------------------------------------------------
@@ -760,7 +839,7 @@ body {
 
 .day-row {
 	display: grid;
-	grid-template-columns: 30px auto 9px auto 1fr;
+	grid-template-columns: 40px auto 9px auto 1fr;
 	align-items: center;
 	gap: 5px;
 	margin: 18px auto;
@@ -769,7 +848,29 @@ body {
 
 /* 曜日 */
 .day-name {
-	text-align: left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 32px;
+	height: 32px;
+
+	border-radius: 50%;
+
+	background: #fff;
+
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/* 日曜日 */
+.day-row:first-child .day-name {
+	color: #d9534f;
+}
+
+/* 土曜日 */
+.day-row:last-child .day-name {
+	color: #507ea4;
 }
 
 /* 時間・分 入力グループ */
@@ -1192,9 +1293,6 @@ body {
 .schedule-week-header {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-
-	border-left: 1px solid #ddd;
-	border-top: 1px solid #ddd;
 }
 
 .schedule-week-header span {
@@ -1202,15 +1300,24 @@ body {
 	align-items: center;
 	justify-content: center;
 
-	min-height: 32px;
+	width: 32px;
+	height: 32px;
+	margin: 4px auto;
 
-	border-right: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	border-radius: 50%;
 
-	background: #f5f5f5;
+	background: #fff;
 
 	font-size: 13px;
 	font-weight: bold;
+}
+
+.schedule-week-header span:first-child {
+	color: #d9534f;
+}
+
+.schedule-week-header span:last-child {
+	color: #507ea4;
 }
 
 /* 日付グリッド */

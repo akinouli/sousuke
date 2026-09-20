@@ -18,8 +18,26 @@
 	<body>
 		<!-- 上部固定エリア ========================= -->
 		<header class="schedule-header">
-			<!-- タイトル -->
-			<div class="subtitle">スケジュール作成</div>
+
+			<!-- 上段 -->
+			<div class="header-main">
+
+				<!-- ホーム -->
+				<a href="index.html" class="home-button">
+					<img src="icon/sousuke.png" alt="SOUSUKE ホーム" />
+				</a>
+
+				<!-- ページタイトル -->
+				<div class="page-title">
+					スケジュール作成
+				</div>
+
+				<!-- メニュー -->
+				<button type="button" class="menu-button" aria-label="メニュー">
+					☰
+				</button>
+
+			</div>
 
 			<!-- 進捗ナビ -->
 			<div id="progress-indicator" class="progress-indicator">
@@ -31,6 +49,7 @@
 				<span data-number="5"></span>
 				<span class="result-status">Result</span>
 			</div>
+
 		</header>
 
 		<!-- スケジュール作成セクション ========================= -->
@@ -42,7 +61,16 @@
 					<p>本文の制作予定ページ数を入力しよう</p>
 
 					<div class="page-count-area">
-						<input type="number" id="page-count" min="1" value="1" inputmode="numeric" /><span>ページ</span>
+						<div class="page-count-input">
+							<input
+								type="number"
+								id="page-count"
+								min="1"
+								value="1"
+								inputmode="numeric"
+							/>
+							<span>ページ</span>
+						</div>
 					</div>
 				</div>
 			</section>
