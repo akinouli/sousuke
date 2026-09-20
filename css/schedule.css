@@ -2,6 +2,23 @@
   基本
 -------------------------------------------------- */
 
+:root {
+	--color-green: #b0ca71;
+	--color-orange: #f08300;
+	--color-brown: #8d6449;
+	--color-cream: #f8f4e6;
+	--color-white: #fff;
+	--color-text: #333;
+	--color-gray-text: #666;
+	--color-subscript: #ccc;
+	--color-sunday: #c53d43;
+	--color-saturday: #4d5aaf;
+	--color-cal-label: #fff8;
+	--color-shadow: #0005;
+	--color-btn-bg: #eee;
+	--color-btn-font: #666;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -16,7 +33,7 @@ body {
 	font-family: "M PLUS Rounded 1c", sans-serif;
 	min-height: 100vh;
 	overflow-x: hidden;
-	background: #b0ca71;
+	background: var(--color-green);
 }
 
 .font-en {
@@ -36,8 +53,8 @@ body {
 	padding: 12px 20px;
 	text-align: center;
 
-	background: #fff;
-	box-shadow: 0 2px 1px #0003;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 /* ヘッダー上段 */
@@ -124,7 +141,7 @@ body {
 	min-height: 28px;
 
 	background: transparent;
-	color: #f08300;
+	color: var(--color-orange);
 
 	font-size: 14px;
 	font-weight: bold;
@@ -146,8 +163,8 @@ body {
 /* 進捗ナビ - ホバー */
 .progress-indicator .result-status:hover,
 .progress-indicator span[data-number]:hover {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 /* 進捗ナビ - クリック / タップ */
@@ -155,8 +172,8 @@ body {
 .progress-indicator span[data-number]:active {
 	transform: scale(0.94);
 
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 /* 進捗ナビ - Start */
@@ -165,8 +182,8 @@ body {
 	border-radius: 999px;
 	padding: 0 10px;
 
-	background: #f8f4e6;
-	color: #f08300;
+	background: var(--color-cream);
+	color: var(--color-orange);
 
 	cursor: default;
 }
@@ -183,7 +200,7 @@ body {
 
 	border-top: 8px solid transparent;
 	border-bottom: 8px solid transparent;
-	border-left: 8px solid #f8f4e6;
+	border-left: 8px solid var(--color-cream);
 
 	transform: translateY(-50%);
 }
@@ -207,8 +224,8 @@ body {
 	height: 28px;
 	border-radius: 50%;
 
-	background: #f8f4e6;
-	color: #f08300;
+	background: var(--color-cream);
+	color: var(--color-orange);
 
 	transition:
 		background 0.15s ease,
@@ -227,7 +244,7 @@ body {
 
 	border-top: 8px solid transparent;
 	border-bottom: 8px solid transparent;
-	border-left: 8px solid #f8f4e6;
+	border-left: 8px solid var(--color-cream);
 
 	transform: translateY(-50%);
 
@@ -236,12 +253,12 @@ body {
 
 /* 進捗ナビ - 水滴ホバー */
 .progress-indicator span[data-number]:hover::before {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 .progress-indicator span[data-number]:hover::after {
-	border-left-color: #f08300;
+	border-left-color: var(--color-orange);
 }
 
 /* 進捗ナビ - Result */
@@ -250,25 +267,25 @@ body {
 	padding: 0 10px;
 	border-radius: 999px;
 
-	background: #f8f4e6;
-	color: #f08300;
+	background: var(--color-cream);
+	color: var(--color-orange);
 
 	cursor: default;
 }
 
 /* 進捗ナビ - 現在地 */
 .progress-indicator span[data-number].active::before {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 .progress-indicator span[data-number].active::after {
-	border-left-color: #f08300;
+	border-left-color: var(--color-orange);
 }
 
 .progress-indicator .result-status.active {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 /* 進捗ナビ - Startは操作なし */
@@ -347,7 +364,7 @@ body {
 
 .section-content p {
 	line-height: 1.8;
-	color: #333;
+	color: var(--color-text);
 }
 
 /* --------------------------------------------------
@@ -364,7 +381,7 @@ body {
 	width: 100%;
 	padding: 12px 20px;
 
-	background: #b0ca71;
+	background: var(--color-green);
 
 	z-index: 900;
 }
@@ -376,8 +393,8 @@ body {
 	border: none;
 	border-radius: 12px;
 
-	background: #fff;
-	box-shadow: 0 2px 1px #0002;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 16px;
 	cursor: pointer;
@@ -390,7 +407,7 @@ body {
 .section-nav-button:active {
 	transform: scale(0.94);
 
-	box-shadow: 0 2px 1px #0002;
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 /* フッター - 「戻る」ボタン非表示設定 */
@@ -414,10 +431,10 @@ body {
 	width: 150px;
 	height: 60px;
 
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-subscript);
 	border-radius: 8px;
 
-	background: #fff;
+	background: var(--color-white);
 }
 
 #page-count {
@@ -441,7 +458,7 @@ body {
 
 	font-size: 9px;
 	line-height: 1.2;
-	color: #333;
+	color: var(--color-text);
 }
 
 /* --------------------------------------------------
@@ -474,8 +491,8 @@ body {
 	gap: 10px;
 	padding: 12px;
 
-	background: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 /* 行程カード - 工程内容 */
@@ -554,14 +571,14 @@ body {
 
 /* 行程カード - 自動調整 OFF */
 .auto-adjust-btn.off {
-	background: #eee;
-	color: #666;
+	background: var(--color-btn-bg);
+	color: var(--color-btn-font);
 }
 
 /* 行程カード - 自動調整 ON */
 .auto-adjust-btn.on {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 .auto-adjust-btn:active {
@@ -584,8 +601,8 @@ body {
 	padding: 0;
 	border: none;
 	border-radius: 50%;
-	background: #eee;
-	color: #666;
+	background: var(--color-btn-bg);
+	color: var(--color-btn-font);
 
 	font-size: 20px;
 	line-height: 1;
@@ -598,8 +615,8 @@ body {
 }
 
 .delete-btn:hover {
-	background: #ddd;
-	color: #333;
+	background: var(--color-subscript);
+	color: var(--color-text);
 }
 
 .delete-btn:active {
@@ -676,9 +693,9 @@ body {
 	border: none;
 	border-radius: 12px;
 
-	background: #8d6449;
-	color: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-brown);
+	color: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 14px;
 	font-weight: bold;
@@ -691,15 +708,11 @@ body {
 		box-shadow 0.1s ease;
 }
 
-.add-process-button:hover {
-	background: #f08300;
-}
-
 .add-process-button:active {
 	transform: scale(0.94);
 
-	background: #f08300;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-orange);
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 /* --------------------------------------------------
@@ -717,12 +730,12 @@ body {
 	margin: 0 auto;
 	border-radius: 50%;
 
-	background: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 13px;
 	font-weight: bold;
-	color: #666;
+	color: var(--color-text);
 }
 
 .flow-card img,
@@ -745,8 +758,8 @@ body {
 	padding: 14px 18px;
 	border-radius: 16px;
 
-	background: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 .post-work-option p {
@@ -754,7 +767,7 @@ body {
 
 	font-size: 13px;
 	line-height: 1.5;
-	color: #666;
+	color: var(--color-btn-font);
 }
 
 .post-work-buttons {
@@ -768,8 +781,8 @@ body {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	background: #eee;
-	color: #666;
+	background: var(--color-btn-bg);
+	color: var(--color-btn-font);
 
 	font-size: 14px;
 
@@ -782,8 +795,8 @@ body {
 }
 
 .post-work-btn.selected {
-	background: #f08300;
-	color: #fff;
+	background: var(--color-orange);
+	color: var(--color-white);
 }
 
 .post-work-btn:active {
@@ -857,7 +870,7 @@ body {
 
 	border-radius: 50%;
 
-	background: #fff;
+	background: var(--color-white);
 
 	font-size: 14px;
 	font-weight: bold;
@@ -865,12 +878,12 @@ body {
 
 /* 日曜日 */
 .day-row:first-child .day-name {
-	color: #d9534f;
+	color: var(--color-sunday);
 }
 
 /* 土曜日 */
 .day-row:last-child .day-name {
-	color: #507ea4;
+	color: var(--color-saturday);
 }
 
 /* 時間・分 入力グループ */
@@ -882,10 +895,10 @@ body {
 	width: 55px;
 	padding: 2px 3px;
 
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 	border-radius: 8px;
 
-	background: #fff;
+	background: var(--color-white);
 }
 
 /* 実際の入力欄 */
@@ -915,13 +928,13 @@ body {
 	font-size: 9px;
 	line-height: 1.2;
 
-	color: #333;
+	color: var(--color-text);
 }
 
 /* 時間と分の間の「：」 */
 .time-colon {
 	font-size: 18px;
-	color: #333;
+	color: var(--color-text);
 	text-align: center;
 }
 
@@ -1039,7 +1052,7 @@ body {
 	padding-top: 8px;
 
 	border: 1px solid #eee;
-	background: #fff;
+	background: var(--color-white);
 
 	cursor: pointer;
 }
@@ -1065,26 +1078,26 @@ body {
 }
 
 .calendar-day.holiday {
-	background: #d5d5d5;
-	color: #777;
+	background: #eee;
+	color: #666;
 }
 
 /* 日曜日カラー */
 .calendar-day.sunday .day-number {
-	color: #d98f8f;
+	color: var(--color-sunday);
 }
 
 /* 土曜日カラー */
 .calendar-day.saturday .day-number {
-	color: #7f9fc7;
+	color: var(--color-saturday);
 }
 
 .week-header span:first-child {
-	color: #d98f8f;
+	color: var(--color-sunday);
 }
 
 .week-header span:last-child {
-	color: #7f9fc7;
+	color: var(--color-saturday);
 }
 
 .day-number {
@@ -1220,9 +1233,9 @@ body {
 	border: none;
 	border-radius: 10px;
 
-	background: #8d6449;
-	color: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-brown);
+	color: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 13px;
 	cursor: pointer;
@@ -1232,15 +1245,11 @@ body {
 		box-shadow 0.1s ease;
 }
 
-.calendar-change-button:hover {
-	background: #f08300;
-}
-
 .calendar-change-button:active {
 	transform: scale(0.94);
 
-	background: #f08300;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-orange);
+	box-shadow: 0 2px 1px var(--color-shadow);
 }
 
 /* カレンダー表示 */
@@ -1276,8 +1285,8 @@ body {
 	border: none;
 	border-radius: 50%;
 
-	background: #fff;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 16px;
 	cursor: pointer;
@@ -1306,18 +1315,18 @@ body {
 
 	border-radius: 50%;
 
-	background: #fff;
+	background: var(--color-white);
 
 	font-size: 13px;
 	font-weight: bold;
 }
 
 .schedule-week-header span:first-child {
-	color: #d9534f;
+	color: var(--color-sunday);
 }
 
 .schedule-week-header span:last-child {
-	color: #507ea4;
+	color: var(--color-saturday);
 }
 
 /* 日付グリッド */
@@ -1340,7 +1349,7 @@ body {
 	border-right: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
 
-	background: #fff;
+	background: var(--color-white);
 }
 
 /* 日付 */
@@ -1390,7 +1399,7 @@ body {
 
 /* 今日 */
 .schedule-day.today {
-	box-shadow: inset 0 0 0 2px #f08300;
+	box-shadow: inset 0 0 0 2px var(--color-orange);
 }
 
 /* 縦型カレンダー用 */
@@ -1484,7 +1493,7 @@ body {
 
 	font-weight: bold;
 
-	background: #fff8;
+	background: var(--color-cal-label);
 
 	border-radius: 999px;
 }
@@ -1573,12 +1582,12 @@ body {
 	box-sizing: border-box;
 
 	border-radius: 16px;
-	background: #fff;
-	box-shadow: 0 2px 1px #0005;
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
 
 	font-size: 13px;
 	font-weight: bold;
-	color: #666;
+	color: var(--color-gray-text);
 }
 
 /* 行程名 */
