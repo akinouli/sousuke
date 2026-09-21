@@ -4,6 +4,7 @@
 
 :root {
 	--color-green: #b0ca71;
+	--color-darkgreen: #69821b;
 	--color-orange: #f08300;
 	--color-brown: #8d6449;
 	--color-cream: #f8f4e6;	
@@ -838,7 +839,7 @@ body {
 
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
-	border-top: 10px solid #69821b;
+	border-top: 10px solid var(--color-darkgreen);
 }
 
 .post-work-flow-arrow[hidden] {
@@ -1334,8 +1335,8 @@ body {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 
-	border-left: 1px solid #ddd;
-	border-top: 1px solid #ddd;
+	border-left: 1px solid var(--color-green);
+	border-top: 1px solid var(--color-green);
 }
 
 /* 日付マス */
@@ -1345,8 +1346,9 @@ body {
 	min-height: 80px;
 	padding: 6px;
 
-	border-right: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	border-radius: 10px;
+	border-right: 1px solid var(--color-green);
+	border-bottom: 1px solid var(--color-green);
 
 	background: var(--color-white);
 }
@@ -1358,7 +1360,7 @@ body {
 
 	font-size: 14px;
 	font-weight: bold;
-	text-align: left;
+	text-align: center;
 }
 
 /* カレンダーアイコン */
