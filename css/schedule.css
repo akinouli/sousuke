@@ -6,17 +6,16 @@
 	--color-green: #b0ca71;
 	--color-orange: #f08300;
 	--color-brown: #8d6449;
-	--color-cream: #f8f4e6;
+	--color-cream: #f8f4e6;	
 	--color-white: #fff;
+	--color-lightgray: #eee;
+	--color-gray: #ccc;
+	--color-subtext: #666;
 	--color-text: #333;
-	--color-gray-text: #666;
-	--color-subscript: #ccc;
-	--color-sunday: #c53d43;
-	--color-saturday: #4d5aaf;
+	--color-sunday: #ec6d71;
+	--color-saturday: #2a83a2;
 	--color-cal-label: #fff8;
 	--color-shadow: #0005;
-	--color-btn-bg: #eee;
-	--color-btn-font: #666;
 }
 
 * {
@@ -431,7 +430,7 @@ body {
 	width: 150px;
 	height: 60px;
 
-	border: 1px solid var(--color-subscript);
+	border: 1px solid var(--color-gray);
 	border-radius: 8px;
 
 	background: var(--color-white);
@@ -571,8 +570,8 @@ body {
 
 /* 行程カード - 自動調整 OFF */
 .auto-adjust-btn.off {
-	background: var(--color-btn-bg);
-	color: var(--color-btn-font);
+	background: var(--color-lightgray);
+	color: var(--color-subtext);
 }
 
 /* 行程カード - 自動調整 ON */
@@ -601,8 +600,8 @@ body {
 	padding: 0;
 	border: none;
 	border-radius: 50%;
-	background: var(--color-btn-bg);
-	color: var(--color-btn-font);
+	background: var(--color-lightgray);
+	color: var(--color-subtext);
 
 	font-size: 20px;
 	line-height: 1;
@@ -615,7 +614,7 @@ body {
 }
 
 .delete-btn:hover {
-	background: var(--color-subscript);
+	background: var(--color-gray);
 	color: var(--color-text);
 }
 
@@ -767,7 +766,7 @@ body {
 
 	font-size: 13px;
 	line-height: 1.5;
-	color: var(--color-btn-font);
+	color: var(--color-subtext);
 }
 
 .post-work-buttons {
@@ -781,8 +780,8 @@ body {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	background: var(--color-btn-bg);
-	color: var(--color-btn-font);
+	background: var(--color-lightgray);
+	color: var(--color-subtext);
 
 	font-size: 14px;
 
@@ -1394,7 +1393,7 @@ body {
 
 /* 範囲外の日付 */
 .schedule-day.outside-period {
-	background: #eee;
+	background: var(--color-lightgray);
 }
 
 /* 今日 */
@@ -1518,7 +1517,7 @@ body {
 }
 
 /* --------------------------------------------------
-  結果③ - 作業終了予定日
+  結果➂ - 作業終了予定日
 -------------------------------------------------- */
 
 #schedule-end-date {
@@ -1539,7 +1538,7 @@ body {
 }
 
 /* --------------------------------------------------
-  結果④ - 自動調整結果
+  結果➃ - 自動調整結果
 -------------------------------------------------- */
 
 #schedule-auto-adjustment {
@@ -1557,7 +1556,7 @@ body {
 }
 
 /* --------------------------------------------------
-  結果⑤ - 最終行程リスト
+  結果➄ - 最終行程リスト
 -------------------------------------------------- */
 
 #final-process-list {
@@ -1587,7 +1586,7 @@ body {
 
 	font-size: 13px;
 	font-weight: bold;
-	color: var(--color-gray-text);
+	color: var(--color-text);
 }
 
 /* 行程名 */
@@ -1633,6 +1632,7 @@ body {
 -------------------------------------------------- */
 
 @media (max-width: 600px) {
+	/* 入力➁ - 行程カード -------------------------------------------------- */
 	.process-row {
 		grid-template-columns: 25px minmax(0, 1fr) 32px;
 		padding: 10px 8px;
@@ -1676,6 +1676,7 @@ body {
 		height: 30px;
 	}
 
+	/* 入力➃➄ - カレンダー -------------------------------------------------- */
 	.calendar-day {
 		min-height: 70px;
 		padding-top: 7px;
@@ -1695,7 +1696,7 @@ body {
 		line-height: 1.3;
 	}
 
-	/* 行程リスト - 丸カード（制作開始 / 作品完成 / 作業終了） -------------------------------------------------- */
+	/* 入力➁ - 丸カード（制作開始 / 作品完成 / 作業終了） -------------------------------------------------- */
 	.flow-card,
 	.completion-card {
 		width: 80px;
@@ -1710,7 +1711,7 @@ body {
 		height: 55px;
 	}
 
-	/* 活動時間 -------------------------------------------------- */
+	/* 入力➂ - 活動時間 -------------------------------------------------- */
 	.day-row {
 		grid-template-columns: 30px 45px 7px 45px 1fr;
 		gap: 5px;
@@ -1736,7 +1737,7 @@ body {
 		font-size: 16px;
 	}
 
-	/* 結果② スケジュールカレンダー -------------------------------------------------- */
+	/* 結果 - カレンダー -------------------------------------------------- */
 	.schedule-calendar-header {
 		align-items: flex-start;
 	}
