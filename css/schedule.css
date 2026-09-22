@@ -1574,7 +1574,7 @@ body {
   max-width: 100%;
 
   margin: 48px auto 0;
-  padding: 18px 28px 16px;
+  padding: 15px 50px;
 
   border-radius: 999px;
 
@@ -1628,7 +1628,7 @@ body {
   max-width: 100%;
 
   margin: 42px auto 0;
-  padding: 18px 28px 24px;
+  padding: 10px 50px 15px;
 
   border-radius: 999px;
 
@@ -1682,7 +1682,7 @@ body {
 
 .final-process-card {
 	width: 90%;
-	max-width: 320px;
+	max-width: 500px;
 	min-height: 90px;
 	margin: 0 auto;
 
@@ -1707,7 +1707,7 @@ body {
 /* 行程名 */
 
 .final-process-name {
-	font-size: 16px;
+	font-size: 18px;
 }
 
 /* 作業時間 */
@@ -1719,7 +1719,7 @@ body {
 	align-items: center;
 	gap: 8px;
 
-	font-size: 13px;
+	font-size: 16px;
 }
 
 /* 「全体」「ページ毎」 */
@@ -1728,9 +1728,86 @@ body {
 	white-space: nowrap;
 }
 
+/* 作業時間の数値・単位 */
+
+.final-process-time-value {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+
+	white-space: nowrap;
+}
+
+/* 「時間」「分」 */
+
+.final-process-time-unit {
+	font-size: 13px;
+}
+
 /* 入力時間 → 調整後時間 */
 
 .final-process-adjustment {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+
+	white-space: nowrap;
+}
+
+/* 調整矢印 */
+
+.final-process-adjustment-arrow {
+	font-size: 16px;
+}
+
+/* 作業期間 */
+
+.final-process-period {
+	margin-top: 10px;
+
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	gap: 6px;
+
+	font-size: 16px;
+	white-space: nowrap;
+}
+
+/* 日付 */
+
+.final-process-date {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 3px;
+}
+
+/* 日付の数字 */
+
+.final-process-date-number {
+	font-size: 16px;
+}
+
+/* 「月」「日」 */
+
+.final-process-date-unit {
+	font-size: 13px;
+}
+
+/* 「～」 */
+
+.final-process-period-separator {
+	margin: 0 2px;
+
+	font-size: 18px;
+}
+
+/* 「○日間」 */
+
+.final-process-work-days {
+	margin-left: 2px;
+
+	font-size: 13px;
 	white-space: nowrap;
 }
 

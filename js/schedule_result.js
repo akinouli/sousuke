@@ -943,20 +943,64 @@ function displayResultAutoAdjustment(resultData) {
 // 5.最終行程リスト
 // ========================================
 
-// 作業時間を表示用文字列へ変換
+// 作業時間を表示用データへ変換
 function formatFinalProcessWorkTime(workTime) {
 	if (!workTime) {
-		return "";
+		return null;
 	}
 
 	const unitText = workTime.unit === "page" ? "ページ毎" : "全体";
 
-	const timeText = `${workTime.hours}時間${workTime.minutes}分`;
-
 	return {
 		unitText: unitText,
-		timeText: timeText,
+		hours: workTime.hours,
+		minutes: workTime.minutes,
 	};
+}
+
+// 作業時間の表示を作成
+function createFinalProcessTimeValue(workTime) {
+	const value = document.createElement("span");
+
+	value.className = "final-process-time-value";
+
+	if (!workTime) {
+		return value;
+	}
+
+	// 時間
+	if (workTime.hours > 0) {
+		const hoursNumber = document.createElement("span");
+
+		hoursNumber.className = "final-process-time-number";
+		hoursNumber.textContent = workTime.hours;
+
+		const hoursUnit = document.createElement("span");
+
+		hoursUnit.className = "final-process-time-unit";
+		hoursUnit.textContent = "時間";
+
+		value.appendChild(hoursNumber);
+		value.appendChild(hoursUnit);
+	}
+
+	// 分
+	if (workTime.minutes > 0) {
+		const minutesNumber = document.createElement("span");
+
+		minutesNumber.className = "final-process-time-number";
+		minutesNumber.textContent = workTime.minutes;
+
+		const minutesUnit = document.createElement("span");
+
+		minutesUnit.className = "final-process-time-unit";
+		minutesUnit.textContent = "分";
+
+		value.appendChild(minutesNumber);
+		value.appendChild(minutesUnit);
+	}
+
+	return value;
 }
 
 // 行程カードを作成
@@ -993,9 +1037,7 @@ function createFinalProcessCard(process) {
 	unit.textContent = workTime.unitText;
 
 	// 入力時の作業時間
-	const originalTime = document.createElement("span");
-
-	originalTime.textContent = `${workTime.timeText}`;
+	const originalTime = createFinalProcessTimeValue(workTime);
 
 	time.appendChild(unit);
 	time.appendChild(originalTime);
@@ -1015,7 +1057,17 @@ function createFinalProcessCard(process) {
 
 		adjustment.className = "final-process-adjustment";
 
-		adjustment.textContent = ` → ${adjustedTime.timeText}`;
+		// 調整後作業時間
+		const adjustmentArrow = document.createElement("span");
+
+		adjustmentArrow.className = "final-process-adjustment-arrow";
+
+		adjustmentArrow.textContent = "→";
+
+		const adjustmentTime = createFinalProcessTimeValue(adjustedTime);
+
+		adjustment.appendChild(adjustmentArrow);
+		adjustment.appendChild(adjustmentTime);
 
 		time.appendChild(adjustment);
 	}
@@ -1032,11 +1084,73 @@ function createFinalProcessCard(process) {
 	const endDate = parseScheduleDate(process.endDate);
 
 	if (startDate && endDate) {
-		const startText = `${startDate.getMonth() + 1}月${startDate.getDate()}日`;
+		// 日付を作成
+		function createFinalProcessDate(date) {
+			const dateElement = document.createElement("span");
 
-		const endText = `${endDate.getMonth() + 1}月${endDate.getDate()}日`;
+			dateElement.className = "final-process-date";
 
-		period.textContent = `${startText}〜${endText}（${process.workDays}日間）`;
+			// 月
+			const monthNumber = document.createElement("span");
+
+			monthNumber.className = "final-process-date-number";
+			monthNumber.textContent = date.getMonth() + 1;
+
+			const monthUnit = document.createElement("span");
+
+			monthUnit.className = "final-process-date-unit";
+			monthUnit.textContent = "月";
+
+			// 日
+			const dayNumber = document.createElement("span");
+
+			dayNumber.className = "final-process-date-number";
+			dayNumber.textContent = date.getDate();
+
+			const dayUnit = document.createElement("span");
+
+			dayUnit.className = "final-process-date-unit";
+			dayUnit.textContent = "日";
+
+			dateElement.appendChild(monthNumber);
+			dateElement.appendChild(monthUnit);
+			dateElement.appendChild(dayNumber);
+			dateElement.appendChild(dayUnit);
+
+			return dateElement;
+		}
+
+		// 開始日
+		const startDateElement = createFinalProcessDate(startDate);
+
+		period.appendChild(startDateElement);
+
+		// 同じ日なら「～終了日」を表示しない
+		if (
+			startDate.getFullYear() !== endDate.getFullYear() ||
+			startDate.getMonth() !== endDate.getMonth() ||
+			startDate.getDate() !== endDate.getDate()
+		) {
+			const rangeSeparator = document.createElement("span");
+
+			rangeSeparator.className = "final-process-period-separator";
+			rangeSeparator.textContent = "～";
+
+			period.appendChild(rangeSeparator);
+
+			// 終了日
+			const endDateElement = createFinalProcessDate(endDate);
+
+			period.appendChild(endDateElement);
+		}
+
+		// 作業日数
+		const workDays = document.createElement("span");
+
+		workDays.className = "final-process-work-days";
+		workDays.textContent = `（${process.workDays} 日間）`;
+
+		period.appendChild(workDays);
 	}
 
 	// 結果表示
