@@ -615,7 +615,7 @@ function appendScheduleWeek(container, week, data, displayStartDate) {
 
 	const laneCount = lanes.length > 0 ? Math.max(...lanes) + 1 : 0;
 
-	processLayer.style.setProperty("--schedule-process-lanes", laneCount);
+	weekGrid.style.setProperty("--schedule-process-lanes", laneCount);
 
 	processes.forEach((process, index) => {
 		const processIndex = allProcesses.indexOf(process);

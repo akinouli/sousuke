@@ -1484,22 +1484,25 @@ body {
 
 /* 行程表示レイヤー */
 .schedule-process-layer {
-	position: absolute;
+    position: absolute;
 
-	top: 30px; /* 日付部分の余白 */
-	left: 0;
-	right: 0;
+    top: var(--schedule-process-top);
+    left: 0;
+    right: 0;
 
-	display: grid;
-	grid-template-columns: repeat(7, minmax(0, 1fr));
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
 
-	grid-template-rows: repeat(var(--schedule-process-lanes, 0), 21px);
+    grid-template-rows: repeat(
+        var(--schedule-process-lanes, 0),
+        var(--schedule-process-row-height)
+    );
 
-	gap: 0;
+    gap: 0;
 
-	pointer-events: none;
+    pointer-events: none;
 
-	z-index: 5;
+    z-index: 5;
 }
 
 /* 行程 */
