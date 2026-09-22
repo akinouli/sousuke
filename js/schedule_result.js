@@ -627,16 +627,6 @@ function appendScheduleWeek(container, week, data, displayStartDate) {
 		}
 	});
 
-	// ------------------------------------
-	// 行程表示に必要な高さを確保
-	// ------------------------------------
-
-	if (laneCount > 0) {
-		const processHeight = 27 + laneCount * 21 + 3;
-
-		weekGrid.style.minHeight = `${Math.max(80, processHeight)}px`;
-	}
-
 	weekGrid.appendChild(processLayer);
 
 	// ------------------------------------
@@ -676,7 +666,10 @@ function renderHorizontalScheduleCalendar() {
 
 	const month = scheduleCalendarMonth.getMonth();
 
-	monthLabel.textContent = `${year}年${month + 1}月`;
+	monthLabel.innerHTML = `
+    <span class="schedule-month-year">${year}年</span>
+    <span class="schedule-month-number">${month + 1}月</span>
+  `;
 
 	const weeks = createScheduleWeeks(
 		parseScheduleDate(scheduleCalendarData.startDate),
