@@ -432,7 +432,7 @@ body {
 	width: 150px;
 	height: 60px;
 
-	border: 1px solid var(--color-gray);
+	border: 1px solid var(--color-green);
 	border-radius: 8px;
 
 	background: var(--color-white);
@@ -448,7 +448,7 @@ body {
 	outline: none;
 	background: transparent;
 
-	font-size: 28px;
+	font-size: 32px;
 	text-align: center;
 }
 
@@ -514,6 +514,58 @@ body {
 
 .process-unit {
 	width: 85px;
+}
+
+/* 時間・分 入力グループ */
+.time-input-group {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+
+	width: 55px;
+	padding: 2px 3px;
+
+	border: 1px solid var(--color-green);
+	border-radius: 8px;
+
+	background: var(--color-white);
+}
+
+/* 実際の入力欄 */
+.hour-input,
+.minute-input {
+	width: 100%;
+	padding: 2px 0px;
+	border: none;
+	outline: none;
+
+	background: transparent;
+
+	text-align: right;
+	font-size: 16px;
+}
+
+/* 入力欄フォーカス時も枠を出さない */
+.hour-input:focus,
+.minute-input:focus {
+	outline: none;
+}
+
+/* 「時間」「分」ラベル */
+.time-input-group span {
+	display: block;
+	text-align: right;
+	font-size: 9px;
+	line-height: 1.2;
+
+	color: var(--color-subtext);
+}
+
+/* 時間と分の間の「：」 */
+.time-colon {
+	font-size: 18px;
+	color: var(--color-text);
+	text-align: center;
 }
 
 /* 工程カード - 作業時間 */
@@ -885,58 +937,6 @@ body {
 /* 土曜日 */
 .day-row:last-child .day-name {
 	color: var(--color-saturday);
-}
-
-/* 時間・分 入力グループ */
-.time-input-group {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-
-	width: 55px;
-	padding: 2px 3px;
-
-	border: 1px solid #ddd;
-	border-radius: 8px;
-
-	background: var(--color-white);
-}
-
-/* 実際の入力欄 */
-.hour-input,
-.minute-input {
-	width: 100%;
-	padding: 2px 0px;
-	border: none;
-	outline: none;
-
-	background: transparent;
-
-	text-align: right;
-	font-size: 16px;
-}
-
-/* 入力欄フォーカス時も枠を出さない */
-.hour-input:focus,
-.minute-input:focus {
-	outline: none;
-}
-
-/* 「時間」「分」ラベル */
-.time-input-group span {
-	display: block;
-	text-align: right;
-	font-size: 9px;
-	line-height: 1.2;
-
-	color: var(--color-text);
-}
-
-/* 時間と分の間の「：」 */
-.time-colon {
-	font-size: 18px;
-	color: var(--color-text);
-	text-align: center;
 }
 
 /* 調整バー */
@@ -1713,6 +1713,7 @@ body {
 
 /* 「全体」「ページ毎」 */
 .final-process-unit {
+	font-size: 14px;
 	white-space: nowrap;
 }
 
@@ -1727,7 +1728,7 @@ body {
 
 /* 「時間」「分」 */
 .final-process-time-unit {
-	font-size: 13px;
+	font-size: 14px;
 }
 
 /* 入力時間 → 調整後時間 */
@@ -1739,14 +1740,14 @@ body {
 	white-space: nowrap;
 }
 
-/* 調整矢印 */
+/* 「→」 */
 .final-process-adjustment-arrow {
 	font-size: 16px;
 }
 
 /* 作業期間 */
 .final-process-period {
-	margin-top: 10px;
+	margin-top: 5px;
 
 	display: flex;
 	align-items: baseline;
@@ -1771,22 +1772,20 @@ body {
 
 /* 「月」「日」 */
 .final-process-date-unit {
-	font-size: 13px;
+	font-size: 14px;
 }
 
 /* 「～」 */
 .final-process-period-separator {
 	margin: 0 2px;
-
-	font-size: 18px;
-	font-weight: normal;
+	font-size: 16px;
 }
 
 /* 「○日間」 */
 .final-process-work-days {
 	margin-left: 2px;
 
-	font-size: 13px;
+	font-size: 14px;
 	white-space: nowrap;
 }
 
