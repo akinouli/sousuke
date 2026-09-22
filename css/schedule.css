@@ -8,7 +8,7 @@
 	--color-orange: #f08300;
 	--color-brown: #8d6449;
 	--color-yellow: #fddea5;
-	--color-cream: #f8f4e6;	
+	--color-cream: #f8f4e6;
 	--color-white: #fff;
 	--color-lightgray: #eee;
 	--color-gray: #ccc;
@@ -300,7 +300,7 @@ body {
 
 .schedule-main {
 	position: relative;
-	padding-top: 105px;
+	padding-top: 80px;
 }
 
 /* --------------------------------------------------
@@ -309,7 +309,7 @@ body {
 
 .form-section {
 	position: absolute;
-	top: 105px;
+	top: 80px;
 	left: 0;
 	width: 100%;
 	padding: 20px 20px 100px;
@@ -327,7 +327,7 @@ body {
 /* 表示中 */
 .form-section.active-section {
 	position: absolute;
-	top: 105px;
+	top: 80px;
 	left: 0;
 	opacity: 1;
 
@@ -1271,62 +1271,63 @@ body {
 }
 
 #schedule-month {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 
-  min-width: 150px;
-  min-height: 58px;
-  padding: 6px 18px;
+	min-width: 150px;
+	min-height: 58px;
+	padding: 6px 18px;
 
-  border-radius: 5px;
+	border-radius: 5px;
 
-  background: var(--color-white);
+	background: var(--color-white);
 
-  font-weight: bold;
-  line-height: 1.2;
-  text-align: center;
+	font-weight: bold;
+	line-height: 1.2;
+	text-align: center;
 }
 
 /* 年 */
 .schedule-month-year {
-  font-size: 12px;
-  font-weight: normal;
+	font-size: 12px;
+	font-weight: normal;
 }
 
 /* 月 */
 .schedule-month-number {
-  font-size: 21px;
+	font-size: 21px;
 }
 
 .schedule-calendar-nav {
-  position: relative;
+	position: relative;
 
-  width: 42px;
-  height: 58px;
+	width: 42px;
+	height: 58px;
 
-  padding: 0;
-  border: none;
+	padding: 0;
+	border: none;
 
-  background: var(--color-white);
-  box-shadow: 0 2px 1px var(--color-shadow);
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
+	color: var(--color-text);
 
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
 
-  transition: transform 0.1s ease;
+	transition: transform 0.1s ease;
 }
 
 /* 左ボタン：右側を丸くする */
 #schedule-prev {
-  border-radius: 30px 5px 5px 30px;
+	border-radius: 30px 5px 5px 30px;
 }
 
 /* 右ボタン：左側を丸くする */
 #schedule-next {
-  border-radius: 5px 30px 30px 5px;
+	border-radius: 5px 30px 30px 5px;
 }
 
 /* クリック時のぷにゅっ */
@@ -1335,7 +1336,7 @@ body {
 	color: var(--color-white);
 	box-shadow: none;
 
-  transform: scale(0.93);
+	transform: scale(0.93);
 }
 
 /* 曜日 */
@@ -1374,9 +1375,6 @@ body {
 #schedule-calendar-list {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-
-	border-left: 1px solid var(--color-green);
-	border-top: 1px solid var(--color-green);
 }
 
 /* 日付マス */
@@ -1387,8 +1385,7 @@ body {
 	padding: 6px;
 
 	border-radius: 10px;
-	border-right: 1px solid var(--color-green);
-	border-bottom: 1px solid var(--color-green);
+	border: 1px solid var(--color-green);
 
 	background: var(--color-white);
 }
@@ -1472,10 +1469,8 @@ body {
 	min-height: max(
 		80px,
 		calc(
-			var(--schedule-process-top) + 
-			var(--schedule-process-lanes, 0) * 
-			var(--schedule-process-row-height) +
-			var(--schedule-process-bottom)
+			var(--schedule-process-top) + var(--schedule-process-lanes, 0) * var(--schedule-process-row-height) +
+				var(--schedule-process-bottom)
 		)
 	);
 
@@ -1484,25 +1479,22 @@ body {
 
 /* 行程表示レイヤー */
 .schedule-process-layer {
-    position: absolute;
+	position: absolute;
 
-    top: var(--schedule-process-top);
-    left: 0;
-    right: 0;
+	top: var(--schedule-process-top);
+	left: 0;
+	right: 0;
 
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
 
-    grid-template-rows: repeat(
-        var(--schedule-process-lanes, 0),
-        var(--schedule-process-row-height)
-    );
+	grid-template-rows: repeat(var(--schedule-process-lanes, 0), var(--schedule-process-row-height));
 
-    gap: 0;
+	gap: 0;
 
-    pointer-events: none;
+	pointer-events: none;
 
-    z-index: 5;
+	z-index: 5;
 }
 
 /* 行程 */
@@ -1568,53 +1560,53 @@ body {
 -------------------------------------------------- */
 
 #schedule-end-date {
-  position: relative;
+	position: relative;
 
-  width: fit-content;
-  max-width: 100%;
+	width: fit-content;
+	max-width: 100%;
 
-  margin: 48px auto 0;
-  padding: 15px 50px;
+	margin: 48px auto 0;
+	padding: 15px 50px;
 
-  border-radius: 999px;
+	border-radius: 999px;
 
-  background: var(--color-white);
+	background: var(--color-white);
 
-  text-align: center;
+	text-align: center;
 }
 
 /* 上部の尻尾 */
 #schedule-end-date::before {
-  content: "";
+	content: "";
 
-  position: absolute;
-  top: -12px;
-  left: 50%;
+	position: absolute;
+	top: -12px;
+	left: 50%;
 
-  width: 24px;
-  height: 24px;
+	width: 24px;
+	height: 24px;
 
-  background: var(--color-white);
+	background: var(--color-white);
 
-  transform: translateX(-50%) rotate(45deg);
+	transform: translateX(-50%) rotate(45deg);
 
-  z-index: -1;
+	z-index: -1;
 }
 
 #schedule-end-date h2 {
-  margin: 0;
+	margin: 0;
 
-  font-size: 15px;
-  font-weight: normal;
-  color: var(--color-subtext);
+	font-size: 15px;
+	font-weight: normal;
+	color: var(--color-subtext);
 }
 
 #schedule-end-date-value {
-  margin: 6px 0 0;
+	margin: 6px 0 0;
 
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--color-text);
+	font-size: 24px;
+	font-weight: bold;
+	color: var(--color-text);
 }
 
 /* --------------------------------------------------
@@ -1622,52 +1614,52 @@ body {
 -------------------------------------------------- */
 
 #schedule-auto-adjustment {
-  position: relative;
+	position: relative;
 
-  width: fit-content;
-  max-width: 100%;
+	width: fit-content;
+	max-width: 100%;
 
-  margin: 42px auto 0;
-  padding: 10px 50px 15px;
+	margin: 42px auto 0;
+	padding: 10px 50px 15px;
 
-  border-radius: 999px;
+	border-radius: 999px;
 
-  background: var(--color-white);
+	background: var(--color-white);
 
-  text-align: center;
+	text-align: center;
 }
 
 /* 下部の尻尾 */
 #schedule-auto-adjustment::after {
-  content: "";
+	content: "";
 
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
+	position: absolute;
+	bottom: -12px;
+	left: 50%;
 
-  width: 24px;
-  height: 24px;
+	width: 24px;
+	height: 24px;
 
-  background: var(--color-white);
+	background: var(--color-white);
 
-  transform: translateX(-50%) rotate(45deg);
+	transform: translateX(-50%) rotate(45deg);
 
-  z-index: -1;
+	z-index: -1;
 }
 
 #schedule-auto-adjustment p {
-  margin: 0;
+	margin: 0;
 
-  font-size: 16px;
-  line-height: 1.6;
+	font-size: 16px;
+	line-height: 1.6;
 }
 
 #schedule-auto-adjustment-value {
-  padding: 0 4px;
+	padding: 0 4px;
 
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--color-orange);
+	font-size: 24px;
+	font-weight: bold;
+	color: var(--color-orange);
 }
 
 /* --------------------------------------------------
@@ -1679,7 +1671,6 @@ body {
 }
 
 /* 最終行程カード */
-
 .final-process-card {
 	width: 90%;
 	max-width: 500px;
@@ -1705,13 +1696,11 @@ body {
 }
 
 /* 行程名 */
-
 .final-process-name {
 	font-size: 18px;
 }
 
 /* 作業時間 */
-
 .final-process-time {
 	margin-top: 8px;
 
@@ -1723,13 +1712,11 @@ body {
 }
 
 /* 「全体」「ページ毎」 */
-
 .final-process-unit {
 	white-space: nowrap;
 }
 
 /* 作業時間の数値・単位 */
-
 .final-process-time-value {
 	display: inline-flex;
 	align-items: baseline;
@@ -1739,13 +1726,11 @@ body {
 }
 
 /* 「時間」「分」 */
-
 .final-process-time-unit {
 	font-size: 13px;
 }
 
 /* 入力時間 → 調整後時間 */
-
 .final-process-adjustment {
 	display: inline-flex;
 	align-items: center;
@@ -1755,13 +1740,11 @@ body {
 }
 
 /* 調整矢印 */
-
 .final-process-adjustment-arrow {
 	font-size: 16px;
 }
 
 /* 作業期間 */
-
 .final-process-period {
 	margin-top: 10px;
 
@@ -1775,7 +1758,6 @@ body {
 }
 
 /* 日付 */
-
 .final-process-date {
 	display: inline-flex;
 	align-items: baseline;
@@ -1783,27 +1765,24 @@ body {
 }
 
 /* 日付の数字 */
-
 .final-process-date-number {
 	font-size: 16px;
 }
 
 /* 「月」「日」 */
-
 .final-process-date-unit {
 	font-size: 13px;
 }
 
 /* 「～」 */
-
 .final-process-period-separator {
 	margin: 0 2px;
 
 	font-size: 18px;
+	font-weight: normal;
 }
 
 /* 「○日間」 */
-
 .final-process-work-days {
 	margin-left: 2px;
 
@@ -1812,7 +1791,6 @@ body {
 }
 
 /* 行程リスト編集ボタン */
-
 .edit-process-list-button {
 	display: block;
 
@@ -1950,12 +1928,12 @@ body {
 	}
 
 	#schedule-month {
+		width: 100px;
 		font-size: 17px;
 	}
 
 	.schedule-calendar-nav {
 		width: 32px;
-		height: 32px;
 	}
 
 	.schedule-week-header span {
@@ -1984,7 +1962,7 @@ body {
 	.schedule-week-grid {
 		--schedule-process-top: 24px;
 		--schedule-process-row-height: 24px;
-		--schedule-process-bottom: 8px;
+		--schedule-process-bottom: 5px;
 
 		min-height: max(
 			65px,
