@@ -496,6 +496,20 @@ function renderInputCalendar(calendar, date, options = {}) {
 }
 
 // ----------------------------------------
+// 入力カレンダー - 年月表示
+// ----------------------------------------
+
+function renderInputCalendarMonth(element, date) {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+
+	element.innerHTML = `
+		<span class="calendar-month-year">${year}年</span>
+		<span class="calendar-month-number">${month}月</span>
+	`;
+}
+
+// ----------------------------------------
 // 制作期間カレンダー
 // ----------------------------------------
 
@@ -505,8 +519,10 @@ function renderPeriodCalendar() {
 	const year = periodDate.getFullYear();
 	const month = periodDate.getMonth();
 
-	document.getElementById("period-month").textContent =
-		`${year}年 ${month + 1}月`;
+	renderInputCalendarMonth(
+    document.getElementById("period-month"),
+    periodDate
+  );
 
 	const calendar = document.getElementById("period-calendar");
 
@@ -1267,8 +1283,10 @@ function renderHolidayCalendar() {
 	const year = holidayDate.getFullYear();
 	const month = holidayDate.getMonth();
 
-	document.getElementById("holiday-month").textContent =
-		`${year}年 ${month + 1}月`;
+	renderInputCalendarMonth(
+    document.getElementById("holiday-month"),
+    holidayDate
+  );
 
 	const calendar = document.getElementById("holiday-calendar");
 
