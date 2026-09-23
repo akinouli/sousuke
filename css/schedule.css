@@ -786,7 +786,7 @@ body {
 	background: var(--color-white);
 	box-shadow: 0 2px 1px var(--color-shadow);
 
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: bold;
 	color: var(--color-text);
 }
@@ -818,7 +818,7 @@ body {
 .post-work-option p {
 	margin: 0 0 12px;
 
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: var(--color-subtext);
 }
@@ -1038,7 +1038,7 @@ body {
 
 .week-header span {
 	padding: 8px;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 /* 日付エリア */
@@ -1271,7 +1271,7 @@ body {
 	color: var(--color-white);
 	box-shadow: 0 2px 1px var(--color-shadow);
 
-	font-size: 13px;
+	font-size: 14px;
 	cursor: pointer;
 
 	transition:
@@ -1392,7 +1392,7 @@ body {
 
 	background: var(--color-white);
 
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: bold;
 }
 
@@ -1560,7 +1560,7 @@ body {
 
 	padding: 1px 4px;
 
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.2;
 
 	font-weight: bold;
@@ -1724,7 +1724,7 @@ body {
 	background: var(--color-white);
 	box-shadow: 0 2px 1px var(--color-shadow);
 
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: bold;
 	color: var(--color-text);
 }
@@ -1868,6 +1868,27 @@ body {
 	display: block;
 
 	margin: 32px auto 0;
+	padding: 8px 14px;
+	border: none;
+	border-radius: 10px;
+
+	background: var(--color-brown);
+	color: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
+
+	font-size: 14px;
+	cursor: pointer;
+
+	transition:
+		transform 0.1s ease,
+		box-shadow 0.1s ease;
+}
+
+.edit-process-list-button:active {
+	transform: scale(0.93);
+
+	background: var(--color-orange);
+	box-shadow: none;
 }
 
 /* --------------------------------------------------
@@ -1997,7 +2018,7 @@ body {
 	}
 
 	.schedule-basic-info-value {
-		font-size: 13px;
+		font-size: 14px;
 	}
 
 	.schedule-basic-info-note {
