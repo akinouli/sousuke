@@ -122,7 +122,7 @@ resultStatus.addEventListener("click", () => {
 });
 
 // ----------------------------------------
-// 作業期間
+// 制作期間
 // ----------------------------------------
 
 let startDate = null;
@@ -265,11 +265,11 @@ function validateSection(index) {
 		// 休日は任意なのでチェックなし
 	}
 
-	// 5.作業期間 ----------------------------------------
+	// 5.制作期間 ----------------------------------------
 	if (index === 4) {
 		// 両方未入力
 		if (!startDate && !deadlineDate) {
-			alert("作業開始日・締切日を選択してください");
+			alert("制作開始日・締切日を選択してください");
 			return false;
 		}
 
@@ -362,7 +362,7 @@ function updateFooterButtons() {
 updateFooterButtons();
 
 // ----------------------------------------
-// 作業期間カレンダー
+// 制作期間カレンダー
 // ----------------------------------------
 
 let periodDate = new Date();
@@ -420,14 +420,14 @@ function renderPeriodCalendar() {
 
 		cell.appendChild(dayIcon);
 
-		// 作業開始日
+		// 制作開始日
 		if (startDate && isSameDate(date, startDate)) {
 			cell.classList.add("selected-start");
 
 			const icon = document.createElement("img");
 
 			icon.src = "icon/cal1_start.png";
-			icon.alt = "作業開始日";
+			icon.alt = "制作開始日";
 
 			dayIcon.appendChild(icon);
 		}
@@ -1300,7 +1300,7 @@ function createSchedule() {
 		return new Date(year, month - 1, day);
 	});
 
-	// ⑥ 作業期間 ----------------------------------------
+	// ⑥ 制作期間 ----------------------------------------
 	const scheduleData = {
 		pageCount: pageCount,
 		productionProcesses: productionProcesses,

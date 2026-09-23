@@ -169,7 +169,7 @@ function getScheduleWeekday(date) {
 function createScheduleWeeks(startDate, deadline) {
 	const weeks = [];
 
-	// 作業開始日を含む週の日曜日
+	// 制作開始日を含む週の日曜日
 	const firstWeekStart = new Date(startDate);
 
 	firstWeekStart.setDate(firstWeekStart.getDate() - firstWeekStart.getDay());
@@ -254,9 +254,9 @@ function addScheduleIcons(dayElement, date, data) {
 
 	iconArea.className = "schedule-day-icons";
 
-	// 作業開始日
+	// 制作開始日
 	if (startDate && date.getTime() === startDate.getTime()) {
-		iconArea.appendChild(createScheduleIcon("icon/cal1_start.png", "作業開始日"));
+		iconArea.appendChild(createScheduleIcon("icon/cal1_start.png", "制作開始日"));
 	}
 
 	// 作品完成日
@@ -291,7 +291,7 @@ function createScheduleDayElement(date, data, displayStartDate) {
 	dayElement.className = "schedule-day";
 
 	// ------------------------------------
-	// 作業期間外
+	// 制作期間外
 	// ------------------------------------
 
 	const startDate = parseScheduleDate(data.startDate);
@@ -501,7 +501,7 @@ function createScheduleProcessRow(week, process, lane, processIndex, processCoun
 	row.className = "schedule-process-row";
 
 	// ------------------------------------
-	// 作業期間内だけを表示範囲にする
+	// 制作期間内だけを表示範囲にする
 	// ------------------------------------
 
 	row.style.gridColumn = `${nameColumn + 1} / ${arrowColumn + 2}`;
@@ -724,7 +724,7 @@ function renderVerticalScheduleCalendar() {
 
 	const weeks = createScheduleWeeks(startDate, deadline);
 
-	// 作業期間に関係する週をすべて表示
+	// 制作期間に関係する週をすべて表示
 	weeks.forEach((week, index) => {
 		appendScheduleWeek(list, week, scheduleCalendarData, index === 0 ? week[0] : null);
 	});
@@ -1073,7 +1073,7 @@ function createFinalProcessCard(process) {
 	}
 
 	// ------------------------------------
-	// 作業期間
+	// 制作期間
 	// ------------------------------------
 
 	const period = document.createElement("div");
