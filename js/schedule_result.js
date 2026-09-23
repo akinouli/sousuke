@@ -940,7 +940,98 @@ function displayResultAutoAdjustment(resultData) {
 }
 
 // ========================================
-// 5.最終行程リスト
+// 5.基本情報
+// ========================================
+
+// 日付を「○/○」形式で表示
+function formatBasicInfoDate(date) {
+	if (!date) {
+		return "";
+	}
+
+	return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+// 日付が同じか判定
+function isSameScheduleDate(dateA, dateB) {
+	if (!dateA || !dateB) {
+		return false;
+	}
+
+	return (
+		dateA.getFullYear() === dateB.getFullYear() &&
+		dateA.getMonth() === dateB.getMonth() &&
+		dateA.getDate() === dateB.getDate()
+	);
+}
+
+// 制作日数を算出
+// 開始日・締切日を含め、休日だけを除外
+function calculateProductionDays(startDate, deadline, holidays) {
+	if (!startDate || !deadline) {
+		return 0;
+	}
+
+	let days = 0;
+	let currentDate = new Date(startDate);
+
+	while (currentDate <= deadline) {
+		const isHoliday = holidays.some((holiday) => {
+			return isSameScheduleDate(currentDate, parseScheduleDate(holiday));
+		});
+
+		if (!isHoliday) {
+			days++;
+		}
+
+		currentDate.setDate(currentDate.getDate() + 1);
+	}
+
+	return days;
+}
+
+// 基本情報を表示
+function displayScheduleBasicInfo(resultData) {
+	if (!resultData) {
+		return;
+	}
+
+	const pageCountElement = document.getElementById("schedule-page-count");
+	const periodElement = document.getElementById("schedule-production-period");
+	const daysElement = document.getElementById("schedule-production-days");
+
+	if (!pageCountElement || !periodElement || !daysElement) {
+		return;
+	}
+
+	const startDate = parseScheduleDate(resultData.startDate);
+	const deadline = parseScheduleDate(resultData.deadline);
+
+	// ページ数
+	pageCountElement.textContent = `${resultData.pageCount} ページ`;
+
+	// 制作期間
+	if (startDate && deadline) {
+		const startText = formatBasicInfoDate(startDate);
+		const deadlineText = formatBasicInfoDate(deadline);
+
+		periodElement.textContent = `${startText} ～ ${deadlineText}`;
+	} else {
+		periodElement.textContent = "";
+	}
+
+	// 制作日数
+	const productionDays = calculateProductionDays(
+		startDate,
+		deadline,
+		resultData.holidays || [],
+	);
+
+	daysElement.textContent = `${productionDays} 日`;
+}
+
+// ========================================
+// 6.最終行程リスト
 // ========================================
 
 // 作業時間を表示用データへ変換

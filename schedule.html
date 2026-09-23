@@ -355,7 +355,27 @@
 						<div id="schedule-calendar">
 							<!-- カレンダーヘッダー -->
 							<div class="schedule-calendar-header">
-								<h2>スケジュール</h2>
+								<!-- 基本情報 -->
+								<div id="schedule-basic-info">
+									<div class="schedule-basic-info-row">
+										<span class="schedule-basic-info-label">ページ数</span>
+										<span class="schedule-basic-info-colon">：</span>
+										<span id="schedule-page-count" class="schedule-basic-info-value"></span>
+									</div>
+
+									<div class="schedule-basic-info-row">
+										<span class="schedule-basic-info-label">制作期間</span>
+										<span class="schedule-basic-info-colon">：</span>
+										<span id="schedule-production-period" class="schedule-basic-info-value"></span>
+									</div>
+
+									<div class="schedule-basic-info-row">
+										<span class="schedule-basic-info-label">制作日数</span>
+										<span class="schedule-basic-info-colon">：</span>
+										<span id="schedule-production-days" class="schedule-basic-info-value"></span>
+										<span class="schedule-basic-info-note">※休日を除く</span>
+									</div>
+								</div>
 
 								<button type="button" id="calendar-change" class="calendar-change-button">カレンダーチェンジ</button>
 							</div>

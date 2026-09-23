@@ -1320,10 +1320,13 @@ function createSchedule() {
 	console.log("scheduler.jsから受け取ったデータ:", schedulerData);
 
 	// 結果① 結果コメントを表示
-	displayResultComment(schedulerData);
+  displayResultComment(schedulerData);
 
-	// 結果② スケジュールカレンダーを表示
-	displayScheduleCalendar(schedulerData);
+  // 結果② 基本情報を表示
+  displayScheduleBasicInfo(schedulerData);
+
+  // 結果③ スケジュールカレンダーを表示
+  displayScheduleCalendar(schedulerData);
 
 	// 結果③ 作業終了予定日を表示
 	displayResultEndDate(schedulerData);

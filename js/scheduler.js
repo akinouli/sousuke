@@ -914,6 +914,7 @@ function createFinalDisplayData(data, step1Data, step2Data, step4Data) {
 	// ----------------------------------------
 
 	return {
+    pageCount: data.pageCount,
 		emptyDays: calculateEmptyDays(finalEndDate, data.deadline),
 		autoAdjustmentResult: autoAdjustmentResult,
 		adjustmentRate: adjustmentRate,
