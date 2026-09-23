@@ -1013,49 +1013,124 @@ body {
 	margin: 30px auto 0;
 }
 
+/* カレンダーヘッダー */
+
 .calendar-header {
-	display: grid;
-	grid-template-columns: 50px 1fr 50px;
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 15px;
+	gap: 20px;
+	margin-bottom: 20px;
 }
 
 .calendar-header button {
+	position: relative;
+
+	width: 42px;
+	height: 58px;
+
+	padding: 0;
 	border: none;
-	background: none;
-	font-size: 28px;
+
+	background: var(--color-white);
+	box-shadow: 0 2px 1px var(--color-shadow);
+	color: var(--color-text);
+
+	font-size: 18px;
+	font-weight: bold;
 	cursor: pointer;
+
+	transition: transform 0.1s ease;
 }
+
+.calendar-header button:first-child {
+	border-radius: 30px 5px 5px 30px;
+}
+
+.calendar-header button:last-child {
+	border-radius: 5px 30px 30px 5px;
+}
+
+.calendar-header button:active {
+	background: var(--color-orange);
+	color: var(--color-white);
+	box-shadow: none;
+
+	transform: scale(0.93);
+}
+
+/* 月表示 */
 
 #period-month,
 #holiday-month {
-	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	max-width: 150px;
+	min-height: 58px;
+	padding: 6px 18px;
+
+	border-radius: 5px;
+
+	background: var(--color-white);
+
+	font-size: 21px;
 	font-weight: bold;
+	line-height: 1.2;
+	text-align: center;
 }
 
-.week-header,
-.calendar-grid {
+/* 曜日 */
+
+.week-header {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 }
 
 .week-header span {
-	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 32px;
+	height: 32px;
+	margin: 4px auto;
+
+	border-radius: 50%;
+
+	background: var(--color-white);
+
 	font-size: 14px;
+	font-weight: bold;
 }
 
-/* 日付エリア */
+.week-header span:first-child {
+	color: var(--color-sunday);
+}
+
+.week-header span:last-child {
+	color: var(--color-saturday);
+}
+
+/* 日付グリッド */
+
+.calendar-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+/* 日付マス */
+
 .calendar-day {
 	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: flex-start;
-	box-sizing: border-box;
-	min-height: 80px;
-	padding-top: 8px;
 
+	min-height: 80px;
+	padding: 6px;
+
+	border-radius: 5px;
 	border: 1px solid var(--color-green);
+
 	background: var(--color-white);
 
 	cursor: pointer;
@@ -1068,8 +1143,66 @@ body {
 .calendar-day.empty {
 	border: none;
 	background: transparent;
+
 	cursor: default;
 }
+
+/* 日付 */
+
+.day-number {
+	position: relative;
+	z-index: 2;
+
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* 日曜日 */
+
+.calendar-day.sunday .day-number {
+	color: var(--color-sunday);
+}
+
+/* 土曜日 */
+
+.calendar-day.saturday .day-number {
+	color: var(--color-saturday);
+}
+
+/* アイコンエリア */
+
+.day-icon {
+	position: absolute;
+
+	bottom: 2px;
+	left: 50%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2px;
+
+	width: 100%;
+	height: 50px;
+
+	transform: translateX(-50%);
+
+	z-index: 1;
+
+	pointer-events: none;
+}
+
+/* アイコン */
+
+.day-icon img {
+	object-fit: contain;
+
+	width: auto;
+	height: 50px;
+}
+
+/* 制作期間 */
 
 .calendar-day.period {
 	background: var(--color-cream);
@@ -1081,46 +1214,10 @@ body {
 	font-weight: bold;
 }
 
+/* 休日 */
+
 .calendar-day.holiday {
 	background: var(--color-cream);
-}
-
-/* 日曜日カラー */
-.calendar-day.sunday .day-number {
-	color: var(--color-sunday);
-}
-
-/* 土曜日カラー */
-.calendar-day.saturday .day-number {
-	color: var(--color-saturday);
-}
-
-.week-header span:first-child {
-	color: var(--color-sunday);
-}
-
-.week-header span:last-child {
-	color: var(--color-saturday);
-}
-
-.day-number {
-	line-height: 1.2;
-}
-
-/* カレンダーアイコン - エリア設定 */
-.day-icon {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 4px;
-	height: 60px;
-}
-
-/* カレンダーアイコン */
-.day-icon img {
-	object-fit: contain;
-	width: auto;
-	height: 50px;
 }
 
 /* --------------------------------------------------

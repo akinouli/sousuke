@@ -362,6 +362,140 @@ function updateFooterButtons() {
 updateFooterButtons();
 
 // ----------------------------------------
+// 入力カレンダー共通処理
+// ----------------------------------------
+
+function createInputCalendarDay(date, options = {}) {
+	const cell = document.createElement("div");
+
+	cell.className = "calendar-day";
+
+	// ------------------------------------
+	// 日付
+	// ------------------------------------
+
+	const dateNumber = document.createElement("div");
+
+	dateNumber.className = "day-number";
+	dateNumber.textContent = date.getDate();
+
+	cell.appendChild(dateNumber);
+
+	// ------------------------------------
+	// 曜日
+	// ------------------------------------
+
+	if (date.getDay() === 0) {
+		cell.classList.add("sunday");
+	}
+
+	if (date.getDay() === 6) {
+		cell.classList.add("saturday");
+	}
+
+	// ------------------------------------
+	// アイコンエリア
+	// ------------------------------------
+
+	const dayIcon = document.createElement("div");
+
+	dayIcon.className = "day-icon";
+
+	cell.appendChild(dayIcon);
+
+  // ------------------------------------
+  // 状態クラス
+  // ------------------------------------
+
+  if (options.period) {
+    cell.classList.add("period");
+  }
+
+  if (options.selectedStart) {
+    cell.classList.add("selected-start");
+  }
+
+  if (options.selectedEnd) {
+    cell.classList.add("selected-end");
+  }
+
+  if (options.holiday) {
+    cell.classList.add("holiday");
+  }
+
+	// ------------------------------------
+	// アイコン追加
+	// ------------------------------------
+
+	if (options.icon) {
+		const icon = document.createElement("img");
+
+		icon.src = options.icon.src;
+		icon.alt = options.icon.alt;
+
+		dayIcon.appendChild(icon);
+	}
+
+	// ------------------------------------
+	// クリック
+	// ------------------------------------
+
+	if (options.onClick) {
+		cell.addEventListener("click", () => {
+			options.onClick(date);
+		});
+	}
+
+	return cell;
+}
+
+// ----------------------------------------
+// 入力カレンダー - 月を描画
+// ----------------------------------------
+
+function renderInputCalendar(calendar, date, options = {}) {
+	const year = date.getFullYear();
+	const month = date.getMonth();
+
+	calendar.innerHTML = "";
+
+	// ------------------------------------
+	// 月初までの空白
+	// ------------------------------------
+
+	const firstDay = new Date(year, month, 1).getDay();
+
+	for (let i = 0; i < firstDay; i++) {
+		const empty = document.createElement("div");
+
+		empty.className = "calendar-day empty";
+
+		calendar.appendChild(empty);
+	}
+
+	// ------------------------------------
+	// 日付
+	// ------------------------------------
+
+	const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+	for (let day = 1; day <= daysInMonth; day++) {
+		const currentDate = new Date(year, month, day);
+
+		const dayOptions = options.createDayOptions
+			? options.createDayOptions(currentDate)
+			: {};
+
+		const cell = createInputCalendarDay(
+			currentDate,
+			dayOptions
+		);
+
+		calendar.appendChild(cell);
+	}
+}
+
+// ----------------------------------------
 // 制作期間カレンダー
 // ----------------------------------------
 
@@ -371,100 +505,67 @@ function renderPeriodCalendar() {
 	const year = periodDate.getFullYear();
 	const month = periodDate.getMonth();
 
-	document.getElementById("period-month").textContent = `${year}年 ${month + 1}月`;
+	document.getElementById("period-month").textContent =
+		`${year}年 ${month + 1}月`;
 
 	const calendar = document.getElementById("period-calendar");
 
-	calendar.innerHTML = "";
+	renderInputCalendar(calendar, periodDate, {
+		createDayOptions: (date) => {
+			const options = {
+				onClick: selectPeriodDate,
+			};
 
-	const firstDay = new Date(year, month, 1).getDay();
-	const daysInMonth = new Date(year, month + 1, 0).getDate();
+			// --------------------------------
+			// 制作期間
+			// --------------------------------
 
-	// 月初までの空白
-	for (let i = 0; i < firstDay; i++) {
-		const empty = document.createElement("div");
+			if (
+				startDate &&
+				deadlineDate &&
+				date > startDate &&
+				date < deadlineDate
+			) {
+				options.period = true;
+			}
 
-		empty.className = "calendar-day empty";
+			// --------------------------------
+			// 制作開始日
+			// --------------------------------
 
-		calendar.appendChild(empty);
-	}
+			if (startDate && isSameDate(date, startDate)) {
+				options.selectedStart = true;
+				options.icon = {
+					src: "icon/cal1_start.png",
+					alt: "制作開始日",
+				};
+			}
 
-	// 日付
-	for (let day = 1; day <= daysInMonth; day++) {
-		const cell = document.createElement("div");
+			// --------------------------------
+			// 締切日
+			// --------------------------------
 
-		cell.className = "calendar-day";
+			if (deadlineDate && isSameDate(date, deadlineDate)) {
+				options.selectedEnd = true;
+				options.icon = {
+					src: "icon/cal3_deadline.png",
+					alt: "締切日",
+				};
+			}
 
-		const date = new Date(year, month, day);
-
-		// 日付表示
-		const dateNumber = document.createElement("div");
-
-		dateNumber.className = "day-number";
-		dateNumber.textContent = day;
-
-		if (date.getDay() === 0) {
-			cell.classList.add("sunday");
-		}
-
-		if (date.getDay() === 6) {
-			cell.classList.add("saturday");
-		}
-
-		cell.appendChild(dateNumber);
-
-		// アイコン表示エリア
-		const dayIcon = document.createElement("div");
-
-		dayIcon.className = "day-icon";
-
-		cell.appendChild(dayIcon);
-
-		// 制作開始日
-		if (startDate && isSameDate(date, startDate)) {
-			cell.classList.add("selected-start");
-
-			const icon = document.createElement("img");
-
-			icon.src = "icon/cal1_start.png";
-			icon.alt = "制作開始日";
-
-			dayIcon.appendChild(icon);
-		}
-
-		// 締切日
-		if (deadlineDate && isSameDate(date, deadlineDate)) {
-			cell.classList.add("selected-end");
-
-			const icon = document.createElement("img");
-
-			icon.src = "icon/cal3_deadline.png";
-			icon.alt = "締切日";
-
-			dayIcon.appendChild(icon);
-		}
-
-		// 期間内
-		if (startDate && deadlineDate && date > startDate && date < deadlineDate) {
-			cell.classList.add("period");
-		}
-
-		// 日付クリック
-		cell.addEventListener("click", () => {
-			selectPeriodDate(date);
-		});
-
-		calendar.appendChild(cell);
-	}
+			return options;
+		},
+	});
 }
 
 function selectPeriodDate(date) {
-	/* まだ開始日がない、または期間選択済みで新しい期間を選び直す */
+	// まだ開始日がない、
+	// または期間選択済みなら新しい期間を開始
 	if (!startDate || (startDate && deadlineDate)) {
 		startDate = new Date(date);
 		deadlineDate = null;
 	} else {
-		/* 開始日より前を選択した場合は自動的に日付を入れ替える */
+		// 開始日より前なら自動的に入れ替え
 		if (date < startDate) {
 			deadlineDate = startDate;
 			startDate = new Date(date);
@@ -476,17 +577,15 @@ function selectPeriodDate(date) {
 	renderPeriodCalendar();
 }
 
-function isSameDate(a, b) {
-	return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-}
+// 前月
 
-// 前月 ----------------------------------------
 document.getElementById("period-prev").addEventListener("click", () => {
 	periodDate.setMonth(periodDate.getMonth() - 1);
 	renderPeriodCalendar();
 });
 
-// 次月 ----------------------------------------
+// 次月
+
 document.getElementById("period-next").addEventListener("click", () => {
 	periodDate.setMonth(periodDate.getMonth() + 1);
 	renderPeriodCalendar();
@@ -1168,85 +1267,50 @@ function renderHolidayCalendar() {
 	const year = holidayDate.getFullYear();
 	const month = holidayDate.getMonth();
 
-	document.getElementById("holiday-month").textContent = `${year}年 ${month + 1}月`;
+	document.getElementById("holiday-month").textContent =
+		`${year}年 ${month + 1}月`;
 
 	const calendar = document.getElementById("holiday-calendar");
 
-	calendar.innerHTML = "";
+	renderInputCalendar(calendar, holidayDate, {
+		createDayOptions: (date) => {
+			const key =
+				`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-	const firstDay = new Date(year, month, 1).getDay();
-	const daysInMonth = new Date(year, month + 1, 0).getDate();
+			const isHoliday = holidays.has(key);
 
-	// 月初までの空白
-	for (let i = 0; i < firstDay; i++) {
-		const empty = document.createElement("div");
+			return {
+				holiday: isHoliday,
 
-		empty.className = "calendar-day empty";
-		calendar.appendChild(empty);
-	}
+				icon: isHoliday
+					? {
+							src: "icon/cal4_holiday.png",
+							alt: "休日",
+						}
+					: null,
 
-	// 日付
-	for (let day = 1; day <= daysInMonth; day++) {
-		const cell = document.createElement("div");
+				onClick: () => {
+					if (holidays.has(key)) {
+						holidays.delete(key);
+					} else {
+						holidays.add(key);
+					}
 
-		cell.className = "calendar-day";
-
-		const date = new Date(year, month, day);
-
-		// 日付表示
-		const dateNumber = document.createElement("div");
-
-		dateNumber.className = "day-number";
-		dateNumber.textContent = day;
-
-		if (date.getDay() === 0) {
-			cell.classList.add("sunday");
-		}
-
-		if (date.getDay() === 6) {
-			cell.classList.add("saturday");
-		}
-
-		cell.appendChild(dateNumber);
-
-		// アイコン表示エリア
-		const dayIcon = document.createElement("div");
-
-		dayIcon.className = "day-icon";
-		cell.appendChild(dayIcon);
-
-		const key = `${year}-${month + 1}-${day}`;
-
-		// 休日判定
-		if (holidays.has(key)) {
-			cell.classList.add("holiday");
-
-			const icon = document.createElement("img");
-
-			icon.src = "icon/cal4_holiday.png";
-			icon.alt = "休日";
-
-			dayIcon.appendChild(icon);
-		}
-
-		// 日付クリック
-		cell.addEventListener("click", () => {
-			if (holidays.has(key)) {
-				holidays.delete(key);
-			} else {
-				holidays.add(key);
-			}
-			renderHolidayCalendar();
-		});
-
-		calendar.appendChild(cell);
-	}
+					renderHolidayCalendar();
+				},
+			};
+		},
+	});
 }
+
+// 前月
 
 document.getElementById("holiday-prev").addEventListener("click", () => {
 	holidayDate.setMonth(holidayDate.getMonth() - 1);
 	renderHolidayCalendar();
 });
+
+// 次月
 
 document.getElementById("holiday-next").addEventListener("click", () => {
 	holidayDate.setMonth(holidayDate.getMonth() + 1);
