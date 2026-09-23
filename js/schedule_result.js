@@ -904,7 +904,7 @@ function displayResultEndDate(resultData) {
 	const month = finalEndDate.getMonth() + 1;
 	const day = finalEndDate.getDate();
 
-	endDate.textContent = `${year}年${month}月${day}日`;
+	endDate.textContent = `${year}/${month}/${day}`;
 }
 
 // ========================================

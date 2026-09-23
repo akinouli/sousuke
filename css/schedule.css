@@ -393,9 +393,10 @@ body {
 	padding: 10px 18px;
 	border: none;
 	border-radius: 12px;
-
-	background: var(--color-white);
+	
+	background: var(--color-cream);
 	box-shadow: 0 2px 1px var(--color-shadow);
+	color: var(--color-orange);
 
 	font-size: 16px;
 	cursor: pointer;
@@ -408,7 +409,9 @@ body {
 .section-nav-button:active {
 	transform: scale(0.94);
 
-	box-shadow: 0 2px 1px var(--color-shadow);
+	background: var(--color-orange);
+	box-shadow: none;
+	color: var(--color-white);
 }
 
 /* フッター - 「戻る」ボタン非表示設定 */
@@ -1418,7 +1421,7 @@ body {
 	min-height: 80px;
 	padding: 6px;
 
-	border-radius: 10px;
+	border-radius: 5px;
 	border: 1px solid var(--color-green);
 
 	background: var(--color-white);

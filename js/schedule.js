@@ -355,7 +355,7 @@ function updateFooterButtons() {
 	if (currentSection === inputSections.length - 1) {
 		nextButton.textContent = "作成する";
 	} else {
-		nextButton.textContent = "次へ▼";
+		nextButton.textContent = "次へ ▼";
 	}
 }
 
