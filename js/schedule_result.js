@@ -943,51 +943,13 @@ function displayResultAutoAdjustment(resultData) {
 // 5.基本情報
 // ========================================
 
-// 日付を「○/○」形式で表示
+// 日付を「YYYY/M/D」形式で表示
 function formatBasicInfoDate(date) {
 	if (!date) {
 		return "";
 	}
 
-	return `${date.getMonth() + 1}/${date.getDate()}`;
-}
-
-// 日付が同じか判定
-function isSameScheduleDate(dateA, dateB) {
-	if (!dateA || !dateB) {
-		return false;
-	}
-
-	return (
-		dateA.getFullYear() === dateB.getFullYear() &&
-		dateA.getMonth() === dateB.getMonth() &&
-		dateA.getDate() === dateB.getDate()
-	);
-}
-
-// 制作日数を算出
-// 開始日・締切日を含め、休日だけを除外
-function calculateProductionDays(startDate, deadline, holidays) {
-	if (!startDate || !deadline) {
-		return 0;
-	}
-
-	let days = 0;
-	let currentDate = new Date(startDate);
-
-	while (currentDate <= deadline) {
-		const isHoliday = holidays.some((holiday) => {
-			return isSameScheduleDate(currentDate, parseScheduleDate(holiday));
-		});
-
-		if (!isHoliday) {
-			days++;
-		}
-
-		currentDate.setDate(currentDate.getDate() + 1);
-	}
-
-	return days;
+	return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 }
 
 // 基本情報を表示
@@ -997,10 +959,10 @@ function displayScheduleBasicInfo(resultData) {
 	}
 
 	const pageCountElement = document.getElementById("schedule-page-count");
-	const periodElement = document.getElementById("schedule-production-period");
-	const daysElement = document.getElementById("schedule-production-days");
+	const startDateElement = document.getElementById("schedule-start-date");
+	const deadlineElement = document.getElementById("schedule-deadline");
 
-	if (!pageCountElement || !periodElement || !daysElement) {
+	if (!pageCountElement || !startDateElement || !deadlineElement) {
 		return;
 	}
 
@@ -1008,26 +970,13 @@ function displayScheduleBasicInfo(resultData) {
 	const deadline = parseScheduleDate(resultData.deadline);
 
 	// ページ数
-	pageCountElement.textContent = `${resultData.pageCount} ページ`;
+	pageCountElement.textContent = resultData.pageCount;
 
-	// 制作期間
-	if (startDate && deadline) {
-		const startText = formatBasicInfoDate(startDate);
-		const deadlineText = formatBasicInfoDate(deadline);
+	// 制作開始日
+	startDateElement.textContent = formatBasicInfoDate(startDate);
 
-		periodElement.textContent = `${startText} ～ ${deadlineText}`;
-	} else {
-		periodElement.textContent = "";
-	}
-
-	// 制作日数
-	const productionDays = calculateProductionDays(
-		startDate,
-		deadline,
-		resultData.holidays || [],
-	);
-
-	daysElement.textContent = `${productionDays} 日`;
+	// 締切日
+	deadlineElement.textContent = formatBasicInfoDate(deadline);
 }
 
 // ========================================
@@ -1181,32 +1130,7 @@ function createFinalProcessCard(process) {
 
 			dateElement.className = "final-process-date";
 
-			// 月
-			const monthNumber = document.createElement("span");
-
-			monthNumber.className = "final-process-date-number";
-			monthNumber.textContent = date.getMonth() + 1;
-
-			const monthUnit = document.createElement("span");
-
-			monthUnit.className = "final-process-date-unit";
-			monthUnit.textContent = "月";
-
-			// 日
-			const dayNumber = document.createElement("span");
-
-			dayNumber.className = "final-process-date-number";
-			dayNumber.textContent = date.getDate();
-
-			const dayUnit = document.createElement("span");
-
-			dayUnit.className = "final-process-date-unit";
-			dayUnit.textContent = "日";
-
-			dateElement.appendChild(monthNumber);
-			dateElement.appendChild(monthUnit);
-			dateElement.appendChild(dayNumber);
-			dateElement.appendChild(dayUnit);
+			dateElement.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
 
 			return dateElement;
 		}
@@ -1324,8 +1248,94 @@ function displayFinalProcessList(resultData) {
 	});
 }
 
+// ========================================
+// 7.実際の制作期間・制作日数
+// ========================================
+
+// 日付を「YYYY/M/D」形式で表示
+function formatActualProductionDate(date) {
+	if (!date) {
+		return "";
+	}
+
+	return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+// 実際の制作日数を算出
+// 制作開始日〜作業終了予定日を含め、
+// 休日と活動しない曜日を除外
+function calculateActualProductionDays(startDate, endDate, holidays, activityTimes) {
+	if (!startDate || !endDate) {
+		return 0;
+	}
+
+	let days = 0;
+	let currentDate = new Date(startDate);
+
+	while (currentDate <= endDate) {
+		const dateString = formatScheduleDate(currentDate);
+
+		// 休日
+		const isHoliday = isScheduleHoliday(dateString, holidays);
+
+		// 活動時間
+		const weekday = currentDate.getDay();
+		const activityTime = activityTimes?.[weekday];
+
+		const activityMinutes = activityTime
+			? activityTime.hours * 60 + activityTime.minutes
+			: 0;
+
+		const isInactiveDay = activityMinutes === 0;
+
+		// 休日でも活動しない曜日でもない日だけカウント
+		if (!isHoliday && !isInactiveDay) {
+			days++;
+		}
+
+		currentDate.setDate(currentDate.getDate() + 1);
+	}
+
+	return days;
+}
+
+// 実際の制作期間・制作日数を表示
+function displayActualProductionInfo(resultData) {
+	if (!resultData) {
+		return;
+	}
+
+	const periodElement = document.getElementById("actual-production-period");
+	const daysElement = document.getElementById("actual-production-days");
+
+	if (!periodElement || !daysElement) {
+		return;
+	}
+
+	const startDate = parseScheduleDate(resultData.startDate);
+	const finalEndDate = parseScheduleDate(resultData.finalEndDate);
+
+	// 制作期間
+	if (startDate && finalEndDate) {
+		periodElement.textContent =
+			`${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
+	} else {
+		periodElement.textContent = "";
+	}
+
+	// 制作日数
+	const productionDays = calculateActualProductionDays(
+		startDate,
+		finalEndDate,
+		resultData.holidays || [],
+		resultData.activityTimes || [],
+	);
+
+	daysElement.textContent = `${productionDays}日`;
+}
+
 // ----------------------------------------
-// 行程リスト編集ボタン
+// 8.行程リスト編集ボタン
 // ----------------------------------------
 
 function editFinalProcessList() {

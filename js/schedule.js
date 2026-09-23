@@ -1319,24 +1319,27 @@ function createSchedule() {
 
 	console.log("scheduler.jsから受け取ったデータ:", schedulerData);
 
-	// 結果① 結果コメントを表示
+	// 結果➀ 結果コメントを表示
   displayResultComment(schedulerData);
 
-  // 結果② 基本情報を表示
+  // 結果➁ 基本情報を表示
   displayScheduleBasicInfo(schedulerData);
 
-  // 結果③ スケジュールカレンダーを表示
+  // 結果➂ スケジュールカレンダーを表示
   displayScheduleCalendar(schedulerData);
 
-	// 結果③ 作業終了予定日を表示
+	// 結果➃ 作業終了予定日を表示
 	displayResultEndDate(schedulerData);
 
-	// 結果④ 自動調整結果を表示
+	// 結果➄ 自動調整結果を表示
 	displayResultAutoAdjustment(schedulerData);
 
-	// 結果⑤ 工程リストを表示
-	displayFinalProcessList(schedulerData);
+	// 結果➅ 工程リストを表示
+  displayFinalProcessList(schedulerData);
 
-	// 結果画面へ移動
-	showSection(inputSections.length);
+  // 結果➆ 実際の制作期間・制作日数を表示
+  displayActualProductionInfo(schedulerData);
+
+  // 結果画面へ移動
+  showSection(inputSections.length);
 }

@@ -364,16 +364,15 @@
 									</div>
 
 									<div class="schedule-basic-info-row">
-										<span class="schedule-basic-info-label">制作期間</span>
+										<span class="schedule-basic-info-label">制作開始日</span>
 										<span class="schedule-basic-info-colon">：</span>
-										<span id="schedule-production-period" class="schedule-basic-info-value"></span>
+										<span id="schedule-start-date" class="schedule-basic-info-value"></span>
 									</div>
 
 									<div class="schedule-basic-info-row">
-										<span class="schedule-basic-info-label">制作日数</span>
+										<span class="schedule-basic-info-label">締切日</span>
 										<span class="schedule-basic-info-colon">：</span>
-										<span id="schedule-production-days" class="schedule-basic-info-value"></span>
-										<span class="schedule-basic-info-note">※休日を除く</span>
+										<span id="schedule-deadline" class="schedule-basic-info-value"></span>
 									</div>
 								</div>
 
@@ -447,6 +446,24 @@
 											<span>作業終了</span>
 										</div>
 									</div>
+								</div>
+
+								<!-- 実際の制作期間・制作日数 -->
+								<div id="actual-production-info">
+
+									<div class="actual-production-info-row">
+										<span class="actual-production-info-label">制作期間</span>
+										<span class="actual-production-info-colon">：</span>
+										<span id="actual-production-period" class="actual-production-info-value"></span>
+									</div>
+
+									<div class="actual-production-info-row">
+										<span class="actual-production-info-label">制作日数</span>
+										<span class="actual-production-info-colon">：</span>
+										<span id="actual-production-days" class="actual-production-info-value"></span>
+										<span class="actual-production-info-note">※作業しない日を除く</span>
+									</div>
+
 								</div>
 
 								<!-- 行程リスト編集 -->

@@ -913,20 +913,21 @@ function createFinalDisplayData(data, step1Data, step2Data, step4Data) {
 	// 最終結果
 	// ----------------------------------------
 
-	return {
+  return {
     pageCount: data.pageCount,
-		emptyDays: calculateEmptyDays(finalEndDate, data.deadline),
-		autoAdjustmentResult: autoAdjustmentResult,
-		adjustmentRate: adjustmentRate,
-		isImpossible: isImpossible,
-		startDate: data.startDate,
-		productionSchedule: productionSchedule,
-		completionDate: finalCompletionDate,
-		finishingSchedule: finishingSchedule,
-		deadline: data.deadline,
-		holidays: data.holidays,
-		finalEndDate: finalEndDate,
-		productionProcessList: productionProcessList,
-		finishingProcessList: finishingProcessList,
-	};
+    emptyDays: calculateEmptyDays(finalEndDate, data.deadline),
+    autoAdjustmentResult: autoAdjustmentResult,
+    adjustmentRate: adjustmentRate,
+    isImpossible: isImpossible,
+    startDate: data.startDate,
+    productionSchedule: productionSchedule,
+    completionDate: finalCompletionDate,
+    finishingSchedule: finishingSchedule,
+    deadline: data.deadline,
+    holidays: data.holidays,
+    activityTimes: data.activityTimes,
+    finalEndDate: finalEndDate,
+    productionProcessList: productionProcessList,
+    finishingProcessList: finishingProcessList,
+  };
 }
