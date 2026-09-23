@@ -1262,6 +1262,7 @@ body {
 
 /* カレンダーチェンジ */
 .calendar-change-button {
+	align-self: flex-end;
 	padding: 8px 14px;
 	border: none;
 	border-radius: 10px;
