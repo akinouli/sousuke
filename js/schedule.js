@@ -365,7 +365,12 @@ updateFooterButtons();
 // 入力カレンダー共通処理
 // ----------------------------------------
 
-function createInputCalendarDay(date, options = {}, displayMonth = null) {
+function createInputCalendarDay(
+	date,
+	options = {},
+	displayStartDate = null,
+	displayMonth = null
+) {
 	const cell = document.createElement("div");
 
 	cell.className = "calendar-day";
@@ -380,13 +385,15 @@ function createInputCalendarDay(date, options = {}, displayMonth = null) {
 
 	const isMonthStart = date.getDate() === 1;
 
-	const isDisplayStart = displayMonth && date.getTime() === displayMonth.getTime();
+  const isDisplayStart =
+    displayStartDate &&
+    date.getTime() === displayStartDate.getTime();
 
-	if (isDisplayStart || isMonthStart) {
-		dateNumber.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
-	} else {
-		dateNumber.textContent = date.getDate();
-	}
+  if (isDisplayStart || isMonthStart) {
+    dateNumber.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
+  } else {
+    dateNumber.textContent = date.getDate();
+  }
 
 	cell.appendChild(dateNumber);
 
@@ -401,6 +408,20 @@ function createInputCalendarDay(date, options = {}, displayMonth = null) {
 	if (date.getDay() === 6) {
 		cell.classList.add("saturday");
 	}
+
+  // ------------------------------------
+  // 前月・次月
+  // ------------------------------------
+
+  if (
+    displayMonth &&
+    (
+      date.getFullYear() !== displayMonth.getFullYear() ||
+      date.getMonth() !== displayMonth.getMonth()
+    )
+  ) {
+    cell.classList.add("outside-month");
+  }
 
 	// ------------------------------------
 	// 月初
@@ -501,7 +522,12 @@ function renderInputCalendar(calendar, date, options = {}) {
 	while (currentDate <= lastDate) {
 		const dayOptions = options.createDayOptions ? options.createDayOptions(currentDate) : {};
 
-		const cell = createInputCalendarDay(new Date(currentDate), dayOptions, firstDate);
+		const cell = createInputCalendarDay(
+      new Date(currentDate),
+      dayOptions,
+      firstDate,
+      new Date(year, month, 1)
+    );
 
 		calendar.appendChild(cell);
 

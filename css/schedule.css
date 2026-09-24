@@ -1229,6 +1229,12 @@ body {
 	background: var(--color-cream);
 }
 
+/* 前月・次月の日付マス */
+
+.calendar-day.outside-month {
+	opacity: 0.8;
+}
+
 /* --------------------------------------------------
   制作期間ラベル
 -------------------------------------------------- */
@@ -1590,7 +1596,7 @@ body {
 
 /* 範囲外の日付 */
 .schedule-day.outside-period {
-	background: var(--color-lightgray);
+	opacity: 0.8;
 }
 
 /* 今日 */
