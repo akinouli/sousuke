@@ -436,9 +436,19 @@ body {
 	height: 60px;
 
 	border: 1px solid var(--color-green);
-	border-radius: 8px;
+	border-radius: 10px;
 
 	background: var(--color-white);
+
+	transition:
+		border-color 0.15s ease,
+		background 0.15s ease;
+}
+
+/* 入力中 */
+.page-count-input:focus-within {
+	border-color: var(--color-orange);
+	background: var(--color-cream);
 }
 
 #page-count {
@@ -450,6 +460,8 @@ body {
 	border: none;
 	outline: none;
 	background: transparent;
+
+	color: var(--color-text);
 
 	font-size: 32px;
 	text-align: center;
@@ -506,6 +518,27 @@ body {
 
 .process-name {
 	width: 100%;
+	height: 40px;
+	padding: 6px 10px;
+
+	border: 1px solid var(--color-green);
+	border-radius: 10px;
+
+	background: var(--color-white);
+	color: var(--color-text);
+
+	font-size: 16px;
+
+	outline: none;
+
+	transition:
+		border-color 0.15s ease,
+		background 0.15s ease;
+}
+
+.process-name:focus {
+	border-color: var(--color-orange);
+	background: var(--color-cream);
 }
 
 .process-settings {
@@ -516,7 +549,29 @@ body {
 }
 
 .process-unit {
-	width: 85px;
+	width: 120px;
+	height: 40px;
+	padding: 6px 28px 6px 10px;
+
+	border: 1px solid var(--color-green);
+	border-radius: 10px;
+
+	background: var(--color-white);
+	color: var(--color-text);
+
+	font-size: 16px;
+
+	outline: none;
+	cursor: pointer;
+
+	transition:
+		border-color 0.15s ease,
+		background 0.15s ease;
+}
+
+.process-unit:focus {
+	border-color: var(--color-orange);
+	background: var(--color-cream);
 }
 
 /* 時間・分 入力グループ */
@@ -526,12 +581,22 @@ body {
 	align-items: stretch;
 
 	width: 55px;
-	padding: 2px 3px;
+	height: 40px;
+	padding: 2px 5px;
 
 	border: 1px solid var(--color-green);
-	border-radius: 8px;
+	border-radius: 10px;
 
 	background: var(--color-white);
+
+	transition:
+		border-color 0.15s ease,
+		background 0.15s ease;
+}
+
+.time-input-group:focus-within {
+	border-color: var(--color-orange);
+	background: var(--color-cream);
 }
 
 /* 実際の入力欄 */
@@ -612,7 +677,7 @@ body {
 	border: none;
 	border-radius: 8px;
 	padding: 7px 8px;
-	max-height: 40px;
+	height: 40px;
 
 	font-size: 11px;
 	line-height: 1.2;
@@ -2047,6 +2112,7 @@ body {
 
 	.process-time-input .time-input-group {
 		width: 45px;
+		height: 40px;
 		font-size: 16px;
 	}
 
@@ -2112,6 +2178,7 @@ body {
 
 	.time-input-group {
 		width: 45px;
+		height: 40px;
 		padding: 2px 3px;
 	}
 
