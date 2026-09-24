@@ -1543,6 +1543,21 @@ body {
 	text-align: center;
 }
 
+/* 日曜日 */
+.schedule-day.sunday .schedule-day-number {
+	color: var(--color-sunday);
+}
+
+/* 土曜日 */
+.schedule-day.saturday .schedule-day-number {
+	color: var(--color-saturday);
+}
+
+/* 前月・次月の日付 */
+.schedule-day.outside-month .schedule-day-number {
+	opacity: 0.45;
+}
+
 /* カレンダーアイコン */
 .schedule-day-icons {
 	position: absolute;

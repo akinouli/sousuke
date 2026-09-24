@@ -291,6 +291,18 @@ function createScheduleDayElement(date, data, displayStartDate) {
 	dayElement.className = "schedule-day";
 
 	// ------------------------------------
+	// 曜日
+	// ------------------------------------
+
+	if (date.getDay() === 0) {
+		dayElement.classList.add("sunday");
+	}
+
+	if (date.getDay() === 6) {
+		dayElement.classList.add("saturday");
+	}
+
+	// ------------------------------------
 	// 制作期間外
 	// ------------------------------------
 
