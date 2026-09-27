@@ -133,116 +133,195 @@ let deadlineDate = null;
 // エラーチェック - セクション毎
 // ----------------------------------------
 
-function validateSection(index) {
+function getSectionErrors(index) {
+	const errors = [];
+
 	// 1.ページ数 ----------------------------------------
+
 	if (index === 0) {
 		const pageCount = Number(document.getElementById("page-count").value);
 
 		if (!pageCount || pageCount < 1) {
-			alert("ページ数を入力してください");
-			return false;
+			errors.push({
+				message: "ページ数を入力してください",
+				targets: [
+					document.querySelector(".page-count-input"),
+				],
+			});
 		}
 	}
 
 	// 2.工程リスト ----------------------------------------
+
 	if (index === 1) {
 		// 制作 ----------------------------------------
+
 		const processRows = processList.querySelectorAll(".process-row");
 
 		// 行程が1個もない
 		if (processRows.length === 0) {
-			alert("行程を1個以上作成してください");
-			return false;
-		}
-
-		// 制作の各行程をチェック
-		for (const row of processRows) {
-			const name = row.querySelector(".process-name").value.trim();
-			const hours = Number(row.querySelector(".process-hours").value);
-			const minutes = Number(row.querySelector(".process-minutes").value);
-			const hasTime = hours > 0 || minutes > 0;
-
-			// 行程名・作業時間ともに未入力
-			if (!name && !hasTime) {
-				alert("行程名・作業時間を入力してください");
-				return false;
-			}
-
-			// 行程名のみ未入力
-			if (!name) {
-				alert("行程名を入力してください");
-				return false;
-			}
-
-			// 作業時間のみ未入力
-			if (!hasTime) {
-				alert("作業時間を入力してください");
-				return false;
-			}
-		}
-
-		// 行程名の重複チェック
-		const processNames =
-			processRows.length > 0
-				? Array.from(processRows).map((row) => row.querySelector(".process-name").value.trim())
-				: [];
-
-		if (new Set(processNames).size !== processNames.length) {
-			alert("行程名は被らないように設定してください");
-			return false;
-		}
-
-		// 仕立て ----------------------------------------
-		// 【しない】ならチェックしない
-		if (postWorkYes.classList.contains("selected")) {
-			const postProcessRows = postProcessList.querySelectorAll(".process-row");
-
-			// 行程が1個もない
-			if (postProcessRows.length === 0) {
-				alert("行程を1個以上作成してください");
-				return false;
-			}
-
-			// 仕立ての各行程をチェック
-			for (const row of postProcessRows) {
+			errors.push({
+				message: "制作工程を1個以上作成してください",
+				targets: [],
+			});
+		} else {
+			for (const row of processRows) {
 				const name = row.querySelector(".process-name").value.trim();
 				const hours = Number(row.querySelector(".process-hours").value);
 				const minutes = Number(row.querySelector(".process-minutes").value);
+
 				const hasTime = hours > 0 || minutes > 0;
 
 				// 行程名・作業時間ともに未入力
 				if (!name && !hasTime) {
-					alert("行程名・作業時間を入力してください");
-					return false;
+					errors.push({
+						message: "制作工程の行程名・作業時間を入力してください",
+						targets: [
+							row.querySelector(".process-name"),
+							...row.querySelectorAll(".process-time-input .time-input-group"),
+						],
+					});
+
+					continue;
 				}
 
 				// 行程名のみ未入力
 				if (!name) {
-					alert("行程名を入力してください");
-					return false;
+					errors.push({
+						message: "制作工程の行程名を入力してください",
+						targets: [
+							row.querySelector(".process-name"),
+						],
+					});
 				}
 
 				// 作業時間のみ未入力
 				if (!hasTime) {
-					alert("作業時間を入力してください");
-					return false;
+					errors.push({
+						message: "制作工程の作業時間を入力してください",
+						targets: [
+							...row.querySelectorAll(".process-time-input .time-input-group"),
+						],
+					});
+				}
+			}
+		}
+
+		// 制作工程名の重複チェック
+		const processNames = Array.from(processRows).map((row) =>
+			row.querySelector(".process-name").value.trim()
+		);
+
+		const duplicateNames = processNames.filter(
+			(name, index) =>
+				name !== "" &&
+				processNames.indexOf(name) !== index
+		);
+
+		if (duplicateNames.length > 0) {
+			const duplicateTargets = Array.from(processRows)
+				.filter((row) =>
+					duplicateNames.includes(
+						row.querySelector(".process-name").value.trim()
+					)
+				)
+				.map((row) => row.querySelector(".process-name"));
+
+			errors.push({
+				message: "制作工程の行程名は被らないように設定してください",
+				targets: duplicateTargets,
+			});
+		}
+
+		// 仕立て ----------------------------------------
+
+		if (postWorkYes.classList.contains("selected")) {
+			const postProcessRows =
+				postProcessList.querySelectorAll(".process-row");
+
+			// 行程が1個もない
+			if (postProcessRows.length === 0) {
+				errors.push({
+					message: "仕立て工程を1個以上作成してください",
+					targets: [],
+				});
+			} else {
+				for (const row of postProcessRows) {
+					const name = row.querySelector(".process-name").value.trim();
+					const hours = Number(row.querySelector(".process-hours").value);
+					const minutes = Number(row.querySelector(".process-minutes").value);
+
+					const hasTime = hours > 0 || minutes > 0;
+
+					// 行程名・作業時間ともに未入力
+					if (!name && !hasTime) {
+						errors.push({
+							message: "仕立て工程の行程名・作業時間を入力してください",
+							targets: [
+								row.querySelector(".process-name"),
+								...row.querySelectorAll(
+									".process-time-input .time-input-group"
+								),
+							],
+						});
+
+						continue;
+					}
+
+					// 行程名のみ未入力
+					if (!name) {
+						errors.push({
+							message: "仕立て工程の行程名を入力してください",
+							targets: [
+								row.querySelector(".process-name"),
+							],
+						});
+					}
+
+					// 作業時間のみ未入力
+					if (!hasTime) {
+						errors.push({
+							message: "仕立て工程の作業時間を入力してください",
+							targets: [
+								...row.querySelectorAll(
+									".process-time-input .time-input-group"
+								),
+							],
+						});
+					}
 				}
 			}
 
-			// 行程名の重複チェック
-			const postProcessNames =
-				postProcessRows.length > 0
-					? Array.from(postProcessRows).map((row) => row.querySelector(".process-name").value.trim())
-					: [];
+			// 仕立て工程名の重複チェック
+			const postProcessNames = Array.from(postProcessRows).map((row) =>
+				row.querySelector(".process-name").value.trim()
+			);
 
-			if (new Set(postProcessNames).size !== postProcessNames.length) {
-				alert("行程名は被らないように設定してください");
-				return false;
+			const duplicatePostNames = postProcessNames.filter(
+				(name, index) =>
+					name !== "" &&
+					postProcessNames.indexOf(name) !== index
+			);
+
+			if (duplicatePostNames.length > 0) {
+				const duplicateTargets = Array.from(postProcessRows)
+					.filter((row) =>
+						duplicatePostNames.includes(
+							row.querySelector(".process-name").value.trim()
+						)
+					)
+					.map((row) => row.querySelector(".process-name"));
+
+				errors.push({
+					message: "仕立て工程の行程名は被らないように設定してください",
+					targets: duplicateTargets,
+				});
 			}
 		}
 	}
 
 	// 3.活動時間 ----------------------------------------
+
 	if (index === 2) {
 		let totalMinutes = 0;
 
@@ -255,32 +334,114 @@ function validateSection(index) {
 
 		// 全体で1時間未満
 		if (totalMinutes < 60) {
-			alert("全体で1時間以上になるよう活動時間を設定してください");
-			return false;
+			const targets = [];
+
+			document.querySelectorAll(".day-row").forEach((row) => {
+				targets.push(
+					...row.querySelectorAll(".time-input-group")
+				);
+			});
+
+			errors.push({
+				message: "全体で1時間以上になるよう活動時間を設定してください",
+				targets,
+			});
 		}
 	}
 
 	// 4.休日 ----------------------------------------
+
 	if (index === 3) {
 		// 休日は任意なのでチェックなし
 	}
 
 	// 5.制作期間 ----------------------------------------
+
 	if (index === 4) {
 		// 両方未入力
 		if (!startDate && !deadlineDate) {
-			alert("制作開始日・締切日を選択してください");
-			return false;
+			errors.push({
+				message: "制作開始日・締切日を選択してください",
+				targets: [],
+			});
 		}
 
 		// 締切日だけ未入力
-		if (!deadlineDate) {
-			alert("締切日を選択してください");
-			return false;
+		else if (!deadlineDate) {
+			errors.push({
+				message: "締切日を選択してください",
+				targets: [],
+			});
 		}
 	}
 
-	return true;
+	return errors;
+}
+
+// ----------------------------------------
+// エラー表示 - 共通処理
+// ----------------------------------------
+
+function clearValidationErrors() {
+	// 赤枠を削除
+	document
+		.querySelectorAll(".validation-error")
+		.forEach((element) => {
+			element.classList.remove("validation-error");
+		});
+
+	// セクションメッセージを削除
+	document
+		.querySelectorAll(".validation-message")
+		.forEach((element) => {
+			element.textContent = "";
+			element.hidden = true;
+		});
+}
+
+function showSectionErrors(index, errors) {
+	const section = inputSections[index];
+
+	const messageElement =
+		section.querySelector(".validation-message");
+
+	// いったんこのセクションのエラー表示を解除
+	messageElement.textContent = "";
+	messageElement.hidden = true;
+
+	section
+		.querySelectorAll(".validation-error")
+		.forEach((element) => {
+			element.classList.remove("validation-error");
+		});
+
+	// エラーなし
+	if (errors.length === 0) {
+		return;
+	}
+
+	// エラーメッセージ
+	messageElement.textContent = errors[0].message;
+	messageElement.hidden = false;
+
+	// エラー対象を赤枠にする
+	errors.forEach((error) => {
+		error.targets.forEach((target) => {
+			target.classList.add("validation-error");
+		});
+	});
+}
+
+// ----------------------------------------
+// エラーチェック - セクション毎
+// ----------------------------------------
+
+function validateSection(index) {
+	const errors = getSectionErrors(index);
+
+	showSectionErrors(index, errors);
+
+	return errors.length === 0;
 }
 
 // ----------------------------------------
@@ -288,16 +449,108 @@ function validateSection(index) {
 // ----------------------------------------
 
 function validateAllSections() {
-	for (let index = 0; index < inputSections.length; index++) {
-		if (!validateSection(index)) {
-			showSection(index);
+	clearValidationErrors();
 
-			return false;
+	const allErrors = [];
+
+	for (let index = 0; index < inputSections.length; index++) {
+		const errors = getSectionErrors(index);
+
+		if (errors.length > 0) {
+			allErrors.push(
+				...errors.map((error) => ({
+					section: index,
+					message: error.message,
+					targets: error.targets,
+				}))
+			);
+
+			// 赤枠は全エラーに付ける
+			showSectionErrors(index, errors);
 		}
 	}
 
-	return true;
+	if (allErrors.length === 0) {
+		return true;
+	}
+
+	showValidationDialog(allErrors);
+
+	return false;
 }
+
+// ----------------------------------------
+// エラー擬似ポップアップ
+// ----------------------------------------
+
+const validationOverlay =
+	document.getElementById("validation-overlay");
+
+const validationDialogMessage =
+	document.getElementById("validation-dialog-message");
+
+const validationLater =
+	document.getElementById("validation-later");
+
+const validationFix =
+	document.getElementById("validation-fix");
+
+let validationErrors = [];
+let validationErrorIndex = 0;
+let validationOriginalSection = 0;
+
+
+function showValidationDialog(errors) {
+	validationErrors = errors;
+	validationErrorIndex = 0;
+	validationOriginalSection = currentSection;
+
+	updateValidationDialog();
+
+	validationOverlay.hidden = false;
+}
+
+// ----------------------------------------
+// 「あとで」ボタン
+// ----------------------------------------
+
+function updateValidationDialog() {
+	const error = validationErrors[validationErrorIndex];
+
+	validationDialogMessage.textContent = error.message;
+}
+
+validationLater.addEventListener("click", () => {
+	validationErrorIndex++;
+
+	// まだ次のエラーがある
+	if (validationErrorIndex < validationErrors.length) {
+		updateValidationDialog();
+		return;
+	}
+
+	// 全エラー確認終了
+	validationOverlay.hidden = true;
+
+	// 元のセクションへ戻る
+	if (currentSection !== validationOriginalSection) {
+		showSection(validationOriginalSection);
+	}
+});
+
+// ----------------------------------------
+// 「直す」ボタン
+// ----------------------------------------
+
+validationFix.addEventListener("click", () => {
+	const error = validationErrors[validationErrorIndex];
+
+	validationOverlay.hidden = true;
+
+	showSection(error.section);
+});
+
+
 
 // ----------------------------------------
 // セクション移動ボタン

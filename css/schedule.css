@@ -1327,6 +1327,149 @@ body {
 }
 
 /* --------------------------------------------------
+  エラーチェック
+-------------------------------------------------- */
+
+/* セクション上部のエラーメッセージ */
+
+.validation-message {
+	margin-top: 20px;
+	color: var(--color-error);
+
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 1.6;
+}
+
+.validation-message[hidden] {
+	display: none;
+}
+
+/* ページ数 */
+.page-count-input.validation-error {
+	border: 2px solid var(--color-error);
+}
+
+/* 行程名 */
+.process-name.validation-error {
+	border: 2px solid var(--color-error);
+}
+
+/* 時間入力 */
+.time-input-group.validation-error {
+	border: 2px solid var(--color-error);
+}
+
+/* フォーカス時のエラー表示維持 */
+.page-count-input.validation-error:focus-within {
+	border-color: var(--color-error);
+	background: var(--color-white);
+}
+
+.process-name.validation-error:focus {
+	border-color: var(--color-error);
+	background: var(--color-white);
+}
+
+.time-input-group.validation-error:focus-within {
+	border-color: var(--color-error);
+	background: var(--color-white);
+}
+
+/* --------------------------------------------------
+  エラー擬似ポップアップ
+-------------------------------------------------- */
+
+.validation-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 2000;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 20px;
+
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.validation-overlay[hidden] {
+	display: none;
+}
+
+/* ポップアップ本体 */
+
+.validation-dialog {
+	width: min(90%, 360px);
+	padding: 28px 24px;
+
+	border-radius: 16px;
+
+	background: var(--color-white);
+	box-shadow: 0 4px 12px var(--color-shadow);
+
+	text-align: center;
+}
+
+/* エラーメッセージ */
+
+#validation-dialog-message {
+	margin: 0;
+
+	color: var(--color-error);
+
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.7;
+}
+
+/* ボタン */
+
+.validation-dialog-buttons {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+
+	margin-top: 24px;
+}
+
+.validation-dialog-button {
+	min-width: 90px;
+	padding: 9px 16px;
+
+	border: none;
+	border-radius: 10px;
+
+	background: var(--color-cream);
+	color: var(--color-text);
+
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: bold;
+
+	cursor: pointer;
+
+	transition:
+		transform 0.1s ease,
+		background 0.1s ease;
+}
+
+.validation-dialog-button:active {
+	transform: scale(0.94);
+
+	background: var(--color-orange);
+	color: var(--color-white);
+}
+
+/* 「直す」 */
+
+#validation-fix {
+	background: var(--color-orange);
+	color: var(--color-white);
+}
+
+/* --------------------------------------------------
   結果セクション（➏）
 -------------------------------------------------- */
 

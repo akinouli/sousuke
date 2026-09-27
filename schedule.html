@@ -52,6 +52,8 @@
 					<h1>ページ数</h1>
 					<p>本文のページ数か制作枚数を入力しよう</p>
 
+					<div class="validation-message" hidden></div>
+
 					<div class="page-count-area">
 						<div class="page-count-input">
 							<input type="number" id="page-count" min="1" value="1" inputmode="numeric" />
@@ -66,6 +68,8 @@
 				<div class="section-content">
 					<h1>工程リスト</h1>
 					<p>作業工程と確保したい時間を決めよう<br />「＝」をつまんで優先順に並び替えできるよ</p>
+
+					<div class="validation-message" hidden></div>
 
 					<!-- 制作開始 -->
 					<div class="flow-start">
@@ -146,6 +150,8 @@
 				<div class="section-content">
 					<h1>活動時間</h1>
 					<p>曜日ごとに作業できる時間を設定しよう</p>
+
+					<div class="validation-message" hidden></div>
 
 					<div id="weekday-list">
 						<!-- 日曜日 -->
@@ -290,6 +296,8 @@
 					<h1>休日</h1>
 					<p>活動しない日があれば選択しよう<br />作業期間内にある休日を計算対象外にするよ</p>
 
+					<div class="validation-message" hidden></div>
+
 					<div class="calendar">
 						<div class="calendar-header">
 							<button type="button" id="holiday-prev">＜</button>
@@ -317,6 +325,8 @@
 				<div class="section-content">
 					<h1>制作期間</h1>
 					<p>制作開始日と締切日を選択しよう</p>
+
+					<div class="validation-message" hidden></div>
 
 					<div class="calendar">
 						<div class="calendar-header">
@@ -475,6 +485,23 @@
 					</div>
 				</div>
 			</section>
+
+			<!-- エラー擬似ポップアップ ========================= -->
+			<div id="validation-overlay" class="validation-overlay" hidden>
+				<div class="validation-dialog">
+					<p id="validation-dialog-message"></p>
+
+					<div class="validation-dialog-buttons">
+						<button type="button" id="validation-later" class="validation-dialog-button">
+							あとで
+						</button>
+
+						<button type="button" id="validation-fix" class="validation-dialog-button">
+							直す
+						</button>
+					</div>
+				</div>
+			</div>
 		</main>
 
 		<footer class="section-footer">
