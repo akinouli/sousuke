@@ -1401,7 +1401,8 @@ body {
 /* ポップアップ本体 */
 
 .validation-dialog {
-	width: min(90%, 360px);
+	width: 90%;
+	max-width: 360px;
 	padding: 28px 24px;
 
 	border-radius: 16px;
