@@ -395,8 +395,16 @@ function showValidationBorders(errors) {
 // ----------------------------------------
 
 function showValidationMessages(errors) {
-	inputSections.forEach((section) => {
-		const index = Number(section.dataset.section);
+	// ------------------------------------
+	// エラーがあるセクションだけ更新
+	// ------------------------------------
+
+	const sectionIndexes = [
+		...new Set(errors.map((error) => error.section)),
+	];
+
+	sectionIndexes.forEach((index) => {
+		const section = inputSections[index];
 
 		const messageElement =
 			section.querySelector(".validation-message");
@@ -407,12 +415,6 @@ function showValidationMessages(errors) {
 
 		// いったんこのセクションのメッセージを削除
 		messageElement.replaceChildren();
-
-		// エラーなし
-		if (sectionErrors.length === 0) {
-			messageElement.hidden = true;
-			return;
-		}
 
 		// このセクションのエラーをすべて表示
 		sectionErrors.forEach((error) => {
