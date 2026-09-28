@@ -1294,9 +1294,7 @@ function calculateActualProductionDays(startDate, endDate, holidays, activityTim
 		const weekday = currentDate.getDay();
 		const activityTime = activityTimes?.[weekday];
 
-		const activityMinutes = activityTime
-			? activityTime.hours * 60 + activityTime.minutes
-			: 0;
+		const activityMinutes = activityTime ? activityTime.hours * 60 + activityTime.minutes : 0;
 
 		const isInactiveDay = activityMinutes === 0;
 
@@ -1329,8 +1327,7 @@ function displayActualProductionInfo(resultData) {
 
 	// 制作期間
 	if (startDate && finalEndDate) {
-		periodElement.textContent =
-			`${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
+		periodElement.textContent = `${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
 	} else {
 		periodElement.textContent = "";
 	}

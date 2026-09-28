@@ -97,14 +97,14 @@ progressItems.forEach((item, index) => {
 			}
 
 			/* 入力セクションにいる場合だけチェック */
-      if (currentSection < inputSections.length) {
-        if (!validate("section")) {
-          return;
-        }
-      }
+			if (currentSection < inputSections.length) {
+				if (!validate("section")) {
+					return;
+				}
+			}
 
-      /* エラーがなければ移動 */
-      showSection(index);
+			/* エラーがなければ移動 */
+			showSection(index);
 		}
 	});
 });
@@ -115,9 +115,9 @@ progressItems.forEach((item, index) => {
 
 resultStatus.addEventListener("click", () => {
 	// 全セクションをチェック
-  if (!validate("all")) {
-    return;
-  }
+	if (!validate("all")) {
+		return;
+	}
 
 	// エラーがなければスケジュール作成
 	createSchedule();
@@ -146,9 +146,7 @@ function getSectionErrors(index) {
 		if (!pageCount || pageCount < 1) {
 			errors.push({
 				message: "ページ数を入力してください",
-				targets: [
-					document.querySelector(".page-count-input"),
-				],
+				targets: [document.querySelector(".page-count-input")],
 			});
 		}
 	}
@@ -191,9 +189,7 @@ function getSectionErrors(index) {
 				if (!name) {
 					errors.push({
 						message: "制作工程の行程名を入力してください",
-						targets: [
-							row.querySelector(".process-name"),
-						],
+						targets: [row.querySelector(".process-name")],
 					});
 				}
 
@@ -201,32 +197,20 @@ function getSectionErrors(index) {
 				if (!hasTime) {
 					errors.push({
 						message: "制作工程の作業時間を入力してください",
-						targets: [
-							...row.querySelectorAll(".process-time-input .time-input-group"),
-						],
+						targets: [...row.querySelectorAll(".process-time-input .time-input-group")],
 					});
 				}
 			}
 		}
 
 		// 制作工程名の重複チェック
-		const processNames = Array.from(processRows).map((row) =>
-			row.querySelector(".process-name").value.trim()
-		);
+		const processNames = Array.from(processRows).map((row) => row.querySelector(".process-name").value.trim());
 
-		const duplicateNames = processNames.filter(
-			(name, index) =>
-				name !== "" &&
-				processNames.indexOf(name) !== index
-		);
+		const duplicateNames = processNames.filter((name, index) => name !== "" && processNames.indexOf(name) !== index);
 
 		if (duplicateNames.length > 0) {
 			const duplicateTargets = Array.from(processRows)
-				.filter((row) =>
-					duplicateNames.includes(
-						row.querySelector(".process-name").value.trim()
-					)
-				)
+				.filter((row) => duplicateNames.includes(row.querySelector(".process-name").value.trim()))
 				.map((row) => row.querySelector(".process-name"));
 
 			errors.push({
@@ -238,8 +222,7 @@ function getSectionErrors(index) {
 		// 仕立て ----------------------------------------
 
 		if (postWorkYes.classList.contains("selected")) {
-			const postProcessRows =
-				postProcessList.querySelectorAll(".process-row");
+			const postProcessRows = postProcessList.querySelectorAll(".process-row");
 
 			// 行程が1個もない
 			if (postProcessRows.length === 0) {
@@ -261,9 +244,7 @@ function getSectionErrors(index) {
 							message: "仕立て工程の行程名・作業時間を入力してください",
 							targets: [
 								row.querySelector(".process-name"),
-								...row.querySelectorAll(
-									".process-time-input .time-input-group"
-								),
+								...row.querySelectorAll(".process-time-input .time-input-group"),
 							],
 						});
 
@@ -274,9 +255,7 @@ function getSectionErrors(index) {
 					if (!name) {
 						errors.push({
 							message: "仕立て工程の行程名を入力してください",
-							targets: [
-								row.querySelector(".process-name"),
-							],
+							targets: [row.querySelector(".process-name")],
 						});
 					}
 
@@ -284,11 +263,7 @@ function getSectionErrors(index) {
 					if (!hasTime) {
 						errors.push({
 							message: "仕立て工程の作業時間を入力してください",
-							targets: [
-								...row.querySelectorAll(
-									".process-time-input .time-input-group"
-								),
-							],
+							targets: [...row.querySelectorAll(".process-time-input .time-input-group")],
 						});
 					}
 				}
@@ -296,22 +271,16 @@ function getSectionErrors(index) {
 
 			// 仕立て工程名の重複チェック
 			const postProcessNames = Array.from(postProcessRows).map((row) =>
-				row.querySelector(".process-name").value.trim()
+				row.querySelector(".process-name").value.trim(),
 			);
 
 			const duplicatePostNames = postProcessNames.filter(
-				(name, index) =>
-					name !== "" &&
-					postProcessNames.indexOf(name) !== index
+				(name, index) => name !== "" && postProcessNames.indexOf(name) !== index,
 			);
 
 			if (duplicatePostNames.length > 0) {
 				const duplicateTargets = Array.from(postProcessRows)
-					.filter((row) =>
-						duplicatePostNames.includes(
-							row.querySelector(".process-name").value.trim()
-						)
-					)
+					.filter((row) => duplicatePostNames.includes(row.querySelector(".process-name").value.trim()))
 					.map((row) => row.querySelector(".process-name"));
 
 				errors.push({
@@ -339,9 +308,7 @@ function getSectionErrors(index) {
 			const targets = [];
 
 			document.querySelectorAll(".day-row").forEach((row) => {
-				targets.push(
-					...row.querySelectorAll(".time-input-group")
-				);
+				targets.push(...row.querySelectorAll(".time-input-group"));
 			});
 
 			errors.push({
@@ -401,19 +368,14 @@ function showValidationMessages(errors) {
 	// エラーがあるセクションだけ更新
 	// ------------------------------------
 
-	const sectionIndexes = [
-		...new Set(errors.map((error) => error.section)),
-	];
+	const sectionIndexes = [...new Set(errors.map((error) => error.section))];
 
 	sectionIndexes.forEach((index) => {
 		const section = inputSections[index];
 
-		const messageElement =
-			section.querySelector(".validation-message");
+		const messageElement = section.querySelector(".validation-message");
 
-		const sectionErrors = errors.filter(
-			(error) => error.section === index
-		);
+		const sectionErrors = errors.filter((error) => error.section === index);
 
 		// いったんこのセクションのメッセージを削除
 		messageElement.replaceChildren();
@@ -461,11 +423,7 @@ function validate(mode) {
 	// ------------------------------------
 
 	const targetSections =
-		mode === "section"
-			? [currentSection]
-			: Array.from(inputSections).map((section) =>
-					Number(section.dataset.section)
-				);
+		mode === "section" ? [currentSection] : Array.from(inputSections).map((section) => Number(section.dataset.section));
 
 	// ------------------------------------
 	// チェック対象の表示をリセット
@@ -474,14 +432,11 @@ function validate(mode) {
 	targetSections.forEach((index) => {
 		const section = inputSections[index];
 
-		section
-			.querySelectorAll(".validation-error")
-			.forEach((element) => {
-				element.classList.remove("validation-error");
-			});
+		section.querySelectorAll(".validation-error").forEach((element) => {
+			element.classList.remove("validation-error");
+		});
 
-		const messageElement =
-			section.querySelector(".validation-message");
+		const messageElement = section.querySelector(".validation-message");
 
 		messageElement.replaceChildren();
 		messageElement.hidden = true;
@@ -532,17 +487,13 @@ function validate(mode) {
 // エラー擬似ポップアップ
 // ----------------------------------------
 
-const validationOverlay =
-	document.getElementById("validation-overlay");
+const validationOverlay = document.getElementById("validation-overlay");
 
-const validationDialogMessage =
-	document.getElementById("validation-dialog-message");
+const validationDialogMessage = document.getElementById("validation-dialog-message");
 
-const validationLater =
-	document.getElementById("validation-later");
+const validationLater = document.getElementById("validation-later");
 
-const validationFix =
-	document.getElementById("validation-fix");
+const validationFix = document.getElementById("validation-fix");
 
 // 現在のエラー一覧
 let validationErrors = [];
@@ -596,8 +547,6 @@ validationFix.addEventListener("click", () => {
 	showValidationMessages(validationErrors);
 });
 
-
-
 // ----------------------------------------
 // セクション移動ボタン
 // ----------------------------------------
@@ -622,8 +571,8 @@ nextButton.addEventListener("click", () => {
 	if (sectionBeforeMove === inputSections.length - 1) {
 		// 全セクションをチェック
 		if (!validate("all")) {
-      return;
-    }
+			return;
+		}
 
 		// スケジュール作成
 		createSchedule();
@@ -632,9 +581,9 @@ nextButton.addEventListener("click", () => {
 	}
 
 	// 現在のセクションをチェック
-  if (!validate("section")) {
-    return;
-  }
+	if (!validate("section")) {
+		return;
+	}
 
 	// 次のセクションへ
 	showSection(sectionBeforeMove + 1);
@@ -664,12 +613,7 @@ updateFooterButtons();
 // 入力カレンダー共通処理
 // ----------------------------------------
 
-function createInputCalendarDay(
-	date,
-	options = {},
-	displayStartDate = null,
-	displayMonth = null
-) {
+function createInputCalendarDay(date, options = {}, displayStartDate = null, displayMonth = null) {
 	const cell = document.createElement("div");
 
 	cell.className = "calendar-day";
@@ -684,15 +628,13 @@ function createInputCalendarDay(
 
 	const isMonthStart = date.getDate() === 1;
 
-  const isDisplayStart =
-    displayStartDate &&
-    date.getTime() === displayStartDate.getTime();
+	const isDisplayStart = displayStartDate && date.getTime() === displayStartDate.getTime();
 
-  if (isDisplayStart || isMonthStart) {
-    dateNumber.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
-  } else {
-    dateNumber.textContent = date.getDate();
-  }
+	if (isDisplayStart || isMonthStart) {
+		dateNumber.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
+	} else {
+		dateNumber.textContent = date.getDate();
+	}
 
 	cell.appendChild(dateNumber);
 
@@ -708,19 +650,16 @@ function createInputCalendarDay(
 		cell.classList.add("saturday");
 	}
 
-  // ------------------------------------
-  // 前月・次月
-  // ------------------------------------
+	// ------------------------------------
+	// 前月・次月
+	// ------------------------------------
 
-  if (
-    displayMonth &&
-    (
-      date.getFullYear() !== displayMonth.getFullYear() ||
-      date.getMonth() !== displayMonth.getMonth()
-    )
-  ) {
-    cell.classList.add("outside-month");
-  }
+	if (
+		displayMonth &&
+		(date.getFullYear() !== displayMonth.getFullYear() || date.getMonth() !== displayMonth.getMonth())
+	) {
+		cell.classList.add("outside-month");
+	}
 
 	// ------------------------------------
 	// 月初
@@ -821,12 +760,7 @@ function renderInputCalendar(calendar, date, options = {}) {
 	while (currentDate <= lastDate) {
 		const dayOptions = options.createDayOptions ? options.createDayOptions(currentDate) : {};
 
-		const cell = createInputCalendarDay(
-      new Date(currentDate),
-      dayOptions,
-      firstDate,
-      new Date(year, month, 1)
-    );
+		const cell = createInputCalendarDay(new Date(currentDate), dayOptions, firstDate, new Date(year, month, 1));
 
 		calendar.appendChild(cell);
 
