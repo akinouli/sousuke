@@ -97,9 +97,9 @@ progressItems.forEach((item, index) => {
 			}
 
 			/* 現在のセクションをチェック */
-			if (!validateSection(currentSection)) {
-				return;
-			}
+			if (!validate("section")) {
+        return;
+      }
 
 			/* エラーがなければ移動 */
 			showSection(index);
@@ -113,9 +113,9 @@ progressItems.forEach((item, index) => {
 
 resultStatus.addEventListener("click", () => {
 	// 全セクションをチェック
-	if (!validateAllSections()) {
-		return;
-	}
+  if (!validate("all")) {
+    return;
+  }
 
 	// エラーがなければスケジュール作成
 	createSchedule();
@@ -130,7 +130,7 @@ let completionDate = null;
 let deadlineDate = null;
 
 // ----------------------------------------
-// エラーチェック - セクション毎
+// エラーチェック
 // ----------------------------------------
 
 function getSectionErrors(index) {
@@ -394,37 +394,16 @@ function clearValidationErrors() {
 	document
 		.querySelectorAll(".validation-message")
 		.forEach((element) => {
-			element.textContent = "";
+			element.replaceChildren();
 			element.hidden = true;
 		});
 }
 
-function showSectionErrors(index, errors) {
-	const section = inputSections[index];
+// ----------------------------------------
+// エラー赤枠
+// ----------------------------------------
 
-	const messageElement =
-		section.querySelector(".validation-message");
-
-	// いったんこのセクションのエラー表示を解除
-	messageElement.textContent = "";
-	messageElement.hidden = true;
-
-	section
-		.querySelectorAll(".validation-error")
-		.forEach((element) => {
-			element.classList.remove("validation-error");
-		});
-
-	// エラーなし
-	if (errors.length === 0) {
-		return;
-	}
-
-	// エラーメッセージ
-	messageElement.textContent = errors[0].message;
-	messageElement.hidden = false;
-
-	// エラー対象を赤枠にする
+function showValidationBorders(errors) {
 	errors.forEach((error) => {
 		error.targets.forEach((target) => {
 			target.classList.add("validation-error");
@@ -433,46 +412,113 @@ function showSectionErrors(index, errors) {
 }
 
 // ----------------------------------------
-// エラーチェック - セクション毎
+// セクションメッセージ
 // ----------------------------------------
 
-function validateSection(index) {
-	const errors = getSectionErrors(index);
+function showValidationMessages(errors) {
+	inputSections.forEach((section) => {
+		const index = Number(section.dataset.section);
 
-	showSectionErrors(index, errors);
+		const messageElement =
+			section.querySelector(".validation-message");
 
-	return errors.length === 0;
+		const sectionErrors = errors.filter(
+			(error) => error.section === index
+		);
+
+		// いったんこのセクションのメッセージを削除
+		messageElement.replaceChildren();
+
+		// エラーなし
+		if (sectionErrors.length === 0) {
+			messageElement.hidden = true;
+			return;
+		}
+
+		// このセクションのエラーをすべて表示
+		sectionErrors.forEach((error) => {
+			const message = document.createElement("span");
+
+			message.textContent = error.message;
+			message.style.display = "block";
+
+			messageElement.appendChild(message);
+		});
+
+		messageElement.hidden = false;
+	});
 }
 
 // ----------------------------------------
-// エラーチェック - 全セクション
+// エラーセクションへ移動
 // ----------------------------------------
 
-function validateAllSections() {
-	clearValidationErrors();
+function moveToErrorSection(index) {
+	// すでに該当セクションにいる場合
+	if (currentSection === index) {
+		window.scrollTo({
+			top: 0,
+			behavior: "instant",
+		});
+
+		return;
+	}
+
+	// 別セクションの場合
+	showSection(index);
+}
+
+// ----------------------------------------
+// エラーチェック - 共通処理
+// ----------------------------------------
+
+function validate(mode) {
+	// ------------------------------------
+	// チェック対象を決める
+	// ------------------------------------
+
+	const targetSections =
+		mode === "section"
+			? [currentSection]
+			: Array.from(inputSections).map((section) =>
+					Number(section.dataset.section)
+				);
+
+	// ------------------------------------
+	// エラーを集める
+	// ------------------------------------
 
 	const allErrors = [];
 
-	for (let index = 0; index < inputSections.length; index++) {
+	targetSections.forEach((index) => {
 		const errors = getSectionErrors(index);
 
-		if (errors.length > 0) {
-			allErrors.push(
-				...errors.map((error) => ({
-					section: index,
-					message: error.message,
-					targets: error.targets,
-				}))
-			);
+		errors.forEach((error) => {
+			allErrors.push({
+				section: index,
+				message: error.message,
+				targets: error.targets,
+			});
+		});
+	});
 
-			// 赤枠は全エラーに付ける
-			showSectionErrors(index, errors);
-		}
-	}
+	// ------------------------------------
+	// エラーなし
+	// ------------------------------------
 
 	if (allErrors.length === 0) {
 		return true;
 	}
+
+	// ------------------------------------
+	// 赤枠を追加
+	// ------------------------------------
+
+	showValidationBorders(allErrors);
+
+	// ------------------------------------
+	// 擬似ポップアップ
+	// ------------------------------------
 
 	showValidationDialog(allErrors);
 
@@ -495,18 +541,25 @@ const validationLater =
 const validationFix =
 	document.getElementById("validation-fix");
 
+// 現在のエラー一覧
 let validationErrors = [];
-let validationErrorIndex = 0;
-let validationOriginalSection = 0;
-
 
 function showValidationDialog(errors) {
 	validationErrors = errors;
-	validationErrorIndex = 0;
-	validationOriginalSection = currentSection;
 
-	updateValidationDialog();
+	// エラー一覧を表示
+	validationDialogMessage.replaceChildren();
 
+	validationErrors.forEach((error) => {
+		const message = document.createElement("span");
+
+		message.textContent = `・${error.message}`;
+		message.style.display = "block";
+
+		validationDialogMessage.appendChild(message);
+	});
+
+	// ポップアップ表示
 	validationOverlay.hidden = false;
 }
 
@@ -514,28 +567,12 @@ function showValidationDialog(errors) {
 // 「あとで」ボタン
 // ----------------------------------------
 
-function updateValidationDialog() {
-	const error = validationErrors[validationErrorIndex];
-
-	validationDialogMessage.textContent = error.message;
-}
-
 validationLater.addEventListener("click", () => {
-	validationErrorIndex++;
-
-	// まだ次のエラーがある
-	if (validationErrorIndex < validationErrors.length) {
-		updateValidationDialog();
-		return;
-	}
-
-	// 全エラー確認終了
+	// ポップアップだけ閉じる
 	validationOverlay.hidden = true;
 
-	// 元のセクションへ戻る
-	if (currentSection !== validationOriginalSection) {
-		showSection(validationOriginalSection);
-	}
+	// セクション内メッセージを表示
+	showValidationMessages(validationErrors);
 });
 
 // ----------------------------------------
@@ -543,11 +580,17 @@ validationLater.addEventListener("click", () => {
 // ----------------------------------------
 
 validationFix.addEventListener("click", () => {
-	const error = validationErrors[validationErrorIndex];
+	// 最初のエラー
+	const firstError = validationErrors[0];
 
+	// ポップアップを閉じる
 	validationOverlay.hidden = true;
 
-	showSection(error.section);
+	// 最初のエラーのセクションへ移動
+	moveToErrorSection(firstError.section);
+
+	// セクション内メッセージを表示
+	showValidationMessages(validationErrors);
 });
 
 
@@ -575,9 +618,9 @@ nextButton.addEventListener("click", () => {
 	// 最後の入力セクション
 	if (sectionBeforeMove === inputSections.length - 1) {
 		// 全セクションをチェック
-		if (!validateAllSections()) {
-			return;
-		}
+		if (!validate("all")) {
+      return;
+    }
 
 		// スケジュール作成
 		createSchedule();
@@ -586,9 +629,9 @@ nextButton.addEventListener("click", () => {
 	}
 
 	// 現在のセクションをチェック
-	if (!validateSection(sectionBeforeMove)) {
-		return;
-	}
+  if (!validate("section")) {
+    return;
+  }
 
 	// 次のセクションへ
 	showSection(sectionBeforeMove + 1);
