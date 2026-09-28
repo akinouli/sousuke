@@ -379,27 +379,6 @@ function getSectionErrors(index) {
 }
 
 // ----------------------------------------
-// エラー表示 - 共通処理
-// ----------------------------------------
-
-function clearValidationErrors() {
-	// 赤枠を削除
-	document
-		.querySelectorAll(".validation-error")
-		.forEach((element) => {
-			element.classList.remove("validation-error");
-		});
-
-	// セクションメッセージを削除
-	document
-		.querySelectorAll(".validation-message")
-		.forEach((element) => {
-			element.replaceChildren();
-			element.hidden = true;
-		});
-}
-
-// ----------------------------------------
 // エラー赤枠
 // ----------------------------------------
 
@@ -483,6 +462,26 @@ function validate(mode) {
 			: Array.from(inputSections).map((section) =>
 					Number(section.dataset.section)
 				);
+
+	// ------------------------------------
+	// チェック対象の表示をリセット
+	// ------------------------------------
+
+	targetSections.forEach((index) => {
+		const section = inputSections[index];
+
+		section
+			.querySelectorAll(".validation-error")
+			.forEach((element) => {
+				element.classList.remove("validation-error");
+			});
+
+		const messageElement =
+			section.querySelector(".validation-message");
+
+		messageElement.replaceChildren();
+		messageElement.hidden = true;
+	});
 
 	// ------------------------------------
 	// エラーを集める
