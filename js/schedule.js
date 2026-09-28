@@ -96,13 +96,15 @@ progressItems.forEach((item, index) => {
 				return;
 			}
 
-			/* 現在のセクションをチェック */
-			if (!validate("section")) {
-        return;
+			/* 入力セクションにいる場合だけチェック */
+      if (currentSection < inputSections.length) {
+        if (!validate("section")) {
+          return;
+        }
       }
 
-			/* エラーがなければ移動 */
-			showSection(index);
+      /* エラーがなければ移動 */
+      showSection(index);
 		}
 	});
 });
@@ -554,7 +556,7 @@ function showValidationDialog(errors) {
 	validationErrors.forEach((error) => {
 		const message = document.createElement("span");
 
-		message.textContent = `・${error.message}`;
+		message.textContent = `◆ ${error.message}`;
 		message.style.display = "block";
 
 		validationDialogMessage.appendChild(message);
