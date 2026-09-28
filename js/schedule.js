@@ -124,7 +124,7 @@ resultStatus.addEventListener("click", () => {
 });
 
 // ----------------------------------------
-// 制作期間
+// 作業期間
 // ----------------------------------------
 
 let startDate = null;
@@ -357,7 +357,7 @@ function getSectionErrors(index) {
 		// 休日は任意なのでチェックなし
 	}
 
-	// 5.制作期間 ----------------------------------------
+	// 5.作業期間 ----------------------------------------
 
 	if (index === 4) {
 		// 両方未入力
@@ -849,7 +849,7 @@ function renderInputCalendarMonth(element, date) {
 }
 
 // ----------------------------------------
-// 制作期間カレンダー
+// 作業期間カレンダー
 // ----------------------------------------
 
 let periodDate = new Date();
@@ -869,7 +869,7 @@ function renderPeriodCalendar() {
 			};
 
 			// --------------------------------
-			// 制作期間
+			// 作業期間
 			// --------------------------------
 
 			if (startDate && deadlineDate && date > startDate && date < deadlineDate) {
@@ -1709,7 +1709,7 @@ function createSchedule() {
 		return new Date(year, month - 1, day);
 	});
 
-	// ⑥ 制作期間 ----------------------------------------
+	// ⑥ 作業期間 ----------------------------------------
 	const scheduleData = {
 		pageCount: pageCount,
 		productionProcesses: productionProcesses,

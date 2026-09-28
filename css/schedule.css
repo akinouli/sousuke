@@ -1277,7 +1277,7 @@ body {
 	height: 50px;
 }
 
-/* 制作期間 */
+/* 作業期間 */
 
 .calendar-day.period {
 	background: var(--color-cream);
@@ -1302,7 +1302,7 @@ body {
 }
 
 /* --------------------------------------------------
-  制作期間ラベル
+  作業期間ラベル
 -------------------------------------------------- */
 
 .calendar-day {
@@ -1400,7 +1400,6 @@ body {
 }
 
 /* ポップアップ本体 */
-
 .validation-dialog {
 	width: 90%;
 	max-width: 500px;
@@ -1415,8 +1414,18 @@ body {
 	text-align: center;
 }
 
-/* エラーメッセージ */
+/* エラーメッセージタイトル */
+.validation-dialog-title {
+	font-family: "Nunito", sans-serif;
+	font-size: 1.5rem;
+	font-weight: bold;
 
+	color: var(--color-error);
+	letter-spacing: 0.12em;
+	margin-bottom: 0.8rem;
+}
+
+/* エラーメッセージ */
 #validation-dialog-message {
 	margin: 0;
 
@@ -1428,7 +1437,6 @@ body {
 }
 
 /* ボタン */
-
 .validation-dialog-buttons {
 	display: flex;
 	justify-content: center;
@@ -1459,14 +1467,13 @@ body {
 }
 
 .validation-dialog-button:active {
-	transform: scale(0.94);
+	transform: scale(0.93);
 
 	background: var(--color-orange);
 	color: var(--color-white);
 }
 
 /* 「直す」 */
-
 #validation-fix {
 	background: var(--color-orange);
 	color: var(--color-white);
@@ -2120,7 +2127,7 @@ body {
 	font-size: 16px;
 }
 
-/* 制作期間 */
+/* 作業期間 */
 .final-process-period {
 	margin-top: 5px;
 

@@ -303,7 +303,7 @@ function createScheduleDayElement(date, data, displayStartDate) {
 	}
 
 	// ------------------------------------
-	// 制作期間外
+	// 作業期間外
 	// ------------------------------------
 
 	const startDate = parseScheduleDate(data.startDate);
@@ -513,7 +513,7 @@ function createScheduleProcessRow(week, process, lane, processIndex, processCoun
 	row.className = "schedule-process-row";
 
 	// ------------------------------------
-	// 制作期間内だけを表示範囲にする
+	// 作業期間内だけを表示範囲にする
 	// ------------------------------------
 
 	row.style.gridColumn = `${nameColumn + 1} / ${arrowColumn + 2}`;
@@ -736,7 +736,7 @@ function renderVerticalScheduleCalendar() {
 
 	const weeks = createScheduleWeeks(startDate, deadline);
 
-	// 制作期間に関係する週をすべて表示
+	// 作業期間に関係する週をすべて表示
 	weeks.forEach((week, index) => {
 		appendScheduleWeek(list, week, scheduleCalendarData, index === 0 ? week[0] : null);
 	});
@@ -1125,7 +1125,7 @@ function createFinalProcessCard(process) {
 	}
 
 	// ------------------------------------
-	// 制作期間
+	// 作業期間
 	// ------------------------------------
 
 	const period = document.createElement("div");

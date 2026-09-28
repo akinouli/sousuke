@@ -50,7 +50,7 @@
 			<section class="form-section active-section" data-section="0">
 				<div class="section-content">
 					<h1>ページ数</h1>
-					<p>本文のページ数か制作枚数を入力しよう</p>
+					<p>本文のページ数か制作枚数を入力しよう<br />（1ページ～OK!）</p>
 
 					<div class="validation-message" hidden></div>
 
@@ -67,7 +67,7 @@
 			<section class="form-section" data-section="1">
 				<div class="section-content">
 					<h1>工程リスト</h1>
-					<p>作業工程と確保したい時間を決めよう<br />「＝」をつまんで優先順に並び替えできるよ</p>
+					<p>作業工程と確保したい時間を決めよう<br />（＝→並び替え・1分～OK!）</p>
 
 					<div class="validation-message" hidden></div>
 
@@ -149,7 +149,7 @@
 			<section class="form-section" data-section="2">
 				<div class="section-content">
 					<h1>活動時間</h1>
-					<p>曜日ごとに作業できる時間を設定しよう</p>
+					<p>曜日ごとに作業できる時間を設定しよう<br />（合計1時間～OK!）</p>
 
 					<div class="validation-message" hidden></div>
 
@@ -320,10 +320,10 @@
 				</div>
 			</section>
 
-			<!-- セクション➎ 制作期間 -->
+			<!-- セクション➎ 作業期間 -->
 			<section class="form-section" data-section="4">
 				<div class="section-content">
-					<h1>制作期間</h1>
+					<h1>作業期間</h1>
 					<p>制作開始日と締切日を選択しよう</p>
 
 					<div class="validation-message" hidden></div>
@@ -489,6 +489,7 @@
 			<!-- エラー擬似ポップアップ ========================= -->
 			<div id="validation-overlay" class="validation-overlay" hidden>
 				<div class="validation-dialog">
+					<div class="validation-dialog-title">ERROR…</div>
 					<p id="validation-dialog-message"></p>
 
 					<div class="validation-dialog-buttons">
