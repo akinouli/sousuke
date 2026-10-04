@@ -2257,6 +2257,7 @@ body {
 
 	.process-unit {
 		width: 120px;
+		flex-shrink: 0;
 	}
 
 	.process-time-input {
