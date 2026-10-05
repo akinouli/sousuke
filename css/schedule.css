@@ -549,9 +549,9 @@ body {
 
 /* 行程カード - 全体orページ数 */
 .process-unit {
-	width: 120px;
+	width: 100px;
 	height: 40px;
-	padding: 6px 28px 6px 10px;
+	padding: 6px 10px;
 
 	border: 1px solid var(--color-green);
 	border-radius: 10px;
