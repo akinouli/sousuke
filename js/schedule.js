@@ -1198,7 +1198,7 @@ let originalIndex = null;
 // 自動スクロール用
 const topScrollZone = 160;
 const bottomScrollZone = 180;
-const maxScrollSpeed = 10;
+const maxScrollSpeed = 30;
 
 // ----------------------------------------
 // 工程リスト並び替え - 自動スクロール開始
@@ -1305,7 +1305,7 @@ document.addEventListener("pointermove", (event) => {
 			const rect = previousItem.getBoundingClientRect();
 
 			//移動判定位置
-			const middle = rect.top + rect.height * 0.8;
+			const middle = rect.top + rect.height * 0.75;
 
 			if (currentY < middle) {
 				draggingList.insertBefore(draggingItem, previousItem);
