@@ -550,7 +550,7 @@ body {
 
 /* 行程カード - 全体orページ数 */
 .process-unit {
-	width: 100px;
+	width: 110px;
 	height: 40px;
 	padding: 6px 10px;
 
@@ -2252,7 +2252,7 @@ body {
 	}
 
 	.process-unit {
-		width: 120px;
+		width: 110px;
 		flex-shrink: 0;
 	}
 
