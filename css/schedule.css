@@ -1076,7 +1076,7 @@ body {
 	margin: 30px auto 0;
 }
 
-/* カレンダーヘッダー */
+/* カレンダーヘッダー -------------------------------------------------- */
 
 .calendar-header {
 	display: flex;
@@ -1122,7 +1122,7 @@ body {
 	transform: scale(0.93);
 }
 
-/* 月表示 */
+/* 月表示 -------------------------------------------------- */
 
 #period-month,
 #holiday-month {
@@ -1153,7 +1153,7 @@ body {
 	font-size: 21px;
 }
 
-/* 曜日 */
+/* 曜日 -------------------------------------------------- */
 
 .week-header {
 	display: grid;
@@ -1185,14 +1185,14 @@ body {
 	color: var(--color-saturday);
 }
 
-/* 日付グリッド */
+/* 日付グリッド -------------------------------------------------- */
 
 .calendar-grid {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 }
 
-/* 日付マス */
+/* 日付マス -------------------------------------------------- */
 
 .calendar-day {
 	position: relative;
@@ -1219,7 +1219,7 @@ body {
 	cursor: default;
 }
 
-/* 日付 */
+/* 日付 -------------------------------------------------- */
 
 .day-number {
 	position: relative;
@@ -1230,19 +1230,19 @@ body {
 	text-align: center;
 }
 
-/* 日曜日 */
+/* 日曜日 -------------------------------------------------- */
 
 .calendar-day.sunday .day-number {
 	color: var(--color-sunday);
 }
 
-/* 土曜日 */
+/* 土曜日 -------------------------------------------------- */
 
 .calendar-day.saturday .day-number {
 	color: var(--color-saturday);
 }
 
-/* アイコンエリア */
+/* アイコンエリア -------------------------------------------------- */
 
 .day-icon {
 	position: absolute;
@@ -1265,7 +1265,7 @@ body {
 	pointer-events: none;
 }
 
-/* アイコン */
+/* アイコン -------------------------------------------------- */
 
 .day-icon img {
 	object-fit: contain;
@@ -1274,7 +1274,7 @@ body {
 	height: 50px;
 }
 
-/* 作業期間 */
+/* 作業期間 -------------------------------------------------- */
 
 .calendar-day.period {
 	background: var(--color-cream);
@@ -1286,13 +1286,13 @@ body {
 	font-weight: bold;
 }
 
-/* 休日 */
+/* 休日 -------------------------------------------------- */
 
 .calendar-day.holiday {
 	background: var(--color-cream);
 }
 
-/* 前月・次月の日付マス */
+/* 前月・次月の日付マス -------------------------------------------------- */
 
 .calendar-day.outside-month {
 	opacity: 0.8;
@@ -2322,13 +2322,22 @@ body {
 	}
 
 	/* 入力➃➄ - カレンダー -------------------------------------------------- */
+	.week-header span {
+		min-height: 28px;
+		font-size: 12px;
+	}
+	
 	.calendar-day {
 		min-height: 70px;
-		padding-top: 7px;
+		padding: 4px;
+	}
+
+	.day-number {
+		font-size: 12px;
 	}
 
 	.day-icon {
-		height: 35px;
+		height: 38px;
 	}
 
 	.day-icon img {
@@ -2346,9 +2355,12 @@ body {
 		align-items: flex-start;
 	}
 
+	/* 基本情報 */
 	#schedule-basic-info {
 		flex: 1;
 		min-width: 0;
+		padding: 6px 10px;
+		gap: 2px;
 
 		font-size: 12px;
 	}
@@ -2387,11 +2399,11 @@ body {
 
 	.schedule-week-header span {
 		min-height: 28px;
-		font-size: 11px;
+		font-size: 12px;
 	}
 
 	.schedule-day {
-		min-height: 65px;
+		min-height: 70px;
 		padding: 4px;
 	}
 
