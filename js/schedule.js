@@ -607,7 +607,7 @@ function updateFooterButtons() {
 
     // 結果画面では「再調整」
     if (currentSection === inputSections.length) {
-        backButton.textContent = "▲ 再調整";
+        backButton.textContent = "再調整";
     } else {
         backButton.textContent = "▲ 戻る";
     }
