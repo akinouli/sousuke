@@ -558,7 +558,14 @@ const nextButton = document.querySelector(".next-button");
 // 「戻る」ボタン ----------------------------------------
 
 backButton.addEventListener("click", () => {
-	showSection(currentSection - 1);
+    // 結果画面からは①ページ数へ戻る
+    if (currentSection === inputSections.length) {
+        showSection(0);
+        return;
+    }
+
+    // 入力画面では、これまで通り1つ前へ戻る
+    showSection(currentSection - 1);
 });
 
 // 「次へ」/「作成する」ボタン ----------------------------------------
@@ -592,12 +599,18 @@ nextButton.addEventListener("click", () => {
 // フッターボタン表示更新 ----------------------------------------
 
 function updateFooterButtons() {
-	// ①では「戻る」を非表示
-	if (currentSection === 0) {
-		backButton.classList.add("hidden");
-	} else {
-		backButton.classList.remove("hidden");
-	}
+    if (currentSection === 0) {
+        backButton.classList.add("hidden");
+    } else {
+        backButton.classList.remove("hidden");
+    }
+
+    // 結果画面では「再調整」
+    if (currentSection === inputSections.length) {
+        backButton.textContent = "▲ 再調整";
+    } else {
+        backButton.textContent = "▲ 戻る";
+    }
 
 	// ⑤では「作成する」
 	if (currentSection === inputSections.length - 1) {

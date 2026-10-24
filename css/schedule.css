@@ -2156,54 +2156,58 @@ body {
 }
 
 /* --------------------------------------------------
-  実際の制作期間・制作日数
+  制作期間・全体の作業期間
 -------------------------------------------------- */
 
-#actual-production-info {
-	width: fit-content;
-	max-width: 100%;
-	margin: 28px auto 0;
-	padding: 12px 30px;
+.schedule-period-info {
+    width: fit-content;
+    max-width: 100%;
+    margin: 5px auto 0;
+    padding: 12px 30px;
 
-	border-radius: 12px;
+    border-radius: 12px;
+    background: var(--color-white);
 
-	background: var(--color-white);
-
-	font-size: 16px;
-	font-weight: bold;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* 1行 */
-.actual-production-info-row {
-	display: flex;
-	align-items: baseline;
-
-	white-space: nowrap;
+.schedule-period-info-row {
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
 }
 
 /* ラベル */
-.actual-production-info-label {
-	width: 70px;
+.schedule-period-info-label {
+    width: 70px;
+}
+
+/* 長いラベルにも対応 */
+#overall-work-info .schedule-period-info-label {
+    width: 130px;
+    flex-shrink: 0;
 }
 
 /* ： */
-.actual-production-info-colon {
-	margin-right: 6px;
+.schedule-period-info-colon {
+    margin-right: 6px;
 }
 
 /* 値 */
-.actual-production-info-value {
-	font-size: 15px;
+.schedule-period-info-value {
+    font-size: 15px;
 }
 
 /* 注釈 */
-.actual-production-info-note {
-	margin-left: 10px;
+.schedule-period-info-note {
+    margin-left: 10px;
 
-	font-size: 12px;
-	font-weight: normal;
-	line-height: 1.4;
-	color: var(--color-subtext);
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.4;
+    color: var(--color-subtext);
 }
 
 /* 行程リスト編集ボタン */

@@ -1311,36 +1311,74 @@ function calculateActualProductionDays(startDate, endDate, holidays, activityTim
 
 // 実際の制作期間・制作日数を表示
 function displayActualProductionInfo(resultData) {
-	if (!resultData) {
-		return;
-	}
+    if (!resultData) {
+        return;
+    }
 
-	const periodElement = document.getElementById("actual-production-period");
-	const daysElement = document.getElementById("actual-production-days");
+    const startDate = parseScheduleDate(resultData.startDate);
+    const completionDate = parseScheduleDate(resultData.completionDate);
+    const finalEndDate = parseScheduleDate(resultData.finalEndDate);
 
-	if (!periodElement || !daysElement) {
-		return;
-	}
+    const holidays = resultData.holidays || [];
+    const activityTimes = resultData.activityTimes || [];
 
-	const startDate = parseScheduleDate(resultData.startDate);
-	const finalEndDate = parseScheduleDate(resultData.finalEndDate);
+    // ----------------------------------------
+    // 制作期間・制作日数
+    // ----------------------------------------
 
-	// 制作期間
-	if (startDate && finalEndDate) {
-		periodElement.textContent = `${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
-	} else {
-		periodElement.textContent = "";
-	}
+    const productionPeriodElement =
+        document.getElementById("production-period");
 
-	// 制作日数
-	const productionDays = calculateActualProductionDays(
-		startDate,
-		finalEndDate,
-		resultData.holidays || [],
-		resultData.activityTimes || [],
-	);
+    const productionDaysElement =
+        document.getElementById("production-days");
 
-	daysElement.textContent = `${productionDays}日`;
+    if (productionPeriodElement && productionDaysElement) {
+        if (startDate && completionDate) {
+            productionPeriodElement.textContent =
+                `${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(completionDate)}`;
+
+            const productionDays = calculateActualProductionDays(
+                startDate,
+                completionDate,
+                holidays,
+                activityTimes,
+            );
+
+            productionDaysElement.textContent = `${productionDays}日`;
+        } else {
+            productionPeriodElement.textContent = "";
+            productionDaysElement.textContent = "";
+        }
+    }
+
+    // ----------------------------------------
+    // 全体の作業期間・作業日数
+    // ----------------------------------------
+
+    const overallPeriodElement =
+        document.getElementById("overall-work-period");
+
+    const overallDaysElement =
+        document.getElementById("overall-work-days");
+
+    if (overallPeriodElement && overallDaysElement) {
+        if (startDate && finalEndDate) {
+            overallPeriodElement.textContent =
+                `${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
+
+            const overallDays = calculateActualProductionDays(
+                startDate,
+                finalEndDate,
+                holidays,
+                activityTimes,
+            );
+
+            overallDaysElement.textContent = `${overallDays}日`;
+        } else {
+            overallPeriodElement.textContent = "";
+            overallDaysElement.textContent = "";
+        }
+    }
 }
 
 // ----------------------------------------
