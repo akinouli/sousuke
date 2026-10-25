@@ -2370,6 +2370,19 @@ body {
     border: 1px solid var(--color-gray);
 }
 
+/* 印刷プレビュー：吹き出しの尻尾 */
+.print-preview-content #schedule-end-date::before,
+.print-preview-content #schedule-auto-adjustment::after {
+    z-index: 0;
+}
+
+.print-preview-content #schedule-end-date > *,
+.print-preview-content #schedule-auto-adjustment > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* 丸カード */
 .print-preview-content .flow-card,
 .print-preview-content .completion-card {
     border: 1px solid var(--color-gray);

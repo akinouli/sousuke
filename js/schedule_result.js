@@ -938,14 +938,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 				<div class="print-preview-footer-info">
 					<div class="print-preview-footer-title">SOUSUKE</div>
-					<a
-						class="print-preview-footer-url"
-						href="https://akinouli.github.io/sousuke/"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
+					<span class="print-preview-footer-url">
 						https://akinouli.github.io/sousuke/
-					</a>
+					</span>
 				</div>
 
 				<div class="print-preview-footer-qr">
