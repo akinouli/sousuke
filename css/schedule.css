@@ -2341,6 +2341,115 @@ body {
 }
 
 /* --------------------------------------------------
+  印刷プレビュー：カードの視認性
+-------------------------------------------------- */
+
+/* 最終行程カード */
+.print-preview-content .final-process-card {
+    border: 1px solid var(--color-gray);
+	box-shadow: 0 1px 1px var(--color-shadow);
+}
+
+/* 制作期間・仕立て期間 */
+.print-preview-content .schedule-period-info {
+    border: 1px solid var(--color-gray);
+}
+
+/* 基本情報 */
+.print-preview-content #schedule-basic-info {
+    border: 1px solid var(--color-gray);
+}
+
+/* 作業終了予定日 */
+.print-preview-content #schedule-end-date {
+    border: 1px solid var(--color-gray);
+}
+
+/* 自動調整結果 */
+.print-preview-content #schedule-auto-adjustment {
+    border: 1px solid var(--color-gray);
+}
+
+.print-preview-content .flow-card,
+.print-preview-content .completion-card {
+    border: 1px solid var(--color-gray);
+	box-shadow: 0 1px 1px var(--color-shadow);
+}
+
+/* --------------------------------------------------
+  印刷プレビュー：SOUSUKEフッター
+-------------------------------------------------- */
+
+.print-preview-footer {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 16px;
+
+    margin-top: 40px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--color-gray);
+    color: var(--color-text);
+}
+
+/* 左：そうすけくん */
+.print-preview-footer-mascot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.print-preview-footer-mascot img {
+    display: block;
+    width: 100%;
+    max-width: 110px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* 中央：タイトルとURL */
+.print-preview-footer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-width: 0;
+    text-align: center;
+}
+
+.print-preview-footer-title {
+    font-family: "Nunito", sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+}
+
+.print-preview-footer-url {
+    color: var(--color-brown);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+}
+
+/* 右：QRコード */
+.print-preview-footer-qr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.print-preview-footer-qr img {
+    display: block;
+    width: 100%;
+    max-width: 110px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* --------------------------------------------------
   スマホ用
 -------------------------------------------------- */
 
@@ -2566,4 +2675,23 @@ body {
 		border-bottom-width: 5px;
 		border-left-width: 7px;
 	}
+
+	/* 印刷プレビュー */
+    .print-preview-footer {
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 8px;
+    }
+
+    .print-preview-footer-mascot img,
+    .print-preview-footer-qr img {
+        max-width: 72px;
+    }
+
+    .print-preview-footer-title {
+        font-size: 20px;
+    }
+
+    .print-preview-footer-url {
+        font-size: 10px;
+    }
 }

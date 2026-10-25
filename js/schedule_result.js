@@ -924,8 +924,37 @@ document.addEventListener("DOMContentLoaded", function () {
 				editButton.remove();
 			}
 
+			// ----------------------------------------
+			// SOUSUKEフッター
+			// ----------------------------------------
+
+			const previewFooter = document.createElement("div");
+			previewFooter.className = "print-preview-footer";
+
+			previewFooter.innerHTML = `
+				<div class="print-preview-footer-mascot">
+					<img src="icon/sousuke.png" alt="そうすけくん">
+				</div>
+
+				<div class="print-preview-footer-info">
+					<div class="print-preview-footer-title">SOUSUKE</div>
+					<a
+						class="print-preview-footer-url"
+						href="https://akinouli.github.io/sousuke/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						https://akinouli.github.io/sousuke/
+					</a>
+				</div>
+
+				<div class="print-preview-footer-qr">
+					<img src="img/QR_sousuke.png" alt="SOUSUKEホームのQRコード">
+				</div>
+			`;
+
 			// プレビュー本文を更新
-			printPreviewContent.replaceChildren(previewClone);
+			printPreviewContent.replaceChildren(previewClone, previewFooter);
 
 			// プレビューを表示
 			printPreviewOverlay.hidden = false;
