@@ -1352,33 +1352,51 @@ function displayActualProductionInfo(resultData) {
     }
 
     // ----------------------------------------
-    // 全体の作業期間・作業日数
-    // ----------------------------------------
+	// 仕立て期間・仕立て日数
+	// ----------------------------------------
 
-    const overallPeriodElement =
-        document.getElementById("overall-work-period");
+	const finishingPeriodElement =
+		document.getElementById("finishing-period");
 
-    const overallDaysElement =
-        document.getElementById("overall-work-days");
+	const finishingDaysElement =
+		document.getElementById("finishing-days");
 
-    if (overallPeriodElement && overallDaysElement) {
-        if (startDate && finalEndDate) {
-            overallPeriodElement.textContent =
-                `${formatActualProductionDate(startDate)} ～ ${formatActualProductionDate(finalEndDate)}`;
+	// 仕立て工程の一覧
+	const finishingSchedule = resultData.finishingSchedule || [];
 
-            const overallDays = calculateActualProductionDays(
-                startDate,
-                finalEndDate,
-                holidays,
-                activityTimes,
-            );
+	// 最初の仕立て工程の開始日
+	const finishingStartDate =
+		finishingSchedule.length > 0
+			? parseScheduleDate(finishingSchedule[0].startDate)
+			: null;
 
-            overallDaysElement.textContent = `${overallDays}日`;
-        } else {
-            overallPeriodElement.textContent = "";
-            overallDaysElement.textContent = "";
-        }
-    }
+	// 最後の仕立て工程の終了日
+	const finishingEndDate =
+		finishingSchedule.length > 0
+			? parseScheduleDate(
+				finishingSchedule[finishingSchedule.length - 1].endDate
+			)
+			: null;
+
+	if (finishingPeriodElement && finishingDaysElement) {
+		if (finishingStartDate && finishingEndDate) {
+			finishingPeriodElement.textContent =
+				`${formatActualProductionDate(finishingStartDate)} ～ ${formatActualProductionDate(finishingEndDate)}`;
+
+			const finishingDays = calculateActualProductionDays(
+				finishingStartDate,
+				finishingEndDate,
+				holidays,
+				activityTimes,
+			);
+
+			finishingDaysElement.textContent = `${finishingDays}日`;
+		} else {
+			// 仕立て工程がない場合
+			finishingPeriodElement.textContent = "—";
+			finishingDaysElement.textContent = "—";
+		}
+	}
 }
 
 // ----------------------------------------

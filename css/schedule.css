@@ -2184,12 +2184,6 @@ body {
     width: 70px;
 }
 
-/* 長いラベルにも対応 */
-#overall-work-info .schedule-period-info-label {
-    width: 130px;
-    flex-shrink: 0;
-}
-
 /* ： */
 .schedule-period-info-colon {
     margin-right: 6px;
