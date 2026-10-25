@@ -2233,6 +2233,114 @@ body {
 }
 
 /* --------------------------------------------------
+  印刷プレビュー
+-------------------------------------------------- */
+
+/* プレビューを覆う背景 */
+.print-preview-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 20px;
+    overflow-y: auto;
+
+    background: #0008;
+}
+
+/* hidden属性を優先 */
+.print-preview-overlay[hidden] {
+    display: none;
+}
+
+/* プレビュー画面 */
+.print-preview-dialog {
+    width: 100%;
+    max-width: 1000px;
+    min-height: 100%;
+
+    padding: 20px;
+
+    border-radius: 12px;
+    background: var(--color-white);
+}
+
+/* 上部操作エリア */
+.print-preview-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid var(--color-gray);
+}
+
+.print-preview-toolbar h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+/* 閉じるボタン */
+.print-preview-close-button {
+    padding: 8px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--color-cream);
+    color: var(--color-text);
+
+    font: inherit;
+    cursor: pointer;
+}
+
+/* プレビュー本文 */
+.print-preview-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+
+    color: var(--color-text);
+    background: var(--color-white);
+}
+
+/* プレビュー内の不要な操作ボタン */
+.print-preview-content .edit-process-list-button,
+.print-preview-content .print-preview-button,
+.print-preview-content .calendar-change-button,
+.print-preview-content .schedule-calendar-nav {
+    display: none;
+}
+
+/* プレビュー内のタイトル */
+.print-preview-content h1 {
+    margin-top: 0;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+    .print-preview-overlay {
+        padding: 8px;
+    }
+
+    .print-preview-dialog {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .print-preview-toolbar h2 {
+        font-size: 18px;
+    }
+}
+
+/* --------------------------------------------------
   スマホ用
 -------------------------------------------------- */
 

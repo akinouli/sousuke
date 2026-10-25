@@ -494,6 +494,15 @@
 								<button type="button" id="edit-process-list" class="edit-process-list-button">
 									行程リストを編集する
 								</button>
+
+								<!-- 印刷プレビュー -->
+								<button
+										type="button"
+										id="open-print-preview"
+										class="print-preview-button"
+								>
+										印刷プレビュー
+								</button>
 							</div>
 						</div>
 					</div>
@@ -512,6 +521,32 @@
 						<button type="button" id="validation-fix" class="validation-dialog-button">直す</button>
 					</div>
 				</div>
+			</div>
+
+			<!-- 印刷プレビュー画面 -->
+			<div id="print-preview-overlay" class="print-preview-overlay" hidden>
+					<div class="print-preview-dialog">
+
+							<!-- プレビュー操作 -->
+							<div class="print-preview-toolbar">
+									<h2>印刷プレビュー</h2>
+
+									<button
+											type="button"
+											id="close-print-preview"
+											class="print-preview-close-button"
+									>
+											閉じる
+									</button>
+							</div>
+
+							<!-- プレビュー内容を表示 -->
+							<div
+									id="print-preview-content"
+									class="print-preview-content"
+							></div>
+
+					</div>
 			</div>
 		</main>
 

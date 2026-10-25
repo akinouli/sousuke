@@ -886,6 +886,60 @@ document.addEventListener("DOMContentLoaded", function () {
 	if (editProcessListButton) {
 		editProcessListButton.addEventListener("click", editFinalProcessList);
 	}
+
+	// ----------------------------------------
+	// 印刷プレビュー
+	// ----------------------------------------
+
+	const openPrintPreviewButton = document.getElementById("open-print-preview");
+	const closePrintPreviewButton = document.getElementById("close-print-preview");
+	const printPreviewOverlay = document.getElementById("print-preview-overlay");
+	const printPreviewContent = document.getElementById("print-preview-content");
+
+	if (
+		openPrintPreviewButton &&
+		closePrintPreviewButton &&
+		printPreviewOverlay &&
+		printPreviewContent
+	) {
+		// プレビューを開く
+		openPrintPreviewButton.addEventListener("click", function () {
+			const resultContent = document.querySelector(
+				".result-section .section-content"
+			);
+
+			if (!resultContent) {
+				return;
+			}
+
+			// 結果表示を複製
+			const previewClone = resultContent.cloneNode(true);
+
+			// 編集ボタンはプレビューに含めない
+			const editButton = previewClone.querySelector(
+				"#edit-process-list"
+			);
+
+			if (editButton) {
+				editButton.remove();
+			}
+
+			// プレビュー本文を更新
+			printPreviewContent.replaceChildren(previewClone);
+
+			// プレビューを表示
+			printPreviewOverlay.hidden = false;
+
+			// プレビューの先頭へ移動
+			printPreviewOverlay.scrollTop = 0;
+		});
+
+		// プレビューを閉じる
+		closePrintPreviewButton.addEventListener("click", function () {
+			printPreviewOverlay.hidden = true;
+			printPreviewContent.replaceChildren();
+		});
+	}
 });
 
 // ========================================
