@@ -2156,14 +2156,14 @@ body {
 }
 
 /* --------------------------------------------------
-  制作期間・全体の作業期間
+  制作期間・仕立て期間
 -------------------------------------------------- */
 
 .schedule-period-info {
     width: fit-content;
     max-width: 100%;
-    margin: 5px auto 0;
-    padding: 12px 30px;
+    margin: 5px auto;
+    padding: 10px 20px;
 
     border-radius: 12px;
     background: var(--color-white);
@@ -2181,12 +2181,12 @@ body {
 
 /* ラベル */
 .schedule-period-info-label {
-    width: 70px;
+    width: 80px;
 }
 
 /* ： */
 .schedule-period-info-colon {
-    margin-right: 6px;
+    margin: auto 5px;
 }
 
 /* 値 */
