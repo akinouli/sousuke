@@ -3,6 +3,7 @@
 -------------------------------------------------- */
 
 :root {
+	--color-lightgreen: #d6e9ca;
 	--color-green: #b0ca71;
 	--color-darkgreen: #69821b;
 	--color-orange: #f08300;
@@ -2346,31 +2347,28 @@ body {
 
 /* 最終行程カード */
 .print-preview-content .final-process-card {
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-green);
 	box-shadow: 0 1px 1px var(--color-shadow);
 }
 
 /* 制作期間・仕立て期間 */
 .print-preview-content .schedule-period-info {
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-green);
 }
 
 /* 基本情報 */
 .print-preview-content #schedule-basic-info {
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-green);
 }
 
-/* 作業終了予定日 */
-.print-preview-content #schedule-end-date {
-    border: 1px solid var(--color-gray);
+/* 印刷プレビュー：吹き出し */
+.print-preview-content #schedule-end-date,
+.print-preview-content #schedule-end-date::before,
+.print-preview-content #schedule-auto-adjustment,
+.print-preview-content #schedule-auto-adjustment::after {
+    background: var(--color-lightgreen);
 }
 
-/* 自動調整結果 */
-.print-preview-content #schedule-auto-adjustment {
-    border: 1px solid var(--color-gray);
-}
-
-/* 印刷プレビュー：吹き出しの尻尾 */
 .print-preview-content #schedule-end-date::before,
 .print-preview-content #schedule-auto-adjustment::after {
     z-index: 0;
@@ -2385,12 +2383,12 @@ body {
 /* 丸カード */
 .print-preview-content .flow-card,
 .print-preview-content .completion-card {
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-green);
 	box-shadow: 0 1px 1px var(--color-shadow);
 }
 
 /* --------------------------------------------------
-  印刷プレビュー：SOUSUKEフッター
+  印刷プレビュー：フッター
 -------------------------------------------------- */
 
 .print-preview-footer {

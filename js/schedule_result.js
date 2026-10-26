@@ -937,7 +937,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				</div>
 
 				<div class="print-preview-footer-info">
-					<div class="print-preview-footer-title">SOUSUKE</div>
+					<div class="print-preview-footer-title">SOUsUKE</div>
 					<span class="print-preview-footer-url">
 						https://akinouli.github.io/sousuke/
 					</span>
