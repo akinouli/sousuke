@@ -847,6 +847,7 @@ body {
 	margin: 5px auto;
 	border-radius: 50%;
 
+	border: 1px solid var(--color-green);
 	background: var(--color-white);
 	box-shadow: 0 2px 1px var(--color-shadow);
 
@@ -1566,6 +1567,7 @@ body {
 	font-size: 14px;
 	font-weight: bold;
 
+	border: 1px solid var(--color-green);
 	background: var(--color-white);
 }
 
@@ -2065,6 +2067,7 @@ body {
 	box-sizing: border-box;
 
 	border-radius: 16px;
+	border: 1px solid var(--color-green);
 	background: var(--color-white);
 	box-shadow: 0 2px 1px var(--color-shadow);
 
@@ -2167,6 +2170,7 @@ body {
     padding: 10px 20px;
 
     border-radius: 12px;
+		border: 1px solid var(--color-green);
     background: var(--color-white);
 
     font-size: 16px;
@@ -2345,22 +2349,6 @@ body {
   印刷プレビュー：カードの視認性
 -------------------------------------------------- */
 
-/* 最終行程カード */
-.print-preview-content .final-process-card {
-    border: 1px solid var(--color-green);
-	box-shadow: 0 1px 1px var(--color-shadow);
-}
-
-/* 制作期間・仕立て期間 */
-.print-preview-content .schedule-period-info {
-    border: 1px solid var(--color-green);
-}
-
-/* 基本情報 */
-.print-preview-content #schedule-basic-info {
-    border: 1px solid var(--color-green);
-}
-
 /* 印刷プレビュー：吹き出し */
 .print-preview-content #schedule-end-date,
 .print-preview-content #schedule-end-date::before,
@@ -2378,13 +2366,6 @@ body {
 .print-preview-content #schedule-auto-adjustment > * {
     position: relative;
     z-index: 1;
-}
-
-/* 丸カード */
-.print-preview-content .flow-card,
-.print-preview-content .completion-card {
-    border: 1px solid var(--color-green);
-	box-shadow: 0 1px 1px var(--color-shadow);
 }
 
 /* --------------------------------------------------
