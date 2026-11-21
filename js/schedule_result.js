@@ -888,80 +888,119 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// ----------------------------------------
-	// 印刷プレビュー
+	// 印刷プレビュー・PDFダウンロード
 	// ----------------------------------------
 
-	const openPrintPreviewButton = document.getElementById("open-print-preview");
-	const closePrintPreviewButton = document.getElementById("close-print-preview");
-	const printPreviewOverlay = document.getElementById("print-preview-overlay");
-	const printPreviewContent = document.getElementById("print-preview-content");
+	const openPrintPreviewButton =
+		document.getElementById("open-print-preview");
 
-	if (
-		openPrintPreviewButton &&
-		closePrintPreviewButton &&
-		printPreviewOverlay &&
-		printPreviewContent
-	) {
-		// プレビューを開く
-		openPrintPreviewButton.addEventListener("click", function () {
-			const resultContent = document.querySelector(
-				".result-section .section-content"
-			);
+	const openPdfDownloadButton =
+		document.getElementById("open-pdf-download");
 
-			if (!resultContent) {
-				return;
-			}
+	const confirmPdfDownloadButton =
+		document.getElementById("confirm-pdf-download");
 
-			// 結果表示を複製
-			const previewClone = resultContent.cloneNode(true);
+	const cancelPdfDownloadButton =
+		document.getElementById("cancel-pdf-download");
 
-			// 編集ボタンはプレビューに含めない
-			const editButton = previewClone.querySelector(
-				"#edit-process-list"
-			);
+	const pdfConfirmOverlay =
+		document.getElementById("pdf-confirm-overlay");
 
-			if (editButton) {
-				editButton.remove();
-			}
+	const printPreviewContent =
+		document.getElementById("print-preview-content");
 
-			// ----------------------------------------
-			// SOUSUKEフッター
-			// ----------------------------------------
+	// 印刷用コンテンツを作成
+	function preparePrintContent() {
 
-			const previewFooter = document.createElement("div");
-			previewFooter.className = "print-preview-footer";
+		const resultContent = document.querySelector(
+			".result-section .section-content"
+		);
 
-			previewFooter.innerHTML = `
-				<div class="print-preview-footer-mascot">
-					<img src="icon/sousuke.png" alt="そうすけくん">
-				</div>
+		if (!resultContent) {
+			return false;
+		}
 
-				<div class="print-preview-footer-info">
-					<div class="print-preview-footer-title">SOUsUKE</div>
-					<span class="print-preview-footer-url">
-						https://akinouli.github.io/sousuke/
-					</span>
-				</div>
+		// 結果画面を複製
+		const previewClone = resultContent.cloneNode(true);
 
-				<div class="print-preview-footer-qr">
-					<img src="img/QR_sousuke.png" alt="SOUSUKEホームのQRコード">
-				</div>
-			`;
-
-			// プレビュー本文を更新
-			printPreviewContent.replaceChildren(previewClone, previewFooter);
-
-			// プレビューを表示
-			printPreviewOverlay.hidden = false;
-
-			// プレビューの先頭へ移動
-			printPreviewOverlay.scrollTop = 0;
+		// 編集・印刷操作ボタンを除外
+		previewClone.querySelectorAll(
+			"#edit-process-list, " +
+			"#open-print-preview, " +
+			"#open-pdf-download"
+		).forEach((button) => {
+			button.remove();
 		});
 
-		// プレビューを閉じる
-		closePrintPreviewButton.addEventListener("click", function () {
-			printPreviewOverlay.hidden = true;
-			printPreviewContent.replaceChildren();
+		// SOUSUKEフッターを作成
+		const previewFooter = document.createElement("div");
+		previewFooter.className = "print-preview-footer";
+
+		previewFooter.innerHTML = `
+			<div class="print-preview-footer-mascot">
+				<img src="icon/sousuke.png" alt="そうすけくん">
+			</div>
+
+			<div class="print-preview-footer-info">
+				<div class="print-preview-footer-title">SOUsUKE</div>
+				<span class="print-preview-footer-url">
+					https://akinouli.github.io/sousuke/
+				</span>
+			</div>
+
+			<div class="print-preview-footer-qr">
+				<img
+					src="img/QR_sousuke.png"
+					alt="SOUSUKEホームのQRコード"
+				>
+			</div>
+		`;
+
+		// 印刷用領域を更新
+		printPreviewContent.replaceChildren(
+			previewClone,
+			previewFooter
+		);
+
+		return true;
+	}
+
+	// ブラウザ標準の印刷画面を開く
+	function openBrowserPrintDialog() {
+
+		if (!preparePrintContent()) {
+			return;
+		}
+
+		window.print();
+	}
+
+	// 印刷プレビュー
+	if (openPrintPreviewButton) {
+		openPrintPreviewButton.addEventListener("click", () => {
+			openBrowserPrintDialog();
+		});
+	}
+
+	// PDFダウンロード確認
+	if (openPdfDownloadButton && pdfConfirmOverlay) {
+		openPdfDownloadButton.addEventListener("click", () => {
+			pdfConfirmOverlay.hidden = false;
+		});
+	}
+
+	// PDF保存する
+	if (confirmPdfDownloadButton && pdfConfirmOverlay) {
+		confirmPdfDownloadButton.addEventListener("click", () => {
+			pdfConfirmOverlay.hidden = true;
+			openBrowserPrintDialog();
+		});
+	}
+
+	// PDF保存をキャンセル
+	if (cancelPdfDownloadButton && pdfConfirmOverlay) {
+		cancelPdfDownloadButton.addEventListener("click", () => {
+			pdfConfirmOverlay.hidden = true;
 		});
 	}
 });

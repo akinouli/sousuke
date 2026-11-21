@@ -495,14 +495,26 @@
 									行程リストを編集する
 								</button>
 
-								<!-- 印刷プレビュー -->
-								<button
-										type="button"
-										id="open-print-preview"
-										class="print-preview-button"
-								>
-										印刷プレビュー
-								</button>
+								<!-- 印刷・PDF保存 -->
+								<div class="result-output-buttons">
+
+										<button
+												type="button"
+												id="open-print-preview"
+												class="print-preview-button"
+										>
+												印刷プレビュー
+										</button>
+
+										<button
+												type="button"
+												id="open-pdf-download"
+												class="pdf-download-button"
+										>
+												PDFダウンロード
+										</button>
+
+								</div>
 							</div>
 						</div>
 					</div>
@@ -523,29 +535,49 @@
 				</div>
 			</div>
 
-			<!-- 印刷プレビュー画面 -->
-			<div id="print-preview-overlay" class="print-preview-overlay" hidden>
-					<div class="print-preview-dialog">
+			<!-- 印刷用コンテンツ -->
+			<div
+					id="print-preview-content"
+					class="print-preview-content print-only"
+			></div>
 
-							<!-- プレビュー操作 -->
-							<div class="print-preview-toolbar">
-									<h2>印刷プレビュー</h2>
+			<!-- PDF保存確認ポップアップ -->
+			<div
+					id="pdf-confirm-overlay"
+					class="pdf-confirm-overlay"
+					hidden
+			>
+					<div
+							class="pdf-confirm-dialog"
+							role="dialog"
+							aria-modal="true"
+							aria-labelledby="pdf-confirm-title"
+					>
+							<h2 id="pdf-confirm-title">
+									PDF保存の確認
+							</h2>
+
+							<p>
+									作成したスケジュールをPDF形式で保存しますか？
+							</p>
+
+							<div class="pdf-confirm-buttons">
+									<button
+											type="button"
+											id="confirm-pdf-download"
+											class="pdf-confirm-button"
+									>
+											保存する
+									</button>
 
 									<button
 											type="button"
-											id="close-print-preview"
-											class="print-preview-close-button"
+											id="cancel-pdf-download"
+											class="pdf-cancel-button"
 									>
-											閉じる
+											やっぱやめる
 									</button>
 							</div>
-
-							<!-- プレビュー内容を表示 -->
-							<div
-									id="print-preview-content"
-									class="print-preview-content"
-							></div>
-
 					</div>
 			</div>
 		</main>
