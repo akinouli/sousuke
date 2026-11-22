@@ -2314,7 +2314,6 @@ body {
 
 /* プレビュー内の不要な操作ボタン */
 .print-preview-content .edit-process-list-button,
-.print-preview-content .print-preview-button,
 .print-preview-content .calendar-change-button,
 .print-preview-content .schedule-calendar-nav {
     display: none;
@@ -2487,12 +2486,8 @@ body {
     cursor: pointer;
 }
 
-.result-output-buttons .print-preview-button {
-    background: var(--color-darkgreen);
-}
-
 .result-output-buttons .pdf-download-button {
-    background: var(--color-brown);
+    background: var(--color-darkgreen);
 }
 
 .result-output-buttons button:active {
@@ -2628,7 +2623,6 @@ body {
     /* 操作ボタン・カレンダー操作を除外 */
     #print-preview-content button,
     #print-preview-content .edit-process-list-button,
-    #print-preview-content .print-preview-button,
     #print-preview-content .pdf-download-button,
     #print-preview-content .calendar-change-button,
     #print-preview-content .schedule-calendar-nav {

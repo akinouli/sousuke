@@ -891,9 +891,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 印刷プレビュー・PDFダウンロード
 	// ----------------------------------------
 
-	const openPrintPreviewButton =
-		document.getElementById("open-print-preview");
-
 	const openPdfDownloadButton =
 		document.getElementById("open-pdf-download");
 
@@ -925,9 +922,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// 編集・印刷操作ボタンを除外
 		previewClone.querySelectorAll(
-			"#edit-process-list, " +
-			"#open-print-preview, " +
-			"#open-pdf-download"
+			"#edit-process-list, #open-pdf-download"
 		).forEach((button) => {
 			button.remove();
 		});
@@ -975,21 +970,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		window.print();
 	}
 
-	// 印刷プレビュー
-	if (openPrintPreviewButton) {
-		openPrintPreviewButton.addEventListener("click", () => {
-			openBrowserPrintDialog();
-		});
-	}
-
-	// PDFダウンロード確認
+	// 印刷プレビュー＆PDFダウンロード確認
 	if (openPdfDownloadButton && pdfConfirmOverlay) {
 		openPdfDownloadButton.addEventListener("click", () => {
 			pdfConfirmOverlay.hidden = false;
 		});
 	}
 
-	// PDF保存する
+	// プレビューを開く
 	if (confirmPdfDownloadButton && pdfConfirmOverlay) {
 		confirmPdfDownloadButton.addEventListener("click", () => {
 			pdfConfirmOverlay.hidden = true;
@@ -997,7 +985,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// PDF保存をキャンセル
+	// プレビューキャンセル
 	if (cancelPdfDownloadButton && pdfConfirmOverlay) {
 		cancelPdfDownloadButton.addEventListener("click", () => {
 			pdfConfirmOverlay.hidden = true;
