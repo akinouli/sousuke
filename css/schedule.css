@@ -2324,22 +2324,6 @@ body {
     margin-top: 0;
 }
 
-/* スマートフォン */
-@media (max-width: 600px) {
-    .print-preview-overlay {
-        padding: 8px;
-    }
-
-    .print-preview-dialog {
-        padding: 12px;
-        border-radius: 8px;
-    }
-
-    .print-preview-toolbar h2 {
-        font-size: 18px;
-    }
-}
-
 /* --------------------------------------------------
   印刷プレビュー：カードの視認性
 -------------------------------------------------- */
@@ -2925,6 +2909,19 @@ body {
 
     .print-preview-footer-url {
         font-size: 10px;
+    }
+
+    .print-preview-overlay {
+        padding: 8px;
+    }
+
+    .print-preview-dialog {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .print-preview-toolbar h2 {
+        font-size: 18px;
     }
 
     .result-output-buttons {
