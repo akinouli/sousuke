@@ -2646,6 +2646,39 @@ body {
     .pdf-confirm-overlay {
         display: none !important;
     }
+
+		/* 週単位のカレンダー */
+		.schedule-week-grid {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		/* 最終工程カード */
+		.final-process-card {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		/* 基本情報・期間情報 */
+		#schedule-basic-info,
+		.schedule-period-info {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		/* 吹き出し */
+		#schedule-end-date,
+		#schedule-auto-adjustment {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		/* 制作開始・完成などのカード */
+		.flow-card,
+		.completion-card {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
 }
 
 /* --------------------------------------------------

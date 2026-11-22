@@ -945,8 +945,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			<div class="print-preview-footer-qr">
 				<img
-					src="img/QR_sousuke.png"
-					alt="SOUSUKEホームのQRコード"
+				src="/sousuke/img/QR_sousuke.png"
+				alt="SOUSUKEホームのQRコード"
 				>
 			</div>
 		`;
