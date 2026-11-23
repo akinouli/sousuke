@@ -576,6 +576,12 @@ nextButton.addEventListener("click", () => {
 
 	// 最後の入力セクション
 	if (sectionBeforeMove === inputSections.length - 1) {
+		// 結果画面では印刷・PDF保存を開く
+		if (sectionBeforeMove === inputSections.length) {
+			document.getElementById("open-pdf-download").click();
+			return;
+		}
+
 		// 全セクションをチェック
 		if (!validate("all")) {
 			return;
@@ -613,8 +619,11 @@ function updateFooterButtons() {
     }
 
 	// ⑤では「作成する」
+	// 結果画面では「印刷・PDF保存」
 	if (currentSection === inputSections.length - 1) {
 		nextButton.textContent = "作成する";
+	} else if (currentSection === inputSections.length) {
+		nextButton.textContent = "印刷・PDF保存";
 	} else {
 		nextButton.textContent = "次へ ▼";
 	}
