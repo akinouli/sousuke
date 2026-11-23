@@ -917,8 +917,25 @@ document.addEventListener("DOMContentLoaded", function () {
 			return false;
 		}
 
+		// 印刷用カレンダーを全期間の縦型で描画
+		renderVerticalScheduleCalendar();
+
 		// 結果画面を複製
 		const previewClone = resultContent.cloneNode(true);
+
+		// 印刷用カレンダーを縦型に固定
+		const horizontalCalendar = previewClone.querySelector(
+			"#schedule-calendar-horizontal"
+		);
+
+		const verticalCalendar = previewClone.querySelector(
+			"#schedule-calendar-vertical"
+		);
+
+		if (horizontalCalendar && verticalCalendar) {
+			horizontalCalendar.hidden = true;
+			verticalCalendar.hidden = false;
+		}
 
 		// 編集・印刷操作ボタンを除外
 		previewClone.querySelectorAll(
